@@ -22,6 +22,7 @@ class ComposerStaticInitcabbf6c5067ac6a2b3a253b899a851f2
             'Symfony\\Polyfill\\Ctype\\' => 23,
             'Symfony\\Component\\Yaml\\' => 23,
             'Symfony\\Component\\Finder\\' => 25,
+            'Student\\' => 8,
         ),
         'P' => 
         array (
@@ -66,6 +67,10 @@ class ComposerStaticInitcabbf6c5067ac6a2b3a253b899a851f2
         'Symfony\\Component\\Finder\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
+        ),
+        'Student\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/controllers',
         ),
         'Psr\\SimpleCache\\' => 
         array (

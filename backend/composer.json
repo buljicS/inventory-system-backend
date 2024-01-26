@@ -1,4 +1,9 @@
 {
+  "autoload": {
+    "psr-4": {
+      "Student\\": "./controllers/"
+    }
+  },
   "require": {
     "monolog/monolog": "3.5.*",
     "phpmailer/phpmailer": "^6.9.1",
