@@ -120,6 +120,8 @@
   
 ![image](https://github.com/buljicS/inventory-system/assets/124562282/0349de62-8cea-4b3e-8407-f9a8bac2f0d1)
 
+<hr>
+
 ### 6. Possible errors
 #### 1. Warning: Skipping unknown \Class ... at line 31
 - https://github.com/zircote/swagger-php/issues/1136
