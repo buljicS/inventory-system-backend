@@ -3,12 +3,13 @@
 ### 1. Install dependencies
 - Install swagger-php via composer to your project `composer require zircote/swagger-php`
 - Download Swagger-UI https://swagger.io/tools/swagger-ui/download/
+- Download JWT token manager for PHP https://github.com/firebase/php-jwt
 <hr>
 
 ### 2. Setup swagger documentation
 - In your project root, create folder `documentation`
-- Find downloaded Swagger-UI and copy everything from `dist` to `documentation/swagger` (create swagger folder if you didn't)
-- Note that you need to change paths to all files inside `swagger/index.html` since it has been moved
+- Find downloaded Swagger-UI and copy everything from `dist` to `documentation/swagger` folder (create swagger folder if you didn't)
+- Note that you need to change paths for all files inside `swagger/index.html` since it has been moved
 - Now create `generate-docs.php` file inside of `documentation` folder
 ```php
 <?php
@@ -30,7 +31,7 @@
 
 ### 3. Configure Controler.php
 - First, add proper namespace to your class, for example, for Controler.php namespace would be `namespace Controller`
-- Configure using for annotations `use OpenApi\Annotations as OA;`
+- Configure `using` for annotations like `use OpenApi\Annotations as OA;`
 - Add `@OA\Info` annotation to your controller
 - Same goes for every method in your controller, add proper annotatations `@OA\Get` and `@OA\Response`
 - Finally, you should end up with something similar to this
@@ -65,7 +66,7 @@
 - Solution provided here won't work straight away
 - We need to tell autoloader where to look for our controller
 - In `composer.json` add following at the very top of the file
-- Your composer.json should look similar to this (assuming that `controllers/` folder is in root folder of your php project)
+- Your composer.json should look similar to this (assuming that `controllers/` folder is in the root folder of your php project)
     
     ```json
     {
@@ -83,8 +84,8 @@
 - Now open terminal from your php project root folder and type followning command `composer dump-autoload`
 - That should be it
 - Open `generate-docs.php` from your web server, you should end up with message `Done, check root folder of this script for .json docs`
-- Whenever you want to override current documentation (json) , just visit 
-- You should be able to see `swagger-docs.json` inside of `documentation`
+- Whenever you want to override current documentation (json) , just visit `generate-docs.php` page
+- Now you should be able to see `swagger-docs.json` inside of `documentation` folder
   
 > Note: In the time of writing this solution, latest stable version of swagger-php is `4.8.3` and Swagger-UI is at `5.11.0`, while PHP version used in this project is `PHP 8.2`
 
@@ -95,6 +96,8 @@
 - Open `index.html` file and look up for `<script src="./swagger-initializer.js" charset="UTF-8"></script>`
 - Open `swagger-initializer.js` file and change location of .json documentation from `https://petstore.swagger.io/v2/swagger.json` to `../swagger-docs.json`
 - Your `swagger-initializer.js` now should look like this
+
+> Note: New location of json file is added while assuming that your `swagger-docs.json` file is in `documentation` folder
 
   ```js
   window.onload = function () {
@@ -116,3 +119,14 @@
 - That's it, now visit `localhost/yourproject/documentation/swagger/`
   
 ![image](https://github.com/buljicS/inventory-system/assets/124562282/0349de62-8cea-4b3e-8407-f9a8bac2f0d1)
+
+### 5. Possible errors
+#### 1. Warning: Skipping unknown \Class ... at line 31
+- https://github.com/zircote/swagger-php/issues/1136
+- http://zircote.github.io/swagger-php/guide/faq.html#skipping-unknown-someclass
+
+#### 2. Warning: Required @OA\Info() not found
+- http://zircote.github.io/swagger-php/guide/faq.html#warning-required-oa-info-not-found
+
+#### 3. Unable to merge @OA\Get .. Post
+- This is happening probably because two methods have annotations with same path, check param path in these annotations
