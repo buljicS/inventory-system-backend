@@ -91,7 +91,7 @@
 
 <hr>
 
-### 4. Setup Swagger-UI
+### 5. Setup Swagger-UI
 - Now when we have swagger docs generated, we need to show them in swagger-ui
 - Open `index.html` file and look up for `<script src="./swagger-initializer.js" charset="UTF-8"></script>`
 - Open `swagger-initializer.js` file and change location of .json documentation from `https://petstore.swagger.io/v2/swagger.json` to `../swagger-docs.json`
@@ -120,7 +120,7 @@
   
 ![image](https://github.com/buljicS/inventory-system/assets/124562282/0349de62-8cea-4b3e-8407-f9a8bac2f0d1)
 
-### 5. Possible errors
+### 6. Possible errors
 #### 1. Warning: Skipping unknown \Class ... at line 31
 - https://github.com/zircote/swagger-php/issues/1136
 - http://zircote.github.io/swagger-php/guide/faq.html#skipping-unknown-someclass
