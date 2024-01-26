@@ -2,8 +2,9 @@
 
 ### 1. Install dependencies
 - Install swagger-php via composer to your project `composer require zircote/swagger-php`
+- Install doctrine annotations `composer require doctrine/annotations`
 - Download Swagger-UI https://swagger.io/tools/swagger-ui/download/
-- Download JWT token manager for PHP https://github.com/firebase/php-jwt
+
 <hr>
 
 ### 2. Setup swagger documentation
