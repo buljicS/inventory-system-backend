@@ -133,3 +133,19 @@
 
 #### 3. Unable to merge @OA\Get .. Post
 - This is happening probably because two methods have annotations with same path, check param path in these annotations
+
+<hr>
+
+### References
+
+#### php-swagger:
+ - https://github.com/zircote/swagger-php
+ - https://zircote.github.io/swagger-php/
+
+#### Swagger-UI:
+ - https://swagger.io/
+ - https://swagger.io/tools/swagger-ui/
+
+#### Doctrine Annotations
+ - https://github.com/doctrine/annotations
+ - https://www.doctrine-project.org/projects/annotations.html
