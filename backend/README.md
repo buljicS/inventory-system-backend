@@ -1,12 +1,13 @@
 # Installation of Swagger-PHP step-by-step
 
+
 ### 1. Install dependencies
 - Install swagger-php via composer to your project `composer require zircote/swagger-php`
 - Install doctrine annotations `composer require doctrine/annotations`
 - Download Swagger-UI https://swagger.io/tools/swagger-ui/download/
 
 <hr>
-
+	
 ### 2. Setup swagger documentation
 - In your project root, create folder `documentation`
 - Find downloaded Swagger-UI and copy everything from `dist` to `documentation/swagger` folder (create swagger folder if you didn't)
@@ -29,7 +30,7 @@
 > Note: `['/path/to/project']` is path where your `Controller.php` class is stored, you can enter relative path here
 
 <hr>
-
+	
 ### 3. Configure Controler.php
 - First, add proper namespace to your class, for example, for Controler.php namespace would be `namespace Controller`
 - Configure `using` for annotations like `use OpenApi\Annotations as OA;`
@@ -123,7 +124,34 @@
 
 <hr>
 
-### 6. Possible errors
+### 6. Auto-generate new docs
+- Until this moment, we had to visit `generate-docs.php` file if we wanted to generate or override .json docs
+- This can be automatized
+- First, rename `documentation` folder to `swagger`
+- `swagger/swagger` folder rename to `ui`
+- `generate-docs.php` rename to `index.php` and modify it
+
+```php
+<?php
+  require("vendor/autoload.php");
+
+  //Generate docs
+  $openapi = \OpenApi\Generator::scan(['/path/to/project']);
+
+  //Write new docs to .json file
+  $jsonDoc = fopen("swagger-docs.json", "w");
+  fwrite($jsonDoc, $openapi->toJson());
+  fclose($jsonDoc);
+  //echo 'Done, check root folder of this script for .json docs';
+  header("Location: ./ui")
+
+```
+
+- Each time you visit `yourproject/swagger` new docs will be generated
+
+<hr>
+
+### 7. Possible errors
 #### 1. Warning: Skipping unknown \Class ... at line 31
 - https://github.com/zircote/swagger-php/issues/1136
 - http://zircote.github.io/swagger-php/guide/faq.html#skipping-unknown-someclass
