@@ -6,6 +6,8 @@ import { Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "@/styles/SignUp.module.scss";
 import axios from "axios";
+import { validateRegisterForm } from "@/utils/functions";
+import Spinner from "react-bootstrap/Spinner";
 
 const signup = () => {
     const [userData, setUserData] = useState<TRegisterData>({
@@ -15,23 +17,32 @@ const signup = () => {
         password: "",
         repeatPassword: "",
         phoneNumber: "",
-        company: "",
+        company: "default",
     });
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUserData((prevUserData) => ({ ...prevUserData, [name]: value }));
+        const updatedUserData = { ...userData, [name]: value };
+        const { errorMessages } = validateRegisterForm(updatedUserData);
+
+        setUserData(updatedUserData);
+        setErrors(errorMessages);
     };
 
-    const handleSubmit = async () => {
-        try {
-            setIsLoading(true);
-            const response = await axios.post("", { userData });
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { isValid } = validateRegisterForm(userData);
+        if (isValid) {
+            try {
+                setIsLoading(true);
+                const response = await axios.post("", { userData });
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setIsLoading(false);
+            }
         }
     };
 
@@ -60,15 +71,29 @@ const signup = () => {
                                 value={userData[input.name]}
                                 onChange={handleChange}
                             >
-                                <option>Open this select menu</option>
+                                <option value="default">
+                                    Choose a company
+                                </option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
                             </Form.Select>
                         )}
+                        {errors[input.name] && (
+                            <Form.Text className="text-danger">
+                                {errors[input.name]}
+                            </Form.Text>
+                        )}
                     </Form.Group>
                 ))}
-                <Button type="submit">Submit</Button>
+                <Button type="submit">
+                    {" "}
+                    {isLoading ? (
+                        <Spinner animation="border" size="sm" />
+                    ) : (
+                        "Submit"
+                    )}
+                </Button>
             </Form>
         </section>
     );

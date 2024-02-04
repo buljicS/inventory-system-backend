@@ -6,6 +6,8 @@ import { Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "@/styles/Login.module.scss";
 import axios from "axios";
+import { validateLoginForm } from "@/utils/functions";
+import Spinner from "react-bootstrap/Spinner";
 
 const Login = () => {
     const [userData, setUserData] = useState<TLoginData>({
@@ -13,20 +15,29 @@ const Login = () => {
         password: "",
     });
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUserData((prevUserData) => ({ ...prevUserData, [name]: value }));
+        const updatedUserData = { ...userData, [name]: value };
+        const { errorMessages } = validateLoginForm(updatedUserData);
+
+        setUserData(updatedUserData);
+        setErrors(errorMessages);
     };
 
-    const handleSubmit = async () => {
-        try {
-            setIsLoading(true);
-            const response = await axios.post("", { userData });
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { isValid } = validateLoginForm(userData);
+        if (isValid) {
+            try {
+                setIsLoading(true);
+                const response = await axios.post("", { userData });
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setIsLoading(false);
+            }
         }
     };
 
@@ -46,10 +57,22 @@ const Login = () => {
                             name={input.name}
                             value={userData[input.name]}
                             onChange={handleChange}
+                            required={input.required}
                         />
+                        {errors[input.name] && (
+                            <Form.Text className="text-danger">
+                                {errors[input.name]}
+                            </Form.Text>
+                        )}
                     </Form.Group>
                 ))}
-                <Button type="submit">Submit</Button>
+                <Button type="submit">
+                    {isLoading ? (
+                        <Spinner animation="border" size="sm" />
+                    ) : (
+                        "Submit"
+                    )}
+                </Button>
             </Form>
         </section>
     );
