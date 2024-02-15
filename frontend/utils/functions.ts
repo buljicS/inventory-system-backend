@@ -34,8 +34,7 @@ export const validateRegisterForm = (values: TRegisterData) => {
         emailPattern.test(values.email) &&
         passwordPattern.test(values.password) &&
         values.password === values.repeatPassword &&
-        phoneNumberPattern.test(values.phoneNumber) &&
-        values.company !== "default";
+        phoneNumberPattern.test(values.phoneNumber);
 
     const errorMessages = {
         fname: !namePattern.test(values?.fname)
@@ -57,10 +56,6 @@ export const validateRegisterForm = (values: TRegisterData) => {
         phoneNumber: !phoneNumberPattern.test(values?.phoneNumber)
             ? "Your phone number must be in this format: 06********"
             : "",
-        company:
-            values?.company === "default"
-                ? "Please choose the company you work for."
-                : "",
     };
 
     return { isValid, errorMessages };

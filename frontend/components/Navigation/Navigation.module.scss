@@ -1,0 +1,18 @@
+.nav {
+    background-color: #202930;
+
+    &_image {
+        position: absolute;
+        top: -10px;
+        z-index: 10;
+    }
+
+    &_links {
+        justify-content: flex-end;
+    }
+
+    &_active {
+        color: #fff;
+        font-weight: 600;
+    }
+}

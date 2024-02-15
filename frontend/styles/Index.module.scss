@@ -1,0 +1,14 @@
+.more_information {
+    display: flex;
+    padding: 50px 0;
+
+    &_workers {
+        flex: 1;
+        margin: 25px;
+    }
+
+    &_employer {
+        flex: 1;
+        margin: 25px;
+    }
+}

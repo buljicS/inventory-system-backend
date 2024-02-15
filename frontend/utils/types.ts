@@ -1,9 +1,10 @@
+import { StaticImageData } from "next/image";
+
 export type TRegisterLoginInputs = {
     id: number;
-    element: string;
     label: string;
     name: string;
-    type?: string;
+    type: string;
     placeholder: string;
     required: boolean;
 };
@@ -15,10 +16,38 @@ export type TRegisterData = {
     password: string;
     repeatPassword: string;
     phoneNumber: string;
-    company: string;
 };
 
 export type TLoginData = {
     email: string;
     password: string;
+};
+
+export type TNavFooterLinks = {
+    id: number;
+    label: string;
+    link: string;
+};
+
+export type TFooterSocialMedias = {
+    id: number;
+    socialMedia: string;
+    icon: StaticImageData;
+    link: string;
+};
+
+export type TSlides = {
+    id: number;
+    image: StaticImageData;
+    alt: string;
+    header: string;
+    text: string;
+};
+
+export type TIndexCards = {
+    id: number;
+    header: string;
+    subheader?: string;
+    text?: string;
+    steps?: string[];
 };

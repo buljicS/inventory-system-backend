@@ -16,6 +16,7 @@
     "react-bootstrap": "^2.10.0",
     "react-dom": "^18",
     "sass": "^1.69.5",
+    "swiper": "^11.0.6",
     "typescript": "^5.3.3"
   },
   "devDependencies": {

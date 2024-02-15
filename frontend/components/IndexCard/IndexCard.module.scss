@@ -1,0 +1,38 @@
+.index_card {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    text-align: center;
+
+    h1 {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 15px;
+    }
+
+    &_header {
+        background-color: #202930;
+        color: #fff;
+        padding: 20px;
+    }
+
+    &_bottom {
+        padding: 20px;
+        &_steps {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+
+            &_number {
+                border: 1px solid #000;
+                border-radius: 5px;
+                width: 20px;
+            }
+
+            &_text {
+                font-size: 15px;
+                margin-left: 10px;
+            }
+        }
+    }
+}
