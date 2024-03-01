@@ -1,0 +1,7 @@
+.dashboard {
+    &_container {
+        display: flex;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+}

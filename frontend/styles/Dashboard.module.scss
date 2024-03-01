@@ -1,0 +1,7 @@
+.dashboard {
+    &_main {
+        position: static;
+        width: calc(100% - 270px);
+        flex: 1;
+    }
+}

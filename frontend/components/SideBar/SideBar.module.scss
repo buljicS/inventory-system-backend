@@ -1,0 +1,33 @@
+.sidebar {
+    z-index: 999;
+    width: 270px;
+    min-height: 100vh;
+    background-color: #202930;
+
+    &_show {
+        left: 0 !important;
+    }
+
+    &_toggle {
+        position: absolute;
+        right: -48px;
+        background-color: #202930;
+
+        
+        @media screen and (min-width: 1024px) {
+            display: none;
+        }
+    }
+
+    &_logo {
+        display: flex;
+        justify-content: center;
+    }
+
+    @media screen and (max-width: 1024px) {
+        position: absolute;
+        top: 0;
+        left: -270px;
+        transition: 0.3s linear;
+    }
+}

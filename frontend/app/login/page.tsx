@@ -9,6 +9,7 @@ import axios from "axios";
 import { validateLoginForm } from "@/utils/functions";
 import Spinner from "react-bootstrap/Spinner";
 import { LoginImage } from "@/resources/images";
+import { Navigation, Footer } from "@/components";
 
 const Login = () => {
     const [userData, setUserData] = useState<TLoginData>({
@@ -43,60 +44,64 @@ const Login = () => {
     };
 
     return (
-        <section className={`${styles.login} container`}>
-            <div className={styles.form}>
-                <div className={styles.form_header}>
-                    <h1>Login</h1>
-                    <p>
-                        Let's make every login count towards a seamlessly
-                        organized inventory. Happy working!
-                    </p>
-                </div>
-                <Form onSubmit={handleSubmit}>
-                    {LOGIN_INPUTS.map((input) => (
-                        <Form.Group
-                            className="mb-3"
-                            controlId={"FormInput " + input.id}
-                            key={input.id}
-                        >
-                            <Form.Label>{input.label}</Form.Label>
-                            <Form.Control
-                                type={input.type}
-                                placeholder={input.placeholder}
-                                name={input.name}
-                                value={userData[input.name]}
-                                onChange={handleChange}
-                                required={input.required}
-                            />
-                            {errors[input.name] && (
-                                <Form.Text className="text-danger">
-                                    {errors[input.name]}
-                                </Form.Text>
+        <>
+            <Navigation />
+            <section className={`${styles.login} container`}>
+                <div className={styles.form}>
+                    <div className={styles.form_header}>
+                        <h1>Login</h1>
+                        <p>
+                            Let's make every login count towards a seamlessly
+                            organized inventory. Happy working!
+                        </p>
+                    </div>
+                    <Form onSubmit={handleSubmit}>
+                        {LOGIN_INPUTS.map((input) => (
+                            <Form.Group
+                                className="mb-3"
+                                controlId={"FormInput " + input.id}
+                                key={input.id}
+                            >
+                                <Form.Label>{input.label}</Form.Label>
+                                <Form.Control
+                                    type={input.type}
+                                    placeholder={input.placeholder}
+                                    name={input.name}
+                                    value={userData[input.name]}
+                                    onChange={handleChange}
+                                    required={input.required}
+                                />
+                                {errors[input.name] && (
+                                    <Form.Text className="text-danger">
+                                        {errors[input.name]}
+                                    </Form.Text>
+                                )}
+                            </Form.Group>
+                        ))}
+
+                        <Button type="submit">
+                            {isLoading ? (
+                                <Spinner animation="border" size="sm" />
+                            ) : (
+                                "Submit"
                             )}
-                        </Form.Group>
-                    ))}
+                        </Button>
+                    </Form>
+                </div>
 
-                    <Button type="submit">
-                        {isLoading ? (
-                            <Spinner animation="border" size="sm" />
-                        ) : (
-                            "Submit"
-                        )}
-                    </Button>
-                </Form>
-            </div>
-
-            <div className={styles.login_image}>
-                <Image
-                    alt="Login image"
-                    src={LoginImage}
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    className={styles.image}
-                />
-            </div>
-        </section>
+                <div className={styles.login_image}>
+                    <Image
+                        alt="Login image"
+                        src={LoginImage}
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        className={styles.image}
+                    />
+                </div>
+            </section>
+            <Footer />
+        </>
     );
 };
 
