@@ -16,12 +16,16 @@ const SideBar = () => {
     return (
         <>
             <div
-                className={
-                    styles.sidebar +
-                    (showSideBar ? ` ${styles.sidebar_show}` : "")
-                }
+                className={`${styles.sidebar} ${
+                    showSideBar ? styles.sidebar_show : ""
+                }`}
             >
-                <div className={styles.sidebar_toggle} onClick={toggleSideBar}>
+                <div
+                    className={`${styles.sidebar_toggle} ${
+                        showSideBar ? styles.sidebar_toggle_show : ""
+                    }`}
+                    onClick={toggleSideBar}
+                >
                     <Hamburger
                         toggled={showSideBar}
                         toggle={toggleSideBar}

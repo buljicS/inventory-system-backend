@@ -1,6 +1,6 @@
 .sidebar {
     z-index: 999;
-    width: 270px;
+    width: 300px;
     min-height: 100vh;
     background-color: #202930;
 
@@ -12,8 +12,12 @@
         position: absolute;
         right: -48px;
         background-color: #202930;
+        transition: 0.2s linear;
 
-        
+        &_show {
+            right: 0;
+        }
+
         @media screen and (min-width: 1024px) {
             display: none;
         }
@@ -22,12 +26,13 @@
     &_logo {
         display: flex;
         justify-content: center;
+        margin-top: 30px;
     }
 
     @media screen and (max-width: 1024px) {
         position: absolute;
         top: 0;
-        left: -270px;
+        left: -300px;
         transition: 0.3s linear;
     }
 }

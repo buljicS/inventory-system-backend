@@ -65,7 +65,7 @@ const Signup = () => {
                         <Form onSubmit={handleSubmit}>
                             {REGISTER_INPUTS.map((input) => (
                                 <Form.Group
-                                    className="mb-2"
+                                    className="mb-4"
                                     controlId={"FormInput " + input.id}
                                     key={input.id}
                                 >

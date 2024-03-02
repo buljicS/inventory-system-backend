@@ -15,7 +15,12 @@ const Navigation = () => {
             <Container>
                 <Navbar.Brand href="/">
                     <div className={styles.nav_image}>
-                        <Image src={Logo} alt="logo" height={150} width={150} />
+                        <Image src={Logo} alt="logo" height={200} width={200} />
+                    </div>
+                    <div className={styles.nav_brand}>
+                        <h2>
+                            IMS <span>since 2024.</span>
+                        </h2>
                     </div>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navigation" />

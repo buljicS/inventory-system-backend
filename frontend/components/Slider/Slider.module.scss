@@ -8,4 +8,20 @@
     padding: 50px;
     text-align: center;
     border-radius: 20px 0 0 20px;
+
+    @media screen and (max-width: 1200px) {
+        border-radius: 0;
+    }
+
+    @media screen and (max-width: 768px) {
+        position: relative;
+        transform: translateY(0);
+        background-color: transparent;
+        color: #202930;
+        padding: 30px;
+
+        img {
+            display: none;
+        }
+    }
 }

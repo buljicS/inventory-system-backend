@@ -1,5 +1,5 @@
 .sign_up {
-    padding: 100px 0;
+    padding: 150px 0;
 
     &_content {
         display: flex;
@@ -20,12 +20,29 @@
                 p {
                     font-size: 0.9rem;
                 }
+
+                @media only screen and (max-width: 576px) {
+                    margin: 0 10px;
+                }
             }
         }
 
         &_form {
             flex: 2;
             padding: 0 25px;
+
+            button {
+                margin-top: 20px;
+            }
         }
+
+        @media only screen and (max-width: 992px) {
+            flex-direction: column;
+            gap: 50px;
+        }
+    }
+
+    @media only screen and (max-width: 992px) {
+        padding:  50px 0;
     }
 }
