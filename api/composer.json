@@ -1,0 +1,13 @@
+{
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.6",
+        "selective/basepath": "^2.2",
+        "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    }
+}
