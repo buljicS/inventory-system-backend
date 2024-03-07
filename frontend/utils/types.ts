@@ -6,7 +6,6 @@ export type TRegisterLoginInputs = {
     name: string;
     type: string;
     placeholder: string;
-    required: boolean;
 };
 
 export type TRegisterData = {

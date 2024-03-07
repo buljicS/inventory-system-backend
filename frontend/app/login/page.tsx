@@ -1,45 +1,34 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LOGIN_INPUTS } from "@/utils/constants";
 import { TLoginData } from "@/utils/types";
 import { Form, Button } from "react-bootstrap";
 import styles from "@/styles/Login.module.scss";
 import axios from "axios";
-import { validateLoginForm } from "@/utils/functions";
+import { LOGIN_SCHEMA } from "@/utils/constants";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, SubmitHandler } from "react-hook-form";
 import Spinner from "react-bootstrap/Spinner";
 import { LoginImage } from "@/resources/images";
 import { Navigation, Footer } from "@/components";
 
 const Login = () => {
-    const [userData, setUserData] = useState<TLoginData>({
-        email: "",
-        password: "",
-    });
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [errors, setErrors] = useState({});
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<TLoginData>({ resolver: zodResolver(LOGIN_SCHEMA) });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        const updatedUserData = { ...userData, [name]: value };
-        const { errorMessages } = validateLoginForm(updatedUserData);
-
-        setUserData(updatedUserData);
-        setErrors(errorMessages);
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const { isValid } = validateLoginForm(userData);
-        if (isValid) {
-            try {
-                setIsLoading(true);
-                const response = await axios.post("", { userData });
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setIsLoading(false);
-            }
+    const onSubmit: SubmitHandler<TLoginData> = async (data) => {
+        try {
+            setIsLoading(true);
+            const response = await axios.post("", { data });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -55,7 +44,7 @@ const Login = () => {
                             organized inventory. Happy working!
                         </p>
                     </div>
-                    <Form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
                         {LOGIN_INPUTS.map((input) => (
                             <Form.Group
                                 className="mb-3"
@@ -66,14 +55,12 @@ const Login = () => {
                                 <Form.Control
                                     type={input.type}
                                     placeholder={input.placeholder}
-                                    name={input.name}
-                                    value={userData[input.name]}
-                                    onChange={handleChange}
-                                    required={input.required}
+                                    // @ts-ignore */
+                                    {...register(input.name)}
                                 />
                                 {errors[input.name] && (
                                     <Form.Text className="text-danger">
-                                        {errors[input.name]}
+                                        {errors[input.name].message}
                                     </Form.Text>
                                 )}
                             </Form.Group>
