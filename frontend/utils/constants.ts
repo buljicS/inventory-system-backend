@@ -12,7 +12,7 @@ import {
     InstagramIcon,
     MailIcon,
 } from "@/resources/icons";
-
+import { z } from "zod";
 import { SliderImage1, SliderImage2 } from "@/resources/images";
 
 export const REGISTER_INPUTS: TRegisterLoginInputs[] = [
@@ -22,7 +22,6 @@ export const REGISTER_INPUTS: TRegisterLoginInputs[] = [
         name: "fname",
         type: "text",
         placeholder: "Enter your first name",
-        required: true,
     },
     {
         id: 2,
@@ -30,7 +29,6 @@ export const REGISTER_INPUTS: TRegisterLoginInputs[] = [
         name: "lname",
         type: "text",
         placeholder: "Enter your last name",
-        required: true,
     },
     {
         id: 3,
@@ -38,7 +36,6 @@ export const REGISTER_INPUTS: TRegisterLoginInputs[] = [
         name: "email",
         type: "email",
         placeholder: "Enter your e-mail",
-        required: true,
     },
     {
         id: 4,
@@ -46,7 +43,6 @@ export const REGISTER_INPUTS: TRegisterLoginInputs[] = [
         name: "password",
         type: "password",
         placeholder: "Enter your password",
-        required: true,
     },
     {
         id: 5,
@@ -54,7 +50,6 @@ export const REGISTER_INPUTS: TRegisterLoginInputs[] = [
         name: "repeatPassword",
         type: "password",
         placeholder: "Enter your password again",
-        required: true,
     },
     {
         id: 6,
@@ -62,7 +57,6 @@ export const REGISTER_INPUTS: TRegisterLoginInputs[] = [
         name: "phoneNumber",
         type: "text",
         placeholder: "Phone number",
-        required: false,
     },
 ];
 
@@ -73,7 +67,6 @@ export const LOGIN_INPUTS: TRegisterLoginInputs[] = [
         name: "email",
         type: "email",
         placeholder: "Enter your email",
-        required: true,
     },
     {
         id: 2,
@@ -81,7 +74,6 @@ export const LOGIN_INPUTS: TRegisterLoginInputs[] = [
         name: "password",
         type: "password",
         placeholder: "Enter your password",
-        required: true,
     },
 ];
 
@@ -204,3 +196,44 @@ export const INDEX_CARDS: TIndexCards[] = [
         text: "If you are an employer and want to use our system to better organize your inventory in the company, all you need to do is contact us via email!",
     },
 ];
+
+export const LOGIN_SCHEMA = z.object({
+    email: z.string().email("Email is not valid."),
+    password: z
+        .string()
+        .regex(
+            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+            {
+                message:
+                    "Your password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.",
+            }
+        ),
+});
+
+export const REGISTER_SCHEMA = z
+    .object({
+        fname: z.string().min(3, {
+            message: "First name must have at least three characters.",
+        }),
+        lname: z.string().min(3, {
+            message: "First name must have at least three characters.",
+        }),
+        email: z.string().email("Email is not valid."),
+        password: z
+            .string()
+            .regex(
+                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                {
+                    message:
+                        "Your password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.",
+                }
+            ),
+        repeatPassword: z.string(),
+        phoneNumber: z.string().regex(/^(0|\+381)[1-9]\d{8}$/, {
+            message: "Phone number is not valid.",
+        }),
+    })
+    .refine((data) => data.password === data.repeatPassword, {
+        message: "Passwords don't match",
+        path: ["repeatPassword"],
+    });
