@@ -1,8 +1,0 @@
-# composer files
-vendor
-composer.json
-
-# local config files
-.env
-
-
