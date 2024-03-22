@@ -1,9 +1,8 @@
 # enviroment files
-/.env
+.env
 
 # composer files
 /vendor
-/composer.json
 
 # IDE files
 /.idea

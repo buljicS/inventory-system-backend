@@ -27,12 +27,14 @@ $app->get('/', function (Request $request, Response $response) {
     return $response;
 })->setName('root');
 
-$app->get('/users', function (Request $request, Response $response) {
-	$con = DBController::getConnection();
+$app->get('/getAllUsers', function (Request $request, Response $response) {
+	$con = DBController::openConnection();
 
-	$sql = "SELECT * FROM users";
-	$con->prepare($sql);
-	$stmt = $con->prepare($sql);
+	$stmt = $con->prepare("SELECT * FROM workers");
+	$stmt->execute();
+	$data = $stmt->fetchAll();
+	$response->getBody()->write(json_encode($data));
+	return $response->withHeader('Content-Type', 'application/json');
 })->setName('root');
 
 $app->run();
