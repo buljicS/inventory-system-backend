@@ -12,6 +12,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Spinner from "react-bootstrap/Spinner";
 import { LoginImage } from "@/resources/images";
 import { Navigation, Footer } from "@/components";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -21,10 +22,13 @@ const Login = () => {
         formState: { errors },
     } = useForm<TLoginData>({ resolver: zodResolver(LOGIN_SCHEMA) });
 
+    const router = useRouter();
+
     const onSubmit: SubmitHandler<TLoginData> = async (data) => {
         try {
             setIsLoading(true);
-            const response = await axios.post("", { data });
+            const response = await axios.post("", JSON.stringify(data));
+            // router.push("/dashboard");
         } catch (error) {
             console.log(error);
         } finally {
