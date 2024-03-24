@@ -1,0 +1,47 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Inventory managment system API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/loginUser": {
+            "post": {
+                "tags": [
+                    "Resource"
+                ],
+                "summary": "Create a new resource",
+                "operationId": "aed41578cb4490bf67d0dcadb0d5dc6c",
+                "requestBody": {
+                    "description": "Provide data to create a new resource",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "Your password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource created successfully"
+                    },
+                    "400": {
+                        "description": "Bad request, invalid input provided"
+                    }
+                }
+            }
+        }
+    }
+}

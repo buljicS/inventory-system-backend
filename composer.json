@@ -19,6 +19,9 @@
         "mobiledetect/mobiledetectlib": "^4.8",
         "ext-pdo": "*",
         "ext-json": "*",
-        "fakerphp/faker": "^1.23"
+        "fakerphp/faker": "^1.23",
+        "php-di/php-di": "^7.0",
+        "doctrine/annotations": "^2.0",
+        "firebase/php-jwt": "^5.5"
     }
 }
