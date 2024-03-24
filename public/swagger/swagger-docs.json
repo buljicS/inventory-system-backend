@@ -2,18 +2,19 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Inventory managment system API",
+        "description": "Inventory web based system for tracking items and stuff in company",
         "version": "1.0"
     },
     "paths": {
-        "/api/loginUser": {
+        "/inventory-system-backend/api/loginUser": {
             "post": {
                 "tags": [
-                    "Resource"
+                    "Workers"
                 ],
-                "summary": "Create a new resource",
-                "operationId": "aed41578cb4490bf67d0dcadb0d5dc6c",
+                "summary": "User login",
+                "operationId": "47de759960e4c6d80e5f92577ee75e5a",
                 "requestBody": {
-                    "description": "Provide data to create a new resource",
+                    "description": "Enter user email and password",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -35,10 +36,13 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Resource created successfully"
+                        "description": "User found"
                     },
-                    "400": {
-                        "description": "Bad request, invalid input provided"
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "401": {
+                        "description": "Wrong creditentials"
                     }
                 }
             }

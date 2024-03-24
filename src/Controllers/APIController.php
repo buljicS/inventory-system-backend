@@ -3,18 +3,22 @@
 namespace Controllers;
 use OpenApi\Annotations as OA;
 /**
- * @OA\Info(title="Inventory managment system API", version="1.0")
+ * @OA\Info(
+ *     title="Inventory managment system API",
+ *     version="1.0",
+ *     description="Inventory web based system for tracking items and stuff in company"
+ *	 )
  */
 class APIController
 {
 	/**
 	 * @OA\Post(
-	 *     path="/api/loginUser",
-	 *     summary="Create a new resource",
-	 *     tags={"Resource"},
+	 *     path="/inventory-system-backend/api/loginUser",
+	 *     summary="User login",
+	 *     tags={"Workers"},
 	 *     @OA\RequestBody(
 	 *         required=true,
-	 *         description="Provide data to create a new resource",
+	 *         description="Enter user email and password",
 	 *         @OA\MediaType(
 	 *             mediaType="application/json",
 	 *             @OA\Schema(
@@ -34,12 +38,16 @@ class APIController
 	 *     ),
 	 *     @OA\Response(
 	 *         response=200,
-	 *         description="Resource created successfully"
+	 *         description="User found"
 	 *     ),
 	 *     @OA\Response(
-	 *         response=400,
-	 *         description="Bad request, invalid input provided"
-	 *     )
+	 *         response=404,
+	 *         description="User not found"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=401,
+	 *         description="Wrong creditentials"
+	 *      ),
 	 * )
 	 */
 	public function getAllUsers():int
