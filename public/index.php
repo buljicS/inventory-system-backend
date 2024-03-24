@@ -43,11 +43,15 @@ $app->get('/', function (Request $request, Response $response) {
 	if($_ENV['IS_DEV']) {
 		return $response
 			->withHeader('Access-Control-Allow-Origin', '*')
+			->withHeader('Access-Control-Allow-Headers', 'X-Requested-With')
+			->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
 			->withHeader('Location', './swagger')
 			->withStatus(302);
 	}
 	return $response
 		->withHeader('Access-Control-Allow-Origin', '*')
+		->withHeader('Access-Control-Allow-Headers', 'X-Requested-With')
+		->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
 		->withHeader('Location', '.')
 		->withStatus(401);
 });
@@ -62,6 +66,8 @@ $app->post('/api/loginUser', function (Request $request, Response $response) {
 	$response->getBody()->write(json_encode($resp));
 	return $response
 		->withHeader('Access-Control-Allow-Origin', '*')
+		->withHeader('Access-Control-Allow-Headers', 'X-Requested-With')
+		->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
 		->withHeader('Content-Type', 'application/json');
 });
 
@@ -71,6 +77,8 @@ $app->get('/api/getAllUsers', function (Request $request, Response $response) {
 	$response->getBody()->write(json_encode($data));
 	return $response
 		->withHeader('Access-Control-Allow-Origin', '*')
+		->withHeader('Access-Control-Allow-Headers', 'X-Requested-With')
+		->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
 		->withHeader('Content-Type', 'application/json');
 })->setName('root');
 
