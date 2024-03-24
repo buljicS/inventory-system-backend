@@ -1,5 +1,6 @@
 <?php
 
+use Middleware\JsonBodyParserMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selective\BasePath\BasePathMiddleware;
@@ -22,6 +23,9 @@ AppFactory::setContainer($container);
 
 $app = AppFactory::create();
 
+//jsonMiddleware
+$app->add(new JsonBodyParserMiddleware());
+
 //body parsing middleware
 $app->addBodyParsingMiddleware();
 
@@ -42,35 +46,22 @@ $app->get('/', function (Request $request, Response $response) {
 	$response->getBody()->write($openapi->toJson());
 	if($_ENV['IS_DEV']) {
 		return $response
-			->withHeader('Access-Control-Allow-Origin', '*')
-			->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-			->withHeader('Access-Control-Allow-Credentials', 'true')
-			->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
 			->withHeader('Location', './swagger')
 			->withStatus(302);
 	}
 	return $response
-		->withHeader('Access-Control-Allow-Origin', '*')
-		->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-		->withHeader('Access-Control-Allow-Credentials', 'true')
-		->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
 		->withHeader('Location', '.')
 		->withStatus(401);
 });
 
 $app->post('/api/loginUser', function (Request $request, Response $response) {
-	$body = $request->getParsedBody();
-	$email = strip_tags(trim($body['email']));
-	$password = strip_tags(trim($body['password']));
+	$body = (array)$request->getParsedBody();
+    $email = strip_tags(trim($body['email']));
+    $password = strip_tags(trim($body['password']));
 	$authUser = new US();
 	$resp = $authUser->authenticateUserService($email, $password);
-
 	$response->getBody()->write(json_encode($resp));
 	return $response
-		->withHeader('Access-Control-Allow-Origin', '*')
-		->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-		->withHeader('Access-Control-Allow-Credentials', 'true')
-		->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
 		->withHeader('Content-Type', 'application/json');
 });
 
@@ -79,10 +70,6 @@ $app->get('/api/getAllUsers', function (Request $request, Response $response) {
 	$data = $usr->getAllUsersService();
 	$response->getBody()->write(json_encode($data));
 	return $response
-		->withHeader('Access-Control-Allow-Origin', '*')
-		->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-		->withHeader('Access-Control-Allow-Credentials', 'true')
-		->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
 		->withHeader('Content-Type', 'application/json');
 })->setName('root');
 
