@@ -2,7 +2,6 @@
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface;
 use Selective\BasePath\BasePathMiddleware;
 use Slim\Factory\AppFactory;
 use Services\UserServices as User;
@@ -10,7 +9,6 @@ use Dotenv\Dotenv as dotSetup;
 use DI\Container;
 use OpenApi\Generator as OG;
 use Services\UserServices as US;
-use Slim\Routing\RouteContext;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -26,24 +24,6 @@ $app = AppFactory::create();
 
 //body parsing middleware
 $app->addBodyParsingMiddleware();
-
-$app->add(function (Request $request, RequestHandlerInterface $handler): Response {
-	$routeContext = RouteContext::fromRequest($request);
-	$routingResults = $routeContext->getRoutingResults();
-	$methods = $routingResults->getAllowedMethods();
-	$requestHeaders = $request->getHeaderLine('Access-Control-Request-Headers');
-
-	$response = $handler->handle($request);
-
-	$response = $response->withHeader('Access-Control-Allow-Origin', '*');
-	$response = $response->withHeader('Access-Control-Allow-Methods', implode(',', $methods));
-	$response = $response->withHeader('Access-Control-Allow-Headers', $requestHeaders);
-
-	// Optional: Allow Ajax CORS requests with Authorization header
-	// $response = $response->withHeader('Access-Control-Allow-Credentials', 'true');
-
-	return $response;
-});
 
 //routing middleware
 $app->addRoutingMiddleware();
@@ -62,10 +42,18 @@ $app->get('/', function (Request $request, Response $response) {
 	$response->getBody()->write($openapi->toJson());
 	if($_ENV['IS_DEV']) {
 		return $response
+			->withHeader('Access-Control-Allow-Origin', '*')
+			->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+			->withHeader('Access-Control-Allow-Credentials', 'true')
+			->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
 			->withHeader('Location', './swagger')
 			->withStatus(302);
 	}
 	return $response
+		->withHeader('Access-Control-Allow-Origin', '*')
+		->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+		->withHeader('Access-Control-Allow-Credentials', 'true')
+		->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
 		->withHeader('Location', '.')
 		->withStatus(401);
 });
@@ -79,6 +67,10 @@ $app->post('/api/loginUser', function (Request $request, Response $response) {
 
 	$response->getBody()->write(json_encode($resp));
 	return $response
+		->withHeader('Access-Control-Allow-Origin', '*')
+		->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+		->withHeader('Access-Control-Allow-Credentials', 'true')
+		->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
 		->withHeader('Content-Type', 'application/json');
 });
 
@@ -87,6 +79,10 @@ $app->get('/api/getAllUsers', function (Request $request, Response $response) {
 	$data = $usr->getAllUsersService();
 	$response->getBody()->write(json_encode($data));
 	return $response
+		->withHeader('Access-Control-Allow-Origin', '*')
+		->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+		->withHeader('Access-Control-Allow-Credentials', 'true')
+		->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
 		->withHeader('Content-Type', 'application/json');
 })->setName('root');
 
