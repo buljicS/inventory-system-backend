@@ -34,11 +34,6 @@ $app->add(new BasePathMiddleware($app));
 //error middleware
 $app->addErrorMiddleware(true, true, true);
 
-//$app->get('/', function (Request $request, Response $response) {
-//    $response->getBody()->write('Hello, World!');
-//    return $response;
-//})->setName('root');
-
 $app->get('/', function (Request $request, Response $response) {
 	$openapi = OG::scan(['../src/']);
 	$jsonDoc = fopen("./swagger/swagger-docs.json", "w");
@@ -47,10 +42,12 @@ $app->get('/', function (Request $request, Response $response) {
 	$response->getBody()->write($openapi->toJson());
 	if($_ENV['IS_DEV']) {
 		return $response
+			->withHeader('Access-Control-Allow-Origin', '*')
 			->withHeader('Location', './swagger')
 			->withStatus(302);
 	}
 	return $response
+		->withHeader('Access-Control-Allow-Origin', '*')
 		->withHeader('Location', '.')
 		->withStatus(401);
 });
@@ -63,14 +60,18 @@ $app->post('/api/loginUser', function (Request $request, Response $response) {
 	$resp = $authUser->authenticateUserService($email, $password);
 
 	$response->getBody()->write(json_encode($resp));
-	return $response->withHeader('Content-Type', 'application/json');
+	return $response
+		->withHeader('Access-Control-Allow-Origin', '*')
+		->withHeader('Content-Type', 'application/json');
 });
 
 $app->get('/api/getAllUsers', function (Request $request, Response $response) {
 	$usr = new User();
 	$data = $usr->getAllUsersService();
 	$response->getBody()->write(json_encode($data));
-	return $response->withHeader('Content-Type', 'application/json');
+	return $response
+		->withHeader('Access-Control-Allow-Origin', '*')
+		->withHeader('Content-Type', 'application/json');
 })->setName('root');
 
 $app->run();
