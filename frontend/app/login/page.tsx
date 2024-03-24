@@ -14,6 +14,8 @@ import { LoginImage } from "@/resources/images";
 import { Navigation, Footer } from "@/components";
 import { useRouter } from "next/navigation";
 
+const test = { email: "26121049@vts.su.ac.rs", password: "Filip123!" };
+
 const Login = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const {
@@ -27,8 +29,15 @@ const Login = () => {
     const onSubmit: SubmitHandler<TLoginData> = async (data) => {
         try {
             setIsLoading(true);
-            const response = await axios.post("", JSON.stringify(data));
-            // router.push("/dashboard");
+            const response = await axios.post(
+                "http://localhost/inventory-system/api/loginUser",
+                data
+            );
+
+            if (response.data.status === "200") {
+                router.push("/dashboard");
+                sessionStorage.setItem("bearer", response.data.token);
+            }
         } catch (error) {
             console.log(error);
         } finally {
