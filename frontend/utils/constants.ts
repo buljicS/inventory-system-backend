@@ -234,6 +234,6 @@ export const REGISTER_SCHEMA = z
         }),
     })
     .refine((data) => data.password === data.repeatPassword, {
-        message: "Passwords don't match",
+        message: "Passwords don't match.",
         path: ["repeatPassword"],
     });
