@@ -8,8 +8,8 @@ use Controllers\DatabaseController as DBController;
 
 class UserServices
 {
-	public function getAllUsersService(): ?array {
-		$dbCon = DBController::openConnection();
+	public function GetAllUsers(): ?array {
+		$dbCon = DBController::OpenConnection();
 
 		$sql = "SELECT worker_id, 
        				   worker_fname, 
@@ -28,9 +28,8 @@ class UserServices
 		return $stmt->fetchAll();
 	}
 
-	public function getSingleUser(int $worker_id): ?array
-	{
-		$dbCon = DBController::openConnection();
+	public function GetSingleUser(int $worker_id): ?array {
+		$dbCon = DBController::OpenConnection();
 
 		$sql = "SELECT worker_id, 
        				   worker_fname, 
@@ -51,29 +50,36 @@ class UserServices
 		return $stmt->fetchAll();
 	}
 
-	public function authenticateUserService(string $email, string $password): array {
-		$dbCon = DBController::openConnection();
+	public function GetUserByEmail(string $email): ?string {
+		$dbCon = DBController::OpenConnection();
+		$sql = "SELECT worker_password
+				FROM workers
+				WHERE worker_email = :email 
+				  AND isActive = true";
+
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':email', $email);
+		$stmt->execute();
+		return $stmt->fetchColumn(0);
+	}
+
+	public function AuthenticateUser(string $email, string $password): array {
+
 		if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			$sql = "SELECT worker_password
-					FROM workers
-					WHERE worker_email = :email";
-
-			$stmt = $dbCon->prepare($sql);
-			$stmt->bindValue(':email', $email);
-			$stmt->execute();
-			$response = $stmt->fetchColumn(0);
-
+			$response = $this->GetUserByEmail($email);
 			if ($response == null) {
 				return [
 					'status' => '404',
-					'message' => "No user found"
+					'message' => 'Not found',
+					'description' => "No user found"
 				];
 			}
 
 			if (!password_verify($password, $response)) {
 				return [
 					'status' => '401',
-					'message' => "Email or password wrong"
+					'message' => 'Unauthorized',
+					'description' => "Wrong credentials, please try again!"
 				];
 			}
 
@@ -81,12 +87,14 @@ class UserServices
 				'status' => '200',
 				'userEmail' => $email,
 				'userPassword' => $response,
-				'token' => "1234sssssdddddd"
+				//TODO implement firebase/jwt
+				'token' => "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 			];
 		}
 		return [
 			'status' => '401',
-			'message' => "Email or password wrong"
+			'message' => 'Unauthorized',
+			'description' => "Wrong credentials, please try again!"
 		];
 	}
 }

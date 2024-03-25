@@ -10,7 +10,13 @@ use PDO;
 class DatabaseController
 {
 	public function __constructor() {}
-	public static function openConnection(): PDO
+
+	/**
+	 * Connects to programatori database
+	 * @return PDO object if connection is made
+	 * @throws Exception with message if connection is not established
+	 */
+	public static function OpenConnection(): PDO
     {
         $dsn = "mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']};charset={$_ENV['DB_CHARSET']}";
 

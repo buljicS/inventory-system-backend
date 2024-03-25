@@ -26,6 +26,20 @@ $app = AppFactory::create();
 //jsonMiddleware
 $app->add(new JsonBodyParserMiddleware());
 
+//cors policy
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+	return $response;
+});
+
+$app->add(function ($request, $handler) {
+	$response = $handler->handle($request);
+	return $response
+		->withHeader('Access-Control-Allow-Origin', '*')
+		->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept')
+		->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+});
+
+
 //body parsing middleware
 $app->addBodyParsingMiddleware();
 
@@ -59,7 +73,7 @@ $app->post('/api/loginUser', function (Request $request, Response $response) {
     $email = strip_tags(trim($body['email']));
     $password = strip_tags(trim($body['password']));
 	$authUser = new US();
-	$resp = $authUser->authenticateUserService($email, $password);
+	$resp = $authUser->AuthenticateUser($email, $password);
 	$response->getBody()->write(json_encode($resp));
 	return $response
 		->withHeader('Content-Type', 'application/json');
@@ -67,7 +81,7 @@ $app->post('/api/loginUser', function (Request $request, Response $response) {
 
 $app->get('/api/getAllUsers', function (Request $request, Response $response) {
 	$usr = new User();
-	$data = $usr->getAllUsersService();
+	$data = $usr->GetAllUsers();
 	$response->getBody()->write(json_encode($data));
 	return $response
 		->withHeader('Content-Type', 'application/json');
