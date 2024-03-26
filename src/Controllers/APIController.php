@@ -1,7 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Controllers;
-use OpenApi\Annotations as OA;
+
+use OpenApi\Annotations\OpenApi;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Services\UserServices as UserServices;
+
+
 /**
  * @OA\Info(
  *     title="Inventory managment system API",
@@ -11,9 +19,44 @@ use OpenApi\Annotations as OA;
  */
 class APIController
 {
+	private $_user;
+
+	public function __construct(UserServices $userServices)
+	{
+		$this->_user = $userServices;
+	}
+
+	#region Main
+
+	public function Index(Request $request, Response $response): Response
+	{
+		$response->getBody()->write("Hello World");
+		return $response;
+	}
+
+	public function GenerateDocs(Request $request, Response $response): Response
+	{
+		$openapi = \OpenApi\Generator::scan(['../']);
+		$jsonDoc = fopen("../../public/swagger/swagger-docs.json", "w");
+		fwrite($jsonDoc, $openapi->toJson());
+		fclose($jsonDoc);
+		$response->getBody()->write($openapi->toJson());
+		if($_ENV['IS_DEV']) {
+			return $response
+				->withHeader('Location', '../../public/swagger')
+				->withStatus(302);
+		}
+		return $response
+			->withHeader('Location', '.')
+			->withStatus(401);
+	}
+	#endregion
+
+	#region Users
+
 	/**
 	 * @OA\Post(
-	 *     path="/inventory-system-backend/api/loginUser",
+	 *     path="/inventory-system-backend/api/LoginUser",
 	 *     summary="User login",
 	 *     tags={"Workers"},
 	 *     @OA\RequestBody(
@@ -50,8 +93,15 @@ class APIController
 	 *      ),
 	 * )
 	 */
-	public function getAllUsers():int
+	public function LoginUser(Request $request, Response $response): Response
 	{
-		return 5;
+		$requestBody = (array)$request->getParsedBody();
+		$authUser = $this->_user->AuthenticateUser($requestBody['email'], $requestBody['password']);
+		$response->getBody()->write(json_encode($authUser));
+		return $response
+			->withHeader('Content-Type', 'application/json')
+			->withStatus(intval($authUser['status']));
 	}
+
+	#endregion
 }

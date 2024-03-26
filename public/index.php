@@ -1,15 +1,10 @@
 <?php
 
 use Middleware\JsonBodyParserMiddleware;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Selective\BasePath\BasePathMiddleware;
 use Slim\Factory\AppFactory;
-use Services\UserServices as User;
 use Dotenv\Dotenv as dotSetup;
 use DI\Container;
-use OpenApi\Generator as OG;
-use Services\UserServices as US;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -23,7 +18,7 @@ AppFactory::setContainer($container);
 
 $app = AppFactory::create();
 
-//jsonMiddleware
+//json parser middleware
 $app->add(new JsonBodyParserMiddleware());
 
 //cors policy
@@ -39,7 +34,6 @@ $app->add(function ($request, $handler) {
 		->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
 
-
 //body parsing middleware
 $app->addBodyParsingMiddleware();
 
@@ -52,39 +46,9 @@ $app->add(new BasePathMiddleware($app));
 //error middleware
 $app->addErrorMiddleware(true, true, true);
 
-$app->get('/', function (Request $request, Response $response) {
-	$openapi = OG::scan(['../src/']);
-	$jsonDoc = fopen("./swagger/swagger-docs.json", "w");
-	fwrite($jsonDoc, $openapi->toJson());
-	fclose($jsonDoc);
-	$response->getBody()->write($openapi->toJson());
-	if($_ENV['IS_DEV']) {
-		return $response
-			->withHeader('Location', './swagger')
-			->withStatus(302);
-	}
-	return $response
-		->withHeader('Location', '.')
-		->withStatus(401);
-});
-
-$app->post('/api/loginUser', function (Request $request, Response $response) {
-	$body = (array)$request->getParsedBody();
-    $email = strip_tags(trim($body['email']));
-    $password = strip_tags(trim($body['password']));
-	$authUser = new US();
-	$resp = $authUser->AuthenticateUser($email, $password);
-	$response->getBody()->write(json_encode($resp));
-	return $response
-		->withHeader('Content-Type', 'application/json');
-});
-
-$app->get('/api/getAllUsers', function (Request $request, Response $response) {
-	$usr = new User();
-	$data = $usr->GetAllUsers();
-	$response->getBody()->write(json_encode($data));
-	return $response
-		->withHeader('Content-Type', 'application/json');
-})->setName('root');
+//routes
+$app->get('/', [Controllers\APIController::class, 'Index']);
+$app->get('/swagger', [Controllers\APIController::class, 'GenerateDocs']);
+$app->post('/api/LoginUser', [Controllers\APIController::class, 'LoginUser']);
 
 $app->run();

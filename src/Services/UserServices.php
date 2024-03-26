@@ -8,8 +8,14 @@ use Controllers\DatabaseController as DBController;
 
 class UserServices
 {
+	private $_database;
+
+	public function __construct(DBController $database)
+	{
+		$this->_database = $database;
+	}
 	public function GetAllUsers(): ?array {
-		$dbCon = DBController::OpenConnection();
+		$dbCon = $this->_database->OpenConnection();
 
 		$sql = "SELECT worker_id, 
        				   worker_fname, 
@@ -29,7 +35,7 @@ class UserServices
 	}
 
 	public function GetSingleUser(int $worker_id): ?array {
-		$dbCon = DBController::OpenConnection();
+		$dbCon = $this->_database->OpenConnection();
 
 		$sql = "SELECT worker_id, 
        				   worker_fname, 
@@ -50,8 +56,8 @@ class UserServices
 		return $stmt->fetchAll();
 	}
 
-	public function GetUserByEmail(string $email): ?string {
-		$dbCon = DBController::OpenConnection();
+	public function GetUserByEmail(string $email): string | bool {
+		$dbCon = $this->_database->OpenConnection();
 		$sql = "SELECT worker_password
 				FROM workers
 				WHERE worker_email = :email 
@@ -65,8 +71,11 @@ class UserServices
 
 	public function AuthenticateUser(string $email, string $password): array {
 
-		if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			$response = $this->GetUserByEmail($email);
+		$cleanEmail = strip_tags(trim($email));
+		$cleanPassword = strip_tags(trim($password));
+
+		if(filter_var($cleanEmail, FILTER_VALIDATE_EMAIL)) {
+			$response = $this->GetUserByEmail($cleanEmail);
 			if ($response == null) {
 				return [
 					'status' => '404',
@@ -75,7 +84,7 @@ class UserServices
 				];
 			}
 
-			if (!password_verify($password, $response)) {
+			if (!password_verify($cleanPassword, $response)) {
 				return [
 					'status' => '401',
 					'message' => 'Unauthorized',
@@ -85,7 +94,7 @@ class UserServices
 
 			return [
 				'status' => '200',
-				'userEmail' => $email,
+				'userEmail' => $cleanEmail,
 				'userPassword' => $response,
 				//TODO implement firebase/jwt
 				'token' => "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"

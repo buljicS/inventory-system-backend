@@ -16,7 +16,7 @@ class DatabaseController
 	 * @return PDO object if connection is made
 	 * @throws Exception with message if connection is not established
 	 */
-	public static function OpenConnection(): PDO
+	public function OpenConnection(): PDO
     {
         $dsn = "mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']};charset={$_ENV['DB_CHARSET']}";
 

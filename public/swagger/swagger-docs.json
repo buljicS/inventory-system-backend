@@ -6,13 +6,13 @@
         "version": "1.0"
     },
     "paths": {
-        "/inventory-system-backend/api/loginUser": {
+        "/inventory-system-backend/api/LoginUser": {
             "post": {
                 "tags": [
                     "Workers"
                 ],
                 "summary": "User login",
-                "operationId": "47de759960e4c6d80e5f92577ee75e5a",
+                "operationId": "97d945a780235881cc5b34b41b7c7ed7",
                 "requestBody": {
                     "description": "Enter user email and password",
                     "required": true,
