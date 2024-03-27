@@ -3,46 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory System</title>
+    <title>Inventory System API</title>
+    <meta name="robots" content="noindex,nofollow">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            height: 95vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f8f9fa;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .container {
             text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         .button {
-            padding: 15px 30px;
-            font-size: 18px;
-            background-color: #85c226; /* Swagger green */
+            padding: 10px 20px;
+            font-size: 16px;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-bottom: 10px;
         }
         .button:hover {
-            background-color: #6e9f1f; /* Darker green on hover */
+            filter: brightness(90%);
+        }
+        footer {
+            background-color: #202930;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            width: 100%;
+            flex-shrink: 0;
+        }
+        .button-green {
+            background-color: #85c226; /* Swagger green */
+        }
+        .button-blue {
+            background-color: #202930; /* Dark blue */
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1 style="font-size: 2.5rem; color: #343a40;">Inventory System API</h1>
-    <button class="button" onclick="openAPIDocumentation()">Open API Documentation (v1)</button>
+    <h1 style="font-size: 2.5rem; color: #343a40;">Inventory System RestAPI</h1>
+    <button class="button button-green" onclick="openAPIDocumentation()">Open API Documentation v1</button>
+    <button class="button button-blue" onclick="visitDashboard()">Visit Dashboard</button>
 </div>
+
+<footer>
+    <p>&copy; 2024 Developed by PROGRAMATORI</p>
+</footer>
 
 <script>
     function openAPIDocumentation() {
-        // Replace 'your-api-documentation-url' with the actual URL of your API documentation
+        // Redirect to '/api'
         window.location.href = '/api';
+    }
+
+    function visitDashboard() {
+        // Redirect to dashboard URL
+        window.open('http://localhost:3000', '_blank');
     }
 </script>
 </body>
