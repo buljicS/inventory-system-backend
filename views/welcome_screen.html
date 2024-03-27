@@ -49,13 +49,20 @@
         .button-blue {
             background-color: #202930; /* Dark blue */
         }
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1 style="font-size: 2.5rem; color: #343a40;">Inventory System RestAPI</h1>
-    <button class="button button-green" onclick="openAPIDocumentation()">Open API Documentation v1</button>
-    <button class="button button-blue" onclick="visitDashboard()">Visit Dashboard</button>
+    <div class="btn-container">
+        <button class="button button-green" onclick="openAPIDocumentation()">Open API Documentation (git )</button>
+        <button class="button button-blue" onclick="visitDashboard()">Visit Dashboard (dev)</button>
+    </div>
+
 </div>
 
 <footer>
