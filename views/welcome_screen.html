@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 95vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+        .container {
+            text-align: center;
+        }
+        .button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #85c226; /* Swagger green */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #6e9f1f; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 style="font-size: 2.5rem; color: #343a40;">Inventory System API</h1>
+    <button class="button" onclick="openAPIDocumentation()">Open API Documentation (v1)</button>
+</div>
+
+<script>
+    function openAPIDocumentation() {
+        // Replace 'your-api-documentation-url' with the actual URL of your API documentation
+        window.location.href = '/api';
+    }
+</script>
+</body>
+</html>

@@ -8,6 +8,7 @@ use OpenApi\Annotations\OpenApi;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Services\UserServices as UserServices;
+use OpenApi\Generator as Generator;
 
 
 /**
@@ -32,7 +33,7 @@ class APIController
 	#region Main
 	public function Index(Request $request, Response $response): Response
 	{
-		$response->getBody()->write("Hello World");
+		$response->getBody()->write(file_get_contents('../views/welcome_screen.html'));
 		return $response;
 	}
 	#endregion

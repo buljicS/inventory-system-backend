@@ -84,10 +84,10 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "User found"
+                        "description": "Success"
                     },
                     "404": {
-                        "description": "User not found"
+                        "description": "Not found"
                     },
                     "401": {
                         "description": "Wrong credentials"
