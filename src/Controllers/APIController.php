@@ -12,14 +12,17 @@ use Services\UserServices as UserServices;
 
 /**
  * @OA\Info(
- *     title="Inventory managment system API",
- *     version="1.0",
+ *     title="Inventory management system API",
+ *     version="1.0.0",
  *     description="Inventory web based system for tracking items and stuff in company"
  *	 )
+ * @OA\Server(
+ *      url="http://www.insystem-api.localhost/",
+ *  )
  */
 class APIController
 {
-	private $_user;
+	private UserServices $_user;
 
 	public function __construct(UserServices $userServices)
 	{
@@ -27,28 +30,10 @@ class APIController
 	}
 
 	#region Main
-
 	public function Index(Request $request, Response $response): Response
 	{
 		$response->getBody()->write("Hello World");
 		return $response;
-	}
-
-	public function GenerateDocs(Request $request, Response $response): Response
-	{
-		$openapi = \OpenApi\Generator::scan(['../']);
-		$jsonDoc = fopen("../../public/swagger/swagger-docs.json", "w");
-		fwrite($jsonDoc, $openapi->toJson());
-		fclose($jsonDoc);
-		$response->getBody()->write($openapi->toJson());
-		if($_ENV['IS_DEV']) {
-			return $response
-				->withHeader('Location', '../../public/swagger')
-				->withStatus(302);
-		}
-		return $response
-			->withHeader('Location', '.')
-			->withStatus(401);
 	}
 	#endregion
 
@@ -56,11 +41,58 @@ class APIController
 
 	/**
 	 * @OA\Post(
-	 *     path="/inventory-system-backend/api/LoginUser",
-	 *     summary="User login",
-	 *     tags={"Workers"},
+	 *     path="/api/Users/RegisterUser",
+	 *     tags={"Users"},
 	 *     @OA\RequestBody(
-	 *         required=true,
+	 *         description="Create new user account",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     				@OA\Property(
+	 *                      property="firstName",
+	 *                      type="string",
+	 *                      example="string"
+	 *                  ),
+	 *     				@OA\Property(
+	 *                       property="lastName",
+	 *                       type="string",
+	 *                       example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="email",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="password",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *     			  @OA\Property (
+	 *                      property="phoneNumber",
+	 *                      type="string",
+	 *                      example="string"
+	 *     			  )
+	 *
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     )
+	 * )
+	 */
+	public function RegisterUser(Request $request, Response $response): Response {
+		return $response;
+	}
+
+	/**
+	 * @OA\Post(
+	 *     path="/api/Users/LoginUser",
+	 *     tags={"Users"},
+	 *     @OA\RequestBody(
 	 *         description="Enter user email and password",
 	 *         @OA\MediaType(
 	 *             mediaType="application/json",
@@ -81,15 +113,15 @@ class APIController
 	 *     ),
 	 *     @OA\Response(
 	 *         response=200,
-	 *         description="User found"
+	 *         description="Success"
 	 *     ),
 	 *     @OA\Response(
 	 *         response=404,
-	 *         description="User not found"
+	 *         description="Not found"
 	 *     ),
 	 *     @OA\Response(
 	 *         response=401,
-	 *         description="Wrong creditentials"
+	 *         description="Wrong credentials"
 	 *      ),
 	 * )
 	 */
@@ -102,6 +134,7 @@ class APIController
 			->withHeader('Content-Type', 'application/json')
 			->withStatus(intval($authUser['status']));
 	}
+
 
 	#endregion
 }

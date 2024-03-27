@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace Services;
 
 use Controllers\DatabaseController as DBController;
+use Exception;
 
 class UserServices
 {
-	private $_database;
+	private DBController $_database;
 
 	public function __construct(DBController $database)
 	{
 		$this->_database = $database;
 	}
+
 	public function GetAllUsers(): ?array {
 		$dbCon = $this->_database->OpenConnection();
 
