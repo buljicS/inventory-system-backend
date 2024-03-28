@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { LOGIN_INPUTS } from "@/utils/constants";
 import { TLoginData } from "@/utils/types";
 import { Form, Button } from "react-bootstrap";
@@ -13,11 +13,13 @@ import Spinner from "react-bootstrap/Spinner";
 import { LoginImage } from "@/resources/images";
 import { Navigation, Footer } from "@/components";
 import { useRouter } from "next/navigation";
-
-const test = { email: "26121049@vts.su.ac.rs", password: "Filip123!" };
+import { userAtom } from "@/utils/atoms";
+import { useRecoilState } from "recoil";
+import { useToast } from "@chakra-ui/react";
 
 const Login = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [user, setUser] = useRecoilState(userAtom);
     const {
         register,
         handleSubmit,
@@ -25,6 +27,7 @@ const Login = () => {
     } = useForm<TLoginData>({ resolver: zodResolver(LOGIN_SCHEMA) });
 
     const router = useRouter();
+    const toast = useToast();
 
     const onSubmit: SubmitHandler<TLoginData> = async (data) => {
         try {
@@ -35,8 +38,27 @@ const Login = () => {
             );
 
             if (response.data.status === "200") {
-                router.push("/dashboard");
                 sessionStorage.setItem("bearer", response.data.token);
+                setUser((prev) => ({
+                    ...prev,
+                    approveLogin: true,
+                }));
+                router.push("/dashboard");
+            }
+
+            if (
+                response.data.status === "404" ||
+                response.data.status === "401"
+            ) {
+                toast({
+                    title: "Status",
+                    description:
+                        "Your email or password is not correct. Please try again.",
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                    position: "top-right",
+                });
             }
         } catch (error) {
             console.log(error);

@@ -1,3 +1,4 @@
+"use client";
 import { SideBar } from "@/components";
 import styles from "@/styles/DashboardLayout.module.scss";
 

@@ -1,0 +1,22 @@
+.user {
+    background-color: #F1F5F9;
+    display: flex;
+    align-items: center;
+
+    &_image {
+        padding: 7px;
+    }
+
+    &_name {
+        flex: 1;
+        h2 {
+            font-size: 1rem;
+            text-align: center;
+            margin: 0;
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}

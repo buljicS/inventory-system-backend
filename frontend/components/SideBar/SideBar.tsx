@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Logo } from "@/resources/images";
 import { useState } from "react";
 import { Turn as Hamburger } from "hamburger-react";
+import { User } from "@/components";
 
 const SideBar = () => {
     const [showSideBar, setShowSideBar] = useState(false);
@@ -35,6 +36,11 @@ const SideBar = () => {
                 </div>
                 <div className={styles.sidebar_logo}>
                     <Image src={Logo} alt="logo" height={150} width={150} />
+                </div>
+                <div className={styles.sidebar_links}>
+                    <div className={styles.sidebar_links_user}>
+                        <User />
+                    </div>
                 </div>
             </div>
         </>
