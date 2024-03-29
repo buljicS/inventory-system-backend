@@ -33,16 +33,18 @@ const Login = () => {
         try {
             setIsLoading(true);
             const response = await axios.post(
-                "http://localhost/inventory-system/api/loginUser",
+                "http://192.168.1.9/inventory-system/api/loginUser",
                 data
             );
 
             if (response.data.status === "200") {
+                setIsLoading(true);
                 sessionStorage.setItem("bearer", response.data.token);
                 setUser((prev) => ({
                     ...prev,
                     approveLogin: true,
                 }));
+
                 router.push("/dashboard");
             }
 
@@ -59,11 +61,10 @@ const Login = () => {
                     isClosable: true,
                     position: "top-right",
                 });
+                setIsLoading(false);
             }
         } catch (error) {
             console.log(error);
-        } finally {
-            setIsLoading(false);
         }
     };
 
