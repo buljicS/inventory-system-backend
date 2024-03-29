@@ -19,6 +19,7 @@ import { useToast } from "@chakra-ui/react";
 
 const Login = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const [user, setUser] = useRecoilState(userAtom);
     const {
         register,
@@ -33,7 +34,7 @@ const Login = () => {
         try {
             setIsLoading(true);
             const response = await axios.post(
-                "http://192.168.1.9/inventory-system/api/loginUser",
+                "http://localhost/inventory-system/api/loginUser",
                 data
             );
 
