@@ -33,7 +33,7 @@
         justify-content: center;
     }
 
-    &_links {
+    &_bottom {
     
         &_user {
             max-width: 80%;
@@ -50,5 +50,35 @@
         top: 0;
         left: -300px;
         transition: 0.3s linear;
+    }
+
+    &_navigation {
+        padding: 16px 24px;
+
+        &_header {
+            color: #F1F5F9;
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+        &_list {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+       
+        &_item {
+            color: #F1F5F9;
+            display: flex;
+            padding: 8px;
+            margin: 16px 0;
+            align-items: center;
+            gap: 8px;
+            
+        }
+    }
+
+    &_active {
+        background-color: #64748B;
     }
 }

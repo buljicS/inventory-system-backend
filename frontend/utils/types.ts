@@ -50,3 +50,10 @@ export type TIndexCards = {
     text?: string;
     steps?: string[];
 };
+
+export type TSideBarLinks = {
+    id: number;
+    link: string;
+    label: string;
+    icon: StaticImageData;
+};

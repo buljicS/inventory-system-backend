@@ -4,6 +4,7 @@ import {
     TNavFooterLinks,
     TRegisterLoginInputs,
     TSlides,
+    TSideBarLinks,
 } from "./types";
 import {
     FacebookIcon,
@@ -11,6 +12,10 @@ import {
     XIcon,
     InstagramIcon,
     MailIcon,
+    TeamIcon,
+    RoomIcon,
+    ItemIcon,
+    DashboardIcon,
 } from "@/resources/icons";
 import { z } from "zod";
 import { SliderImage1, SliderImage2 } from "@/resources/images";
@@ -237,3 +242,33 @@ export const REGISTER_SCHEMA = z
         message: "Passwords don't match.",
         path: ["repeatPassword"],
     });
+
+export const SIDEBAR_LINKS: TSideBarLinks[] = [
+    {
+        id: 1,
+        link: "/dashboard",
+        label: "Dashboard",
+        icon: DashboardIcon,
+    },
+
+    {
+        id: 2,
+        link: "/dashboard/inventory-items",
+        label: "Add inventory items",
+        icon: ItemIcon,
+    },
+
+    {
+        id: 3,
+        link: "/dashboard/inventory-rooms",
+        label: "Add inventory rooms",
+        icon: RoomIcon,
+    },
+
+    {
+        id: 4,
+        link: "/dashboard/teams",
+        label: "Team management",
+        icon: TeamIcon,
+    },
+];

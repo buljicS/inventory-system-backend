@@ -3,4 +3,6 @@ export { default as Footer } from "./Footer/Footer";
 export { default as Slider } from "./Slider/Slider";
 export { default as IndexCard } from "./IndexCard/IndexCard";
 export { default as SideBar } from "./SideBar/SideBar";
+export { default as SideBarNavigation } from "./SideBar/SideBarNavigation";
+export { default as SideBarNavigationItem } from "./SideBar/SideBarNavigationItem";
 export { default as User } from "./User/User";

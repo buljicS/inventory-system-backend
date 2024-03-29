@@ -5,3 +5,7 @@ export { default as XIcon } from "./x.png";
 export { default as YoutubeIcon } from "./youtube.png";
 export { default as ScrollDown } from "./scroll-down.png";
 export { default as UserIcon } from "./user.png";
+export { default as TeamIcon } from "./team.png";
+export { default as ItemIcon } from "./item.png";
+export { default as RoomIcon } from "./rooms.png";
+export { default as DashboardIcon } from "./dashboard.png";

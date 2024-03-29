@@ -34,7 +34,7 @@ const Login = () => {
         try {
             setIsLoading(true);
             const response = await axios.post(
-                "http://localhost/inventory-system/api/loginUser",
+                "http://localhost/inventory-system-backend/api/loginUser",
                 data
             );
 
@@ -66,6 +66,7 @@ const Login = () => {
             }
         } catch (error) {
             console.log(error);
+            setIsLoading(false);
         }
     };
 
