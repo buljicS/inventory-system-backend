@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Services;
 
 use Controllers\DatabaseController as DBController;
-use Exception;
 
 class UserServices
 {
@@ -68,7 +67,7 @@ class UserServices
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':email', $email);
 		$stmt->execute();
-		return $stmt->fetchColumn(0);
+		return $stmt->fetchColumn();
 	}
 
 	public function AuthenticateUser(string $email, string $password): array {

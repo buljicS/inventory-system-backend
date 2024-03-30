@@ -4,6 +4,7 @@ use Middleware\JsonBodyParserMiddleware;
 use Selective\BasePath\BasePathMiddleware;
 use Slim\Factory\AppFactory;
 use Dotenv\Dotenv as dotSetup;
+use OpenApi\Generator as Generator;
 use DI\Container;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -49,15 +50,15 @@ $app->addErrorMiddleware(true, true, true);
 //routes
 $app->get('/', [Controllers\APIController::class, 'Index']);
 
-$app->get('/api', function (Psr\Http\Message\ServerRequestInterface $request, Psr\Http\Message\ResponseInterface $response) {
-	$openapi = OpenApi\Generator::scan(['../src/']);
-	$jsonDoc = fopen("./swagger/swagger-docs.json", "w");
-	fwrite($jsonDoc, $openapi->toJson());
-	fclose($jsonDoc);
-	$response->getBody()->write($openapi->toJson());
-		return $response
-			->withHeader('Location', './swagger')
-			->withStatus(301);
+$app->get("/getDoc", function (Psr\Http\Message\ServerRequestInterface $request, Psr\Http\Message\ResponseInterface $response) {
+	$openapi = Generator::scan(['../src']);
+	$openapiJSON = $openapi->toJson();
+	$file = fopen("./swagger/openapi.json", "wa+");
+	fwrite($file, $openapiJSON);
+	fclose($file);
+	$response->getBody()->write(file_get_contents("./swagger/openapi.json"));
+	return $response
+		->withHeader('Content-type', 'application/json');
 });
 
 $app->post('/api/Users/LoginUser', [Controllers\APIController::class, 'LoginUser']);

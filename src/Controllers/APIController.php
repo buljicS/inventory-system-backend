@@ -13,7 +13,7 @@ use OpenApi\Generator as Generator;
 
 /**
  * @OA\Info(
- *     title="Inventory management system API",
+ *     title="Inventory management system APYY",
  *     version="1.0.0",
  *     description="Inventory web based system for tracking items and stuff in company"
  *	 )
@@ -136,6 +136,39 @@ class APIController
 			->withStatus(intval($authUser['status']));
 	}
 
+	/**
+	 * @OA\Post(
+	 *     path="/api/Users/SendPasswordResetEmail",
+	 *     tags={"Users"},
+	 *     @OA\RequestBody(
+	 *         description="Provide user email",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *                 @OA\Property(
+	 *                     property="email",
+	 *                     type="string",
+	 *                     example="example@email.com"
+	 *                 ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=404,
+	 *         description="Not found"
+	 *     ),
+	 * )
+	 */
+	public function SendPasswordResetMail(Request $request, Response $response): Response
+	{
+		$response->getBody()->write("Done");
+		return $response;
+	}
 
 	#endregion
 }

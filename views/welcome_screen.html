@@ -79,14 +79,20 @@
 </footer>
 
 <script>
-    function openAPIDocumentation() {
-        // Redirect to '/api'
-        window.location.href = '/api';
+    let currentURL = window.location.href;
+
+    async function openAPIDocumentation() {
+        await generateDocs();
     }
 
     function visitDashboard() {
         // Redirect to dashboard URL
         window.open('http://localhost:3000', '_blank');
+    }
+
+    async function generateDocs() {
+        await fetch(currentURL + "getDoc");
+        window.location.href = currentURL + "/swagger";
     }
 </script>
 </body>
