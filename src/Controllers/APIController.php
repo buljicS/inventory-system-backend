@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Controllers;
 
-use OpenApi\Annotations\OpenApi;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Services\EmailServices;
 use Services\UserServices as UserServices;
 use OpenApi\Generator as Generator;
 
 
 /**
  * @OA\Info(
- *     title="Inventory management system GIIIIIIIIIII",
+ *     title="Inventory management system API",
  *     version="1.0.0",
  *     description="Inventory web based system for tracking items and stuff in company"
  *	 )
@@ -24,10 +24,12 @@ use OpenApi\Generator as Generator;
 class APIController
 {
 	private UserServices $_user;
+	private EmailServices $_email;
 
-	public function __construct(UserServices $userServices)
+	public function __construct(UserServices $userServices, EmailServices $email)
 	{
 		$this->_user = $userServices;
+		$this->_email = $email;
 	}
 
 	#region Main
@@ -97,7 +99,19 @@ class APIController
 	 * )
 	 */
 	public function RegisterUser(Request $request, Response $response): Response {
-		return $response;
+		$requestBody = (array)$request->getParsedBody();
+		if(!in_array(null, $requestBody, true)) {
+			$newUser = $this->_user->RegisterUser($requestBody);
+			$response->getBody()->write(json_encode($newUser));
+			return $response
+				->withHeader('Content-type', 'application/json')
+				->withStatus(200);
+		}
+		$response->getBody()->write(json_encode("All fields are mandatory"));
+		return $response
+			->withHeader('Content-type', 'application/json')
+			->withStatus(200);
+
 	}
 
 	/**
@@ -144,7 +158,7 @@ class APIController
 		$response->getBody()->write(json_encode($authUser));
 		return $response
 			->withHeader('Content-Type', 'application/json')
-			->withStatus(intval($authUser['status']));
+			->withStatus(200);
 	}
 
 	/**
@@ -181,5 +195,53 @@ class APIController
 		return $response;
 	}
 
+	/**
+	 * @OA\Post(
+	 *     path="/api/Users/SendEmail",
+	 *     tags={"Users"},
+	 *     @OA\RequestBody(
+	 *         description="Provide user email",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *                 @OA\Property(
+	 *                     property="sendTo",
+	 *                     type="string",
+	 *                     example="example@email.com"
+	 *                 ),
+	 *                      @OA\Property(
+	 *                      property="ccTo",
+	 *                      type="string",
+	 *                      example="example@email.com"
+	 *                  ),
+	 *                      @OA\Property(
+	 *                      property="subject",
+	 *                      type="string",
+	 *                      example="string"
+	 *                  ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Sent"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=500,
+	 *         description="Error"
+	 *     ),
+	 * )
+	 */
+	public function SendMail(Request $request, Response $response): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$body = file_get_contents('../email-templates/ActivateAccount.html');
+		$ccTo = $requestBody['ccTo'] ?? null;
+		$sendMail = $this->_email->SendEmail($body, $requestBody['subject'], $requestBody['sendTo'], $ccTo);
+		$response->getBody()->write(json_encode($sendMail, JSON_PRETTY_PRINT));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 }

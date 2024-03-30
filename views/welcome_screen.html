@@ -68,7 +68,7 @@
     </svg>
     <h1 style="font-size: 2.5rem; color: #343a40;">Inventory System RestAPI</h1>
     <div class="btn-container">
-        <button class="button button-green" onclick="openAPIDocumentation()">Open API Documentation (v1)</button>
+        <button class="button button-green" onclick="generateDocs()">Open API Documentation (v1)</button>
         <button class="button button-blue" onclick="visitDashboard()">Visit Dashboard (dev)</button>
     </div>
 
@@ -80,10 +80,6 @@
 
 <script>
     let currentURL = window.location.href;
-
-    async function openAPIDocumentation() {
-        await generateDocs();
-    }
 
     function visitDashboard() {
         // Redirect to dashboard URL

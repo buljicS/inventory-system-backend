@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Inventory management system GIIIIIIIIIII",
+        "title": "Inventory management system API",
         "description": "Inventory web based system for tracking items and stuff in company",
         "version": "1.0.0"
     },
@@ -123,6 +123,46 @@
                     },
                     "404": {
                         "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/Users/SendEmail": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "5e4d724c8f126709c4d0ec1c07d96fc2",
+                "requestBody": {
+                    "description": "Provide user email",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "sendTo": {
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    },
+                                    "ccTo": {
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sent"
+                    },
+                    "500": {
+                        "description": "Error"
                     }
                 }
             }

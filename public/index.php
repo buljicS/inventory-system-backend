@@ -56,4 +56,6 @@ $app->post('/api/Users/LoginUser', [Controllers\APIController::class, 'LoginUser
 
 $app->post('/api/Users/RegisterUser', [\Controllers\APIController::class, 'RegisterUser']);
 
+$app->post('/api/Users/SendEmail', [Controllers\APIController::class, 'SendMail']);
+
 $app->run();
