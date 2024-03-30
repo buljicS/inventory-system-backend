@@ -153,6 +153,18 @@ const LoginForm = () => {
                             Forgot password?
                         </Button>
                     )}
+                    {showForgotPassword.form && (
+                        <Button
+                            onClick={() =>
+                                setShowForgotPassword({
+                                    button: false,
+                                    form: false,
+                                })
+                            }
+                        >
+                            Back to login
+                        </Button>
+                    )}
                 </div>
             </Form>
         </div>
