@@ -1,0 +1,162 @@
+import styles from "./LoginForm.module.scss";
+import { useState } from "react";
+import { Form, Button } from "react-bootstrap";
+import { LOGIN_SCHEMA, FORGOT_PASSWORD_SCHEMA } from "@/utils/constants";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LOGIN_INPUTS, FORGOT_PASSWORD_INPUT } from "@/utils/constants";
+import { useForm, SubmitHandler } from "react-hook-form";
+import {
+    TLoginData,
+    TForgotPassword,
+    TForgotPasswordState,
+} from "@/utils/types";
+import { useToast } from "@chakra-ui/react";
+import { userAtom } from "@/utils/atoms";
+import { useRecoilState } from "recoil";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { FormInput } from "@/components";
+import Spinner from "react-bootstrap/Spinner";
+
+const LoginForm = () => {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [user, setUser] = useRecoilState(userAtom);
+    const [showForgotPassword, setShowForgotPassword] =
+        useState<TForgotPasswordState>({
+            button: false,
+            form: false,
+        });
+
+    const toast = useToast();
+    const router = useRouter();
+
+    const {
+        register: loginRegister,
+        handleSubmit: handleLoginSubmit,
+        formState: { errors },
+    } = useForm<TLoginData>({ resolver: zodResolver(LOGIN_SCHEMA) });
+
+    const {
+        register: forgotRegister,
+        handleSubmit: handleForgotSubmit,
+        formState: { errors: forgotErrors },
+    } = useForm<TForgotPassword>({
+        resolver: zodResolver(FORGOT_PASSWORD_SCHEMA),
+    });
+
+    const onLoginSubmit: SubmitHandler<TLoginData> = async (data) => {
+        try {
+            setIsLoading(true);
+            const response = await axios.post(
+                "http://www.insystem-api.localhost/api/Users/LoginUser",
+                data
+            );
+
+            switch (response.data.status) {
+                case "200":
+                    setIsLoading(true);
+                    sessionStorage.setItem("bearer", response.data.token);
+                    setUser((prev) => ({
+                        ...prev,
+                        approveLogin: true,
+                    }));
+                    router.push("/dashboard");
+                    break;
+
+                case "401":
+                case "404":
+                    toast({
+                        title: "Status",
+                        description: response.data.description,
+                        status: "error",
+                        duration: 3000,
+                        isClosable: true,
+                        position: "top-right",
+                    });
+                    setIsLoading(false);
+                    setShowForgotPassword((prev) => ({
+                        ...prev,
+                        button: true,
+                    }));
+                    break;
+            }
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false);
+        }
+    };
+
+    const onforgotSubmit: SubmitHandler<TForgotPassword> = async (data) => {};
+
+    return (
+        <div className={styles.form}>
+            <div className={styles.form_header}>
+                {showForgotPassword.form ? (
+                    <>
+                        <h1>Reset your password</h1>
+                        <p>
+                            If you have forgotten your password, don't worry!
+                            You can change it by entering your email.
+                        </p>
+                    </>
+                ) : (
+                    <>
+                        <h1>Login</h1>
+                        <p>
+                            Let's make every login count towards a seamlessly
+                            organized inventory. Happy working!
+                        </p>
+                    </>
+                )}
+            </div>
+            <Form
+                onSubmit={
+                    showForgotPassword.form
+                        ? handleForgotSubmit(onforgotSubmit)
+                        : handleLoginSubmit(onLoginSubmit)
+                }
+            >
+                {showForgotPassword.form ? (
+                    <FormInput
+                        input={FORGOT_PASSWORD_INPUT}
+                        errors={forgotErrors}
+                        register={forgotRegister}
+                    />
+                ) : (
+                    LOGIN_INPUTS.map((input) => (
+                        <FormInput
+                            key={input.id}
+                            input={input}
+                            errors={errors}
+                            register={loginRegister}
+                        />
+                    ))
+                )}
+
+                <div className={styles.form_buttons}>
+                    <Button type="submit">
+                        {isLoading ? (
+                            <Spinner animation="border" size="sm" />
+                        ) : (
+                            "Submit"
+                        )}
+                    </Button>
+                    {showForgotPassword.button && (
+                        <Button
+                            onClick={() =>
+                                setShowForgotPassword({
+                                    button: false,
+                                    form: true,
+                                })
+                            }
+                        >
+                            Forgot password?
+                        </Button>
+                    )}
+                </div>
+            </Form>
+        </div>
+    );
+};
+
+export default LoginForm;

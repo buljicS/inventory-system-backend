@@ -9,8 +9,8 @@ export type TRegisterLoginInputs = {
 };
 
 export type TRegisterData = {
-    fname: string;
-    lname: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
     repeatPassword: string;
@@ -56,4 +56,13 @@ export type TSideBarLinks = {
     link: string;
     label: string;
     icon: StaticImageData;
+};
+
+export type TForgotPasswordState = {
+    button: boolean;
+    form: boolean;
+};
+
+export type TForgotPassword = {
+    email: string;
 };

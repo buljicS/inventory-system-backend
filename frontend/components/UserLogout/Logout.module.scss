@@ -1,0 +1,10 @@
+.user_logout {
+    display: flex;
+    justify-content: center;
+
+    &_icon {
+       img:hover {
+        cursor: pointer;
+       }
+    }
+}

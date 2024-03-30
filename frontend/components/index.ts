@@ -5,4 +5,7 @@ export { default as IndexCard } from "./IndexCard/IndexCard";
 export { default as SideBar } from "./SideBar/SideBar";
 export { default as SideBarNavigation } from "./SideBar/SideBarNavigation";
 export { default as SideBarNavigationItem } from "./SideBar/SideBarNavigationItem";
-export { default as User } from "./User/User";
+export { default as Logout } from "./UserLogout/Logout";
+export { default as FormInput } from "./FormInput/FormInput";
+export { default as LoginForm } from "./LoginForm/LoginForm";
+export { default as SignupForm } from "./SignupForm/SignupForm";

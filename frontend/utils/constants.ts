@@ -24,14 +24,14 @@ export const REGISTER_INPUTS: TRegisterLoginInputs[] = [
     {
         id: 1,
         label: "First name",
-        name: "fname",
+        name: "firstName",
         type: "text",
         placeholder: "Enter your first name",
     },
     {
         id: 2,
         label: "Last name",
-        name: "lname",
+        name: "lastName",
         type: "text",
         placeholder: "Enter your last name",
     },
@@ -81,6 +81,14 @@ export const LOGIN_INPUTS: TRegisterLoginInputs[] = [
         placeholder: "Enter your password",
     },
 ];
+
+export const FORGOT_PASSWORD_INPUT: TRegisterLoginInputs = {
+    id: 1,
+    label: "E-mail",
+    name: "email",
+    type: "email",
+    placeholder: "Enter your email",
+};
 
 export const NAV_LINKS: TNavFooterLinks[] = [
     {
@@ -217,11 +225,11 @@ export const LOGIN_SCHEMA = z.object({
 
 export const REGISTER_SCHEMA = z
     .object({
-        fname: z.string().min(3, {
+        firstName: z.string().min(3, {
             message: "First name must have at least three characters.",
         }),
-        lname: z.string().min(3, {
-            message: "First name must have at least three characters.",
+        lastName: z.string().min(3, {
+            message: "Last name must have at least three characters.",
         }),
         email: z.string().email("Email is not valid."),
         password: z
@@ -234,14 +242,18 @@ export const REGISTER_SCHEMA = z
                 }
             ),
         repeatPassword: z.string(),
-        phoneNumber: z.string().regex(/^(0|\+381)[1-9]\d{8}$/, {
-            message: "Phone number is not valid.",
+        phoneNumber: z.string().regex(/^\+(?:\d\s?){10,14}\d$/, {
+            message: "Phone number must start with a '+' symbol.",
         }),
     })
     .refine((data) => data.password === data.repeatPassword, {
         message: "Passwords don't match.",
         path: ["repeatPassword"],
     });
+
+export const FORGOT_PASSWORD_SCHEMA = z.object({
+    email: z.string().email("Email is not valid."),
+});
 
 export const SIDEBAR_LINKS: TSideBarLinks[] = [
     {
@@ -254,14 +266,14 @@ export const SIDEBAR_LINKS: TSideBarLinks[] = [
     {
         id: 2,
         link: "/dashboard/inventory-items",
-        label: "Add inventory items",
+        label: "Inventory items",
         icon: ItemIcon,
     },
 
     {
         id: 3,
         link: "/dashboard/inventory-rooms",
-        label: "Add inventory rooms",
+        label: "Inventory rooms",
         icon: RoomIcon,
     },
 

@@ -3,7 +3,7 @@
 
     &_content {
         display: flex;
-
+        gap: 20px;
         &_header {
             flex: 1;
 
@@ -11,7 +11,7 @@
                 background-color: #202930;
                 color: #fff;
                 padding: 25px;
-                border-radius: 15px 0 15px 0;
+                border-radius: 15px 15px 0 0;
 
                 h3 {
                     font-size: 1.2rem;
@@ -24,16 +24,6 @@
                 @media only screen and (max-width: 576px) {
                     margin: 0 10px;
                 }
-            }
-        }
-
-        &_form {
-            flex: 2;
-            padding: 0 25px;
-
-            button {
-                margin-top: 20px;
-                width: 80px;
             }
         }
 
