@@ -13,7 +13,7 @@ use OpenApi\Generator as Generator;
 
 /**
  * @OA\Info(
- *     title="Inventory management system API",
+ *     title="Inventory management system GIIIIIIIIIII",
  *     version="1.0.0",
  *     description="Inventory web based system for tracking items and stuff in company"
  *	 )
@@ -35,6 +35,17 @@ class APIController
 	{
 		$response->getBody()->write(file_get_contents('../views/welcome_screen.html'));
 		return $response;
+	}
+
+	public function GenerateDocs(Request $request, Response $response): Response
+	{
+		$openapi = Generator::scan(['../src'])->toJson();
+		$file = fopen("../public/swagger/openapi.json", "wa+");
+		fwrite($file, $openapi);
+		fclose($file);
+		$response->getBody()->write(file_get_contents("../public/swagger/openapi.json"));
+		return $response
+			->withHeader('Content-type', 'application/json');
 	}
 	#endregion
 
