@@ -99,10 +99,10 @@ class UserServices
 
 	public function GetUserByEmail(string $email): string | bool {
 		$dbCon = $this->_database->OpenConnection();
-		$sql = "SELECT worker_password
+		$sql = "SELECT worker_password, worker_email
 				FROM workers
-				WHERE worker_email = :email 
-				  AND isActive = true";
+				WHERE worker_email = :email";
+
 
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':email', $email);
@@ -186,6 +186,31 @@ class UserServices
 			'description' => 'Error while creating your account, please try again'
 		];
 
+	}
+
+	public function SendPasswordResetMail(string $emailTo):array
+	{
+		$cleanEmail = strip_tags(trim($emailTo));
+		if(filter_var($cleanEmail, FILTER_VALIDATE_EMAIL)) {
+			$body = file_get_contents('../email-templates/ResetMail.html');
+			$subject = "Reset your password";
+			$cc = null;
+
+			$user = $this->GetUserByEmail($cleanEmail);
+			if($user != null) {
+				$resp = $this->_email->SendEmail($body, $subject, $cleanEmail, $cc);
+				return [
+					'status' => '200',
+					'message' => 'Success',
+					'description' => $resp
+				];
+			}
+		}
+		return [
+			'status' => '404',
+			'message' => 'Not found',
+			'description' => 'Please check your email and try again'
+		];
 	}
 
 	public function SendConfirmationEmail(string $subject, string $emailTo):string

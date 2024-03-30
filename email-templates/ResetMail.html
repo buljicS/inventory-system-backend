@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Template</title>
+    <style>
+        /* Add your custom styles here */
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            height: calc(100% - 40px); /* Subtracting footer height */
+            position: relative;
+            background-color: #ffffff; /* Set background color to white */
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+        .content {
+            padding: 20px;
+            padding-bottom: 60px; /* Padding for footer */
+            box-sizing: border-box;
+            text-align: center; /* Center text */
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #202930;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+        }
+        h1 {
+            color: #333333;
+        }
+        p {
+            color: #666666;
+        }
+        .button {
+            background-color: #202930;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #1a2129; /* Darker shade for hover */
+        }
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="content">
+        <h1>Your Email Heading</h1>
+        <p>Hello,</p>
+        <p>This is a basic HTML email template.</p>
+        <p>If you didn't create an account, please ignore this email.</p>
+        <a href="#" class="button">Activate Your Account</a>
+    </div>
+    <div class="footer">
+        Inventory System - 2024
+    </div>
+</div>
+</body>
+</html>

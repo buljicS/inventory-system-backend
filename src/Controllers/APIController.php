@@ -191,57 +191,12 @@ class APIController
 	 */
 	public function SendPasswordResetMail(Request $request, Response $response): Response
 	{
-		$response->getBody()->write("Done");
-		return $response;
-	}
-
-	/**
-	 * @OA\Post(
-	 *     path="/api/Users/SendEmail",
-	 *     tags={"Users"},
-	 *     @OA\RequestBody(
-	 *         description="Provide user email",
-	 *         @OA\MediaType(
-	 *             mediaType="application/json",
-	 *             @OA\Schema(
-	 *                 type="object",
-	 *                 @OA\Property(
-	 *                     property="sendTo",
-	 *                     type="string",
-	 *                     example="example@email.com"
-	 *                 ),
-	 *                      @OA\Property(
-	 *                      property="ccTo",
-	 *                      type="string",
-	 *                      example="example@email.com"
-	 *                  ),
-	 *                      @OA\Property(
-	 *                      property="subject",
-	 *                      type="string",
-	 *                      example="string"
-	 *                  ),
-	 *             )
-	 *         )
-	 *     ),
-	 *     @OA\Response(
-	 *         response=200,
-	 *         description="Sent"
-	 *     ),
-	 *     @OA\Response(
-	 *         response=500,
-	 *         description="Error"
-	 *     ),
-	 * )
-	 */
-	public function SendMail(Request $request, Response $response): Response
-	{
 		$requestBody = (array)$request->getParsedBody();
-		$body = file_get_contents('../email-templates/ActivateAccount.html');
-		$ccTo = $requestBody['ccTo'] ?? null;
-		$sendMail = $this->_email->SendEmail($body, $requestBody['subject'], $requestBody['sendTo'], $ccTo);
-		$response->getBody()->write(json_encode($sendMail, JSON_PRETTY_PRINT));
+		$resetMail = $this->_user->SendPasswordResetMail($requestBody['email']);
+		$response->getBody()->write(json_encode($resetMail));
 		return $response
-			->withHeader('Content-type', 'application/json');
+			->withHeader('Content-type', 'application/json')
+			->withStatus(200);
 	}
 	#endregion
 }

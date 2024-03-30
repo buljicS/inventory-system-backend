@@ -23,18 +23,23 @@ $app = AppFactory::create();
 $app->add(new JsonBodyParserMiddleware());
 
 //cors policy
-$app->options('/{routes:.+}', function ($request, $response, $args) {
-	return $response;
-});
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+	// should do a check here to match $_SERVER['HTTP_ORIGIN'] to a
+	// whitelist of safe domains
+	header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+	header('Access-Control-Allow-Credentials: true');
+	header('Access-Control-Max-Age: 86400');    // cache for 1 day
+}
+// Access-Control headers are received during OPTIONS requests
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
-$app->add(function ($request, $handler) {
-	$response = $handler->handle($request);
-	return $response
-		->withHeader('Access-Control-Allow-Origin', '*')
-		->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept')
-		->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-});
+	if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+		header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
+	if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+		header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+}
 //body parsing middleware
 $app->addBodyParsingMiddleware();
 
@@ -54,8 +59,8 @@ $app->get("/getDoc", [Controllers\APIController::class, 'GenerateDocs']);
 
 $app->post('/api/Users/LoginUser', [Controllers\APIController::class, 'LoginUser']);
 
-$app->post('/api/Users/RegisterUser', [\Controllers\APIController::class, 'RegisterUser']);
+$app->post('/api/Users/RegisterUser', [Controllers\APIController::class, 'RegisterUser']);
 
-$app->post('/api/Users/SendEmail', [Controllers\APIController::class, 'SendMail']);
+$app->post('/api/Users/SendPasswordResetEmail' , [Controllers\APIController::class, 'SendPasswordResetMail']);
 
 $app->run();
