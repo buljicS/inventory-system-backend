@@ -13,7 +13,7 @@ use OpenApi\Generator as Generator;
 
 /**
  * @OA\Info(
- *     title="Inventory management system APYY",
+ *     title="Inventory management system API",
  *     version="1.0.0",
  *     description="Inventory web based system for tracking items and stuff in company"
  *	 )

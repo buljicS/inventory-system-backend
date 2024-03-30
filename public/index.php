@@ -51,10 +51,9 @@ $app->addErrorMiddleware(true, true, true);
 $app->get('/', [Controllers\APIController::class, 'Index']);
 
 $app->get("/getDoc", function (Psr\Http\Message\ServerRequestInterface $request, Psr\Http\Message\ResponseInterface $response) {
-	$openapi = Generator::scan(['../src']);
-	$openapiJSON = $openapi->toJson();
+	$openapi = Generator::scan(['../src'])->toJson();
 	$file = fopen("./swagger/openapi.json", "wa+");
-	fwrite($file, $openapiJSON);
+	fwrite($file, $openapi);
 	fclose($file);
 	$response->getBody()->write(file_get_contents("./swagger/openapi.json"));
 	return $response
