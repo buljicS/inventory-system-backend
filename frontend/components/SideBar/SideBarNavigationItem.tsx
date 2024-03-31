@@ -2,10 +2,14 @@ import Link from "next/link";
 import styles from "./SideBar.module.scss";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useMemo } from "react";
 
 const SideBarNavigationItem = ({ route }) => {
     const link = usePathname();
-    const isActive = link === route.link;
+
+    const isActive = useMemo(() => {
+        return link === route.link;
+    }, [link, route.link]);
 
     return (
         <div
@@ -19,6 +23,7 @@ const SideBarNavigationItem = ({ route }) => {
                     alt="Navigation icon"
                     width={30}
                     height={30}
+                    loading="lazy"
                 />
             </div>
 

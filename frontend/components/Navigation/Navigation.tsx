@@ -24,8 +24,8 @@ const Navigation = () => {
                     </div>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navigation" />
-                <Navbar.Collapse id="navigation" className={styles.nav_links}>
-                    <Nav>
+                <Navbar.Collapse id="navigation">
+                    <Nav className="ms-auto py-2">
                         {NAV_LINKS.map((item) => (
                             <Nav.Link
                                 key={item.id}

@@ -18,6 +18,8 @@
         top: 0;
         background-color: #202930;
         transition: 0.2s linear;
+        backface-visibility: hidden;
+        will-change: right;
 
         &_show {
             right: 0;
@@ -51,6 +53,9 @@
         top: 0;
         left: -300px;
         transition: 0.3s linear;
+        backface-visibility: hidden;
+        will-change: left;
+
     }
 
     &_navigation {

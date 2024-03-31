@@ -35,7 +35,13 @@ const SideBar = () => {
                     />
                 </div>
                 <div className={styles.sidebar_logo}>
-                    <Image src={Logo} alt="logo" height={150} width={150} />
+                    <Image
+                        src={Logo}
+                        alt="logo"
+                        height={150}
+                        width={150}
+                        loading="lazy"
+                    />
                 </div>
                 <div className={styles.sidebar_links}>
                     <SideBarNavigation />
