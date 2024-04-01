@@ -1,0 +1,42 @@
+.admin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    max-width: 40%;
+    margin: 0 auto;
+
+    &_header {
+        color: #fff;
+        background-color: #202930;
+        padding: 35px;
+        width: 100%;
+        border-radius: 8px 8px 0 0;
+    }
+
+    &_form {
+        background-color: #fff;
+        padding: 35px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 5px;
+        width: 100%;
+        border-radius: 0 0 8px 8px;
+
+        button {
+            @media only screen and (max-width: 400px) {
+                font-size: 0.8rem;
+            }
+
+            &[type="submit"] {
+                width: 80px;
+            } 
+        }
+
+        @media only screen and (max-width: 992px) {
+            padding: 25px;
+        }
+    }
+
+    @media only screen and (max-width: 992px) {
+        max-width: 90%;
+    }
+}
