@@ -86,7 +86,29 @@ const LoginForm = () => {
         }
     };
 
-    const onforgotSubmit: SubmitHandler<TForgotPassword> = async (data) => {};
+    const onforgotSubmit: SubmitHandler<TForgotPassword> = async (data) => {
+        try {
+            setIsLoading(true);
+            const response = await axios.post(
+                "http://www.insystem-api.localhost/api/Users/SendPasswordResetEmail",
+                data
+            );
+
+            toast({
+                title: "Status",
+                description:
+                    "If you have an account linked to this email, we have sent you instructions for resetting it in your inbox.",
+                status: "success",
+                duration: 6000,
+                isClosable: true,
+                position: "top-right",
+            });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className={styles.form}>
