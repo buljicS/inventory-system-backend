@@ -23,6 +23,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 0.5em
         }
         .button {
             padding: 10px 20px;
@@ -54,6 +55,22 @@
         .btn-container {
             display: flex;
             flex-direction: column;
+            min-width: 360px;
+        }
+        .button-json {
+            background-color: #FFD700; /* Yellow */
+            padding: 10px 20px;
+            font-size: 16px;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .button-json:hover {
+            filter: brightness(90%);
         }
     </style>
 </head>
@@ -72,23 +89,31 @@
         <button class="button button-green" id="generateDocs" onclick="generateDocs()">
             Open API Documentation (v1)
         </button>
+        <button class="button button-json" id="downloadDocs" onclick="downloadDocs()">
+            <i class="bi bi-filetype-json"></i>
+            Download JSON Docs
+        </button>
         <button class="button button-blue" onclick="visitDashboard()">Visit Dashboard (dev)</button>
     </div>
 
 </div>
 
 <footer>
-    <p>&copy; 2024 Developed by PROGRAMATORI</p>
+    &copy; 2024 Developed by PROGRAMATORI
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     let currentURL = window.location.href;
-    let genDocsBtn = document.getElementById('generateDocs');
+    let requestMethod = 'getDoc';
+    let isUnderDevelopment = true;
 
     async function generateDocs() {
-        genDocsBtn.innerHTML += '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>';
-        await fetch(currentURL + "getDoc");
+        //if its still under development, generate new json each time user wants to visit swagger
+        if(isUnderDevelopment) {
+            document.getElementById('generateDocs').innerHTML += '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>';
+            await fetch(currentURL + requestMethod);
+        }
         window.location.href = currentURL + "/swagger";
     }
 
