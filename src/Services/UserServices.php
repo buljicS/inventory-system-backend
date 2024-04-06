@@ -24,7 +24,7 @@ class UserServices
 		$dbCon = $this->_database->OpenConnection();
 
 		$sql = "INSERT INTO workers(
-                    worker_fname, 
+                    workers.worker_fname, 
                     worker_lname, 
                     phone_number, 
                     worker_email, 
@@ -53,6 +53,8 @@ class UserServices
 		$stmt->bindValue(':registration_token', $userData['exp_token']);
 		$stmt->bindValue(':registration_expires', $userData['timestamp']);
 		$stmt->execute();
+
+
 	}
 
 	public function GetAllUsers(): ?array {
@@ -99,7 +101,7 @@ class UserServices
 
 	public function GetUserByEmail(string $email): string | bool {
 		$dbCon = $this->_database->OpenConnection();
-		$sql = "SELECT worker_password, worker_email
+		$sql = "SELECT worker_password, worker_email, worker_fname
 				FROM workers
 				WHERE worker_email = :email";
 
@@ -150,6 +152,7 @@ class UserServices
 
 	public function RegisterUser(array $newUserData): array
 	{
+		$body = "";
 		$newUser = [
 			'fname' => strip_tags(trim($newUserData['firstName'])),
 			'lname' => strip_tags(trim($newUserData['lastName'])),
@@ -171,7 +174,11 @@ class UserServices
 		}
 
 		$this->CreateNewUser($newUser);
-		$isRegistered = $this->SendConfirmationEmail("Activate your account", $newUser['email']);
+		$userFromDB = $this->GetUserByEmail($newUser['email']);
+		$rawBody = file_get_contents("../email-templates/ActivateAccount.html");
+		$body = str_replace("{{userName}}", $userFromDB['fname'], $rawBody);
+		$body = str_replace("{{activateAccountLink}}", "www.google.com", $rawBody);
+		$isRegistered = $this->SendConfirmationEmail($body,"Activate your account", $newUser['email']);
 		if($isRegistered === "Message has been sent") {
 			return [
 				'status' => '200',
@@ -213,9 +220,8 @@ class UserServices
 		];
 	}
 
-	public function SendConfirmationEmail(string $subject, string $emailTo):string
+	public function SendConfirmationEmail(string $body,string $subject, string $emailTo):string
 	{
-		$body = file_get_contents('../email-templates/ActivateAccount.html');
 		return $this->_email->SendEmail($body, $subject, $emailTo, null);
 	}
 

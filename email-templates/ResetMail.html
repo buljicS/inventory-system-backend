@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Template</title>
+    <title>Reset Password</title>
     <style>
-        /* Add your custom styles here */
         body, html {
             height: 100%;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            text-align: center;
         }
         body {
             font-family: Arial, sans-serif;
@@ -18,24 +19,16 @@
         .container {
             max-width: 600px;
             margin: 0 auto;
-            height: calc(100% - 40px); /* Subtracting footer height */
+            height: calc(100%);
             position: relative;
-            background-color: #ffffff; /* Set background color to white */
+            background-color: #ffffff;
             display: flex;
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
+            flex-direction: column;
+
         }
-        .content {
-            padding: 20px;
-            padding-bottom: 60px; /* Padding for footer */
-            box-sizing: border-box;
-            text-align: center; /* Center text */
-        }
+
         .footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            max-width: 100%;
             background-color: #202930;
             color: #ffffff;
             padding: 10px;
@@ -46,6 +39,7 @@
         }
         p {
             color: #666666;
+            line-height: 150%;
         }
         .button {
             background-color: #202930;
@@ -54,31 +48,75 @@
             padding: 10px 20px;
             border-radius: 5px;
             display: inline-block;
-            margin-top: 20px;
+            margin: 32px 0;
             transition: background-color 0.3s ease;
         }
         .button:hover {
-            background-color: #1a2129; /* Darker shade for hover */
+            background-color: #1a2129;
         }
         @media screen and (max-width: 600px) {
             .container {
                 width: 100%;
             }
         }
+        .reset-password img {
+            max-width: 100px;
+        }
+        .header {
+            letter-spacing: 10px;
+        }
+
+        .top {
+            background-color: #202930;
+            flex: 1;
+            width: 100%;
+        }
+
+        .bottom {
+            flex: 1;
+        }
+
+        .center-card {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            background-color: #fff;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 8px;
+            padding: 25px;
+        }
+
+        .fa-lock {
+            font-size: 55px;
+            color: #202930;
+        }
+
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="content">
-        <h1>Your Email Heading</h1>
-        <p>Hello,</p>
-        <p>This is a basic HTML email template.</p>
-        <p>If you didn't create an account, please ignore this email.</p>
-        <a href="#" class="button">Activate Your Account</a>
+    <div class="top"></div>
+    <div class="bottom"></div>
+    <div class="center-card">
+        <div class="header">
+            <h1>PASSWORD RESET</h1>
+        </div>
+        <div class="reset-password">
+            <i class="fa-solid fa-lock"></i>
+        </div>
+        <div class="content">
+            <p>Resetting your password is quick and easy. Just follow the link below to regain access to your account.</p>
+            <a href="#" class="button">Reset your password</a>
+        </div>
     </div>
     <div class="footer">
         Inventory System - 2024
     </div>
 </div>
 </body>
+<script src="https://kit.fontawesome.com/ac55437ec8.js" crossorigin="anonymous"></script>
 </html>

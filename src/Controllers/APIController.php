@@ -24,12 +24,10 @@ use OpenApi\Generator as Generator;
 class APIController
 {
 	private UserServices $_user;
-	private EmailServices $_email;
 
-	public function __construct(UserServices $userServices, EmailServices $email)
+	public function __construct(UserServices $userServices)
 	{
 		$this->_user = $userServices;
-		$this->_email = $email;
 	}
 
 	#region Main
