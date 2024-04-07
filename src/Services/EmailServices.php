@@ -32,10 +32,10 @@ class EmailServices
 				$this->mailer->addCC($ccTo);
 			}
 
-			$this->mailer->isHTML(true);
 			$this->mailer->Subject = $subject;
 			$this->mailer->Body = $body;
 			$this->mailer->AltBody = strip_tags($body);
+			$this->mailer->isHTML(true);
 
 			$this->mailer->send();
 			return 'Message has been sent';

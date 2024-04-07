@@ -24,7 +24,7 @@ class UserServices
 		$dbCon = $this->_database->OpenConnection();
 
 		$sql = "INSERT INTO workers(
-                    workers.worker_fname, 
+                    worker_fname, 
                     worker_lname, 
                     phone_number, 
                     worker_email, 
@@ -48,7 +48,7 @@ class UserServices
 		$stmt->bindValue(':worker_lname', $userData['lname']);
 		$stmt->bindValue(':phone_number', $userData['phone']);
 		$stmt->bindValue(':worker_email', $userData['email']);
-		$stmt->bindValue(':worker_password', $userData['password']);
+		$stmt->bindValue(':worker_password', password_hash($userData['password'], PASSWORD_DEFAULT));
 		$stmt->bindValue(':role', $userData['role']);
 		$stmt->bindValue(':registration_token', $userData['exp_token']);
 		$stmt->bindValue(':registration_expires', $userData['timestamp']);
@@ -176,8 +176,8 @@ class UserServices
 		$this->CreateNewUser($newUser);
 		$userFromDB = $this->GetUserByEmail($newUser['email']);
 		$rawBody = file_get_contents("../email-templates/ActivateAccount.html");
-		$body = str_replace("{{userName}}", $userFromDB['fname'], $rawBody);
-		$body = str_replace("{{activateAccountLink}}", "www.google.com", $rawBody);
+		$body = str_replace("{{userName}}", $newUser['fname'], $rawBody);
+		$body = str_replace("{{activateAccountLink}}", "www.google.com", $body);
 		$isRegistered = $this->SendConfirmationEmail($body,"Activate your account", $newUser['email']);
 		if($isRegistered === "Message has been sent") {
 			return [
