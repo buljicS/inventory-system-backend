@@ -2,20 +2,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 25px;
     padding: 100px 0;
-
-    .form {
-        flex: 1;
-        padding: 0 50px;
-        
-        button {
-            margin-top: 10px;
-            width: 80px;
-        }
-    }
 
     &_image {
         flex: 1;
+        padding: 0 8px;
 
         .image {
             width: 100%;

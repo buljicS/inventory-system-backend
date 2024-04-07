@@ -1,4 +1,4 @@
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -24,8 +24,8 @@ const Navigation = () => {
                     </div>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navigation" />
-                <Navbar.Collapse id="navigation" className={styles.nav_links}>
-                    <Nav>
+                <Navbar.Collapse id="navigation">
+                    <Nav className="ms-auto py-2">
                         {NAV_LINKS.map((item) => (
                             <Nav.Link
                                 key={item.id}

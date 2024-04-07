@@ -1,0 +1,32 @@
+.input {
+    position: relative;
+
+    &_toggle_button {
+        position: absolute;
+        top: 10px;
+    
+        &:hover {
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 400px) {
+            top: 7px;
+        }
+    }
+
+    &_error {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+
+        @media screen and (max-width: 400px) {
+            top: 7px;
+        }
+    }
+    
+    @media screen and (max-width: 400px) {
+        input {
+            font-size: 0.8rem;
+        }
+    }
+}
