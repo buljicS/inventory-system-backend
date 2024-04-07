@@ -34,8 +34,8 @@ class EmailServices
 
 			$this->mailer->Subject = $subject;
 			$this->mailer->Body = $body;
-			$this->mailer->AltBody = strip_tags($body);
 			$this->mailer->isHTML(true);
+			$this->mailer->AltBody = strip_tags($body);
 
 			$this->mailer->send();
 			return 'Message has been sent';

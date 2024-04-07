@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password</title>
+    <title>Activate Account</title>
     <style>
         body, html {
             height: 100%;
@@ -11,20 +11,13 @@
             padding: 0;
             box-sizing: border-box;
             text-align: center;
-        }
-        body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
         }
         .container {
-            max-width: 600px;
+            max-width: 420px;
             margin: 0 auto;
-            height: calc(100%);
-            position: relative;
             background-color: #ffffff;
-            display: flex;
-            flex-direction: column;
-
         }
 
         .footer {
@@ -33,6 +26,7 @@
             color: #ffffff;
             padding: 10px;
             text-align: center;
+            margin-top: 16px;
         }
         h1 {
             color: #333333;
@@ -40,16 +34,20 @@
         p {
             color: #666666;
             line-height: 150%;
+            padding: 0 20px;
+            text-align: center;
         }
         .button {
             background-color: #202930;
-            color: #ffffff;
+            color: #ffffff !important;
             text-decoration: none;
             padding: 10px 20px;
             border-radius: 5px;
-            display: inline-block;
-            margin: 32px 0;
+            display: block;
+            margin: 32px auto;
             transition: background-color 0.3s ease;
+            text-align: center;
+            width: fit-content;
         }
         .button:hover {
             background-color: #1a2129;
@@ -59,64 +57,39 @@
                 width: 100%;
             }
         }
-        .reset-password img {
-            max-width: 100px;
-        }
+
         .header {
-            letter-spacing: 10px;
+            padding-top: 20px;
+            letter-spacing: 5px;
+            text-align: center;
         }
 
-        .top {
-            background-color: #202930;
-            flex: 1;
-            width: 100%;
+        .password-reset img {
+            max-width: 80px;
         }
 
-        .bottom {
-            flex: 1;
+        .password-reset {
+            width: fit-content;
+            margin: 0 auto;
         }
-
-        .center-card {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%,-50%);
-            background-color: #fff;
-            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-radius: 8px;
-            padding: 25px;
-        }
-
-        .fa-lock {
-            font-size: 55px;
-            color: #202930;
-        }
-
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="top"></div>
-    <div class="bottom"></div>
-    <div class="center-card">
-        <div class="header">
-            <h1>PASSWORD RESET</h1>
-        </div>
-        <div class="reset-password">
-            <i class="fa-solid fa-lock"></i>
-        </div>
-        <div class="content">
-            <p>Resetting your password is quick and easy. Just follow the link below to regain access to your account.</p>
-            <a href="#" class="button">Reset your password</a>
-        </div>
+    <div class="header">
+        <h1>PASSWORD RESET</h1>
     </div>
+    <div class="password-reset">
+        <img src="https://i.ibb.co/5MZkmhy/reset-password.png" alt="Hand shake icon">
+    </div>
+    <div class="content">
+        <p>Resetting your password is quick and easy. Just follow the link below to regain access to your account.</p>
+        <a href="" class="button">Reset your password</a>
+    </div>
+
     <div class="footer">
         Inventory System - 2024
     </div>
 </div>
 </body>
-<script src="https://kit.fontawesome.com/ac55437ec8.js" crossorigin="anonymous"></script>
 </html>

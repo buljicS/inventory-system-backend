@@ -5,20 +5,24 @@ declare(strict_types=1);
 namespace Services;
 
 use Controllers\DatabaseController as DBController;
-use http\Env\Response;
-use Slim\Psr7\Request;
+use Controllers\HelperController as HelperController;
+use PDO;
+use Services\EmailServices as EmailServices;
 
 class UserServices
 {
 	private DBController $_database;
 	private EmailServices $_email;
+	private HelperController $_helper;
 
-	public function __construct(DBController $database, EmailServices $email)
+	public function __construct(DBController $database, EmailServices $email, HelperController $helper)
 	{
 		$this->_email = $email;
 		$this->_database = $database;
+		$this->_helper = $helper;
 	}
 
+	#region DBManipulation
 	public function CreateNewUser(array $userData):void
 	{
 		$dbCon = $this->_database->OpenConnection();
@@ -48,13 +52,11 @@ class UserServices
 		$stmt->bindValue(':worker_lname', $userData['lname']);
 		$stmt->bindValue(':phone_number', $userData['phone']);
 		$stmt->bindValue(':worker_email', $userData['email']);
-		$stmt->bindValue(':worker_password', password_hash($userData['password'], PASSWORD_DEFAULT));
+		$stmt->bindValue(':worker_password', $userData['password']);
 		$stmt->bindValue(':role', $userData['role']);
 		$stmt->bindValue(':registration_token', $userData['exp_token']);
 		$stmt->bindValue(':registration_expires', $userData['timestamp']);
 		$stmt->execute();
-
-
 	}
 
 	public function GetAllUsers(): ?array {
@@ -99,9 +101,14 @@ class UserServices
 		return $stmt->fetchAll();
 	}
 
-	public function GetUserByEmail(string $email): string | bool {
+	public function GetUserByEmail(string $email): array | bool {
 		$dbCon = $this->_database->OpenConnection();
-		$sql = "SELECT worker_password, worker_email, worker_fname
+		$sql = "SELECT worker_password,
+       				   worker_fname,
+       				   worker_email, 
+       				   role,
+       				   registration_token,
+       				   registration_expires
 				FROM workers
 				WHERE worker_email = :email";
 
@@ -109,8 +116,58 @@ class UserServices
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':email', $email);
 		$stmt->execute();
-		return $stmt->fetchColumn();
+		return $stmt->fetchAll();
 	}
+
+	public function GetUserByToken(string $token): ?array
+	{
+		$dbCon = $this->_database->OpenConnection();
+		$sql = "SELECT registration_token,
+					   worker_id,
+       				   registration_expires
+       			FROM workers 
+       			WHERE registration_token = :token";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':token', $token);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+
+	public function UpdateUserStatus(string $token): string
+	{
+		$dbCon = $this->_database->OpenConnection();
+		$sql = "UPDATE workers 
+				SET isActive = 1
+				WHERE registration_token = :token";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':token', $token);
+		$stmt->execute();
+
+		$sql_del = "UPDATE workers
+					SET registration_token = null,
+					    registration_expires = null
+					WHERE registration_token = :token";
+		$stmt = $dbCon->prepare($sql_del);
+		$stmt->bindValue(':token', $token);
+		$stmt->execute();
+
+		return "Your account has been activated!";
+	}
+
+	public function DeleteExpiredUser(string $token): string
+	{
+		$dbCon = $this->_database->OpenConnection();
+		$sql = "DELETE 
+				FROM workers
+				WHERE registration_token = :$token";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':token', $token);
+		$stmt->execute();
+		return "Your activation token has expired, please submit registration again";
+	}
+	#endregion
+
+
 
 	public function AuthenticateUser(string $email, string $password): array {
 
@@ -138,9 +195,8 @@ class UserServices
 			return [
 				'status' => '200',
 				'userEmail' => $cleanEmail,
-				'userPassword' => $response,
-				//TODO implement firebase/jwt
-				'token' => "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+				'userPassword' => 1234567890,
+				'token' => $this->_helper->GenerateJWTToken("buljic77@gmail.com", "worker")
 			];
 		}
 		return [
@@ -152,15 +208,15 @@ class UserServices
 
 	public function RegisterUser(array $newUserData): array
 	{
-		$body = "";
+		$cleanPassword = strip_tags(trim($newUserData['password']));
 		$newUser = [
 			'fname' => strip_tags(trim($newUserData['firstName'])),
 			'lname' => strip_tags(trim($newUserData['lastName'])),
 			'phone' => strip_tags(trim($newUserData['phoneNumber'])),
 			'email' => strip_tags(trim($newUserData['email'])),
-			'password' => strip_tags(trim($newUserData['password'])),
+			'password' => password_hash($cleanPassword, PASSWORD_DEFAULT),
 			'role' => "Worker",
-			'exp_token' => $this->GenerateToken(20),
+			'exp_token' => $this->_helper->GenerateRegistrationToken(20),
 			'timestamp' => date('Y-m-d H:i:s', time()+3600)
 		];
 
@@ -174,11 +230,12 @@ class UserServices
 		}
 
 		$this->CreateNewUser($newUser);
-		$userFromDB = $this->GetUserByEmail($newUser['email']);
-		$rawBody = file_get_contents("../email-templates/ActivateAccount.html");
-		$body = str_replace("{{userName}}", $newUser['fname'], $rawBody);
-		$body = str_replace("{{activateAccountLink}}", "www.google.com", $body);
-		$isRegistered = $this->SendConfirmationEmail($body,"Activate your account", $newUser['email']);
+		$user = $this->GetUserByEmail($newUser['email']);
+		$user_name = $user[0]['worker_fname'];
+		$userEmail = $user[0]['worker_email'];
+		$token = $user[0]['registration_token'];
+		$link = "{$_ENV['MAIN_URL_BE']}api/Users/ActivateUserAccount/{$token}";
+		$isRegistered = $this->SendConfirmationEmail($user_name, $link, "Activate your account", $userEmail);
 		if($isRegistered === "Message has been sent") {
 			return [
 				'status' => '200',
@@ -220,14 +277,26 @@ class UserServices
 		];
 	}
 
-	public function SendConfirmationEmail(string $body,string $subject, string $emailTo):string
+	public function SendConfirmationEmail(string $user_name, string $link, string $subject, string $emailTo):string
 	{
+		$rawbody = file_get_contents('../email-templates/ActivateAccount.html');
+		$body = str_replace("{{userName}}", $user_name, $rawbody);
+		$body = str_replace("{{activateAccountLink}}", $link, $body);
+
 		return $this->_email->SendEmail($body, $subject, $emailTo, null);
 	}
 
-	public function GenerateToken(int $randomBytes):string
+	public function ActivateUser(string $token):int
 	{
-		$bytes = random_bytes($randomBytes);
-		return bin2hex($bytes);
+		$user = $this->GetUserByToken($token);
+		if($user != null && !(date('d-M-Y H:i:s', time()) > $user[0]['registration_expires'])) {
+			$updateResponse = $this->UpdateUserStatus($user[0]['registration_token']);
+			if($updateResponse != null)
+				return 1;
+		}
+		$delResp =  $this->DeleteExpiredUser($user[0]["registration_token"]);
+		if($delResp != null) {
+			return 0;
+		}
 	}
 }

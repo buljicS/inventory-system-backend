@@ -1,66 +1,57 @@
 <?php
 
+use Controllers\APIController as API;
 use Middleware\JsonBodyParserMiddleware;
 use Selective\BasePath\BasePathMiddleware;
 use Slim\Factory\AppFactory;
 use Dotenv\Dotenv as dotSetup;
-use OpenApi\Generator as Generator;
 use DI\Container;
+use Tuupola\Middleware\CorsMiddleware as Cors;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-//load env file
+#region loadenv
 $dEnv = dotSetup::createImmutable(__DIR__ . '/../');
 $dEnv->safeLoad();
+#endregion
 
-//php dep injection container
+#region di-container
 $container = new Container();
 AppFactory::setContainer($container);
+#endregion
 
 $app = AppFactory::create();
 
-//json parser middleware
+#region dependencies
+$routes = require '../app/routes.php';
+$routes($app);
+#endregion
+
+#region bootstrap
 $app->add(new JsonBodyParserMiddleware());
-
-//cors policy
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-	// should do a check here to match $_SERVER['HTTP_ORIGIN'] to a
-	// whitelist of safe domains
-	header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-	header('Access-Control-Allow-Credentials: true');
-	header('Access-Control-Max-Age: 86400');    // cache for 1 day
-}
-// Access-Control headers are received during OPTIONS requests
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-
-	if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-		header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-
-	if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-		header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-
-}
-//body parsing middleware
 $app->addBodyParsingMiddleware();
-
-//routing middleware
-$app->addRoutingMiddleware();
-
-//base-path middleware
 $app->add(new BasePathMiddleware($app));
-
-//error middleware
+$app->addRoutingMiddleware();
 $app->addErrorMiddleware(true, true, true);
+#endregion
 
-//routes
-$app->get('/', [Controllers\APIController::class, 'Index']);
-
-$app->get("/getDoc", [Controllers\APIController::class, 'GenerateDocs']);
-
-$app->post('/api/Users/LoginUser', [Controllers\APIController::class, 'LoginUser']);
-
-$app->post('/api/Users/RegisterUser', [Controllers\APIController::class, 'RegisterUser']);
-
-$app->post('/api/Users/SendPasswordResetEmail' , [Controllers\APIController::class, 'SendPasswordResetMail']);
+#region cors
+$app->add(new Cors([
+	"origin" => [$_ENV['MAIN_URL_FE']],
+	"methods" => ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+	"headers.allow" => ["Authorization"],
+	"headers.expose" => [],
+	"origin.server" => $_ENV['MAIN_URL_BE'],
+	"credentials" => true,
+	"cache" => 86400,
+	"error" => function ($request, $response, $arguments) {
+		$data["status"] = "error";
+		$data["message"] = $arguments["message"];
+		$response->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+		return $response
+			->withHeader("Content-Type", "application/json");
+	}
+]));
+#endregion
 
 $app->run();

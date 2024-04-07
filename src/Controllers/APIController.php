@@ -6,7 +6,6 @@ namespace Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Services\EmailServices;
 use Services\UserServices as UserServices;
 use OpenApi\Generator as Generator;
 
@@ -195,6 +194,17 @@ class APIController
 		return $response
 			->withHeader('Content-type', 'application/json')
 			->withStatus(200);
+	}
+
+	public function ActivateUserAccount(Request $request, Response $response, array $args): Response
+	{
+		$token = $args['token'];
+		$actResponse = $this->_user->ActivateUser($token);
+		$response->getBody()->write("{$_ENV['MAIN_URL_FE']}/login?message={$actResponse}");
+		return $response
+			->withHeader("Location", "{$_ENV['MAIN_URL_FE']}/login?status=$actResponse")
+			->withStatus(302);
+
 	}
 	#endregion
 }
