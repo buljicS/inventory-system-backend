@@ -184,7 +184,7 @@ class UserServices
 				];
 			}
 
-			if (!password_verify($cleanPassword, $response)) {
+			if (!password_verify($cleanPassword, $response[0]['worker_password'])) {
 				return [
 					'status' => '401',
 					'message' => 'Unauthorized',
