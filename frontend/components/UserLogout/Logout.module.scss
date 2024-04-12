@@ -1,10 +1,27 @@
 .user_logout {
     display: flex;
     justify-content: center;
+    align-items: center;
+    min-height: 62px;
 
     &_icon {
-       img:hover {
-        cursor: pointer;
-       }
+        padding: 16px;
+
+        img:hover {
+            cursor: pointer;
+        }
+
+        @media only screen and (max-width: 576px) {
+            padding: 16px;
+
+            img {
+                width: 20px;
+            }
+        }
+    }
+
+    @media screen and (max-width: 576px) {
+        min-height: unset;
+        height: 50px;
     }
 }

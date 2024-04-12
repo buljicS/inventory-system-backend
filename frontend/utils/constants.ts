@@ -5,6 +5,7 @@ import {
     TRegisterLoginInputs,
     TSlides,
     TSideBarLinks,
+    TWorkbenchCard,
 } from "./types";
 import {
     FacebookIcon,
@@ -16,6 +17,10 @@ import {
     RoomIcon,
     ItemIcon,
     DashboardIcon,
+    CompanyIcon,
+    ArchiveIcon,
+    TodoIcon,
+    UserIcon,
 } from "@/resources/icons";
 import { z } from "zod";
 import { SliderImage1, SliderImage2 } from "@/resources/images";
@@ -282,5 +287,42 @@ export const SIDEBAR_LINKS: TSideBarLinks[] = [
         link: "/dashboard/teams",
         label: "Team management",
         icon: TeamIcon,
+    },
+];
+
+export const WORKBENCH_CARDS: TWorkbenchCard[] = [
+    {
+        id: 1,
+        icon: TodoIcon,
+        title: "My tasks",
+        description:
+            "This card provides you with a comprehensive view of all tasks assigned specifically to you within our inventory management system.",
+        type: "tasks",
+    },
+    {
+        id: 2,
+        icon: ArchiveIcon,
+        title: "My archive",
+        description:
+            "This card serves as your repository for completed tasks and archived inventory data within our inventory management system.",
+        type: "archive",
+    },
+
+    {
+        id: 3,
+        icon: CompanyIcon,
+        title: "Change companies",
+        description:
+            "This card provides you with the ability to choose the company for which you want to manage inventory within our system. Select from a list of available companies or switch between multiple company profiles seamlessly.",
+        type: "company",
+    },
+
+    {
+        id: 4,
+        icon: UserIcon,
+        title: "Profile",
+        description:
+            "This card empowers you to manage your personal profile within our inventory management system. Take control of your professional identity by updating your profile picture, contact information, and other essential details with ease.",
+        type: "profile",
     },
 ];

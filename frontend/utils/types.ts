@@ -66,3 +66,16 @@ export type TForgotPasswordState = {
 export type TForgotPassword = {
     email: string;
 };
+
+export type TJwtUser = {
+    user: string;
+    role: string;
+};
+
+export type TWorkbenchCard = {
+    id: number;
+    icon: StaticImageData;
+    title: string;
+    description: string;
+    type: string;
+};
