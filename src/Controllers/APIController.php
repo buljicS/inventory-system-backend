@@ -34,7 +34,7 @@ class APIController
 	#region Main
 	public function Index(Request $request, Response $response): Response
 	{
-		$response->getBody()->write(file_get_contents('../pages/welcome_screen.html'));
+		$response->getBody()->write(file_get_contents('../templates/pages/welcome_screen.html'));
 		return $response;
 	}
 
