@@ -102,7 +102,8 @@ class UsersRepository
        				   worker_email, 
        				   role,
        				   registration_token,
-       				   registration_expires
+       				   registration_expires,
+       				   isActive
 				FROM workers
 				WHERE worker_email = :email";
 

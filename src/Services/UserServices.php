@@ -47,10 +47,17 @@ class UserServices
 				];
 			}
 
+			if($response[0]['isActive'] != 1) {
+				return [
+					'status' => '403',
+					'message' => 'Forbidden',
+					'description' => "Please activate your account!"
+				];
+			}
+
 			return [
 				'status' => '200',
 				'userEmail' => $cleanEmail,
-				'userPassword' => 1234567890,
 				'token' => $this->_helper->GenerateJWTToken("buljic77@gmail.com", "worker")
 			];
 		}
