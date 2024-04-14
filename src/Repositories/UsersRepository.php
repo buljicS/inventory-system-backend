@@ -47,6 +47,7 @@ class UsersRepository
 		$stmt->bindValue(':registration_token', $userData['exp_token']);
 		$stmt->bindValue(':registration_expires', $userData['timestamp']);
 		$stmt->execute();
+		$dbCon = null;
 	}
 
 	public function GetAllUsers(): ?array {
@@ -66,6 +67,7 @@ class UsersRepository
 
 		$stmt = $dbCon->prepare($sql);
 		$stmt->execute();
+		$dbCon = null;
 		return $stmt->fetchAll();
 	}
 
@@ -88,12 +90,14 @@ class UsersRepository
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':worker_id', $worker_id);
 		$stmt->execute();
+		$dbCon = null;
 		return $stmt->fetchAll();
 	}
 
 	public function GetUserByEmail(string $email): array | bool {
 		$dbCon = $this->_database->OpenConnection();
-		$sql = "SELECT worker_password,
+		$sql = "SELECT worker_id,
+    				   worker_password,
        				   worker_fname,
        				   worker_email, 
        				   role,
@@ -106,6 +110,7 @@ class UsersRepository
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':email', $email);
 		$stmt->execute();
+		$dbCon = null;
 		return $stmt->fetchAll();
 	}
 
@@ -120,6 +125,7 @@ class UsersRepository
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':token', $token);
 		$stmt->execute();
+		$dbCon = null;
 		return $stmt->fetchAll();
 	}
 
@@ -132,7 +138,22 @@ class UsersRepository
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':hash', $hash);
 		$stmt->execute();
+		$dbCon = null;
 		return $stmt->fetchAll();
+	}
+
+	public function InsertPasswordResetToken(int $worker_id, string $token, mixed $expTime):void
+	{
+		$dbCon = $this->_database->OpenConnection();
+		$sql = "UPDATE workers 
+				SET forgoten_password_token = $token AND forgoten_expires = :expTime
+				WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':token', $token);
+		$stmt->bindValue(':expTime', $expTime);
+		$stmt->bindValue(':worker_id', $worker_id);
+		$stmt->execute();
+		$dbCon = null;
 	}
 
 	public function UpdateUserStatus(string $token): string
@@ -152,7 +173,7 @@ class UsersRepository
 		$stmt = $dbCon->prepare($sql_del);
 		$stmt->bindValue(':token', $token);
 		$stmt->execute();
-
+		$dbCon = null;
 		return "Your account has been activated!";
 	}
 
@@ -165,6 +186,7 @@ class UsersRepository
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':token', $token);
 		$stmt->execute();
+		$dbCon = null;
 		return "Your activation token has expired, please submit registration again";
 	}
 
@@ -172,12 +194,28 @@ class UsersRepository
 	{
 		$dbCon = $this->_database->OpenConnection();
 		$sql = "UPDATE workers
-				SET worker_password = :password
+				SET worker_password = :password, 
+				    forgoten_password_token = NULL, 
+				    forgoten_password_expires = NULL
 				WHERE worker_id = :worker_id";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':password', $password);
 		$stmt->bindValue(':worker_id', $worker_id);
 		$stmt->execute();
+		$dbCon = null;
+	}
+
+	public function GetUserByPaswdToken(string $token): ?array
+	{
+		$dbCon = $this->_database->OpenConnection();
+		$sql = "SELECT worker_password
+		FROM workers
+		WHERE forgoten_password_expires = :token && forgoten_password_token <= NOW()";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':token', $token);
+		$stmt->execute();
+		$dbCon = null;
+		return $stmt->fetchAll();
 	}
 
 

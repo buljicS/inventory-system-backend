@@ -114,9 +114,12 @@ class UserServices
 			$user = $this->_userRepo->GetUserByEmail($cleanEmail);
 			if($user != null)
 			{
+				$token = $this->_helper->GenerateBasicToken(20);
+				$expTime = time() + 3600;
+				$this->_userRepo->InsertPasswordResetToken($user[0]['worker_id'], $token, $expTime);
 				$rawBody = file_get_contents('../templates/email/ResetMail.html');
 				$body = str_replace("{{userName}}", $user[0]['worker_fname'], $rawBody);
-				$link = "{$_ENV['MAIN_URL_BE']}api/Users/ResetPassword/{$user[0]['worker_password']}";
+				$link = "{$_ENV['MAIN_URL_FE']}/change-password?token={$token}";
 				$body = str_replace("{{resetPasswordLink}}", $link, $body);
 				$subject = "Reset your password";
 				$cc = null;
@@ -132,7 +135,6 @@ class UserServices
 		return [
 			'status' => '404',
 			'message' => 'Not found',
-			'description' => 'Please check your email and try again'
 		];
 	}
 
@@ -157,11 +159,11 @@ class UserServices
 		return 0;
 	}
 
-	public function ResetPassword(string $hash, string $newPassword):int
+	public function ResetPassword(string $token, string $newPassword):int
 	{
 		$password = password_hash($newPassword, PASSWORD_DEFAULT);
-		$user = $this->_userRepo->GetUserByHash($hash);
-		if($user != null) {
+		$user = $this->_userRepo->GetUserByPaswdToken($token);
+		if(!empty($user)) {
 			$this->_userRepo->UpdatePassword($password, $user[0]['worker_id']);
 			return 1;
 		}
