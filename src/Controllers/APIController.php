@@ -209,8 +209,39 @@ class APIController
 
 	}
 
+	/**
+	 * @OA\Post(
+	 *     path="/api/Users/ResetPassword",
+	 *     tags={"Users"},
+	 *     @OA\RequestBody(
+	 *         description="Provide new password with old hash",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *                 @OA\Property(
+	 *                     property="hash",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="newPassword",
+	 *                     type="string",
+	 *                     example="string"
+	 *                  ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 * )
+	 */
 	public function ResetPassword(Request $request, Response $response): Response
 	{
+		$requestBody = (array)$request->getParsedBody();
+		$actResponse = $this->_user->ResetPassword($requestBody['hash'], $requestBody['newPassword']);
 		return $response
 			->withHeader("Location", "{$_ENV['MAIN_URL_FE']}/login?status=$actResponse")
 			->withStatus(302);

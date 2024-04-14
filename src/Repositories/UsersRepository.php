@@ -123,6 +123,18 @@ class UsersRepository
 		return $stmt->fetchAll();
 	}
 
+	public function GetUserByHash(string $hash):?array
+	{
+		$dbCon = $this->_database->OpenConnection();
+		$sql = "SELECT worker_id, worker_password
+				FROM workers
+				WHERE worker_password = :hash";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':hash', $hash);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+
 	public function UpdateUserStatus(string $token): string
 	{
 		$dbCon = $this->_database->OpenConnection();
@@ -155,4 +167,18 @@ class UsersRepository
 		$stmt->execute();
 		return "Your activation token has expired, please submit registration again";
 	}
+
+	public function UpdatePassword(string $password, int $worker_id):void
+	{
+		$dbCon = $this->_database->OpenConnection();
+		$sql = "UPDATE workers
+				SET worker_password = :password
+				WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':password', $password);
+		$stmt->bindValue(':worker_id', $worker_id);
+		$stmt->execute();
+	}
+
+
 }

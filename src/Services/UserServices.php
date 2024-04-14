@@ -156,4 +156,15 @@ class UserServices
 		$delResp =  $this->_userRepo->DeleteExpiredUser($user[0]["registration_token"]);
 		return 0;
 	}
+
+	public function ResetPassword(string $hash, string $newPassword):int
+	{
+		$password = password_hash($newPassword, PASSWORD_DEFAULT);
+		$user = $this->_userRepo->GetUserByHash($hash);
+		if($user != null) {
+			$this->_userRepo->UpdatePassword($password, $user[0]['worker_id']);
+			return 1;
+		}
+		return 0;
+	}
 }
