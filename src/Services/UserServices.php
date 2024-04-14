@@ -140,7 +140,7 @@ class UserServices
 
 	public function SendConfirmationEmail(string $user_name, string $link, string $subject, string $emailTo):string
 	{
-		$rawbody = file_get_contents('../email/ActivateAccount.html');
+		$rawbody = file_get_contents('../templates/email/ActivateAccount.html');
 		$body = str_replace("{{userName}}", $user_name, $rawbody);
 		$body = str_replace("{{activateAccountLink}}", $link, $body);
 
