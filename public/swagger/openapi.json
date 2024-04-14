@@ -126,6 +126,39 @@
                     }
                 }
             }
+        },
+        "/api/Users/ResetPassword": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "02e941c7e9cf89f125f6c0ca88f47358",
+                "requestBody": {
+                    "description": "Provide new password with old hash",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "hash": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "newPassword": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
         }
     }
 }

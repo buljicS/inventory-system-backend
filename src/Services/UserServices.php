@@ -121,7 +121,7 @@ class UserServices
 				$subject = "Reset your password";
 				$cc = null;
 
-				$resp = $this->_email->SendEmail($body, $subject, $user['worker_email'], $cc);
+				$resp = $this->_email->SendEmail($body, $subject, $user[0]['worker_email'], $cc);
 				return [
 					'status' => '200',
 					'message' => 'Success',
