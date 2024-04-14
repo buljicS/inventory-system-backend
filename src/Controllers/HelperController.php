@@ -7,7 +7,7 @@ use Firebase\JWT\Key;
 
 class HelperController
 {
-	public function GenerateRegistrationToken(int $randomBytes):string
+	public function GenerateBasicToken(int $randomBytes):string
 	{
 		$bytes = random_bytes($randomBytes);
 		return bin2hex($bytes);

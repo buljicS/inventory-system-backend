@@ -6,8 +6,10 @@ namespace Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Services\UserServices as UserServices;
 use OpenApi\Generator as Generator;
+
+use Services\UserServices as UserServices;
+
 
 
 /**
@@ -32,7 +34,7 @@ class APIController
 	#region Main
 	public function Index(Request $request, Response $response): Response
 	{
-		$response->getBody()->write(file_get_contents('../views/welcome_screen.html'));
+		$response->getBody()->write(file_get_contents('../pages/welcome_screen.html'));
 		return $response;
 	}
 
@@ -205,6 +207,13 @@ class APIController
 			->withHeader("Location", "{$_ENV['MAIN_URL_FE']}/login?status=$actResponse")
 			->withStatus(302);
 
+	}
+
+	public function ResetPassword(Request $request, Response $response): Response
+	{
+		return $response
+			->withHeader("Location", "{$_ENV['MAIN_URL_FE']}/login?status=$actResponse")
+			->withStatus(302);
 	}
 	#endregion
 }

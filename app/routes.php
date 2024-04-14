@@ -17,6 +17,9 @@ return function (Slim $app) {
 	$app->post('/api/Users/LoginUser', [API::class, 'LoginUser']);
 	$app->post('/api/Users/RegisterUser', [API::class, 'RegisterUser']);
 	$app->post('/api/Users/SendPasswordResetEmail' , [API::class, 'SendPasswordResetMail']);
+	$app->post('/api/Users/ResetPassword' , [API::class, 'ResetPassword']);
 	$app->get('/api/Users/ActivateUserAccount/{token}', [API::class, 'ActivateUserAccount']);
 	#endregion
+
+
 };
