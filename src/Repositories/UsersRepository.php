@@ -209,9 +209,9 @@ class UsersRepository
 	public function GetUserByPaswdToken(string $token): ?array
 	{
 		$dbCon = $this->_database->OpenConnection();
-		$sql = "SELECT worker_password
-		FROM workers
-		WHERE forgoten_password_expires = :token && forgoten_password_token <= NOW()";
+		$sql = "SELECT worker_password, worker_id
+				FROM workers
+				WHERE forgoten_password_expires = :token && forgoten_password_token <= NOW()";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':token', $token);
 		$stmt->execute();
