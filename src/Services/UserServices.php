@@ -172,9 +172,9 @@ class UserServices
 			];
 		}
 		return [
-			'status' => 200,
-			'message' => 'Success',
-			'description' => 'Try again'
+			'status' => 404,
+			'message' => 'Not found',
+			'description' => 'This link is no longer active'
 		];
 	}
 }

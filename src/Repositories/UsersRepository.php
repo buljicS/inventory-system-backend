@@ -211,7 +211,7 @@ class UsersRepository
 		$dbCon = $this->_database->OpenConnection();
 		$sql = "SELECT worker_password, worker_id
 				FROM workers
-				WHERE forgoten_password_expires = :token && forgoten_password_token <= NOW()";
+				WHERE forgoten_password_token = :token && forgoten_password_expires <= NOW()";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':token', $token);
 		$stmt->execute();
