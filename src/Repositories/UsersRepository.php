@@ -146,7 +146,8 @@ class UsersRepository
 	{
 		$dbCon = $this->_database->OpenConnection();
 		$sql = "UPDATE workers 
-				SET forgoten_password_token = $token AND forgoten_expires = :expTime
+				SET forgoten_password_token = $token,
+				    forgoten_expires = :expTime
 				WHERE worker_id = :worker_id";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':token', $token);

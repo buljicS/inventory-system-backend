@@ -115,7 +115,7 @@ class UserServices
 			if($user != null)
 			{
 				$token = $this->_helper->GenerateBasicToken(20);
-				$expTime = time() + 3600;
+				$expTime = date('d-M-Y H:i:s',time() + 3600);
 				$this->_userRepo->InsertPasswordResetToken($user[0]['worker_id'], $token, $expTime);
 				$rawBody = file_get_contents('../templates/email/ResetMail.html');
 				$body = str_replace("{{userName}}", $user[0]['worker_fname'], $rawBody);
