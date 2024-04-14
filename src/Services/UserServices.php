@@ -159,14 +159,22 @@ class UserServices
 		return 0;
 	}
 
-	public function ResetPassword(string $token, string $newPassword):int
+	public function ResetPassword(string $token, string $newPassword):array
 	{
 		$password = password_hash($newPassword, PASSWORD_DEFAULT);
 		$user = $this->_userRepo->GetUserByPaswdToken($token);
 		if(!empty($user)) {
 			$this->_userRepo->UpdatePassword($password, $user[0]['worker_id']);
-			return 1;
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'Your password has been changed successfully'
+			];
 		}
-		return 0;
+		return [
+			'status' => 200,
+			'message' => 'Success',
+			'description' => 'Try again'
+		];
 	}
 }

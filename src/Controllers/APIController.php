@@ -242,9 +242,9 @@ class APIController
 	{
 		$requestBody = (array)$request->getParsedBody();
 		$actResponse = $this->_user->ResetPassword($requestBody['hash'], $requestBody['newPassword']);
+		$response->getBody()->write(json_encode($actResponse));
 		return $response
-			->withHeader("Location", "{$_ENV['MAIN_URL_FE']}/login?status=$actResponse")
-			->withStatus(302);
+			->withHeader("Content-type", "application/json");
 	}
 	#endregion
 }
