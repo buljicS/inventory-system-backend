@@ -22,13 +22,12 @@ const Logout = () => {
 
     return (
         <div className={styles.user_logout}>
-            <div className={styles.user_logout_icon}>
+            <div className={styles.user_logout_icon} onClick={onOpen}>
                 <Image
                     src={PowerIcon}
                     alt="Logout icon"
                     width={30}
                     height={30}
-                    onClick={onOpen}
                     loading="lazy"
                 />
             </div>
@@ -59,7 +58,7 @@ const Logout = () => {
                             colorScheme="blue"
                             onClick={() => {
                                 setIsLoading(true);
-                                sessionStorage.removeItem("bearer");
+                                sessionStorage.removeItem("user");
                                 router.push("/");
                             }}
                             minWidth="80px"

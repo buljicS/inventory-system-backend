@@ -12,3 +12,7 @@ export { default as DashboardIcon } from "./dashboard.png";
 export { default as ShowPasswordIcon } from "./show-password.png";
 export { default as HidePasswordIcon } from "./hide-password.png";
 export { default as ErrorIcon } from "./error.png";
+export { default as CompanyIcon } from "./building.png";
+export { default as ArchiveIcon } from "./archive.png";
+export { default as TodoIcon } from "./todo.png";
+export { default as UserIcon } from "./user.png";

@@ -1,5 +1,5 @@
 import styles from "./LoginForm.module.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import { LOGIN_SCHEMA, FORGOT_PASSWORD_SCHEMA } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +9,7 @@ import {
     TLoginData,
     TForgotPassword,
     TForgotPasswordState,
+    TJwtUser,
 } from "@/utils/types";
 import { useToast } from "@chakra-ui/react";
 import { userAtom } from "@/utils/atoms";
@@ -17,6 +18,9 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FormInput } from "@/components";
 import Spinner from "react-bootstrap/Spinner";
+import { useSearchParams } from "next/navigation";
+import { userActionMessages } from "@/utils/functions";
+import { jwtDecode } from "jwt-decode";
 
 const LoginForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,6 +33,12 @@ const LoginForm = () => {
 
     const toast = useToast();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const userActions = searchParams.get("status");
+
+    useEffect(() => {
+        userActionMessages(toast, userActions);
+    }, []);
 
     const {
         register: loginRegister,
@@ -55,12 +65,19 @@ const LoginForm = () => {
             switch (response.data.status) {
                 case "200":
                     setIsLoading(true);
-                    sessionStorage.setItem("bearer", response.data.token);
+                    const userInformation = jwtDecode(
+                        response.data.token
+                    ) as TJwtUser;
+                    sessionStorage.setItem("user", userInformation.user);
                     setUser((prev) => ({
                         ...prev,
                         approveLogin: true,
                     }));
-                    router.push("/dashboard");
+                    const redirectTo =
+                        userInformation.role === "worker"
+                            ? "/workbench"
+                            : "/dashboard";
+                    router.push(redirectTo);
                     break;
 
                 case "401":
