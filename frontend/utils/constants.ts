@@ -2,10 +2,9 @@ import {
     TFooterSocialMedias,
     TIndexCards,
     TNavFooterLinks,
-    TRegisterLoginInputs,
+    TInputs,
     TSlides,
     TSideBarLinks,
-    TWorkbenchCard,
 } from "./types";
 import {
     FacebookIcon,
@@ -17,15 +16,13 @@ import {
     RoomIcon,
     ItemIcon,
     DashboardIcon,
-    CompanyIcon,
     ArchiveIcon,
     TodoIcon,
-    UserIcon,
 } from "@/resources/icons";
 import { z } from "zod";
 import { SliderImage1, SliderImage2 } from "@/resources/images";
 
-export const REGISTER_INPUTS: TRegisterLoginInputs[] = [
+export const REGISTER_INPUTS: TInputs[] = [
     {
         id: 1,
         label: "First name",
@@ -66,11 +63,11 @@ export const REGISTER_INPUTS: TRegisterLoginInputs[] = [
         label: "Phone number",
         name: "phoneNumber",
         type: "text",
-        placeholder: "Phone number",
+        placeholder: "Enter your phone number",
     },
 ];
 
-export const LOGIN_INPUTS: TRegisterLoginInputs[] = [
+export const LOGIN_INPUTS: TInputs[] = [
     {
         id: 1,
         label: "E-mail",
@@ -87,7 +84,25 @@ export const LOGIN_INPUTS: TRegisterLoginInputs[] = [
     },
 ];
 
-export const FORGOT_PASSWORD_INPUT: TRegisterLoginInputs = {
+export const CHANGE_PASSWORD_INPUTS: TInputs[] = [
+    {
+        id: 1,
+        label: "New password",
+        name: "newPassword",
+        type: "password",
+        placeholder: "Enter your new password",
+    },
+
+    {
+        id: 2,
+        label: "Repeat new password",
+        name: "repeatNewPassword",
+        type: "password",
+        placeholder: "Repeat your new password",
+    },
+];
+
+export const FORGOT_PASSWORD_INPUT: TInputs = {
     id: 1,
     label: "E-mail",
     name: "email",
@@ -260,7 +275,37 @@ export const FORGOT_PASSWORD_SCHEMA = z.object({
     email: z.string().email("Email is not valid."),
 });
 
-export const SIDEBAR_LINKS: TSideBarLinks[] = [
+export const CHANGE_PASSWORD_SCHEMA = z
+    .object({
+        newPassword: z
+            .string()
+            .regex(
+                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                {
+                    message:
+                        "Your password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.",
+                }
+            ),
+        repeatNewPassword: z.string(),
+    })
+    .refine((data) => data.newPassword === data.repeatNewPassword, {
+        message: "Passwords don't match.",
+        path: ["repeatNewPassword"],
+    });
+
+export const PROFILE_INFORMATION_SCHEMA = z.object({
+    firstName: z.string().min(3, {
+        message: "First name must have at least three characters.",
+    }),
+    lastName: z.string().min(3, {
+        message: "Last name must have at least three characters.",
+    }),
+    phoneNumber: z.string().regex(/^\+(?:\d\s?){10,14}\d$/, {
+        message: "Phone number must start with a '+' symbol.",
+    }),
+});
+
+export const SIDEBAR_LINKS_EMPLOYER: TSideBarLinks[] = [
     {
         id: 1,
         link: "/dashboard",
@@ -290,39 +335,55 @@ export const SIDEBAR_LINKS: TSideBarLinks[] = [
     },
 ];
 
-export const WORKBENCH_CARDS: TWorkbenchCard[] = [
+export const SIDEBAR_LINKS_WORKER: TSideBarLinks[] = [
     {
         id: 1,
-        icon: TodoIcon,
-        title: "My tasks",
-        description:
-            "This card provides you with a comprehensive view of all tasks assigned specifically to you within our inventory management system.",
-        type: "tasks",
+        link: "/dashboard",
+        label: "Dashboard",
+        icon: DashboardIcon,
     },
     {
         id: 2,
-        icon: ArchiveIcon,
-        title: "My archive",
-        description:
-            "This card serves as your repository for completed tasks and archived inventory data within our inventory management system.",
-        type: "archive",
+        link: "/dashboard/tasks",
+        label: "My tasks",
+        icon: TodoIcon,
     },
-
     {
         id: 3,
-        icon: CompanyIcon,
-        title: "Change companies",
-        description:
-            "This card provides you with the ability to choose the company for which you want to manage inventory within our system. Select from a list of available companies or switch between multiple company profiles seamlessly.",
-        type: "company",
+        link: "/dashboard/archive",
+        label: "My archive",
+        icon: ArchiveIcon,
+    },
+];
+
+export const PROFILE_FORM_INPUTS: TInputs[] = [
+    {
+        id: 1,
+        name: "firstName",
+        label: "First name",
+        type: "text",
+        placeholder: "Your first name",
+    },
+    {
+        id: 2,
+        name: "lastName",
+        label: "Last name",
+        type: "text",
+        placeholder: "Your last name",
+    },
+    {
+        id: 3,
+        name: "phoneNumber",
+        label: "Phone number",
+        type: "text",
+        placeholder: "Your phone number",
     },
 
     {
         id: 4,
-        icon: UserIcon,
-        title: "Profile",
-        description:
-            "This card empowers you to manage your personal profile within our inventory management system. Take control of your professional identity by updating your profile picture, contact information, and other essential details with ease.",
-        type: "profile",
+        name: "company",
+        label: "Company",
+        type: "select",
+        placeholder: null,
     },
 ];

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Logo } from "@/resources/images";
 import { useState } from "react";
 import { Turn as Hamburger } from "hamburger-react";
-import { Logout, SideBarNavigation } from "@/components";
+import { Logout, ProfileSideBar, SideBarNavigation } from "@/components";
 
 const SideBar = () => {
     const [showSideBar, setShowSideBar] = useState(false);
@@ -34,18 +34,17 @@ const SideBar = () => {
                         size={25}
                     />
                 </div>
-                <div className={styles.sidebar_logo}>
-                    <Image
-                        src={Logo}
-                        alt="logo"
-                        height={150}
-                        width={150}
-                        loading="lazy"
-                    />
+
+                <div className={styles.sidebar_top}>
+                    <div className={styles.sidebar_top_profile}>
+                        <ProfileSideBar />
+                    </div>
+
+                    <div className={styles.sidebar_top_links}>
+                        <SideBarNavigation />
+                    </div>
                 </div>
-                <div className={styles.sidebar_links}>
-                    <SideBarNavigation />
-                </div>
+
                 <div className={styles.sidebar_bottom}>
                     <div className={styles.sidebar_bottom_user}>
                         <Logout />

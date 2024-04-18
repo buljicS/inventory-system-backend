@@ -68,16 +68,29 @@ const LoginForm = () => {
                     const userInformation = jwtDecode(
                         response.data.token
                     ) as TJwtUser;
-                    sessionStorage.setItem("user", userInformation.user);
+                    userInformation.jwt = response.data.token;
+                    sessionStorage.setItem(
+                        "user",
+                        JSON.stringify(userInformation)
+                    );
                     setUser((prev) => ({
                         ...prev,
                         approveLogin: true,
                     }));
-                    const redirectTo =
-                        userInformation.role === "worker"
-                            ? "/workbench"
-                            : "/dashboard";
-                    router.push(redirectTo);
+
+                    router.push("/dashboard");
+                    break;
+
+                case "403":
+                    toast({
+                        title: "Status",
+                        description: response.data.description,
+                        status: "error",
+                        duration: 3000,
+                        isClosable: true,
+                        position: "top-right",
+                    });
+                    setIsLoading(false);
                     break;
 
                 case "401":

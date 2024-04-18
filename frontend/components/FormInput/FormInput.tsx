@@ -14,7 +14,13 @@ const FormInput = ({ input, errors, register }) => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const { isOpen, onOpen, onToggle, onClose } = useDisclosure();
 
-    return (
+    const checkInputPassword =
+        (errors.password && input.name === "password") ||
+        (errors.repeatPassword && input.name === "repeatPassword") ||
+        (errors.newPassword && input.name === "newPassword") ||
+        (errors.repeatNewPassword && input.name === "repeatNewPassword");
+
+    return input.type !== "select" ? (
         <Form.Group
             className="mb-3"
             controlId={"FormInput " + input.id}
@@ -36,13 +42,7 @@ const FormInput = ({ input, errors, register }) => {
                             setShowPassword((prev) => !prev);
                         }}
                         style={{
-                            right:
-                                (errors.password &&
-                                    input.name === "password") ||
-                                (errors.repeatPassword &&
-                                    input.name === "repeatPassword")
-                                    ? "55px"
-                                    : "15px",
+                            right: checkInputPassword ? "55px" : "15px",
                         }}
                     >
                         {showPassword ? (
@@ -84,6 +84,17 @@ const FormInput = ({ input, errors, register }) => {
                     )}
                 </div>
             </div>
+        </Form.Group>
+    ) : (
+        <Form.Group
+            className="mb-3"
+            controlId={"FormInput " + input.id}
+            key={input.id}
+        >
+            <Form.Label>{input.label}</Form.Label>
+            <Form.Select>
+                <option>Large select</option>
+            </Form.Select>
         </Form.Group>
     );
 };
