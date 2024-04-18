@@ -92,9 +92,36 @@ const FormInput = ({ input, errors, register }) => {
             key={input.id}
         >
             <Form.Label>{input.label}</Form.Label>
-            <Form.Select>
-                <option>Large select</option>
-            </Form.Select>
+            <div className={styles.input}>
+                <Form.Select multiple {...register(input.name)}>
+                    <option>Company one</option>
+                    <option>Company two</option>
+                    <option>Company three</option>
+                </Form.Select>
+                <div
+                    className={`${styles.input_error} ${styles.input_error_select}`}
+                >
+                    {errors[input.name] && (
+                        <Tooltip
+                            label={errors[input.name].message}
+                            fontSize="sm"
+                            bg="red.600"
+                            textAlign="center"
+                            isOpen={isOpen}
+                        >
+                            <Image
+                                src={ErrorIcon}
+                                width={20}
+                                height={20}
+                                alt="Error"
+                                onMouseEnter={onOpen}
+                                onMouseLeave={onClose}
+                                onClick={onToggle}
+                            />
+                        </Tooltip>
+                    )}
+                </div>
+            </div>
         </Form.Group>
     );
 };

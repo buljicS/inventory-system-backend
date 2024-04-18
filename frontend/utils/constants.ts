@@ -303,6 +303,9 @@ export const PROFILE_INFORMATION_SCHEMA = z.object({
     phoneNumber: z.string().regex(/^\+(?:\d\s?){10,14}\d$/, {
         message: "Phone number must start with a '+' symbol.",
     }),
+    company: z.array(z.string()).min(1, {
+        message: "At least one company must be selected.",
+    }),
 });
 
 export const SIDEBAR_LINKS_EMPLOYER: TSideBarLinks[] = [
