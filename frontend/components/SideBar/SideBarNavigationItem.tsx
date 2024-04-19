@@ -12,25 +12,25 @@ const SideBarNavigationItem = ({ route }) => {
     }, [link, route.link]);
 
     return (
-        <div
-            className={`${styles.sidebar_navigation_item} ${
-                isActive ? styles.sidebar_active : ""
-            }`}
-        >
-            <div>
-                <Image
-                    src={route.icon}
-                    alt="Navigation icon"
-                    width={30}
-                    height={30}
-                    loading="lazy"
-                />
-            </div>
+        <Link href={route.link}>
+            <div
+                className={`${styles.sidebar_navigation_item} ${
+                    isActive ? styles.sidebar_active : ""
+                }`}
+            >
+                <div>
+                    <Image
+                        src={route.icon}
+                        alt="Navigation icon"
+                        width={30}
+                        height={30}
+                        loading="lazy"
+                    />
+                </div>
 
-            <div>
-                <Link href={route.link}>{route.label}</Link>
+                <span>{route.label}</span>
             </div>
-        </div>
+        </Link>
     );
 };
 

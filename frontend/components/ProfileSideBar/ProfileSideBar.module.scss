@@ -1,0 +1,22 @@
+.profile {
+    display: flex;
+    gap: 16px;
+
+    &_info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        &_name {
+            color: #fff;
+            font-size: 1.2rem;
+
+            &_active {
+                font-weight: 700;
+            }
+        }
+        &_mail {
+            color: #a6b0bf;
+            font-size: 0.9rem;
+        }
+    }
+}

@@ -1,11 +1,11 @@
 import { StaticImageData } from "next/image";
 
-export type TRegisterLoginInputs = {
+export type TInputs = {
     id: number;
     label: string;
     name: string;
     type: string;
-    placeholder: string;
+    placeholder: string | null;
 };
 
 export type TRegisterData = {
@@ -20,6 +20,12 @@ export type TRegisterData = {
 export type TLoginData = {
     email: string;
     password: string;
+};
+
+export type TForgotPasswordData = {
+    newPassword: string;
+    repeatNewPassword: string;
+    hash: string | null;
 };
 
 export type TNavFooterLinks = {
@@ -70,6 +76,7 @@ export type TForgotPassword = {
 export type TJwtUser = {
     user: string;
     role: string;
+    jwt: string;
 };
 
 export type TWorkbenchCard = {
@@ -78,4 +85,11 @@ export type TWorkbenchCard = {
     title: string;
     description: string;
     type: string;
+};
+
+export type TProfileData = {
+    fname: string;
+    lname: string;
+    phoneNumber: string;
+    company: string;
 };

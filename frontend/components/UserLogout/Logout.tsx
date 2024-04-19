@@ -59,6 +59,7 @@ const Logout = () => {
                             onClick={() => {
                                 setIsLoading(true);
                                 sessionStorage.removeItem("user");
+                                sessionStorage.removeItem("role");
                                 router.push("/");
                             }}
                             minWidth="80px"

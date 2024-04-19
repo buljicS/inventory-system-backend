@@ -16,3 +16,4 @@ export { default as CompanyIcon } from "./building.png";
 export { default as ArchiveIcon } from "./archive.png";
 export { default as TodoIcon } from "./todo.png";
 export { default as UserIcon } from "./user.png";
+export { default as PersonalData } from "./personal-data.png";

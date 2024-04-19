@@ -1,0 +1,9 @@
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    &_input {
+        flex: calc(50% - 16px);
+    }
+}

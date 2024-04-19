@@ -14,7 +14,13 @@ const FormInput = ({ input, errors, register }) => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const { isOpen, onOpen, onToggle, onClose } = useDisclosure();
 
-    return (
+    const checkInputPassword =
+        (errors.password && input.name === "password") ||
+        (errors.repeatPassword && input.name === "repeatPassword") ||
+        (errors.newPassword && input.name === "newPassword") ||
+        (errors.repeatNewPassword && input.name === "repeatNewPassword");
+
+    return input.type !== "select" ? (
         <Form.Group
             className="mb-3"
             controlId={"FormInput " + input.id}
@@ -36,13 +42,7 @@ const FormInput = ({ input, errors, register }) => {
                             setShowPassword((prev) => !prev);
                         }}
                         style={{
-                            right:
-                                (errors.password &&
-                                    input.name === "password") ||
-                                (errors.repeatPassword &&
-                                    input.name === "repeatPassword")
-                                    ? "55px"
-                                    : "15px",
+                            right: checkInputPassword ? "55px" : "15px",
                         }}
                     >
                         {showPassword ? (
@@ -63,6 +63,44 @@ const FormInput = ({ input, errors, register }) => {
                     </div>
                 )}
                 <div className={styles.input_error}>
+                    {errors[input.name] && (
+                        <Tooltip
+                            label={errors[input.name].message}
+                            fontSize="sm"
+                            bg="red.600"
+                            textAlign="center"
+                            isOpen={isOpen}
+                        >
+                            <Image
+                                src={ErrorIcon}
+                                width={20}
+                                height={20}
+                                alt="Error"
+                                onMouseEnter={onOpen}
+                                onMouseLeave={onClose}
+                                onClick={onToggle}
+                            />
+                        </Tooltip>
+                    )}
+                </div>
+            </div>
+        </Form.Group>
+    ) : (
+        <Form.Group
+            className="mb-3"
+            controlId={"FormInput " + input.id}
+            key={input.id}
+        >
+            <Form.Label>{input.label}</Form.Label>
+            <div className={styles.input}>
+                <Form.Select multiple {...register(input.name)}>
+                    <option>Company one</option>
+                    <option>Company two</option>
+                    <option>Company three</option>
+                </Form.Select>
+                <div
+                    className={`${styles.input_error} ${styles.input_error_select}`}
+                >
                     {errors[input.name] && (
                         <Tooltip
                             label={errors[input.name].message}
