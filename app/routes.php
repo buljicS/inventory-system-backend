@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Slim\App as Slim;
 use Controllers\APIController as API;
-use Slim\Routing\RouteCollectorProxy as RouteCollector;
+
 
 return function (Slim $app) {
 
@@ -14,6 +14,7 @@ return function (Slim $app) {
 	#endregion
 
 	#region Users
+	$app->get('/api/Users/SayHi', [Controllers\APIController::class, 'SayHi']);
 	$app->post('/api/Users/LoginUser', [API::class, 'LoginUser']);
 	$app->post('/api/Users/RegisterUser', [API::class, 'RegisterUser']);
 	$app->post('/api/Users/SendPasswordResetEmail' , [API::class, 'SendPasswordResetMail']);

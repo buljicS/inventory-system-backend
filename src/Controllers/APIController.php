@@ -198,6 +198,12 @@ class APIController
 			->withStatus(200);
 	}
 
+	/**
+	 * @OA\Get(
+	 *     path="/api/Users/SayHi",
+	 *     @OA\Response(response="200", description="An example resource")
+	 * )
+	 */
 	public function ActivateUserAccount(Request $request, Response $response, array $args): Response
 	{
 		$token = $args['token'];
@@ -245,6 +251,13 @@ class APIController
 		$response->getBody()->write(json_encode($actResponse));
 		return $response
 			->withHeader("Content-type", "application/json");
+	}
+
+	public function SayHi(Request $request, Response $response): Response
+	{
+		$response->getBody()->write(json_encode("Hi"));
+		return $response
+			->withHeader('Content-type', 'application/json');
 	}
 	#endregion
 }

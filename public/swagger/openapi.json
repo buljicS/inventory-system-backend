@@ -127,6 +127,16 @@
                 }
             }
         },
+        "/api/Users/SayHi": {
+            "get": {
+                "operationId": "af69bf9b88a4efce35fa817069488573",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                }
+            }
+        },
         "/api/Users/ResetPassword": {
             "post": {
                 "tags": [

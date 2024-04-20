@@ -12,7 +12,6 @@ use Services\EmailServices as EmailServices;
 
 class UserServices
 {
-
 	private UsersRepository $_userRepo;
 	private EmailServices $_email;
 	private HelperController $_helper;

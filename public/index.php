@@ -1,32 +1,12 @@
 <?php
 
-use Controllers\APIController as API;
-use Middleware\JsonBodyParserMiddleware;
 use Selective\BasePath\BasePathMiddleware;
+use Tuupola\Middleware\CorsMiddleware as CORSMiddleware;
 use Slim\Factory\AppFactory;
 use Dotenv\Dotenv as dotSetup;
 use DI\Container;
-use Tuupola\Middleware\CorsMiddleware as Cors;
 
 require __DIR__ . '/../vendor/autoload.php';
-
-#region cors
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-	header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-	header('Access-Control-Allow-Credentials: true');
-	header('Access-Control-Max-Age: 86400');    // cache for 1 day
-}
-// Access-Control headers are received during OPTIONS requests
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-
-	if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-		header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-
-	if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-		header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-
-}
-#endregion
 
 #region loadenv
 $dEnv = dotSetup::createImmutable(__DIR__ . '/../');
@@ -40,17 +20,32 @@ AppFactory::setContainer($container);
 
 $app = AppFactory::create();
 
-#region dependencies
-$routes = require '../app/routes.php';
-$routes($app);
-#endregion
-
 #region bootstrap
-$app->add(new JsonBodyParserMiddleware());
 $app->addBodyParsingMiddleware();
 $app->add(new BasePathMiddleware($app));
 $app->addRoutingMiddleware();
+$app->add(new CORSMiddleware ([
+	"origin" => ["http://localhost:3000"],
+	"methods" => ["GET", "POST", "PUT", "PATCH", "DELETE"],
+	"headers.allow" => ["Origin", "Authorization", "X-Requested-With", "Content-Type", "Accept"],
+	"origin.server" => "http://www.insystem-api.localhost/",
+	"headers.expose" => [],
+	"credentials" => false,
+	"cache" => 0,
+	"error" => function ($request, $response, $arguments) {
+		$data["status"] = "error";
+		$data["message"] = $arguments["message"];
+		return $response
+			->withHeader("Content-Type", "application/json")
+			->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	}
+]));
 $app->addErrorMiddleware(true, true, true);
+#endregion
+
+#region dependencies
+$routes = require '../app/routes.php';
+$routes($app);
 #endregion
 
 $app->run();

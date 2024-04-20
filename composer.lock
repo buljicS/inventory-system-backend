@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "75f741b4cde1009b38eea5f8a2747c13",
+    "content-hash": "6d003dfe1ef6203bb186ffb1f2533231",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2268,76 +2268,6 @@
                 }
             ],
             "time": "2021-09-14T12:46:25+00:00"
-        },
-        {
-            "name": "tuupola/slim-jwt-auth",
-            "version": "3.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tuupola/slim-jwt-auth.git",
-                "reference": "7829d4482034e9eb5e051f3a1619db0c704ba7e7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tuupola/slim-jwt-auth/zipball/7829d4482034e9eb5e051f3a1619db0c704ba7e7",
-                "reference": "7829d4482034e9eb5e051f3a1619db0c704ba7e7",
-                "shasum": ""
-            },
-            "require": {
-                "firebase/php-jwt": "^3.0|^4.0|^5.0",
-                "php": "^7.4|^8.0",
-                "psr/http-message": "^1.0|^2.0",
-                "psr/http-server-middleware": "^1.0",
-                "psr/log": "^1.0|^2.0|^3.0",
-                "tuupola/callable-handler": "^1.0",
-                "tuupola/http-factory": "^1.3"
-            },
-            "require-dev": {
-                "equip/dispatch": "^2.0",
-                "laminas/laminas-diactoros": "^2.0|^3.0",
-                "overtrue/phplint": "^1.0",
-                "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^7.0|^8.5.30|^9.0",
-                "squizlabs/php_codesniffer": "^3.7"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-3.x": "3.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Tuupola\\Middleware\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mika Tuupola",
-                    "email": "tuupola@appelsiini.net",
-                    "homepage": "https://appelsiini.net/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PSR-7 and PSR-15 JWT Authentication Middleware",
-            "homepage": "https://github.com/tuupola/slim-jwt-auth",
-            "keywords": [
-                "auth",
-                "json",
-                "jwt",
-                "middleware",
-                "psr-15",
-                "psr-7"
-            ],
-            "support": {
-                "issues": "https://github.com/tuupola/slim-jwt-auth/issues",
-                "source": "https://github.com/tuupola/slim-jwt-auth/tree/3.8.0"
-            },
-            "time": "2023-10-20T09:51:26+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

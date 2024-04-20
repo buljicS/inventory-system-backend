@@ -1,4 +1,5 @@
-# Installation of Swagger-PHP step-by-step
+[< Go Back](../README.md)
+# Installation of Swagger-PHP step by step
 
 
 ### 1. Install dependencies
@@ -27,12 +28,12 @@
   echo 'Done, check root folder of this script for .json docs';
 
 ```
-> Note: `['/path/to/project']` is path where your `Controller.php` class is stored, you can enter relative path here
+> Note: `['/path/to/project']` is path where your `Controller.php` class is stored or where all of your controllers are stored, usually something like `src/App/Controllers` or `src/Controllers`
 
 <hr>
 	
 ### 3. Configure Controller.php
-- First, add proper namespace to your class, for example, for Controller.php namespace would be `namespace Controller`
+- First, add proper namespace to your class, for example, if your Controller.php is in `Controllers` folder namespace would be `namespace Controllers`
 - Configure `using` for annotations like `use OpenApi\Annotations as OA;`
 - Add `@OA\Info` annotation to your controller
 - Same goes for every method in your controller, add proper annotations `@OA\Get` and `@OA\Response`
@@ -74,7 +75,7 @@
     {
       "autoload": {
         "psr-4": {
-          "Controller\\": "./controllers/"
+          "Controllers\\": "./controllers/"
         }
     },
     "require": {
@@ -88,10 +89,11 @@
 - Open `generate-docs.php` from your web server, you should end up with message `Done, check root folder of this script for .json docs`
 - Whenever you want to override current documentation (json) , just visit `generate-docs.php` page
 - Now you should be able to see `swagger-docs.json` inside of `documentation` folder
-  
-> Note: In the time of writing this solution, latest stable version of swagger-php is `4.8.3` and Swagger-UI is at `5.11.0`, while PHP version used in this project is `PHP 8.2`
+- NOTE: You can tell autoloader to look for controllers in whole dir, for example `"": "./src/"`
+> Note: In the time of writing this solution, latest stable version of swagger-php is `4.8.7` and Swagger-UI is at `5.11.0`, while PHP version used in this project is `PHP 8.2`
 
 <hr>
+
 
 ### 5. Setup Swagger-UI
 - Now when we have swagger docs generated, we need to show them in swagger-ui
@@ -119,13 +121,11 @@
   };
   ```
 - That's it, now visit `localhost/yourproject/documentation/swagger/`
-  
-![image](https://github.com/buljicS/inventory-system/assets/124562282/0349de62-8cea-4b3e-8407-f9a8bac2f0d1)
 
 <hr>
 
 ### 6. Auto-generate new docs
-- Until this moment, we had to visit `generate-docs.php` file if we wanted to generate or override .json docs
+- Until now, we had to visit `generate-docs.php` file if we wanted to generate or override .json docs
 - This can be automatized
 - First, rename `documentation` folder to `swagger`
 - `swagger/swagger` folder rename to `ui`
@@ -152,6 +152,11 @@
 <hr>
 
 ### 7. Possible errors
+
+#### 0. Check if all dependencies are installed
+- Some errors could be triggered if some dep are not installed
+- In my case, I forgot to install `composer require doctrine/annotations` and even tho I had everything set up, annotations didn't work
+
 #### 1. Warning: Skipping unknown \Class ... at line 31
 - https://github.com/zircote/swagger-php/issues/1136
 - http://zircote.github.io/swagger-php/guide/faq.html#skipping-unknown-someclass
