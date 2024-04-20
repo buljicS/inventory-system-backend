@@ -31,14 +31,7 @@ $app->add(new CORSMiddleware ([
 	"origin.server" => "http://www.insystem-api.localhost/",
 	"headers.expose" => [],
 	"credentials" => false,
-	"cache" => 0,
-	"error" => function ($request, $response, $arguments) {
-		$data["status"] = "error";
-		$data["message"] = $arguments["message"];
-		return $response
-			->withHeader("Content-Type", "application/json")
-			->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-	}
+	"cache" => 0
 ]));
 $app->addErrorMiddleware(true, true, true);
 #endregion
