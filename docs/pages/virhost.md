@@ -11,6 +11,8 @@
 - Open up `httpd.conf` file (apache)
 - Look for `Include conf/extra/httpd-vhosts.conf` line
   - Uncomment it if its commented
+
+### Setup localhost domain
 - Open `httpd-vhosts.conf` file and setup your custom domain
 
 ```apacheconf
@@ -25,7 +27,9 @@
 ```
 
 - Now restart apache server and visit `myproject.localhost` on your browser
-- This would be the usual way to setup project on localhost, but let's say that we want to setup cusom domain like .com, .org. .local, etc
+
+### Setup custom domain
+- This would be the usual way to set up project on localhost, but let's say that we want to set up custom domain like .com, .org. .local, etc
 - This would require one more step
 - We need to add this domain in our hosts file
 - `127.0.0.1     myproject.com`
@@ -43,3 +47,9 @@
 ```
 
 - That's it, restart apache and visit `myproject.com`
+
+> Note: Setting up `.dev` domain requires signed http (SSL certificate)
+
+<hr>
+
+[< Go Back](../README.md)
