@@ -25,10 +25,10 @@ $app->addBodyParsingMiddleware();
 $app->add(new BasePathMiddleware($app));
 $app->addRoutingMiddleware();
 $app->add(new CORSMiddleware ([
-	"origin" => ["http://localhost:3000"],
+	"origin" => ["{$_ENV['MAIN_URL_FE']}"],
 	"methods" => ["GET", "POST", "PUT", "PATCH", "DELETE"],
 	"headers.allow" => ["Origin", "Authorization", "X-Requested-With", "Content-Type", "Accept"],
-	"origin.server" => "http://www.insystem-api.localhost/",
+	"origin.server" => "{$_ENV['MAIN_URL_BE']}",
 	"headers.expose" => [],
 	"credentials" => false,
 	"cache" => 0

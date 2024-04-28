@@ -18,7 +18,7 @@ class DatabaseController
 	 */
 	public function OpenConnection(): PDO
     {
-        $dsn = "mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']};charset={$_ENV['DB_CHARSET']}";
+        $dsn = "{$_ENV['DB_DRIVER']}:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']};charset={$_ENV['DB_CHARSET']}";
 
         try {
             return new PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASSWORD'], [
@@ -27,7 +27,7 @@ class DatabaseController
 				PDO::ATTR_EMULATE_PREPARES => false
             ]);
         } catch (Exception $ex) {
-            throw new Exception($ex->getMessage());
+            throw new Exception(json_encode($ex->getMessage()));
         }
     }
 }

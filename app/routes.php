@@ -14,7 +14,6 @@ return function (Slim $app) {
 	#endregion
 
 	#region Users
-	$app->get('/api/Users/SayHi', [Controllers\APIController::class, 'SayHi']);
 	$app->post('/api/Users/LoginUser', [API::class, 'LoginUser']);
 	$app->post('/api/Users/RegisterUser', [API::class, 'RegisterUser']);
 	$app->post('/api/Users/SendPasswordResetEmail' , [API::class, 'SendPasswordResetMail']);

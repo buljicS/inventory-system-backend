@@ -22,6 +22,7 @@
         "php-di/php-di": "^7.0",
         "doctrine/annotations": "^2.0",
         "firebase/php-jwt": "^5.5",
-        "tuupola/cors-middleware": "^1.4"
+        "tuupola/cors-middleware": "^1.4",
+        "vlucas/valitron": "^1.4"
     }
 }

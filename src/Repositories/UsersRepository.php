@@ -13,7 +13,7 @@ class UsersRepository
 		$this->_database = $database;
 	}
 
-	public function CreateNewUser(array $userData):void
+	public function CreateNewUser(array $userData):bool
 	{
 		$dbCon = $this->_database->OpenConnection();
 
@@ -46,52 +46,9 @@ class UsersRepository
 		$stmt->bindValue(':role', $userData['role']);
 		$stmt->bindValue(':registration_token', $userData['exp_token']);
 		$stmt->bindValue(':registration_expires', $userData['timestamp']);
-		$stmt->execute();
 		$dbCon = null;
-	}
+		return $stmt->execute();
 
-	public function GetAllUsers(): ?array {
-		$dbCon = $this->_database->OpenConnection();
-
-		$sql = "SELECT worker_id, 
-       				   worker_fname, 
-       				   worker_lname, 
-       				   phone_number, 
-       				   worker_email, 
-       				   picture_id, 
-       				   company_id, 
-       				   role, 
-       				   date_created, 
-       				   isActive 
-				FROM workers";
-
-		$stmt = $dbCon->prepare($sql);
-		$stmt->execute();
-		$dbCon = null;
-		return $stmt->fetchAll();
-	}
-
-	public function GetSingleUser(int $worker_id): ?array {
-		$dbCon = $this->_database->OpenConnection();
-
-		$sql = "SELECT worker_id, 
-       				   worker_fname, 
-       				   worker_lname, 
-       				   phone_number, 
-       				   worker_email, 
-       				   picture_id, 
-       				   company_id, 
-       				   role, 
-       				   date_created, 
-       				   isActive 
-				FROM workers 
-				WHERE worker_id = :worker_id";
-
-		$stmt = $dbCon->prepare($sql);
-		$stmt->bindValue(':worker_id', $worker_id);
-		$stmt->execute();
-		$dbCon = null;
-		return $stmt->fetchAll();
 	}
 
 	public function GetUserByEmail(string $email): array | bool {
@@ -99,6 +56,7 @@ class UsersRepository
 		$sql = "SELECT worker_id,
     				   worker_password,
        				   worker_fname,
+       				   worker_lname,
        				   worker_email, 
        				   role,
        				   registration_token,
@@ -112,32 +70,30 @@ class UsersRepository
 		$stmt->bindValue(':email', $email);
 		$stmt->execute();
 		$dbCon = null;
-		return $stmt->fetchAll();
+		return $stmt->fetch();
 	}
 
-	public function GetUserByToken(string $token): ?array
+	public function GetUserByRegistrationToken(string $token): ?array
 	{
 		$dbCon = $this->_database->OpenConnection();
-		$sql = "SELECT registration_token,
-					   worker_id,
-       				   registration_expires
+		$sql = "SELECT registration_token, worker_id, registration_expires
        			FROM workers 
        			WHERE registration_token = :token";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':token', $token);
 		$stmt->execute();
 		$dbCon = null;
-		return $stmt->fetchAll();
+		return $stmt->fetch();
 	}
 
-	public function GetUserByHash(string $hash):?array
+	public function GetUserByPasswordRestToken(string $token): ?array
 	{
 		$dbCon = $this->_database->OpenConnection();
-		$sql = "SELECT worker_id, worker_password
+		$sql = "SELECT worker_password, worker_id
 				FROM workers
-				WHERE worker_password = :hash";
+				WHERE forgoten_password_token = :token && forgoten_password_expires <= NOW()";
 		$stmt = $dbCon->prepare($sql);
-		$stmt->bindValue(':hash', $hash);
+		$stmt->bindValue(':token', $token);
 		$stmt->execute();
 		$dbCon = null;
 		return $stmt->fetchAll();
@@ -158,12 +114,13 @@ class UsersRepository
 		$dbCon = null;
 	}
 
-	public function UpdateUserStatus(string $token): string
+	public function ActivateUser(string $token): string
 	{
 		$dbCon = $this->_database->OpenConnection();
 		$sql = "UPDATE workers 
 				SET isActive = 1
 				WHERE registration_token = :token";
+
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':token', $token);
 		$stmt->execute();
@@ -172,14 +129,15 @@ class UsersRepository
 					SET registration_token = null,
 					    registration_expires = null
 					WHERE registration_token = :token";
+
 		$stmt = $dbCon->prepare($sql_del);
 		$stmt->bindValue(':token', $token);
 		$stmt->execute();
 		$dbCon = null;
-		return "Your account has been activated!";
+		return "OK";
 	}
 
-	public function DeleteExpiredUser(string $token): string
+	public function DeleteUserWithExpiredRegistration(string $token): int
 	{
 		$dbCon = $this->_database->OpenConnection();
 		$sql = "DELETE 
@@ -189,7 +147,7 @@ class UsersRepository
 		$stmt->bindValue(':token', $token);
 		$stmt->execute();
 		$dbCon = null;
-		return "Your activation token has expired, please submit registration again";
+		return 0;
 	}
 
 	public function UpdatePassword(string $password, int $worker_id):void
@@ -200,25 +158,11 @@ class UsersRepository
 				    forgoten_password_token = NULL, 
 				    forgoten_password_expires = NULL
 				WHERE worker_id = :worker_id";
+
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':password', $password);
 		$stmt->bindValue(':worker_id', $worker_id);
 		$stmt->execute();
 		$dbCon = null;
 	}
-
-	public function GetUserByPaswdToken(string $token): ?array
-	{
-		$dbCon = $this->_database->OpenConnection();
-		$sql = "SELECT worker_password, worker_id
-				FROM workers
-				WHERE forgoten_password_token = :token && forgoten_password_expires <= NOW()";
-		$stmt = $dbCon->prepare($sql);
-		$stmt->bindValue(':token', $token);
-		$stmt->execute();
-		$dbCon = null;
-		return $stmt->fetchAll();
-	}
-
-
 }

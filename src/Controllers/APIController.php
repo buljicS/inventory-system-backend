@@ -7,7 +7,6 @@ namespace Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use OpenApi\Generator as Generator;
-
 use Services\UserServices as UserServices;
 
 
@@ -21,7 +20,24 @@ use Services\UserServices as UserServices;
  * @OA\Server(
  *      url="http://www.insystem-api.localhost/",
  *  )
+ *
+ * @OA\SecurityScheme (
+ *      securityScheme="Bearer",
+ *      type="http",
+ *      scheme="bearer",
+ *      bearerFormat="JWT",
+ *      description="Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+ *      name="Authorization",
+ *      in="header",
+ *      @OA\Flow(
+ *          flow="password",
+ *          tokenUrl="/oauth/token",
+ *          refreshUrl="/oauth/token/refresh",
+ *          scopes={}
+ *      )
+ *  )
  */
+
 class APIController
 {
 	private UserServices $_user;
@@ -106,6 +122,7 @@ class APIController
 				->withHeader('Content-type', 'application/json')
 				->withStatus(200);
 		}
+
 		$response->getBody()->write(json_encode("All fields are mandatory"));
 		return $response
 			->withHeader('Content-type', 'application/json')
@@ -153,7 +170,8 @@ class APIController
 	public function LoginUser(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$authUser = $this->_user->AuthenticateUser($requestBody['email'], $requestBody['password']);
+		$authUser = $this->_user->LoginUser($requestBody['email'], $requestBody['password']);
+
 		$response->getBody()->write(json_encode($authUser));
 		return $response
 			->withHeader('Content-Type', 'application/json')
@@ -200,7 +218,17 @@ class APIController
 
 	/**
 	 * @OA\Get(
-	 *     path="/api/Users/SayHi",
+	 *     path="/api/Users/ActivateUserAccount/{token}",
+	 *     description="Do not run this route from swagger since it's supposed to redirect user to specific page. <br/> Swagger will return `NetworkError` cause redirection can not happen",
+	 *     tags={"Users"},
+	 *     @OA\Parameter(
+	 *         name="token",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="string"
+	 *         )
+	 *     ),
 	 *     @OA\Response(response="200", description="An example resource")
 	 * )
 	 */
@@ -208,11 +236,9 @@ class APIController
 	{
 		$token = $args['token'];
 		$actResponse = $this->_user->ActivateUser($token);
-		$response->getBody()->write("{$_ENV['MAIN_URL_FE']}/login?message={$actResponse}");
 		return $response
 			->withHeader("Location", "{$_ENV['MAIN_URL_FE']}/login?status=$actResponse")
 			->withStatus(302);
-
 	}
 
 	/**
@@ -220,7 +246,7 @@ class APIController
 	 *     path="/api/Users/ResetPassword",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
-	 *         description="Provide new password with old hash",
+	 *         description="This endpoint servers as a option for loged user to reset password",
 	 *         @OA\MediaType(
 	 *             mediaType="application/json",
 	 *             @OA\Schema(
@@ -251,13 +277,6 @@ class APIController
 		$response->getBody()->write(json_encode($actResponse));
 		return $response
 			->withHeader("Content-type", "application/json");
-	}
-
-	public function SayHi(Request $request, Response $response): Response
-	{
-		$response->getBody()->write(json_encode("Hi"));
-		return $response
-			->withHeader('Content-type', 'application/json');
 	}
 	#endregion
 }

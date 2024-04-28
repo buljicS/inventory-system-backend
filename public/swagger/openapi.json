@@ -127,9 +127,23 @@
                 }
             }
         },
-        "/api/Users/SayHi": {
+        "/api/Users/ActivateUserAccount/{token}": {
             "get": {
-                "operationId": "af69bf9b88a4efce35fa817069488573",
+                "tags": [
+                    "Users"
+                ],
+                "description": "Do not run this route from swagger since it's supposed to redirect user to specific page. <br/> Swagger will return `NetworkError` cause redirection can not happen",
+                "operationId": "cba6d859cd163357d9b368b7d6bc2663",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "An example resource"
@@ -144,7 +158,7 @@
                 ],
                 "operationId": "02e941c7e9cf89f125f6c0ca88f47358",
                 "requestBody": {
-                    "description": "Provide new password with old hash",
+                    "description": "This endpoint servers as a option for loged user to reset password",
                     "content": {
                         "application/json": {
                             "schema": {
@@ -168,6 +182,25 @@
                         "description": "Success"
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "description": "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+                "name": "Authorization",
+                "in": "header",
+                "flows": {
+                    "password": {
+                        "tokenUrl": "/oauth/token",
+                        "refreshUrl": "/oauth/token/refresh",
+                        "scopes": {}
+                    }
+                },
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     }

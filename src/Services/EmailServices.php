@@ -38,7 +38,7 @@ class EmailServices
 			$this->mailer->AltBody = strip_tags($body);
 
 			$this->mailer->send();
-			return 'Message has been sent';
+			return 'OK';
 		} catch (Exception $e){
 			return $e->getMessage();
 		}

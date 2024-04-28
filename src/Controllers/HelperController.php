@@ -4,18 +4,27 @@ namespace Controllers;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Random\RandomException;
 
 class HelperController
 {
+	/**
+	 * @return string type of token
+	 * @throws RandomException if it fails to generate token
+	 */
 	public function GenerateBasicToken(int $randomBytes):string
 	{
 		$bytes = random_bytes($randomBytes);
 		return bin2hex($bytes);
 	}
 
-	public function GenerateJWTToken(string $email, string $role):string
+	/**
+	 * @param string $email
+	 * @param string $role
+	 * @return string as JWT Token
+	 */
+	public function GenerateJWTToken(int $userid):string
 	{
-		$authJWT = "";
 		$mainURLBE = $_ENV['MAIN_URL_BE'];
 		$mainURLFE = $_ENV['MAIN_URL_FE'];
 		$secret = $_ENV['JWT_SECRET'];
@@ -30,8 +39,7 @@ class HelperController
 			'aud' => $mainURLFE,
 			'iat' => time(),
 			'exp' => time() + 3600,
-			'user' => $email,
-			'role' => $role
+			'userid' => $userid
 		];
 
 		return JWT::encode($payload, $secret, 'HS256', null, $headers);
