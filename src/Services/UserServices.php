@@ -129,6 +129,7 @@ class UserServices
 				'userFullName' => $response['worker_fname'] . " " . $response['worker_lname'],
 				'userEmail' => $cleanEmail,
 				'profilePicture' => null,
+				'userRole' => $response['role'],
 				'token' => $this->_helper->GenerateJWTToken($response['worker_id'])
 			];
 		}
