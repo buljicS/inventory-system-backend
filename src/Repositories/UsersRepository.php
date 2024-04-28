@@ -38,9 +38,9 @@ class UsersRepository
 					)";
 
 		$stmt = $dbCon->prepare($sql);
-		$stmt->bindValue(':worker_fname', $userData['fname']);
-		$stmt->bindValue(':worker_lname', $userData['lname']);
-		$stmt->bindValue(':phone_number', $userData['phone']);
+		$stmt->bindValue(':worker_fname', $userData['firstName']);
+		$stmt->bindValue(':worker_lname', $userData['lastName']);
+		$stmt->bindValue(':phone_number', $userData['phoneNumber']);
 		$stmt->bindValue(':worker_email', $userData['email']);
 		$stmt->bindValue(':worker_password', $userData['password']);
 		$stmt->bindValue(':role', $userData['role']);
@@ -73,7 +73,7 @@ class UsersRepository
 		return $stmt->fetch();
 	}
 
-	public function GetUserByRegistrationToken(string $token): ?array
+	public function GetUserByRegistrationToken(string $token): array|bool
 	{
 		$dbCon = $this->_database->OpenConnection();
 		$sql = "SELECT registration_token, worker_id, registration_expires

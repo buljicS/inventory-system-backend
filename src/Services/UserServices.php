@@ -47,6 +47,11 @@ class UserServices
 			];
 		}
 
+		$newUserData['password'] = password_hash($newUserData['password'], PASSWORD_DEFAULT);
+		$newUserData['role'] = 'Worker';
+		$newUserData['exp_token'] = $this->_helper->GenerateBasicToken(20);
+		$newUserData['timestamp'] = date('Y-m-d H:i:s', time()+3600);
+
 		$doesUserAlreadyExists = $this->_userRepo->GetUserByEmail($newUserData['email']);
 		if($doesUserAlreadyExists != null) {
 			return [
@@ -57,7 +62,7 @@ class UserServices
 		}
 
 		if($this->_userRepo->CreateNewUser($newUserData)) {
-			$user_name = $newUserData['fname'];
+			$user_name = $newUserData['firstName'];
 			$user_email = $newUserData['email'];
 			$token = $newUserData['exp_token'];
 			$link = "{$_ENV['MAIN_URL_BE']}api/Users/ActivateUserAccount/{$token}";
@@ -90,8 +95,8 @@ class UserServices
 	public function ActivateUser(string $token):int
 	{
 		$user = $this->_userRepo->GetUserByRegistrationToken($token);
-		if(empty($user)) return 0;
-		if(!(date('d-M-Y H:i:s', time()) > $user['registration_expires'])) {
+		if($user === false) return 0;
+		if(!(date('Y-m-d H:i:s', time()) > $user['registration_expires'])) {
 			$updateResponse = $this->_userRepo->ActivateUser($user['registration_token']);
 			if($updateResponse == "OK")
 				return 1;
