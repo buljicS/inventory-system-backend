@@ -24,37 +24,47 @@ class UserServices
 
 	public function RegisterUser(array $newUserData): array
 	{
-		$cleanPassword = strip_tags(trim($newUserData['password']));
+		$validation = new VValidator($newUserData);
+		$validation->rules(
+			[
+				'required' => [
+					['firstName'],
+					['lastName'],
+					['email'],
+					['password']
+				],
+				'email' => [
+					['email']
+				]
+			]
+		);
 
-		$newUser = [
-			'fname' => strip_tags(trim($newUserData['firstName'])),
-			'lname' => strip_tags(trim($newUserData['lastName'])),
-			'phone' => strip_tags(trim($newUserData['phoneNumber'])),
-			'email' => strip_tags(trim($newUserData['email'])),
-			'password' => password_hash($cleanPassword, PASSWORD_DEFAULT),
-			'role' => "Worker",
-			'exp_token' => $this->_helper->GenerateBasicToken(20),
-			'timestamp' => date('Y-m-d H:i:s', time()+3600)
-		];
+		if(!$validation->validate()) {
+			return [
+				'status' => 202,
+				'message' => 'Accepted',
+				'description' => $validation->errors()
+			];
+		}
 
-		$doesUserAlreadyExists = $this->_userRepo->GetUserByEmail($newUser['email']);
+		$doesUserAlreadyExists = $this->_userRepo->GetUserByEmail($newUserData['email']);
 		if($doesUserAlreadyExists != null) {
 			return [
-				'status' => '403',
+				'status' => 403,
 				'message' => 'Forbidden',
 				'description' => 'This email is already taken'
 			];
 		}
 
-		if($this->_userRepo->CreateNewUser($newUser)) {
-			$user_name = $newUser['fname'];
-			$user_email = $newUser['email'];
-			$token = $newUser['exp_token'];
+		if($this->_userRepo->CreateNewUser($newUserData)) {
+			$user_name = $newUserData['fname'];
+			$user_email = $newUserData['email'];
+			$token = $newUserData['exp_token'];
 			$link = "{$_ENV['MAIN_URL_BE']}api/Users/ActivateUserAccount/{$token}";
 			$sendActMail = $this->SendConfirmationEmail($user_name, $link, "Activate your account", $user_email);
 			if($sendActMail === 'OK') {
 				return [
-					'status' => '200',
+					'status' => 200,
 					'message' => 'Success',
 					'description' => 'Please check your inbox to activate your account'
 				];
@@ -62,11 +72,10 @@ class UserServices
 		}
 
 		return [
-			'status' => '500',
+			'status' => 500,
 			'message' => 'Internal server error',
 			'description' => 'Error while creating your account, please try again'
 		];
-
 	}
 
 	public function SendConfirmationEmail(string $user_name, string $link, string $subject, string $emailTo):string
@@ -81,7 +90,7 @@ class UserServices
 	public function ActivateUser(string $token):int
 	{
 		$user = $this->_userRepo->GetUserByRegistrationToken($token);
-		if($user == null) return 0;
+		if(empty($user)) return 0;
 		if(!(date('d-M-Y H:i:s', time()) > $user['registration_expires'])) {
 			$updateResponse = $this->_userRepo->ActivateUser($user['registration_token']);
 			if($updateResponse == "OK")
