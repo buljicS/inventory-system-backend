@@ -106,52 +106,60 @@ class UserServices
 		return $this->_userRepo->DeleteUserWithExpiredRegistration($user["registration_token"]);
 	}
 
-	public function LoginUser(string $email, string $password): array {
+	public function LoginUser(array $loginData): array {
 
-		$cleanEmail = strip_tags(trim($email));
-		$cleanPassword = strip_tags(trim($password));
+		$validation = new VValidator($loginData);
+		$validation->rules([
+			'required' => [
+				['email'],
+				['password']
+			],
+			'email' => [
+				['email']
+			]
+		]);
 
-		if(filter_var($cleanEmail, FILTER_VALIDATE_EMAIL)) {
-			$response = $this->_userRepo->GetUserByEmail($cleanEmail);
-			if ($response == null) {
-				return [
-					'status' => '404',
-					'message' => 'Not found',
-					'description' => "Wrong credentials, please try again!"
-				];
-			}
-
-			if (!password_verify($cleanPassword, $response['worker_password'])) {
-				return [
-					'status' => '401',
-					'message' => 'Unauthorized',
-					'description' => "Wrong credentials, please try again!"
-				];
-			}
-
-			if($response['isActive'] != 1) {
-				return [
-					'status' => '403',
-					'message' => 'Forbidden',
-					'description' => "Please activate your account!"
-				];
-			}
-
+		if(!$validation->validate()) {
 			return [
-				'status' => '200',
+				'status' => 202,
+				'message' => 'Accepted',
+				'description' => $validation->errors()
+			];
+		}
+
+
+		$response = $this->_userRepo->GetUserByEmail($loginData['email']);
+
+		return match (true) {
+			$response === false => [
+				'status' => 404,
+				'message' => 'Not found',
+				'description' => "Wrong credentials, please try again!"
+			],
+
+			!password_verify($loginData['password'], $response['worker_password']) => [
+				'status' => 401,
+				'message' => 'Unauthorized',
+				'description' => "Wrong credentials, please try again!"
+			],
+
+			$response['isActive'] != 1 => [
+				'status' => 403,
+				'message' => 'Forbidden',
+				'description' => "Please activate your account!"
+			],
+
+			default => [
+				'status' => 200,
 				'userId' => $response['worker_id'],
 				'userFullName' => $response['worker_fname'] . " " . $response['worker_lname'],
-				'userEmail' => $cleanEmail,
+				'userEmail' => $response['worker_email'],
 				'profilePicture' => null,
 				'userRole' => $response['role'],
 				'token' => $this->_helper->GenerateJWTToken($response['worker_id'])
-			];
-		}
-		return [
-			'status' => '401',
-			'message' => 'Unauthorized',
-			'description' => "Wrong credentials, please try again!"
-		];
+			],
+		};
+
 	}
 
 	public function SendPasswordResetMail(string $emailTo):array

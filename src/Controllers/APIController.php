@@ -170,7 +170,7 @@ class APIController
 	public function LoginUser(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$authUser = $this->_user->LoginUser($requestBody['email'], $requestBody['password']);
+		$authUser = $this->_user->LoginUser($requestBody);
 
 		$response->getBody()->write(json_encode($authUser));
 		return $response
