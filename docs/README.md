@@ -1,14 +1,18 @@
-# Project and setup documentation
+## Table of Contents
 
-> Here, you can find documentation for setting up and implementing all sorts of different parts and functions, 
-    that, all together make functional backend application 
+### 1. General setup documentation
+- [Swagger-PHP](pages/swagger-php-doc.md)
+- [Apache virtual hosts](pages/virhost.md)
+- [Environment variables](pages/env-vars.md)
 
-## 1. General setup documentation
-1. [Swagger-PHP](pages/swagger-php-doc.md)
-2. [Apache virtual hosts](pages/virhost.md)
-3. [Environment variables](pages/env-vars.md)
+### 2. Basic SlimPHP setup
+- [Project structure](pages/project-structure.md)
+- [SlimPHP basic setup](pages/slimphp.md)
+- [Serving Swagger-PHP from Slim](pages/slimswaggerphp.md)
+- [CORS setup](pages/cors.md)
+- [Autorization setup](pages/auth.md)
 
-## 2. Basic SlimPHP setup
-1. [Project structure](pages/project-structure.md)
-2. [SlimPHP basic setup](pages/slimphp.md)
-3. [CORS setup](pages/cors.md)
+#### 2.1. Decoupling
+- [index.php](pages/bootstrap.md)
+- [DI Container](pages/di-php.md)
+- [app folder](pages/appf.md)
