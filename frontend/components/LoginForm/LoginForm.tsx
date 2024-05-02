@@ -9,7 +9,6 @@ import {
     TLoginData,
     TForgotPassword,
     TForgotPasswordState,
-    TJwtUser,
 } from "@/utils/types";
 import { useToast } from "@chakra-ui/react";
 import { userAtom } from "@/utils/atoms";
@@ -20,7 +19,6 @@ import { FormInput } from "@/components";
 import Spinner from "react-bootstrap/Spinner";
 import { useSearchParams } from "next/navigation";
 import { userActionMessages } from "@/utils/functions";
-import { jwtDecode } from "jwt-decode";
 
 const LoginForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -58,26 +56,29 @@ const LoginForm = () => {
         try {
             setIsLoading(true);
             const response = await axios.post(
-                "http://www.insystem-api.localhost/api/Users/LoginUser",
+                `${process.env.BASE_URL}/Users/LoginUser`,
                 data
             );
 
             switch (response.data.status) {
                 case "200":
                     setIsLoading(true);
-                    const userInformation = jwtDecode(
-                        response.data.token
-                    ) as TJwtUser;
-                    userInformation.jwt = response.data.token;
+                    const userInformations = {
+                        userId: response.data.userId,
+                        fullName: response.data.userFullName,
+                        email: response.data.userEmail,
+                        picture: response.data.profilePicture,
+                        token: response.data.token,
+                        role: response.data.userRole,
+                    };
                     sessionStorage.setItem(
                         "user",
-                        JSON.stringify(userInformation)
+                        JSON.stringify(userInformations)
                     );
                     setUser((prev) => ({
                         ...prev,
                         approveLogin: true,
                     }));
-
                     router.push("/dashboard");
                     break;
 
@@ -120,7 +121,7 @@ const LoginForm = () => {
         try {
             setIsLoading(true);
             const response = await axios.post(
-                "http://www.insystem-api.localhost/api/Users/SendPasswordResetEmail",
+                `${process.env.BASE_URL}/Users/SendPasswordResetEmail`,
                 data
             );
 

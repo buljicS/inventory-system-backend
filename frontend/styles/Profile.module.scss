@@ -1,18 +1,19 @@
 .profile {
     &_body {
-        padding: 40px;
+        padding: 40px 80px;
         display: flex;
+        flex-direction: column;
         gap: 40px;
 
-        &_left {
-            width: 70%;
+        &_top {
             display: flex;
-            flex-direction: column;
-            gap: 50px;
+            flex: 1;
+            gap: 40px;
         }
 
-        &_right {
-            width: 30%;
+        &_bottom {
+            display: flex;
+            gap: 40px;
         }
     }
 }

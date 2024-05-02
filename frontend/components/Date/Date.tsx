@@ -13,7 +13,12 @@ const Date = () => {
         return () => clearInterval(intervalId);
     }, []);
 
-    return <div className={styles.date}>{dateTime}</div>;
+    return (
+        <div className={styles.date}>
+            <div className={styles.date_top}>{dateTime}</div>
+            <div className={styles.date_bottom}>PROGRAMATORI v1.0</div>
+        </div>
+    );
 };
 
 export default Date;

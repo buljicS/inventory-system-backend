@@ -1,64 +1,59 @@
 import styles from "./ProfilePhoto.module.scss";
-import { useState, useRef } from "react";
+import { UserIcon, PlusIcon } from "@/resources/icons";
+import { useRecoilState } from "recoil";
+import { userAtom } from "@/utils/atoms";
 import Image from "next/image";
-import Button from "react-bootstrap/Button";
+import { useState } from "react";
+import { Form } from "react-bootstrap";
 
-const ProfilePhotoCard = () => {
-    const [file, setFile] = useState<string | null>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
+const ProfilePhoto = () => {
+    const [user, setUser] = useRecoilState(userAtom);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-    const showImage = (e) => {
-        console.log(e.target.files);
-        setFile(URL.createObjectURL(e.target.files[0]));
-    };
-
-    const uploadImage = () => {
-        fileInputRef.current!.click();
+    const handleImageChange = (e) => {
+        setPreviewImage(URL.createObjectURL(e.target.files[0]));
     };
 
     return (
-        <div className={styles.profile_photo}>
-            <div className={styles.profile_photo_header}>
-                <h3>Photo</h3>
-            </div>
+        <div className={styles.profile}>
+            <div className={styles.profile_picture}>
+                <Image
+                    src={previewImage ?? user.picture ?? UserIcon}
+                    width={150}
+                    height={150}
+                    alt="User picture"
+                    className={styles.picture}
+                />
 
-            <div className={styles.profile_photo_body}>
-                <div className={styles.profile_photo_body_left}>
-                    {file && (
-                        <Image
-                            src={file}
-                            width={70}
-                            height={70}
-                            alt="User image"
-                        />
-                    )}
-                </div>
-
-                <div className={styles.profile_photo_body_right}>
-                    <div>
-                        <h3>Upload your profile image</h3>
-                    </div>
-                    <div className={styles.profile_photo_body_right_buttons}>
-                        <Button
-                            onClick={uploadImage}
-                            variant="outline-primary"
-                            size="sm"
-                        >
-                            Browse
-                        </Button>
+                <Form>
+                    <div className={styles.profile_picture_add}>
+                        <label htmlFor="uploadImage">
+                            <Image
+                                src={PlusIcon}
+                                width={25}
+                                height={25}
+                                alt="Add picture"
+                            />
+                        </label>
                         <input
                             type="file"
-                            ref={fileInputRef}
-                            onChange={showImage}
+                            id="uploadImage"
+                            hidden
+                            onChange={handleImageChange}
                         />
-                        <Button variant="outline-success" size="sm">
-                            Upload
-                        </Button>
                     </div>
-                </div>
+                </Form>
+            </div>
+
+            <div className={styles.profile_information}>
+                <p className={styles.profile_information_name}>
+                    {user.fullName}
+                </p>
+                <p>{user.email}</p>
             </div>
         </div>
     );
 };
 
-export default ProfilePhotoCard;
+export default ProfilePhoto;

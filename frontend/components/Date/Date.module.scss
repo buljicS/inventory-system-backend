@@ -1,20 +1,21 @@
 .date {
-    background-color: #202930;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 8px;
     color: #fff;
-    min-width: 200px;
+    width: 90%;
+    margin: 0 auto;
     min-height: 62px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 0 16px;
-    position: absolute;
-    right: 50px;
-    bottom: 50px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 
-    @media only screen and (max-width: 576px) {
+    &_top {
+        font-size: 1.2rem;
+    }
+
+    &_bottom {
         font-size: 0.9rem;
-        min-height: 50px;
+        color: #e2e8f0;
     }
 }
