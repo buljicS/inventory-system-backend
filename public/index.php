@@ -1,7 +1,5 @@
 <?php
 
-use Selective\BasePath\BasePathMiddleware;
-use Tuupola\Middleware\CorsMiddleware as CORSMiddleware;
 use Slim\Factory\AppFactory;
 use Dotenv\Dotenv as dotSetup;
 use DI\Container;
@@ -18,25 +16,21 @@ $container = new Container();
 AppFactory::setContainer($container);
 #endregion
 
+#region dependencies
 $app = AppFactory::create();
 
-#region bootstrap
-$app->addBodyParsingMiddleware();
-$app->add(new BasePathMiddleware($app));
-$app->addRoutingMiddleware();
-$app->add(new CORSMiddleware ([
-	"origin" => ["{$_ENV['MAIN_URL_FE']}"],
-	"methods" => ["GET", "POST", "PUT", "PATCH", "DELETE"],
-	"headers.allow" => ["Origin", "Authorization", "X-Requested-With", "Content-Type", "Accept"],
-	"origin.server" => "{$_ENV['MAIN_URL_BE']}",
-	"headers.expose" => [],
-	"credentials" => false,
-	"cache" => 0
-]));
-$app->addErrorMiddleware(true, true, true);
-#endregion
+//base middlewares
+$base = require '../app/base.php';
+$base($app);
 
-#region dependencies
+//cors policy
+$cors = require '../app/cors.php';
+$cors($app);
+
+//error handling
+$app->addErrorMiddleware(true, true, true);
+
+//routes
 $routes = require '../app/routes.php';
 $routes($app);
 #endregion

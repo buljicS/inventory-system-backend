@@ -11,6 +11,34 @@
         }
     ],
     "paths": {
+        "/api/Users/LogAccess": {
+            "get": {
+                "tags": [
+                    "Logs"
+                ],
+                "description": "Log access on web system",
+                "operationId": "6ee1fa4998212a3c21fff0a26bfcf5fe",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                }
+            }
+        },
+        "/api/Users/GetAllLogs": {
+            "get": {
+                "tags": [
+                    "Logs"
+                ],
+                "description": "Get all previous logs",
+                "operationId": "5cbe15d410925990e664fab60e26715e",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                }
+            }
+        },
         "/api/Users/RegisterUser": {
             "post": {
                 "tags": [

@@ -131,13 +131,7 @@ class UserServices
 		$response = $this->_userRepo->GetUserByEmail($loginData['email']);
 
 		return match (true) {
-			$response === false => [
-				'status' => 404,
-				'message' => 'Not found',
-				'description' => "Wrong credentials, please try again!"
-			],
-
-			!password_verify($loginData['password'], $response['worker_password']) => [
+			$response === false || !password_verify($loginData['password'], $response['worker_password']) => [
 				'status' => 401,
 				'message' => 'Unauthorized',
 				'description' => "Wrong credentials, please try again!"
@@ -170,16 +164,20 @@ class UserServices
 			if($user != null)
 			{
 				$token = $this->_helper->GenerateBasicToken(20);
-				$expTime = date('d-M-Y H:i:s',time() + 3600);
+				$expTime = date('Y-m-d H:i:s',time() + 3600);
+
 				$this->_userRepo->InsertPasswordResetToken($user['worker_id'], $token, $expTime);
+				$link = "{$_ENV['MAIN_URL_FE']}/change-password?token={$token}";
+
 				$rawBody = file_get_contents('../templates/email/ResetMail.html');
 				$body = str_replace("{{userName}}", $user['worker_fname'], $rawBody);
-				$link = "{$_ENV['MAIN_URL_FE']}/change-password?token={$token}";
 				$body = str_replace("{{resetPasswordLink}}", $link, $body);
+
 				$subject = "Reset your password";
 				$cc = null;
 
 				$resp = $this->_email->SendEmail($body, $subject, $user['worker_email'], $cc);
+
 				return [
 					'status' => '200',
 					'message' => 'Success',
@@ -197,8 +195,8 @@ class UserServices
 	{
 		$password = password_hash($newPassword, PASSWORD_DEFAULT);
 		$user = $this->_userRepo->GetUserByPasswordRestToken($token);
-		if(!empty($user)) {
-			$this->_userRepo->UpdatePassword($password, $user[0]['worker_id']);
+		if($user !== false) {
+			$this->_userRepo->UpdatePassword($password, $user['worker_id']);
 			return [
 				'status' => 200,
 				'message' => 'Success',

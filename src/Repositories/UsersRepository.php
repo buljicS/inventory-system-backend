@@ -86,7 +86,7 @@ class UsersRepository
 		return $stmt->fetch();
 	}
 
-	public function GetUserByPasswordRestToken(string $token): ?array
+	public function GetUserByPasswordRestToken(string $token): array|bool
 	{
 		$dbCon = $this->_database->OpenConnection();
 		$sql = "SELECT worker_password, worker_id
@@ -96,7 +96,7 @@ class UsersRepository
 		$stmt->bindValue(':token', $token);
 		$stmt->execute();
 		$dbCon = null;
-		return $stmt->fetchAll();
+		return $stmt->fetch();
 	}
 
 	public function InsertPasswordResetToken(int $worker_id, string $token, mixed $expTime):void

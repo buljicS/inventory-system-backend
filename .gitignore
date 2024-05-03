@@ -1,5 +1,6 @@
 # enviroment files
-.env
+/.env
+/insystem-firebase.json
 
 # composer files
 /vendor

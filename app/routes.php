@@ -10,7 +10,7 @@ return function (Slim $app) {
 
 	#region Main
 	$app->get('/', [API::class, 'Index']);
-	$app->get("/getDoc", [Controllers\APIController::class, 'GenerateDocs']);
+	$app->get("/getDoc", [API::class, 'GenerateDocs']);
 	#endregion
 
 	#region Users
@@ -21,5 +21,9 @@ return function (Slim $app) {
 	$app->get('/api/Users/ActivateUserAccount/{token}', [API::class, 'ActivateUserAccount']);
 	#endregion
 
+	#region Logs
+	$app->get('/api/Users/LogAccess', [API::class, 'LogAccess']);
+	$app->get('/api/Users/GetAllLogs', [API::class, 'GetAllLogs']);
+	#endregion
 
 };

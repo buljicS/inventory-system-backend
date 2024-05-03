@@ -7,7 +7,9 @@ namespace Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use OpenApi\Generator as Generator;
+
 use Services\UserServices as UserServices;
+use Services\LogServices as LogServices;
 
 
 
@@ -41,10 +43,12 @@ use Services\UserServices as UserServices;
 class APIController
 {
 	private UserServices $_user;
+	private LogServices $_log;
 
-	public function __construct(UserServices $userServices)
+	public function __construct(UserServices $userServices, LogServices $logServices)
 	{
 		$this->_user = $userServices;
+		$this->_log = $logServices;
 	}
 
 	#region Main
@@ -61,6 +65,40 @@ class APIController
 		fwrite($file, $openapi);
 		fclose($file);
 		$response->getBody()->write(file_get_contents("../public/swagger/openapi.json"));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+	#endregion
+
+	#region AccessLogs
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Users/LogAccess",
+	 *     description="Log access on web system",
+	 *     tags={"Logs"},
+	 *     @OA\Response(response="200", description="An example resource")
+	 * )
+	 */
+	public function LogAccess(Request $request, Response $response): Response {
+		$resp = $this->_log->LogAccess();
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Users/GetAllLogs",
+	 *     description="Get all previous logs",
+	 *     tags={"Logs"},
+	 *     @OA\Response(response="200", description="An example resource")
+	 * )
+	 */
+	public function GetAllLogs(Request $request, Response $response): Response
+	{
+		$resp = $this->_log->GetAllLogs();
+		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
@@ -115,15 +153,8 @@ class APIController
 	 */
 	public function RegisterUser(Request $request, Response $response): Response {
 		$requestBody = (array)$request->getParsedBody();
-		if(!in_array(null, $requestBody, true)) {
-			$newUser = $this->_user->RegisterUser($requestBody);
-			$response->getBody()->write(json_encode($newUser));
-			return $response
-				->withHeader('Content-type', 'application/json')
-				->withStatus(200);
-		}
-
-		$response->getBody()->write(json_encode("All fields are mandatory"));
+		$newUser = $this->_user->RegisterUser($requestBody);
+		$response->getBody()->write(json_encode($newUser));
 		return $response
 			->withHeader('Content-type', 'application/json')
 			->withStatus(200);
@@ -278,5 +309,9 @@ class APIController
 		return $response
 			->withHeader("Content-type", "application/json");
 	}
+
 	#endregion
+
+
+
 }
