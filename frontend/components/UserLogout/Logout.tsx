@@ -22,14 +22,8 @@ const Logout = () => {
 
     return (
         <div className={styles.user_logout}>
-            <div className={styles.user_logout_icon} onClick={onOpen}>
-                <Image
-                    src={PowerIcon}
-                    alt="Logout icon"
-                    width={30}
-                    height={30}
-                    loading="lazy"
-                />
+            <div className={styles.user_logout_text} onClick={onOpen}>
+                Logout
             </div>
 
             <Modal
@@ -59,7 +53,6 @@ const Logout = () => {
                             onClick={() => {
                                 setIsLoading(true);
                                 sessionStorage.removeItem("user");
-                                sessionStorage.removeItem("role");
                                 router.push("/");
                             }}
                             minWidth="80px"

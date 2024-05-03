@@ -2,9 +2,12 @@ import Link from "next/link";
 import styles from "./SideBar.module.scss";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+
+import { ArrowIcon } from "@/resources/icons";
 
 const SideBarNavigationItem = ({ route }) => {
+    const [showDropDown, setShowDropDown] = useState<boolean>(false);
     const link = usePathname();
 
     const isActive = useMemo(() => {
@@ -12,7 +15,7 @@ const SideBarNavigationItem = ({ route }) => {
     }, [link, route.link]);
 
     return (
-        <Link href={route.link}>
+        <Link href={route?.link}>
             <div
                 className={`${styles.sidebar_navigation_item} ${
                     isActive ? styles.sidebar_active : ""

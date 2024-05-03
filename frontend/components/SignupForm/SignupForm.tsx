@@ -25,12 +25,12 @@ const SignupForm = () => {
             setIsLoading(true);
             const { repeatPassword, ...registerData } = data;
             const response = await axios.post(
-                "http://www.insystem-api.localhost/api/Users/RegisterUser",
+                `${process.env.BASE_URL}/Users/RegisterUser`,
                 registerData
             );
 
             switch (response.data.status) {
-                case "200":
+                case 200:
                     toast({
                         title: "Status",
                         description: response.data.description,
@@ -41,7 +41,7 @@ const SignupForm = () => {
                     });
                     break;
 
-                case "403":
+                case 403:
                     toast({
                         title: "Status",
                         description: response.data.description,

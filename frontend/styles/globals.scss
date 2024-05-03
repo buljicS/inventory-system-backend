@@ -65,5 +65,9 @@
 .chakra-menu {
     &__menuitem {
         justify-content: center;
+        a {
+            min-width: 100%;
+            text-align: center;
+        }
     }
 }

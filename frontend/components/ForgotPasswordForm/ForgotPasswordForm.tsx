@@ -38,7 +38,7 @@ const ForgotPasswordForm = () => {
             const { repeatNewPassword, ...changePasswordData } = data;
             setIsLoading(true);
             const response = await axios.post(
-                "http://www.insystem-api.localhost/api/Users/ResetPassword",
+                `${process.env.BASE_URL}/Users/ResetPassword`,
                 changePasswordData
             );
 

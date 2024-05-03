@@ -25,27 +25,34 @@ const ProfileForm = () => {
     const onSubmit = () => {};
 
     return (
-        <Form onSubmit={handleSubmit(onSubmit)}>
-            <div className={styles.form}>
-                {PROFILE_FORM_INPUTS.map((input) => (
-                    <div className={styles.form_input}>
-                        <FormInput
-                            key={input.id}
-                            input={input}
-                            errors={errors}
-                            register={register}
-                        />
-                    </div>
-                ))}
-                <Button type="submit">
-                    {isLoading ? (
-                        <Spinner animation="border" size="sm" />
-                    ) : (
-                        "Update"
-                    )}
-                </Button>
+        <div className={styles.profile_form}>
+            <div className={styles.profile_form_header}>
+                <h3>Profile information</h3>
             </div>
-        </Form>
+            <div className={styles.profile_form_body}>
+                <Form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className={styles.profile_form_body_form}
+                >
+                    {PROFILE_FORM_INPUTS.map((input) => (
+                        <div key={input.id}>
+                            <FormInput
+                                input={input}
+                                errors={errors}
+                                register={register}
+                            />
+                        </div>
+                    ))}
+                    <Button type="submit">
+                        {isLoading ? (
+                            <Spinner animation="border" size="sm" />
+                        ) : (
+                            "Update"
+                        )}
+                    </Button>
+                </Form>
+            </div>
+        </div>
     );
 };
 

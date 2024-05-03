@@ -2,11 +2,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 62px;
-
-    &_icon {
-        padding: 16px;
-
+    min-width: 100%;
+    text-align: center;
+    &_text {
+        width: 100%;
         img:hover {
             cursor: pointer;
         }

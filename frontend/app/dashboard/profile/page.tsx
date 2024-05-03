@@ -2,8 +2,9 @@
 import styles from "@/styles/Profile.module.scss";
 import {
     DashboardHeader,
+    ProfileForm,
+    ProfilePasswordForm,
     ProfilePhoto,
-    ProfileInformation,
     ProfileProgress,
 } from "@/components";
 
@@ -12,12 +13,13 @@ const page = () => {
         <div className={styles.profile}>
             <DashboardHeader title="Profile" />
             <div className={styles.profile_body}>
-                <div className={styles.profile_body_left}>
+                <div className={styles.profile_body_top}>
                     <ProfilePhoto />
-                    <ProfileInformation />
-                </div>
-                <div className={styles.profile_body_right}>
                     <ProfileProgress />
+                </div>
+                <div className={styles.profile_body_bottom}>
+                    <ProfileForm />
+                    <ProfilePasswordForm />
                 </div>
             </div>
         </div>

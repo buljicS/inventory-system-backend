@@ -13,11 +13,11 @@ import {
     InstagramIcon,
     MailIcon,
     TeamIcon,
-    RoomIcon,
     ItemIcon,
     DashboardIcon,
     ArchiveIcon,
     TodoIcon,
+    RoomIcon,
 } from "@/resources/icons";
 import { z } from "zod";
 import { SliderImage1, SliderImage2 } from "@/resources/images";
@@ -235,7 +235,7 @@ export const LOGIN_SCHEMA = z.object({
     password: z
         .string()
         .regex(
-            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+            /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
             {
                 message:
                     "Your password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.",
@@ -255,7 +255,7 @@ export const REGISTER_SCHEMA = z
         password: z
             .string()
             .regex(
-                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
                 {
                     message:
                         "Your password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.",
@@ -280,7 +280,7 @@ export const CHANGE_PASSWORD_SCHEMA = z
         newPassword: z
             .string()
             .regex(
-                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
                 {
                     message:
                         "Your password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.",
@@ -307,6 +307,41 @@ export const PROFILE_INFORMATION_SCHEMA = z.object({
         message: "At least one company must be selected.",
     }),
 });
+
+export const PASSWORD_PROFILE_SCHEMA = z
+    .object({
+        currentPassword: z
+            .string()
+            .regex(
+                /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                {
+                    message:
+                        "Your password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.",
+                }
+            ),
+        newPassword: z
+            .string()
+            .regex(
+                /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                {
+                    message:
+                        "Your password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.",
+                }
+            ),
+        repeatNewPassword: z
+            .string()
+            .regex(
+                /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                {
+                    message:
+                        "Your password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.",
+                }
+            ),
+    })
+    .refine((data) => data.newPassword === data.repeatNewPassword, {
+        message: "Passwords don't match.",
+        path: ["repeatNewPassword"],
+    });
 
 export const SIDEBAR_LINKS_EMPLOYER: TSideBarLinks[] = [
     {
@@ -362,20 +397,6 @@ export const SIDEBAR_LINKS_WORKER: TSideBarLinks[] = [
 export const PROFILE_FORM_INPUTS: TInputs[] = [
     {
         id: 1,
-        name: "firstName",
-        label: "First name",
-        type: "text",
-        placeholder: "Your first name",
-    },
-    {
-        id: 2,
-        name: "lastName",
-        label: "Last name",
-        type: "text",
-        placeholder: "Your last name",
-    },
-    {
-        id: 3,
         name: "phoneNumber",
         label: "Phone number",
         type: "text",
@@ -383,10 +404,34 @@ export const PROFILE_FORM_INPUTS: TInputs[] = [
     },
 
     {
-        id: 4,
+        id: 2,
         name: "company",
         label: "Company",
         type: "select",
         placeholder: null,
+    },
+];
+
+export const PROFILE_PASSWORD_INPUTS: TInputs[] = [
+    {
+        id: 1,
+        name: "currentPassword",
+        label: "Curent password",
+        type: "password",
+        placeholder: "Your current password",
+    },
+    {
+        id: 2,
+        name: "newPassword",
+        label: "New password",
+        type: "password",
+        placeholder: "Enter new password",
+    },
+    {
+        id: 3,
+        name: "repeatNewPassword",
+        label: "Repeat new password",
+        type: "password",
+        placeholder: "Repeat new password",
     },
 ];

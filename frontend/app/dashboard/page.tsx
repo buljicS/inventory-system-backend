@@ -4,6 +4,7 @@ import { userAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
+import { DashboardHeader } from "@/components";
 
 const Dashboard = () => {
     const [user, setUser] = useRecoilState(userAtom);
@@ -23,7 +24,11 @@ const Dashboard = () => {
         }
     }, []);
 
-    return <div className={styles.dashboard_main}></div>;
+    return (
+        <div className={styles.dashboard_main}>
+            <DashboardHeader title="Welcome!" />
+        </div>
+    );
 };
 
 export default Dashboard;

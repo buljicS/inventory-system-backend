@@ -1,0 +1,15 @@
+.items {
+    &_body {
+        padding: 40px 160px;
+        display: flex;
+        gap: 80px;
+
+        &_left {
+            flex: 1;
+        }
+
+        &_right {
+            flex: 1;
+        }
+    }
+}

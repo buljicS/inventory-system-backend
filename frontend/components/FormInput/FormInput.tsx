@@ -18,7 +18,8 @@ const FormInput = ({ input, errors, register }) => {
         (errors.password && input.name === "password") ||
         (errors.repeatPassword && input.name === "repeatPassword") ||
         (errors.newPassword && input.name === "newPassword") ||
-        (errors.repeatNewPassword && input.name === "repeatNewPassword");
+        (errors.repeatNewPassword && input.name === "repeatNewPassword") ||
+        (errors.currentPassword && input.name === "currentPassword");
 
     return input.type !== "select" ? (
         <Form.Group
@@ -70,6 +71,7 @@ const FormInput = ({ input, errors, register }) => {
                             bg="red.600"
                             textAlign="center"
                             isOpen={isOpen}
+                            placement="auto"
                         >
                             <Image
                                 src={ErrorIcon}

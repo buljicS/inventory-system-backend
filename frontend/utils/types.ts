@@ -59,7 +59,7 @@ export type TIndexCards = {
 
 export type TSideBarLinks = {
     id: number;
-    link: string;
+    link: string | null;
     label: string;
     icon: StaticImageData;
 };
@@ -74,9 +74,14 @@ export type TForgotPassword = {
 };
 
 export type TJwtUser = {
-    user: string;
+    id: number;
     role: string;
-    jwt: string;
+    exp: string;
+};
+
+export type TUserData = {
+    id: string;
+    role: string;
 };
 
 export type TWorkbenchCard = {
@@ -92,4 +97,15 @@ export type TProfileData = {
     lname: string;
     phoneNumber: string;
     company: string;
+};
+
+export type TPasswordProfileData = {
+    currentPassword: string;
+    newPassword: string;
+    repeatNewPassword: string;
+};
+
+export type TItem = {
+    id: number;
+    itemName: string;
 };

@@ -4,9 +4,11 @@ import {
     SIDEBAR_LINKS_WORKER,
 } from "@/utils/constants";
 import styles from "./SideBar.module.scss";
+import { useRecoilState } from "recoil";
+import { userAtom } from "@/utils/atoms";
 
 const SideBarNavigation = () => {
-    const user = JSON.parse(sessionStorage.getItem("user")!);
+    const [user, setUser] = useRecoilState(userAtom);
 
     return (
         <div className={styles.sidebar_navigation}>
