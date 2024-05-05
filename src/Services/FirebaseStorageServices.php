@@ -2,7 +2,7 @@
 
 namespace Services;
 
-class FirebaseServices
+class FirebaseStorageServices
 {
 
 }

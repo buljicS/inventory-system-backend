@@ -17,7 +17,7 @@
                     "Logs"
                 ],
                 "description": "Log access on web system",
-                "operationId": "6ee1fa4998212a3c21fff0a26bfcf5fe",
+                "operationId": "3374c0db3bee53b4940e28702098d29d",
                 "responses": {
                     "200": {
                         "description": "An example resource"
@@ -31,7 +31,7 @@
                     "Logs"
                 ],
                 "description": "Get all previous logs",
-                "operationId": "5cbe15d410925990e664fab60e26715e",
+                "operationId": "78a3b794610397b377bda676d759339d",
                 "responses": {
                     "200": {
                         "description": "An example resource"
@@ -44,7 +44,7 @@
                 "tags": [
                     "Users"
                 ],
-                "operationId": "928510f68a54af5edee603bd0170d4bc",
+                "operationId": "a7cbfcabd232cfb6ab5639161945bfed",
                 "requestBody": {
                     "description": "Create new user account",
                     "content": {
@@ -89,7 +89,7 @@
                 "tags": [
                     "Users"
                 ],
-                "operationId": "96664ea0d99e58f693c3752e188f345f",
+                "operationId": "8fa770d0f296602cd0ccd7d6df04161d",
                 "requestBody": {
                     "description": "Enter user email and password",
                     "content": {
@@ -128,7 +128,7 @@
                 "tags": [
                     "Users"
                 ],
-                "operationId": "472049dd1c27800522e32238265930eb",
+                "operationId": "8b33e6f0e714cf60b1418fd477916e29",
                 "requestBody": {
                     "description": "Provide user email",
                     "content": {
@@ -161,7 +161,7 @@
                     "Users"
                 ],
                 "description": "Do not run this route from swagger since it's supposed to redirect user to specific page. <br/> Swagger will return `NetworkError` cause redirection can not happen",
-                "operationId": "cba6d859cd163357d9b368b7d6bc2663",
+                "operationId": "209b3e8841d300b2b34fcfd143aefa11",
                 "parameters": [
                     {
                         "name": "token",
@@ -184,14 +184,47 @@
                 "tags": [
                     "Users"
                 ],
-                "operationId": "02e941c7e9cf89f125f6c0ca88f47358",
+                "operationId": "d41cc03d9b770b8ab701216be8bd9d61",
+                "requestBody": {
+                    "description": "Reset password from email",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "hash": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "newPassword": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/SetNewPassword": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "9ba598eb41caa40902a99803369c205f",
                 "requestBody": {
                     "description": "This endpoint servers as a option for loged user to reset password",
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "hash": {
+                                    "oldPassword": {
                                         "type": "string",
                                         "example": "string"
                                     },

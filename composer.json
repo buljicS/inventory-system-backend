@@ -23,6 +23,7 @@
         "doctrine/annotations": "^2.0",
         "firebase/php-jwt": "^5.5",
         "tuupola/cors-middleware": "^1.4",
-        "vlucas/valitron": "^1.4"
+        "vlucas/valitron": "^1.4",
+        "kreait/firebase-php": "^6.9"
     }
 }

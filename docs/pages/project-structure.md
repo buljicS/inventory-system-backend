@@ -16,6 +16,7 @@ root/
 │   ├── Controllers/
 │   ├── Services/
 │   └── Repositories/
+│   └── Utilities/
 ├── vendor/
 ├── .htaccess
 ├── .env

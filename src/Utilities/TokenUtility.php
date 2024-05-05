@@ -1,12 +1,11 @@
 <?php
 
-namespace Controllers;
+namespace Utilities;
 
 use Firebase\JWT\JWT;
 
-class HelperController
+class TokenUtility
 {
-
 	public function GenerateBasicToken(int $randomBytes):string
 	{
 		$bytes = random_bytes($randomBytes);
@@ -34,6 +33,5 @@ class HelperController
 
 		return JWT::encode($payload, $secret, 'HS256', null, $headers);
 	}
-
 
 }

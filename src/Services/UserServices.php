@@ -4,26 +4,27 @@ declare(strict_types=1);
 
 namespace Services;
 
-use Controllers\HelperController as HelperController;
 use Repositories\UsersRepository;
-use Services\EmailServices as EmailServices;
+use Utilities\MailUtility;
+use Utilities\TokenUtility;
 use Valitron\Validator as VValidator;
 
 class UserServices
 {
 	private UsersRepository $_userRepo;
-	private EmailServices $_email;
-	private HelperController $_helper;
+	private MailUtility $_email;
+	private TokenUtility $tokenUtility;
 
-	public function __construct(EmailServices $email, HelperController $helper, UsersRepository $usersRepository)
+	public function __construct(MailUtility $email, TokenUtility $tokenUtility, UsersRepository $usersRepository)
 	{
 		$this->_email = $email;
 		$this->_userRepo = $usersRepository;
-		$this->_helper = $helper;
+		$this->tokenUtility = $tokenUtility;
 	}
 
 	public function RegisterUser(array $newUserData): array
 	{
+		#region validation
 		$validation = new VValidator($newUserData);
 		$validation->rules(
 			[
@@ -46,10 +47,11 @@ class UserServices
 				'description' => $validation->errors()
 			];
 		}
+		#endregion
 
 		$newUserData['password'] = password_hash($newUserData['password'], PASSWORD_DEFAULT);
 		$newUserData['role'] = 'Worker';
-		$newUserData['exp_token'] = $this->_helper->GenerateBasicToken(20);
+		$newUserData['exp_token'] = $this->tokenUtility->GenerateBasicToken(20);
 		$newUserData['timestamp'] = date('Y-m-d H:i:s', time()+3600);
 
 		$doesUserAlreadyExists = $this->_userRepo->GetUserByEmail($newUserData['email']);
@@ -150,7 +152,7 @@ class UserServices
 				'userEmail' => $response['worker_email'],
 				'profilePicture' => null,
 				'userRole' => $response['role'],
-				'token' => $this->_helper->GenerateJWTToken($response['worker_id'])
+				'token' => $this->tokenUtility->GenerateJWTToken($response['worker_id'])
 			],
 		};
 
@@ -163,7 +165,7 @@ class UserServices
 			$user = $this->_userRepo->GetUserByEmail($cleanEmail);
 			if($user != null)
 			{
-				$token = $this->_helper->GenerateBasicToken(20);
+				$token = $this->tokenUtility->GenerateBasicToken(20);
 				$expTime = date('Y-m-d H:i:s',time() + 3600);
 
 				$this->_userRepo->InsertPasswordResetToken($user['worker_id'], $token, $expTime);

@@ -1,6 +1,6 @@
 # enviroment files
 /.env
-/insystem-firebase.json
+/firebase-secret.json
 
 # composer files
 /vendor
@@ -8,3 +8,4 @@
 # IDE files
 /.idea
 /.vscode
+

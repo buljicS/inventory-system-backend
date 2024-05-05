@@ -40,15 +40,15 @@ use Services\LogServices as LogServices;
  *  )
  */
 
-class APIController
+class WebAPIController
 {
-	private UserServices $_user;
-	private LogServices $_log;
+	private UserServices $userServices;
+	private LogServices $logServices;
 
 	public function __construct(UserServices $userServices, LogServices $logServices)
 	{
-		$this->_user = $userServices;
-		$this->_log = $logServices;
+		$this->userServices = $userServices;
+		$this->logServices = $logServices;
 	}
 
 	#region Main
@@ -81,7 +81,7 @@ class APIController
 	 * )
 	 */
 	public function LogAccess(Request $request, Response $response): Response {
-		$resp = $this->_log->LogAccess();
+		$resp = $this->logServices->LogAccess();
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -97,7 +97,7 @@ class APIController
 	 */
 	public function GetAllLogs(Request $request, Response $response): Response
 	{
-		$resp = $this->_log->GetAllLogs();
+		$resp = $this->logServices->GetAllLogs();
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -153,7 +153,7 @@ class APIController
 	 */
 	public function RegisterUser(Request $request, Response $response): Response {
 		$requestBody = (array)$request->getParsedBody();
-		$newUser = $this->_user->RegisterUser($requestBody);
+		$newUser = $this->userServices->RegisterUser($requestBody);
 		$response->getBody()->write(json_encode($newUser));
 		return $response
 			->withHeader('Content-type', 'application/json')
@@ -201,7 +201,7 @@ class APIController
 	public function LoginUser(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$authUser = $this->_user->LoginUser($requestBody);
+		$authUser = $this->userServices->LoginUser($requestBody);
 
 		$response->getBody()->write(json_encode($authUser));
 		return $response
@@ -240,7 +240,7 @@ class APIController
 	public function SendPasswordResetMail(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$resetMail = $this->_user->SendPasswordResetMail($requestBody['email']);
+		$resetMail = $this->userServices->SendPasswordResetMail($requestBody['email']);
 		$response->getBody()->write(json_encode($resetMail));
 		return $response
 			->withHeader('Content-type', 'application/json')
@@ -266,7 +266,7 @@ class APIController
 	public function ActivateUserAccount(Request $request, Response $response, array $args): Response
 	{
 		$token = $args['token'];
-		$actResponse = $this->_user->ActivateUser($token);
+		$actResponse = $this->userServices->ActivateUser($token);
 		return $response
 			->withHeader("Location", "{$_ENV['MAIN_URL_FE']}/login?status=$actResponse")
 			->withStatus(302);
@@ -277,7 +277,7 @@ class APIController
 	 *     path="/api/Users/ResetPassword",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
-	 *         description="This endpoint servers as a option for loged user to reset password",
+	 *         description="Reset password from email",
 	 *         @OA\MediaType(
 	 *             mediaType="application/json",
 	 *             @OA\Schema(
@@ -304,10 +304,46 @@ class APIController
 	public function ResetPassword(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$actResponse = $this->_user->ResetPassword($requestBody['hash'], $requestBody['newPassword']);
+		$actResponse = $this->userServices->ResetPassword($requestBody['hash'], $requestBody['newPassword']);
 		$response->getBody()->write(json_encode($actResponse));
 		return $response
 			->withHeader("Content-type", "application/json");
+	}
+
+	/**
+	 * @OA\Post(
+	 *     path="/api/Users/SetNewPassword",
+	 *     tags={"Users"},
+	 *     @OA\RequestBody(
+	 *         description="This endpoint servers as a option for loged user to reset password",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *                 @OA\Property(
+	 *                     property="oldPassword",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="newPassword",
+	 *                     type="string",
+	 *                     example="string"
+	 *                  ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 * )
+	 */
+	public function SetNewPassword(Request $request, Response $response): Response
+	{
+		$response->getBody()->write(json_encode("Hi from this one"));
+		return $response
+			->withHeader('Content-type', 'application/json');
 	}
 
 	#endregion

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Slim\App as Slim;
-use Controllers\APIController as API;
+use Controllers\WebAPIController as API;
 
 
 return function (Slim $app) {
@@ -19,11 +19,16 @@ return function (Slim $app) {
 	$app->post('/api/Users/SendPasswordResetEmail' , [API::class, 'SendPasswordResetMail']);
 	$app->post('/api/Users/ResetPassword' , [API::class, 'ResetPassword']);
 	$app->get('/api/Users/ActivateUserAccount/{token}', [API::class, 'ActivateUserAccount']);
+	$app->post('/api/Users/SetNewPassword', [API::class, 'SetNewPassword']);
 	#endregion
 
 	#region Logs
 	$app->get('/api/Users/LogAccess', [API::class, 'LogAccess']);
 	$app->get('/api/Users/GetAllLogs', [API::class, 'GetAllLogs']);
+	#endregion
+
+	#region FirebaseBucket
+
 	#endregion
 
 };

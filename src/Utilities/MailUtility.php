@@ -1,11 +1,11 @@
 <?php
 
-namespace Services;
+namespace Utilities;
 
-use PHPMailer\PHPMailer\PHPMailer as phpMailer;
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer as phpMailer;
 
-class EmailServices
+class MailUtility
 {
 	private phpMailer $mailer;
 
@@ -42,6 +42,6 @@ class EmailServices
 		} catch (Exception $e){
 			return $e->getMessage();
 		}
-
 	}
+
 }
