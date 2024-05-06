@@ -12,6 +12,10 @@
         h3 {
             margin: 0;
             font-size: 1.3rem;
+
+            @media only screen and (max-width: 576px) {
+                font-size: 1.2rem;
+            }
         }
     }
 
@@ -21,10 +25,26 @@
 
         &_form {
             margin: 24px;
+
+            select {
+                @media only screen and (max-width: 400px) {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+
+        button {
+            @media only screen and (max-width: 400px) {
+                font-size: 0.8rem;
+            }
         }
     }
 
     &:hover {
         scale: 1.01;
+    }
+
+    @media only screen and (max-width: 1200px) {
+        width: 100%;
     }
 }

@@ -5,6 +5,8 @@ import {
     TInputs,
     TSlides,
     TSideBarLinks,
+    TRoomsTableColumns,
+    TAddRoomsInputs,
 } from "./types";
 import {
     FacebookIcon,
@@ -21,7 +23,6 @@ import {
 } from "@/resources/icons";
 import { z } from "zod";
 import { SliderImage1, SliderImage2 } from "@/resources/images";
-
 export const REGISTER_INPUTS: TInputs[] = [
     {
         id: 1,
@@ -294,12 +295,6 @@ export const CHANGE_PASSWORD_SCHEMA = z
     });
 
 export const PROFILE_INFORMATION_SCHEMA = z.object({
-    firstName: z.string().min(3, {
-        message: "First name must have at least three characters.",
-    }),
-    lastName: z.string().min(3, {
-        message: "Last name must have at least three characters.",
-    }),
     phoneNumber: z.string().regex(/^\+(?:\d\s?){10,14}\d$/, {
         message: "Phone number must start with a '+' symbol.",
     }),
@@ -343,6 +338,15 @@ export const PASSWORD_PROFILE_SCHEMA = z
         path: ["repeatNewPassword"],
     });
 
+export const ADD_ROOMS_SCHEMA = z.object({
+    roomNumber: z.string().min(1, { message: "Room number is required." }),
+    roomName: z
+        .string()
+        .min(5, { message: "Room name must have at least 5 characters." }),
+    roomDescription: z.string().min(20, {
+        message: "Room description must have at least 20 characters.",
+    }),
+});
 export const SIDEBAR_LINKS_EMPLOYER: TSideBarLinks[] = [
     {
         id: 1,
@@ -433,5 +437,48 @@ export const PROFILE_PASSWORD_INPUTS: TInputs[] = [
         label: "Repeat new password",
         type: "password",
         placeholder: "Repeat new password",
+    },
+];
+
+export const ROOM_TABLE_COLUMNS: TRoomsTableColumns[] = [
+    {
+        id: 1,
+        field: "roomNumber",
+        header: "Room number",
+        sortable: true,
+    },
+    {
+        id: 2,
+        field: "roomName",
+        header: "Name",
+    },
+    {
+        id: 3,
+        field: "roomDescription",
+        header: "Description",
+    },
+];
+
+export const ADD_ROOM_FORM_INPUTS: TAddRoomsInputs[] = [
+    {
+        id: 1,
+        name: "roomNumber",
+        label: "Room number",
+        type: "number",
+        placeholder: "Room number",
+    },
+    {
+        id: 2,
+        name: "roomName",
+        label: "Room name",
+        type: "text",
+        placeholder: "Room name",
+    },
+    {
+        id: 3,
+        name: "roomDescription",
+        label: "Room description",
+        type: "textarea",
+        placeholder: "Room description",
     },
 ];

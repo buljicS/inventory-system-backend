@@ -3,9 +3,10 @@ import React from "react";
 import styles from "./SideBar.module.scss";
 import Image from "next/image";
 import { Logo } from "@/resources/images";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Turn as Hamburger } from "hamburger-react";
 import { SideBarNavigation, Date } from "@/components";
+import { handleBodyScroll } from "@/utils/functions";
 
 const SideBar = () => {
     const [showSideBar, setShowSideBar] = useState(false);
@@ -13,6 +14,14 @@ const SideBar = () => {
     const toggleSideBar = () => {
         setShowSideBar(!showSideBar);
     };
+
+    useEffect(() => {
+        handleBodyScroll(showSideBar);
+
+        return () => {
+            handleBodyScroll(false);
+        };
+    }, [showSideBar]);
 
     return (
         <>
@@ -41,7 +50,7 @@ const SideBar = () => {
                     </div>
 
                     <div className={styles.sidebar_top_links}>
-                        <SideBarNavigation />
+                        <SideBarNavigation setShowSideBar={setShowSideBar} />
                     </div>
                 </div>
 

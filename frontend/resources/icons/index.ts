@@ -21,3 +21,6 @@ export { default as LogoutIcon } from "./logout.png";
 export { default as RoomIcon } from "./rooms.png";
 export { default as UserWhiteIcon } from "./user_white.png";
 export { default as PlusIcon } from "./plus.png";
+export { default as PlusIconSecond } from "./plus2.png";
+export { default as DeleteIcon } from "./delete.png";
+export { default as ExitIcon } from "./exit.png";
