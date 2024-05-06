@@ -1,9 +1,10 @@
 # enviroment files
 /.env
-/firebase-secret.json
+/firebase.json
 
 # composer files
 /vendor
+/composer.json
 
 # IDE files
 /.idea

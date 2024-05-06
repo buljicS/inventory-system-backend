@@ -169,6 +169,12 @@
 
 <hr>
 
+### Read more
+- [Project Structure](project-structure.md)
+- [Swagger-PHP Annotations](writing-annotations.md)
+
+<hr/>
+
 ### References
 
 #### php-swagger:
