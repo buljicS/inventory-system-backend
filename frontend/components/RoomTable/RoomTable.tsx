@@ -10,8 +10,8 @@ import data from "@/resources/MOCK_DATA.json";
 import { Tag } from "primereact/tag";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import "primereact/resources/themes/mira/theme.css";
-
 import { InputText } from "primereact/inputtext";
+import { useToast } from "@chakra-ui/react";
 
 const RoomTable = () => {
     const [rooms, setRooms] = useState<TRooms[]>(data);
@@ -21,6 +21,7 @@ const RoomTable = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
     const [selectedRooms, setSelectedRooms] = useState<TRooms[] | null>(null);
     const [statuses] = useState<string[]>(["Active", "Inactive"]);
+    const toast = useToast();
 
     const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -55,12 +56,53 @@ const RoomTable = () => {
                 type="text"
                 value={options.value}
                 onChange={(e) => options.editorCallback(e.target.value)}
+                validateOnly
             />
         );
     };
 
-    const onSubmit = (e) => {
-        console.log(e);
+    const showToast = (status, description) => {
+        toast({
+            title: "Status",
+            description,
+            status,
+            duration: 3000,
+            isClosable: true,
+            position: "top-right",
+        });
+    };
+
+    const onSubmit = (e) => {};
+
+    const rowEditValidator = (rowData) => {
+        const { roomNumber, roomDescription, roomName } = rowData;
+
+        if (roomNumber === "" || isNaN(roomNumber)) {
+            showToast(
+                "error",
+                "Room number must be a number and can't be empty."
+            );
+            return false;
+        }
+
+        if (roomName.trim() === "" || roomName.length < 5) {
+            showToast("error", "Room name must have at least 5 characters.");
+            return false;
+        }
+
+        if (roomDescription.trim() === "" || roomDescription.length < 20) {
+            showToast(
+                "error",
+                "Room description must have at least 20 characters."
+            );
+            return false;
+        }
+
+        showToast(
+            "success",
+            `Room with number ${roomNumber} is successfully updated.`
+        );
+        return true;
     };
 
     return (
@@ -84,6 +126,7 @@ const RoomTable = () => {
                 selection={selectedRooms!}
                 onSelectionChange={(e) => setSelectedRooms(e.value)}
                 selectionMode="multiple"
+                rowEditValidator={rowEditValidator}
             >
                 <Column
                     selectionMode="multiple"
