@@ -45,3 +45,11 @@ export const getCurrentDateTime = () => {
 
     return `${day}.${month}.${year}. ${hours}:${minutes}:${seconds}`;
 };
+
+export const handleBodyScroll = (scrollState) => {
+    if (scrollState) {
+        document.body.classList.add("no-scroll");
+    } else {
+        document.body.classList.remove("no-scroll");
+    }
+};

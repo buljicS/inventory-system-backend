@@ -7,7 +7,7 @@ import styles from "./SideBar.module.scss";
 import { useRecoilState } from "recoil";
 import { userAtom } from "@/utils/atoms";
 
-const SideBarNavigation = () => {
+const SideBarNavigation = ({ setShowSideBar }) => {
     const [user, setUser] = useRecoilState(userAtom);
 
     return (
@@ -15,11 +15,19 @@ const SideBarNavigation = () => {
             <ul className={styles.sidebar_navigation_list}>
                 {user.role === "employer" &&
                     SIDEBAR_LINKS_EMPLOYER.map((item) => (
-                        <SideBarNavigationItem key={item.id} route={item} />
+                        <SideBarNavigationItem
+                            key={item.id}
+                            route={item}
+                            setShowSideBar={setShowSideBar}
+                        />
                     ))}
                 {user.role === "worker" &&
                     SIDEBAR_LINKS_WORKER.map((item) => (
-                        <SideBarNavigationItem key={item.id} route={item} />
+                        <SideBarNavigationItem
+                            key={item.id}
+                            route={item}
+                            setShowSideBar={setShowSideBar}
+                        />
                     ))}
             </ul>
         </div>

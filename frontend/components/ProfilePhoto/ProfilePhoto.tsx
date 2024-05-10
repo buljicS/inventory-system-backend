@@ -50,7 +50,7 @@ const ProfilePhoto = () => {
                 <p className={styles.profile_information_name}>
                     {user.fullName}
                 </p>
-                <p>{user.email}</p>
+                <p className={styles.profile_information_email}>{user.email}</p>
             </div>
         </div>
     );

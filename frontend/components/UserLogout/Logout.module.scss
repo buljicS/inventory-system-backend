@@ -3,11 +3,9 @@
     justify-content: center;
     align-items: center;
     min-width: 100%;
-    text-align: center;
     &_text {
+        display: flex;
+        gap: 16px;
         width: 100%;
-        img:hover {
-            cursor: pointer;
-        }
     }
 }

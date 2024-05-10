@@ -26,6 +26,10 @@
         &_select {
             right: 25px;
         }
+
+        &_number {
+            right: 35px;
+        }
     }
 
     @media screen and (max-width: 400px) {
@@ -33,4 +37,9 @@
             font-size: 0.8rem;
         }
     }
+}
+
+.active_border:focus-visible {
+    border-color: #86b7fe !important;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
 }

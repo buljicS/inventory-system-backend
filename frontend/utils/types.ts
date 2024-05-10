@@ -109,3 +109,31 @@ export type TItem = {
     id: number;
     itemName: string;
 };
+
+export type TRooms = {
+    roomName: string;
+    roomNumber: number;
+    roomDescription: string;
+    roomInventoryActive: boolean;
+};
+
+export type TRoomsTableColumns = {
+    id: number;
+    field: string;
+    header: string;
+    sortable?: boolean;
+};
+
+export type TRoomsData = {
+    roomNumber: number;
+    roomName: string;
+    roomDescription: string;
+};
+
+export type TAddRoomsInputs = {
+    id: number;
+    name: string;
+    label: string;
+    type: string;
+    placeholder: string;
+};

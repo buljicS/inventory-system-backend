@@ -64,10 +64,13 @@
 
 .chakra-menu {
     &__menuitem {
-        justify-content: center;
+        gap: 16px;
         a {
-            min-width: 100%;
-            text-align: center;
+            min-width: calc(100% - 20px);
         }
     }
+}
+
+.no-scroll {
+    overflow: hidden;
 }

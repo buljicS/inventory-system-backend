@@ -6,6 +6,7 @@ import { userAtom } from "@/utils/atoms";
 import { Logout } from "@/components";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import Link from "next/link";
+
 const UserNavigation = () => {
     const [user, setUser] = useRecoilState(userAtom);
 
@@ -36,9 +37,17 @@ const UserNavigation = () => {
                 </div>
             </MenuButton>
             <MenuList>
-                <MenuItem>
-                    <Link href="/dashboard/profile"> My profile</Link>
-                </MenuItem>
+                <Link href="/dashboard/profile">
+                    <MenuItem>
+                        <Image
+                            src={UserIcon}
+                            alt="User icon"
+                            width={20}
+                            height={20}
+                        />
+                        My Profile
+                    </MenuItem>
+                </Link>
                 <MenuItem>
                     <Logout />
                 </MenuItem>

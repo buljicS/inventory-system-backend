@@ -1,0 +1,86 @@
+.p-datatable {
+    th,
+    td {
+        padding: 10px 20px;
+    }
+
+    .p-sortable-column {
+        .p-column-header-content {
+            gap: 8px;
+        }
+    }
+
+    &-header {
+        display: flex;
+    }
+
+    &-wrapper {
+        max-height: 500px;
+    }
+
+    .p-cell-editing {
+        input {
+            padding: 5px;
+            background-color: #e2e8f0;
+        }
+    }
+
+    .p-paginator {
+        padding: 20px;
+    }
+
+    .p-highlight {
+        font-weight: 700;
+    }
+
+    .p-inputtext {
+        width: 100%;
+    }
+
+    .p-dropdown {
+        padding: 5px;
+        background-color: #e2e8f0;
+    }
+}
+
+.rooms-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+
+    .rooms-search {
+        font-size: 1rem;
+
+        input {
+            padding: 5px 20px;
+            border-radius: 8px;
+            background-color: #eceff4;
+        }
+    }
+
+    .rooms-actions {
+        display: flex;
+        gap: 16px;
+    }
+}
+
+.p-dropdown-items {
+    padding-left: 0;
+    margin-bottom: 4px;
+    li {
+        justify-content: center;
+    }
+
+    .p-tag {
+        background: transparent;
+        color: #4c566a;
+    }
+}
+
+.form_buttons {
+    padding: 10px 0;
+    display: flex;
+    justify-content: flex-end;
+}

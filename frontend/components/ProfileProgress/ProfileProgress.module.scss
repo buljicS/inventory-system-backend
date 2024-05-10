@@ -13,10 +13,14 @@
             h2 {
                 font-size: 1.3rem;
                 margin: 0;
+
+                @media only screen and (max-width: 576px) {
+                    font-size: 1rem;
+                }
             }
 
             span {
-                font-size: 1.7rem;
+                font-size: 1.4rem;
             }
         }
     }
@@ -38,8 +42,28 @@
             h3 {
                 font-size: 1.1rem;
                 margin: 0;
+
+                @media only screen and (max-width: 1500px) {
+                    font-size: 0.9rem;
+                }
+            }
+
+            @media only screen and (max-width: 576px) {
+                padding: 15px 6px;
             }
         }
+
+        @media only screen and (max-width: 576px) {
+            padding: 15px 6px;
+        }
+    }
+
+    @media only screen and (max-width: 1500px) {
+        width: 50%;
+    }
+
+    @media only screen and (max-width: 1200px) {
+        width: 100%;
     }
 }
 
@@ -49,4 +73,8 @@
 
 .todo {
     color: #ff3131;
+
+    @media only screen and (max-width: 576px) {
+        font-size: 0.9rem;
+    }
 }

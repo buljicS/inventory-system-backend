@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Logout.module.scss";
 import Image from "next/image";
-import { PowerIcon } from "@/resources/icons";
+import { ExitIcon } from "@/resources/icons";
 import { useRouter } from "next/navigation";
 import {
     Modal,
@@ -23,6 +23,7 @@ const Logout = () => {
     return (
         <div className={styles.user_logout}>
             <div className={styles.user_logout_text} onClick={onOpen}>
+                <Image src={ExitIcon} alt="Exit Icon" width={20} height={20} />
                 Logout
             </div>
 
