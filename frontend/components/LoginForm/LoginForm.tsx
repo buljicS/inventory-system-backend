@@ -61,7 +61,7 @@ const LoginForm = () => {
             );
 
             switch (response.data.status) {
-                case "200":
+                case 200:
                     setIsLoading(true);
                     const userInformations = {
                         userId: response.data.userId,
@@ -82,7 +82,7 @@ const LoginForm = () => {
                     router.push("/dashboard");
                     break;
 
-                case "403":
+                case 403:
                     toast({
                         title: "Status",
                         description: response.data.description,
@@ -94,8 +94,8 @@ const LoginForm = () => {
                     setIsLoading(false);
                     break;
 
-                case "401":
-                case "404":
+                case 401:
+                case 404:
                     toast({
                         title: "Status",
                         description: response.data.description,
