@@ -19,7 +19,10 @@ return function (Slim $app) {
 			$data["message"] = $arguments["message"];
 			$response->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 			return $response
-				->withHeader("Content-Type", "application/json");
+				->withHeader("Content-Type", "application/json")
+				->withHeader('Access-Control-Allow-Origin', "{$_ENV['MAIN_URL_FE']}")
+				->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+				->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 		}
 	]));
 };
