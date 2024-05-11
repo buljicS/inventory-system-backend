@@ -9,6 +9,7 @@ import { ITEM_TABLE_COLUMNS } from "@/utils/constants";
 import ItemTableHeader from "./ItemTableHeader";
 import MOCK_DATA_ITEMS from "@/resources/MOCK_DATA_ITEMS.json";
 import { InputText } from "primereact/inputtext";
+import { classNames } from "primereact/utils";
 
 const ItemsTable = () => {
     const [items, setItems] = useState<TItems[]>(MOCK_DATA_ITEMS);
@@ -40,6 +41,18 @@ const ItemsTable = () => {
                 validateOnly
             />
         );
+    };
+
+    const stockBodyTemplate = (rowData) => {
+        console.log(rowData);
+        const stockClassName = classNames("stock", {
+            "stock-bg-red": rowData.itemQuantity === 0,
+            "stock-bg-blue":
+                rowData.itemQuantity > 0 && rowData.itemQuantity <= 10,
+            "stock-bg-teal": rowData.itemQuantity > 10,
+        });
+
+        return <div className={stockClassName}>{rowData.itemQuantity}</div>;
     };
 
     return (
@@ -75,6 +88,7 @@ const ItemsTable = () => {
                         editor={(options) => textEditor(options)}
                         sortable={column.sortable}
                         key={column.id}
+                        body={column.id === 2 ? stockBodyTemplate : ""}
                     />
                 ))}
 

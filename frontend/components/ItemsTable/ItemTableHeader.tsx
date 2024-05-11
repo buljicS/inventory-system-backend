@@ -2,9 +2,9 @@ import { PlusIconSecond, DeleteIcon } from "@/resources/icons";
 import { ButtonIcon } from "@/components";
 import { useDisclosure, Button } from "@chakra-ui/react";
 import { InputText } from "primereact/inputtext";
-import { FormInput } from "@/components";
 import { Form } from "react-bootstrap";
 import AddItemModal from "./AddItemModal";
+import DeleteItemModal from "./DeleteItemModal";
 
 const ItemTableHeader = ({
     globalFilterValue,
@@ -42,7 +42,7 @@ const ItemTableHeader = ({
                     </Button>
                     <Button
                         colorScheme="red"
-                        // onClick={onDeleteRoomOpen}
+                        onClick={onDeleteItemOpen}
                         leftIcon={<ButtonIcon icon={DeleteIcon} />}
                         isDisabled={
                             !selectedItems || selectedItems.length === 0
@@ -62,6 +62,10 @@ const ItemTableHeader = ({
             <AddItemModal
                 addItemIsOpen={addItemIsOpen}
                 onAddItemClose={onAddItemClose}
+            />
+            <DeleteItemModal
+                deleteItemIsOpen={deleteItemIsOpen}
+                onDeleteItemClose={onDeleteItemClose}
             />
         </div>
     );

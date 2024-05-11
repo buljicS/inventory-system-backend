@@ -33,3 +33,28 @@
     width: fit-content;
     margin: 0 auto;
 }
+
+.stock {
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+
+    &-bg-red {
+        background-color: #ffcccc;
+        color: #7f1d1d;
+    }
+
+    &-bg-blue {
+        background-color: #cce5ff;
+        color: #1e3a8a;
+    }
+
+    &-bg-teal {
+        background-color: #ccfbf1;
+        color: #134e4a;
+    }
+}

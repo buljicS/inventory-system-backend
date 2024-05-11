@@ -19,6 +19,7 @@ import Spinner from "react-bootstrap/Spinner";
 import { useSearchParams } from "next/navigation";
 import { userActionMessages } from "@/utils/functions";
 import { useToastMessage } from "@/utils/hooks";
+import axiosInstance from "@/utils/axiosInstance";
 
 const LoginForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -55,7 +56,7 @@ const LoginForm = () => {
     const onLoginSubmit: SubmitHandler<TLoginData> = async (data) => {
         try {
             setIsLoading(true);
-            const response = await axios.post(
+            const response = await axiosInstance.post(
                 `${process.env.BASE_URL}/Users/LoginUser`,
                 data
             );
