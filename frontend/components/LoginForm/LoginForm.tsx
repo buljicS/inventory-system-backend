@@ -12,7 +12,6 @@ import {
 } from "@/utils/types";
 import { userAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FormInput } from "@/components";
 import Spinner from "react-bootstrap/Spinner";
@@ -97,6 +96,8 @@ const LoginForm = () => {
                         button: true,
                     }));
                     break;
+                default:
+                    setIsLoading(false);
             }
         } catch (error) {
             console.log(error);
@@ -107,7 +108,7 @@ const LoginForm = () => {
     const onforgotSubmit: SubmitHandler<TForgotPassword> = async (data) => {
         try {
             setIsLoading(true);
-            const response = await axios.post(
+            const response = await axiosInstance.post(
                 `${process.env.BASE_URL}/Users/SendPasswordResetEmail`,
                 data
             );

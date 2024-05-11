@@ -8,12 +8,12 @@ import { Form, Button } from "react-bootstrap";
 import FormInput from "../FormInput/FormInput";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TForgotPasswordData } from "@/utils/types";
-import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Spinner from "react-bootstrap/Spinner";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useToastMessage } from "@/utils/hooks";
+import axiosInstance from "@/utils/axiosInstance";
 
 const ForgotPasswordForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -37,7 +37,7 @@ const ForgotPasswordForm = () => {
             data.hash = searchParams.get("token");
             const { repeatNewPassword, ...changePasswordData } = data;
             setIsLoading(true);
-            const response = await axios.post(
+            const response = await axiosInstance.post(
                 `${process.env.BASE_URL}/Users/ResetPassword`,
                 changePasswordData
             );
@@ -50,9 +50,13 @@ const ForgotPasswordForm = () => {
                     showToast("error", response.data.description);
                     setIsLoading(false);
                     break;
+                default:
+                    setIsLoading(false);
             }
         } catch (error) {
             console.log(error);
+            setIsLoading(false);
+        } finally {
             setIsLoading(false);
         }
     };

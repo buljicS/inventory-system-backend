@@ -74,3 +74,17 @@
 .no-scroll {
     overflow: hidden;
 }
+
+.btn {
+    background-color: #202930;
+    border-color: #202930;
+    transition: opacity 0.2s ease-in-out;
+
+    &:hover,
+    &:active,
+    &:focus {
+        background-color: #202930 !important;
+        border-color: #202930 !important;
+        opacity: 0.9;
+    }
+}

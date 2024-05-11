@@ -421,7 +421,7 @@ export const PROFILE_PASSWORD_INPUTS: TInputs[] = [
     {
         id: 1,
         name: "currentPassword",
-        label: "Curent password",
+        label: "Current password",
         type: "password",
         placeholder: "Your current password",
     },

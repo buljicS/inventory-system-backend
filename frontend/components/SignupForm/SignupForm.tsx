@@ -6,9 +6,9 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TRegisterData } from "@/utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import { useToastMessage } from "@/utils/hooks";
+import axiosInstance from "@/utils/axiosInstance";
 
 const SignupForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -24,7 +24,7 @@ const SignupForm = () => {
         try {
             setIsLoading(true);
             const { repeatPassword, ...registerData } = data;
-            const response = await axios.post(
+            const response = await axiosInstance.post(
                 `${process.env.BASE_URL}/Users/RegisterUser`,
                 registerData
             );
@@ -37,6 +37,8 @@ const SignupForm = () => {
                 case 403:
                     showToast("error", response.data.description);
                     break;
+                default:
+                    setIsLoading(false);
             }
         } catch (error) {
             console.log(error);

@@ -5,7 +5,6 @@ import { Form, Button } from "react-bootstrap";
 import FormInput from "../FormInput/FormInput";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TLoginData } from "@/utils/types";
-import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Spinner from "react-bootstrap/Spinner";
 
