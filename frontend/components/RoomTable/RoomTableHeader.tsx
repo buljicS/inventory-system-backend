@@ -24,8 +24,8 @@ const RoomTableHeader = ({
     } = useDisclosure();
 
     return (
-        <div className="rooms-header">
-            <div className="rooms-actions">
+        <div className="rooms_header">
+            <div className="rooms_actions">
                 <Button
                     colorScheme="green"
                     onClick={onAddRoomOpen}
@@ -42,7 +42,7 @@ const RoomTableHeader = ({
                     Delete selected rooms
                 </Button>
             </div>
-            <div className="rooms-search">
+            <div className="rooms_search">
                 <InputText
                     value={globalFilterValue}
                     onChange={onGlobalFilterChange}

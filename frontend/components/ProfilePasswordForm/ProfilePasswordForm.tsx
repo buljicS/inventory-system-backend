@@ -6,7 +6,6 @@ import {
 import { Form, Button } from "react-bootstrap";
 import { FormInput } from "@/components";
 import { useState } from "react";
-import { useToast } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { TPasswordProfileData } from "@/utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +13,6 @@ import Spinner from "react-bootstrap/Spinner";
 
 const ProfilePasswordForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const toast = useToast();
     const {
         register,
         handleSubmit,

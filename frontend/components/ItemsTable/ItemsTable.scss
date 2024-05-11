@@ -1,0 +1,35 @@
+.items_header {
+    width: 100%;
+
+    &_top {
+        padding: 20px 20px 0 20px;
+    }
+
+    &_bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 20px;
+
+        &_search {
+            font-size: 1rem;
+
+            input {
+                padding: 5px 20px;
+                border-radius: 8px;
+                background-color: #eceff4;
+            }
+        }
+
+        &_actions {
+            display: flex;
+            gap: 16px;
+        }
+    }
+}
+
+.chakra-tabs__tablist {
+    width: fit-content;
+    margin: 0 auto;
+}

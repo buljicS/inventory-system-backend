@@ -5,21 +5,15 @@ import { useRecoilState } from "recoil";
 import { useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
 import { DashboardHeader } from "@/components";
+import { useToastMessage } from "@/utils/hooks";
 
 const Dashboard = () => {
     const [user, setUser] = useRecoilState(userAtom);
-    const toast = useToast();
+    const showToast = useToastMessage();
 
     useEffect(() => {
         if (user.approveLogin) {
-            toast({
-                title: "Status",
-                description: "You have successfuly logged in.",
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-                position: "top-right",
-            });
+            showToast("success", "You have successfuly logged in.");
             setUser((prev) => ({ ...prev, approveLogin: false }));
         }
     }, []);

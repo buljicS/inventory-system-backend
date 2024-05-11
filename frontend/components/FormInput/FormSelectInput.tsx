@@ -14,7 +14,10 @@ const FormSelectInput = ({ input, register, errors }) => {
         >
             <Form.Label>{input.label}</Form.Label>
             <div className={styles.input}>
-                <Form.Select multiple {...register(input.name)}>
+                <Form.Select
+                    {...register(input.name)}
+                    multiple={input.multiple ? true : false}
+                >
                     <option>Company one</option>
                     <option>Company two</option>
                     <option>Company three</option>

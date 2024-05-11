@@ -11,7 +11,7 @@ import { Tag } from "primereact/tag";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import "primereact/resources/themes/mira/theme.css";
 import { InputText } from "primereact/inputtext";
-import { useToast } from "@chakra-ui/react";
+import { useToastMessage } from "@/utils/hooks";
 
 const RoomTable = () => {
     const [rooms, setRooms] = useState<TRooms[]>(data);
@@ -21,7 +21,7 @@ const RoomTable = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
     const [selectedRooms, setSelectedRooms] = useState<TRooms[] | null>(null);
     const [statuses] = useState<string[]>(["Active", "Inactive"]);
-    const toast = useToast();
+    const showToast = useToastMessage();
 
     const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -61,17 +61,6 @@ const RoomTable = () => {
         );
     };
 
-    const showToast = (status, description) => {
-        toast({
-            title: "Status",
-            description,
-            status,
-            duration: 3000,
-            isClosable: true,
-            position: "top-right",
-        });
-    };
-
     const onSubmit = (e) => {};
 
     const rowEditValidator = (rowData) => {
@@ -98,10 +87,6 @@ const RoomTable = () => {
             return false;
         }
 
-        showToast(
-            "success",
-            `Room with number ${roomNumber} is successfully updated.`
-        );
         return true;
     };
 

@@ -6,6 +6,7 @@ export type TInputs = {
     name: string;
     type: string;
     placeholder: string | null;
+    multiple?: boolean;
 };
 
 export type TRegisterData = {
@@ -117,7 +118,7 @@ export type TRooms = {
     roomInventoryActive: boolean;
 };
 
-export type TRoomsTableColumns = {
+export type TTableColumns = {
     id: number;
     field: string;
     header: string;
@@ -136,4 +137,10 @@ export type TAddRoomsInputs = {
     label: string;
     type: string;
     placeholder: string;
+};
+
+export type TItems = {
+    itemName: string;
+    itemQuantity: number;
+    itemCountryOrigin: string;
 };

@@ -5,7 +5,7 @@ import {
     TInputs,
     TSlides,
     TSideBarLinks,
-    TRoomsTableColumns,
+    TTableColumns,
     TAddRoomsInputs,
 } from "./types";
 import {
@@ -413,6 +413,7 @@ export const PROFILE_FORM_INPUTS: TInputs[] = [
         label: "Company",
         type: "select",
         placeholder: null,
+        multiple: true,
     },
 ];
 
@@ -440,7 +441,7 @@ export const PROFILE_PASSWORD_INPUTS: TInputs[] = [
     },
 ];
 
-export const ROOM_TABLE_COLUMNS: TRoomsTableColumns[] = [
+export const ROOM_TABLE_COLUMNS: TTableColumns[] = [
     {
         id: 1,
         field: "roomNumber",
@@ -480,5 +481,26 @@ export const ADD_ROOM_FORM_INPUTS: TAddRoomsInputs[] = [
         label: "Room description",
         type: "textarea",
         placeholder: "Room description",
+    },
+];
+
+export const ITEM_TABLE_COLUMNS: TTableColumns[] = [
+    {
+        id: 1,
+        field: "itemName",
+        header: "Item name",
+        sortable: true,
+    },
+    {
+        id: 2,
+        field: "itemQuantity",
+        header: "Quantity",
+        sortable: false,
+    },
+    {
+        id: 3,
+        field: "itemCountryOrigin",
+        header: "Origin of country",
+        sortable: false,
     },
 ];

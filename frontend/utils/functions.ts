@@ -1,34 +1,14 @@
-export const checkInputType = (input, showPassword) => {
-    if (input.type === "password") {
-        return showPassword ? "text" : "password";
-    } else {
-        return input.type;
-    }
-};
-
 export const userActionMessages = (toast, status) => {
     switch (status) {
         case "1":
-            toast({
-                title: "Status",
-                description: "Your account is activated. You can login now.",
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-                position: "top-right",
-            });
+            toast("success", "Your account is activated. You can login now.");
             break;
 
         case "2":
-            toast({
-                title: "Status",
-                description:
-                    "Your password has been changed. You can now log in.",
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-                position: "top-right",
-            });
+            toast(
+                "success",
+                "Your password has been changed. You can now log in."
+            );
             break;
     }
 };

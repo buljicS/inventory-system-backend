@@ -10,7 +10,6 @@ import {
     TForgotPassword,
     TForgotPasswordState,
 } from "@/utils/types";
-import { useToast } from "@chakra-ui/react";
 import { userAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
 import axios from "axios";
@@ -19,6 +18,7 @@ import { FormInput } from "@/components";
 import Spinner from "react-bootstrap/Spinner";
 import { useSearchParams } from "next/navigation";
 import { userActionMessages } from "@/utils/functions";
+import { useToastMessage } from "@/utils/hooks";
 
 const LoginForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,13 +29,13 @@ const LoginForm = () => {
             form: false,
         });
 
-    const toast = useToast();
+    const showToast = useToastMessage();
     const router = useRouter();
     const searchParams = useSearchParams();
     const userActions = searchParams.get("status");
 
     useEffect(() => {
-        userActionMessages(toast, userActions);
+        userActionMessages(showToast, userActions);
     }, []);
 
     const {
@@ -61,7 +61,7 @@ const LoginForm = () => {
             );
 
             switch (response.data.status) {
-                case "200":
+                case 200:
                     setIsLoading(true);
                     const userInformations = {
                         userId: response.data.userId,
@@ -82,28 +82,14 @@ const LoginForm = () => {
                     router.push("/dashboard");
                     break;
 
-                case "403":
-                    toast({
-                        title: "Status",
-                        description: response.data.description,
-                        status: "error",
-                        duration: 3000,
-                        isClosable: true,
-                        position: "top-right",
-                    });
+                case 403:
+                    showToast("error", response.data.description);
                     setIsLoading(false);
                     break;
 
-                case "401":
-                case "404":
-                    toast({
-                        title: "Status",
-                        description: response.data.description,
-                        status: "error",
-                        duration: 3000,
-                        isClosable: true,
-                        position: "top-right",
-                    });
+                case 401:
+                case 404:
+                    showToast("error", response.data.description);
                     setIsLoading(false);
                     setShowForgotPassword((prev) => ({
                         ...prev,
@@ -124,16 +110,10 @@ const LoginForm = () => {
                 `${process.env.BASE_URL}/Users/SendPasswordResetEmail`,
                 data
             );
-
-            toast({
-                title: "Status",
-                description:
-                    "If you have an account linked to this email, we have sent you instructions for resetting it in your inbox.",
-                status: "success",
-                duration: 6000,
-                isClosable: true,
-                position: "top-right",
-            });
+            showToast(
+                "success",
+                "If you have an account linked to this email, we have sent you instructions for resetting it in your inbox."
+            );
         } catch (error) {
             console.log(error);
         } finally {

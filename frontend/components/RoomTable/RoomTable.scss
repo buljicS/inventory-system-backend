@@ -43,14 +43,8 @@
     }
 }
 
-.rooms-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 20px;
-
-    .rooms-search {
+.rooms {
+    &_search {
         font-size: 1rem;
 
         input {
@@ -60,9 +54,17 @@
         }
     }
 
-    .rooms-actions {
+    &_actions {
         display: flex;
         gap: 16px;
+    }
+
+    &_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 20px;
     }
 }
 

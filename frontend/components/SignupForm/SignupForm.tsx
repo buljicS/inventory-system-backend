@@ -2,17 +2,17 @@ import styles from "./SignupForm.module.scss";
 import { Form, Button } from "react-bootstrap";
 import { REGISTER_INPUTS, REGISTER_SCHEMA } from "@/utils/constants";
 import { FormInput } from "@/components";
-import { useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TRegisterData } from "@/utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
+import { useToastMessage } from "@/utils/hooks";
 
 const SignupForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const toast = useToast();
+    const showToast = useToastMessage();
     const {
         register,
         handleSubmit,
@@ -31,25 +31,11 @@ const SignupForm = () => {
 
             switch (response.data.status) {
                 case 200:
-                    toast({
-                        title: "Status",
-                        description: response.data.description,
-                        status: "success",
-                        duration: 3000,
-                        isClosable: true,
-                        position: "top-right",
-                    });
+                    showToast("success", response.data.description);
                     break;
 
                 case 403:
-                    toast({
-                        title: "Status",
-                        description: response.data.description,
-                        status: "error",
-                        duration: 3000,
-                        isClosable: true,
-                        position: "top-right",
-                    });
+                    showToast("error", response.data.description);
                     break;
             }
         } catch (error) {

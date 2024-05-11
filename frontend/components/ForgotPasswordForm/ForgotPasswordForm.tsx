@@ -13,14 +13,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Spinner from "react-bootstrap/Spinner";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useToast } from "@chakra-ui/react";
+import { useToastMessage } from "@/utils/hooks";
 
 const ForgotPasswordForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const searchParams = useSearchParams();
     const router = useRouter();
-    const toast = useToast();
+    const showToast = useToastMessage();
 
     const {
         register: loginRegister,
@@ -41,21 +41,13 @@ const ForgotPasswordForm = () => {
                 `${process.env.BASE_URL}/Users/ResetPassword`,
                 changePasswordData
             );
-
             switch (response.data.status) {
                 case 200:
                     router.push("/login?status=2");
                     break;
 
                 case 404:
-                    toast({
-                        title: "Status",
-                        description: response.data.description,
-                        status: "error",
-                        duration: 3000,
-                        isClosable: true,
-                        position: "top-right",
-                    });
+                    showToast("error", response.data.description);
                     setIsLoading(false);
                     break;
             }

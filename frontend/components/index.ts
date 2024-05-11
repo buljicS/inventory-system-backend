@@ -28,3 +28,4 @@ export { default as FormNumberInput } from "./FormInput/FormNumberInput";
 export { default as FormTextareaInput } from "./FormInput/FormTextareaInput";
 export { default as FormTextInput } from "./FormInput/FormTextInput";
 export { default as FormPasswordInput } from "./FormInput/FormPasswordInput";
+export { default as ItemsTable } from "./ItemsTable/ItemsTable";
