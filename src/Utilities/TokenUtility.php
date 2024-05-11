@@ -3,9 +3,13 @@
 namespace Utilities;
 
 use Firebase\JWT\JWT;
+use Random\RandomException;
 
 class TokenUtility
 {
+	/**
+	 * @throws RandomException on random_bytes
+	 */
 	public function GenerateBasicToken(int $randomBytes):string
 	{
 		$bytes = random_bytes($randomBytes);
@@ -14,24 +18,20 @@ class TokenUtility
 
 	public function GenerateJWTToken(int $userid):string
 	{
-		$mainURLBE = $_ENV['MAIN_URL_BE'];
-		$mainURLFE = $_ENV['MAIN_URL_FE'];
-		$secret = $_ENV['JWT_SECRET'];
-
 		$headers = [
 			'typ' => 'JWT',
 			'alg' => 'HS256'
 		];
 
 		$payload = [
-			'iss' => $mainURLBE,
-			'aud' => $mainURLFE,
+			'iss' => $_ENV['MAIN_URL_BE'],
+			'aud' => $_ENV['MAIN_URL_FE'],
 			'iat' => time(),
 			'exp' => time() + 3600,
 			'userid' => $userid
 		];
 
-		return JWT::encode($payload, $secret, 'HS256', null, $headers);
+		return JWT::encode($payload, $_ENV['JWT_SECRET'], 'HS256', null, $headers);
 	}
 
 }

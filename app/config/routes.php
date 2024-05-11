@@ -23,8 +23,8 @@ return function (Slim $app) {
 	#endregion
 
 	#region Logs
-	$app->get('/api/Users/LogAccess', [API::class, 'LogAccess']);
-	$app->get('/api/Users/GetAllLogs', [API::class, 'GetAllLogs']);
+	$app->post('/api/Logs/LogAccess', [API::class, 'LogAccess']);
+	$app->get('/api/Logs/GetAllLogs', [API::class, 'GetAllLogs']);
 	#endregion
 
 	#region FirebaseBucket

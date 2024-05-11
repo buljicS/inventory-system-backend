@@ -108,7 +108,9 @@
         //if its still under development, generate new json each time user wants to visit swagger
         if(isUnderDevelopment) {
             document.getElementById('generateDocs').innerHTML += '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>';
-            await fetch(currentURL + requestMethod);
+            const req = await fetch(currentURL + requestMethod);
+            const decoded = await req.json();
+            console.log(decoded);
         }
         window.location.href = currentURL + "/swagger";
     }

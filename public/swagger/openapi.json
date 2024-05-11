@@ -11,13 +11,13 @@
         }
     ],
     "paths": {
-        "/api/Users/LogAccess": {
+        "/api/FirebaseStorage/GetAllFilesFromDir/{dir}": {
             "get": {
                 "tags": [
-                    "Logs"
+                    "FirebaseStorage"
                 ],
-                "description": "Log access on web system",
-                "operationId": "3374c0db3bee53b4940e28702098d29d",
+                "description": "Get all files from single directory",
+                "operationId": "33ecda801b018981b44edaa83ab24704",
                 "responses": {
                     "200": {
                         "description": "An example resource"
@@ -25,13 +25,60 @@
                 }
             }
         },
-        "/api/Users/GetAllLogs": {
+        "/api/FirebaseStorage/GetFileByName/{fileName}": {
+            "get": {
+                "tags": [
+                    "FirebaseStorage"
+                ],
+                "description": "Get single file by file name",
+                "operationId": "13710456501287533a6b8cca3f034e35",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                }
+            }
+        },
+        "/api/Logs/LogAccess": {
+            "post": {
+                "tags": [
+                    "Logs"
+                ],
+                "operationId": "25d7284e5aa4e104a221f6573b8e8966",
+                "requestBody": {
+                    "description": "Log user access on login",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "isLoggedInSuccessfully": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "workerId": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Logs/GetAllLogs": {
             "get": {
                 "tags": [
                     "Logs"
                 ],
                 "description": "Get all previous logs",
-                "operationId": "78a3b794610397b377bda676d759339d",
+                "operationId": "6806ae02a3db691fb23b405cd9a0738b",
                 "responses": {
                     "200": {
                         "description": "An example resource"
@@ -179,25 +226,59 @@
                 }
             }
         },
+        "/api/Users/UpdateUser": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "e3c9ff2ad6ffab44631d1ced0b929776",
+                "requestBody": {
+                    "description": "Update user informations",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "userId": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "phoneNumber": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "companies": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
         "/api/Users/ResetPassword": {
             "post": {
                 "tags": [
                     "Users"
                 ],
                 "operationId": "d41cc03d9b770b8ab701216be8bd9d61",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
                 "requestBody": {
                     "description": "Reset password from email",
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
+                                    "hash": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
                                     "newPassword": {
                                         "type": "string",
                                         "example": "string"

@@ -22,24 +22,24 @@ AppFactory::setContainer($container);
 #region dependencies
 $app = AppFactory::create();
 
-//base middlewares
-$base = require '../app/base.php';
+//config middlewares
+$base = require '../app/middleware/base.php';
 $base($app);
 
 //cors policy
-$cors = require '../app/cors.php';
+$cors = require '../app/middleware/cors.php';
 $cors($app);
 
 //jwt auth
-$jwtAuth = require '../app/jwt-auth.php';
+$jwtAuth = require '../app/middleware/authorization.php';
 $jwtAuth($app);
 
 //error handling
-$errorHandler = require '../app/error-handler.php';
+$errorHandler = require '../app/middleware/error.php';
 $errorHandler($app);
 
 //routes
-$routes = require '../app/routes.php';
+$routes = require '../app/config/routes.php';
 $routes($app);
 #endregion
 

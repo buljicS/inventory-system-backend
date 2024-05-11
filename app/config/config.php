@@ -10,7 +10,7 @@ $ignorePath = [
 	"/api/Users/LoginUser",
 	"/api/Users/RegisterUser",
 	"/api/Users/SendPasswordResetEmail",
-	"/api/Users/ActivateUserAccount/{token}",
+	"/api/Users/ActivateUserAccount/",
 	"/api/Users/ResetPassword"
 ];
 #endregion

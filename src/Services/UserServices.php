@@ -8,18 +8,21 @@ use Repositories\UsersRepository;
 use Utilities\MailUtility;
 use Utilities\TokenUtility;
 use Valitron\Validator as VValidator;
+use Services\LogServices as LogServices;
 
 class UserServices
 {
 	private UsersRepository $_userRepo;
 	private MailUtility $_email;
 	private TokenUtility $tokenUtility;
+	private LogServices $_logServices;
 
-	public function __construct(MailUtility $email, TokenUtility $tokenUtility, UsersRepository $usersRepository)
+	public function __construct(MailUtility $email, TokenUtility $tokenUtility, UsersRepository $usersRepository, LogServices $logServices)
 	{
 		$this->_email = $email;
 		$this->_userRepo = $usersRepository;
 		$this->tokenUtility = $tokenUtility;
+		$this->_logServices = $logServices;
 	}
 
 	public function RegisterUser(array $newUserData): array
@@ -132,7 +135,7 @@ class UserServices
 
 		$response = $this->_userRepo->GetUserByEmail($loginData['email']);
 
-		return match (true) {
+		$loggedIn = match (true) {
 			$response === false || !password_verify($loginData['password'], $response['worker_password']) => [
 				'status' => 401,
 				'message' => 'Unauthorized',
@@ -155,6 +158,13 @@ class UserServices
 				'token' => $this->tokenUtility->GenerateJWTToken($response['worker_id'])
 			],
 		};
+
+		$isLoggedIn = ($loggedIn['status'] == 200);
+		$workerId = $response['worker_id'];
+
+		$this->_logServices->LogAccess($isLoggedIn, $workerId);
+
+		return $loggedIn;
 
 	}
 

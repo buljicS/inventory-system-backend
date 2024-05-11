@@ -21,14 +21,26 @@ class LogServices
 		return $this->_logRepository->GetAllLogs();
 	}
 
-	public function LogAccess(): array
+	public function LogAccess(bool $isLoggedInSuccessfully, int $workerId): array
 	{
+		$accessLog = [];
 		$mobileDetect = $this->_mobileDetect;
-		return [
-			'user-agent' => $mobileDetect->getUserAgent(),
-			'isMobile' => $mobileDetect->isMobile(),
-			'isTablet' => $mobileDetect->isTablet(),
-			'dateAccessed' => date("Y-m-d H:i:s", time())
-		];
+
+		$accessLog['device_type'] = match (true) {
+			$mobileDetect->isMobile() => 'phone',
+			$mobileDetect->isTablet() => 'tablet',
+			default => 'computer',
+		};
+
+		$accessLog['user_agent'] = $mobileDetect->getUserAgent();
+		$accessLog['ip_address'] = $_SERVER["REMOTE_ADDR"];
+		$accessLog['referer'] = $_SERVER["HTTP_REFERER"];
+		$accessLog['date_accessed'] = date("Y-m-d H:i:s", time());
+		$accessLog['worker_id'] = $workerId;
+		$accessLog['is_logged_in'] = $isLoggedInSuccessfully;
+
+		$this->_logRepository->InsertNewLog($accessLog);
+
+		return $accessLog;
 	}
 }

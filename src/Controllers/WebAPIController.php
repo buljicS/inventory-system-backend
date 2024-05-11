@@ -64,24 +64,74 @@ class WebAPIController
 		$file = fopen("../public/swagger/openapi.json", "wa+");
 		fwrite($file, $openapi);
 		fclose($file);
-		$response->getBody()->write(file_get_contents("../public/swagger/openapi.json"));
+		$response->getBody()->write(file_get_contents(__DIR__ . "/../public/swagger/openapi.json"));
 		return $response
 			->withHeader('Content-type', 'application/json');
+	}
+	#endregion
+
+	#region FirebaseStorage
+	/**
+	 * @OA\Get(
+	 *     path="/api/FirebaseStorage/GetAllFilesFromDir/{dir}",
+	 *     description="Get all files from single directory",
+	 *     tags={"FirebaseStorage"},
+	 *     @OA\Response(response="200", description="An example resource")
+	 * )
+	 */
+	public function GetAllFiles(Request $request, Response $response): Response
+	{
+		return $response;
+	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/FirebaseStorage/GetFileByName/{fileName}",
+	 *     description="Get single file by file name",
+	 *     tags={"FirebaseStorage"},
+	 *     @OA\Response(response="200", description="An example resource")
+	 * )
+	 */
+	public function GetFileByName(Request $request, Response $response, array $args): Response
+	{
+		return $response;
 	}
 	#endregion
 
 	#region AccessLogs
 
 	/**
-	 * @OA\Get(
-	 *     path="/api/Users/LogAccess",
-	 *     description="Log access on web system",
+	 * @OA\Post(
+	 *     path="/api/Logs/LogAccess",
 	 *     tags={"Logs"},
-	 *     @OA\Response(response="200", description="An example resource")
+	 *     @OA\RequestBody(
+	 *         description="Log user access on login",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *                 @OA\Property(
+	 *                     property="isLoggedInSuccessfully",
+	 *                     type="bool",
+	 *                     example=true
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="workerId",
+	 *                     type="integer",
+	 *                     example="0"
+	 *                  ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
 	 * )
 	 */
 	public function LogAccess(Request $request, Response $response): Response {
-		$resp = $this->logServices->LogAccess();
+		$requestBody = (array)$request->getParsedBody();
+		$resp = $this->logServices->LogAccess($requestBody['isLoggedInSuccessfully'], $requestBody['workerId']);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -89,7 +139,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Get(
-	 *     path="/api/Users/GetAllLogs",
+	 *     path="/api/Logs/GetAllLogs",
 	 *     description="Get all previous logs",
 	 *     tags={"Logs"},
 	 *     @OA\Response(response="200", description="An example resource")
@@ -273,6 +323,48 @@ class WebAPIController
 	}
 
 	/**
+	 * @OA\Put(
+	 *     path="/api/Users/UpdateUser",
+	 *     tags={"Users"},
+	 *     @OA\RequestBody(
+	 *         description="Update user informations",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     			   @OA\Property (
+	 *     			     property="userId",
+	 *     				 type="integer",
+	 *     				 example="0"
+	 *     			   ),
+	 *                 @OA\Property(
+	 *                     property="phoneNumber",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="companies",
+	 *                     type="string",
+	 *                     example="string"
+	 *                  ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 * )
+	 */
+	public function UpdateUserInfo(Request $request, Response $response): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$response->getBody()->write(json_encode("Hi from this one"));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
 	 * @OA\Post(
 	 *     path="/api/Users/ResetPassword",
 	 *     tags={"Users"},
@@ -341,12 +433,14 @@ class WebAPIController
 	 */
 	public function SetNewPassword(Request $request, Response $response): Response
 	{
+		$requestBody = (array)$request->getParsedBody();
 		$response->getBody()->write(json_encode("Hi from this one"));
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
 
 	#endregion
+
 
 
 

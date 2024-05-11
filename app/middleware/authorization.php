@@ -7,7 +7,7 @@ use Tuupola\Middleware\JwtAuthentication as Auth;
 
 
 return function (Slim $app) {
-	require_once 'config.php';
+	require __DIR__ . '/../config/config.php';
 
 	$app->add(new Auth([
 		"path" => $authPath,
