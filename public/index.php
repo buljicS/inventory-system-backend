@@ -3,6 +3,8 @@
 use Slim\Factory\AppFactory;
 use Dotenv\Dotenv as dotSetup;
 use DI\Container;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Tuupola\Middleware\JwtAuthentication as Auth;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -33,7 +35,8 @@ $jwtAuth = require '../app/jwt-auth.php';
 $jwtAuth($app);
 
 //error handling
-$app->addErrorMiddleware(true, true, true);
+$errorHandler = require '../app/error-handler.php';
+$errorHandler($app);
 
 //routes
 $routes = require '../app/routes.php';

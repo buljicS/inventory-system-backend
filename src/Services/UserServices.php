@@ -181,14 +181,14 @@ class UserServices
 				$resp = $this->_email->SendEmail($body, $subject, $user['worker_email'], $cc);
 
 				return [
-					'status' => '200',
+					'status' => 200,
 					'message' => 'Success',
 					'description' => $resp
 				];
 			}
 		}
 		return [
-			'status' => '404',
+			'status' => 404,
 			'message' => 'Not found',
 		];
 	}
