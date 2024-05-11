@@ -3,6 +3,7 @@
 use Slim\Factory\AppFactory;
 use Dotenv\Dotenv as dotSetup;
 use DI\Container;
+use Tuupola\Middleware\JwtAuthentication as Auth;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -26,6 +27,10 @@ $base($app);
 //cors policy
 $cors = require '../app/cors.php';
 $cors($app);
+
+//jwt auth
+$jwtAuth = require '../app/jwt-auth.php';
+$jwtAuth($app);
 
 //error handling
 $app->addErrorMiddleware(true, true, true);

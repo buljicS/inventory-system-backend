@@ -12,7 +12,14 @@ return function (Slim $app) {
 		"headers.allow" => ["Origin", "Authorization", "X-Requested-With", "Content-Type", "Accept"],
 		"origin.server" => "{$_ENV['MAIN_URL_BE']}",
 		"headers.expose" => [],
-		"credentials" => false,
-		"cache" => 0
+		"credentials" => true,
+		"cache" => 86400,
+		"error" => function ($request, $response, $arguments) {
+			$data["status"] = "CORS Error";
+			$data["message"] = $arguments["message"];
+			$response->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+			return $response
+				->withHeader("Content-Type", "application/json");
+		}
 	]));
 };

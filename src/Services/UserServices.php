@@ -197,7 +197,7 @@ class UserServices
 	{
 		$password = password_hash($newPassword, PASSWORD_DEFAULT);
 		$user = $this->_userRepo->GetUserByPasswordRestToken($token);
-		if($user !== false) {
+		if(!empty($user)) {
 			$this->_userRepo->UpdatePassword($password, $user['worker_id']);
 			return [
 				'status' => 200,

@@ -185,16 +185,19 @@
                     "Users"
                 ],
                 "operationId": "d41cc03d9b770b8ab701216be8bd9d61",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "requestBody": {
                     "description": "Reset password from email",
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "hash": {
-                                        "type": "string",
-                                        "example": "string"
-                                    },
                                     "newPassword": {
                                         "type": "string",
                                         "example": "string"
