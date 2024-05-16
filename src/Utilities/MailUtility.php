@@ -20,7 +20,7 @@ class MailUtility
 			$this->mailer->isSMTP();
 			$this->mailer->Host = $_ENV['EMAIL_HOST'];
 			$this->mailer->SMTPAuth = true;
-			$this->mailer->SMTPSecure = "PHPMailer::ENCRYPTION_STARTTLS";
+			$this->mailer->SMTPSecure = $_ENV['EMAIL_SMTP_SECURE'];
 			$this->mailer->Port = $_ENV['EMAIL_PORT'];
 			$this->mailer->Username = $_ENV['EMAIL_USERNAME'];
 			$this->mailer->Password = $_ENV['EMAIL_PASSWORD'];

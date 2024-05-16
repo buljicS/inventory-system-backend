@@ -26,15 +26,15 @@ $app = AppFactory::create();
 $base = require '../app/middleware/base.php';
 $base($app);
 
-//cors policy
+//cors policy middleware
 $cors = require '../app/middleware/cors.php';
 $cors($app);
 
-//jwt auth
+//jwt auth middleware
 $jwtAuth = require '../app/middleware/authorization.php';
 $jwtAuth($app);
 
-//error handling
+//error handling middleware
 $errorHandler = require '../app/middleware/error.php';
 $errorHandler($app);
 

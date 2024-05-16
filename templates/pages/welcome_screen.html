@@ -86,10 +86,12 @@
     </svg>
     <h1 style="font-size: 2.5rem; color: #343a40;">Inventory Management System RestAPI</h1>
     <div class="btn-container">
-        <button class="button button-green" id="generateDocs" onclick="generateDocs()">
-            Open API Documentation (v1)
+        <button class="button button-green d-flex flex-row gap-1 align-items-center justify-content-center" id="generateDocs" onclick="generateDocs()">
+            <span>Open API Documentation (v1)</span>
+            <span class="spinner-border spinner-border-sm" aria-hidden="true" id="spinner"></span>
         </button>
         <button class="button button-blue" onclick="visitDashboard()">Visit Dashboard (dev)</button>
+
     </div>
 
 </div>
@@ -103,14 +105,15 @@
     let currentURL = window.location.href;
     let requestMethod = 'getDoc';
     let isUnderDevelopment = true;
+    let generateDocsButtonSpinner = document.getElementById('spinner');
+    generateDocsButtonSpinner.style.display = 'none';
 
     async function generateDocs() {
         //if its still under development, generate new json each time user wants to visit swagger
         if(isUnderDevelopment) {
-            document.getElementById('generateDocs').innerHTML += '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>';
-            const req = await fetch(currentURL + requestMethod);
-            const decoded = await req.json();
-            console.log(decoded);
+            generateDocsButtonSpinner.style.display = 'block';
+            await fetch(currentURL + requestMethod);
+            generateDocsButtonSpinner.style.display = 'none';
         }
         window.location.href = currentURL + "/swagger";
     }

@@ -28,7 +28,7 @@ return function (Slim $app) {
 	#endregion
 
 	#region FirebaseBucket
-
+	$app->get('/api/FirebaseStorage/GetAllFilesFromDir/{dir}', [API::class, 'GetAllFiles']);
 	#endregion
 
 };

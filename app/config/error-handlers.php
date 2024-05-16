@@ -13,11 +13,19 @@ function defaultErrorHandler($severity, $message, $file, $line) {
 
 function defaultErrorMiddleware(Request $request, Throwable $exception, $app) {
 	$errorObj = new ExceptionResponse();
+
 	if ($exception instanceof PDOException)
-		$errorObj->setExceptionType("PDOException");
-	elseif ($exception instanceof Exception) {
-		$errorObj->setExceptionType("PHPRuntimeException");
-	}
+		$errorObj->setExceptionType("PDO Error");
+
+	elseif ($exception instanceof \PHPMailer\PHPMailer\Exception)
+		$errorObj->setExceptionType("PHPMailer Error");
+
+	elseif ($exception instanceof Exception)
+		$errorObj->setExceptionType("PHP-Runtime Error");
+
+	else
+		$errorObj->setExceptionType("Uncaught Error");
+
 
 	$errorObj->setExceptionMessage((string)$exception->getMessage());
 	$errorObj->setInfile($exception->getFile());

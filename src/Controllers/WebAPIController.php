@@ -10,6 +10,7 @@ use OpenApi\Generator as Generator;
 
 use Services\UserServices as UserServices;
 use Services\LogServices as LogServices;
+use Services\FirebaseStorageServices as FirebaseStorageServices;
 
 
 
@@ -44,11 +45,12 @@ class WebAPIController
 {
 	private UserServices $userServices;
 	private LogServices $logServices;
-
-	public function __construct(UserServices $userServices, LogServices $logServices)
+	private FirebaseStorageServices $firebaseStorageServices;
+	public function __construct(UserServices $userServices, LogServices $logServices, FirebaseStorageServices $firebaseStorageServices)
 	{
 		$this->userServices = $userServices;
 		$this->logServices = $logServices;
+		$this->firebaseStorageServices = $firebaseStorageServices;
 	}
 
 	#region Main
@@ -81,7 +83,10 @@ class WebAPIController
 	 */
 	public function GetAllFiles(Request $request, Response $response): Response
 	{
-		return $response;
+		$json = $this->firebaseStorageServices->connectToFirebase();
+		$response->getBody()->write(json_encode($json));
+		return $response
+			->withHeader('Content-type', 'application/json');
 	}
 
 	/**
