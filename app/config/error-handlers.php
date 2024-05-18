@@ -1,36 +1,36 @@
 <?php
 
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Models\ExceptionResponse as ExceptionResponse;
 
 /**
  * @throws ErrorException
  */
-function defaultErrorHandler($severity, $message, $file, $line) {
+function defaultErrorHandler($severity, $message, $file, $line): false
+{
 	if (!(error_reporting() & $severity)) return false;
 	throw new ErrorException($message, 0, $severity, $file, $line);
 }
 
-function defaultErrorMiddleware(Request $request, Throwable $exception, $app) {
+function defaultErrorMiddleware(Throwable $exception, $app) {
+
+//	if ($exception instanceof PDOException)
+//		$errorObj->setExceptionType("PDO Error");
+//
+//	elseif ($exception instanceof \PHPMailer\PHPMailer\Exception)
+//		$errorObj->setExceptionType("PHPMailer Error");
+//
+//	elseif ($exception instanceof Exception)
+//		$errorObj->setExceptionType("PHP-Runtime Error");
+//
+//	else
+//		$errorObj->setExceptionType("Uncaught Error");
+
 	$errorObj = new ExceptionResponse();
-
-	if ($exception instanceof PDOException)
-		$errorObj->setExceptionType("PDO Error");
-
-	elseif ($exception instanceof \PHPMailer\PHPMailer\Exception)
-		$errorObj->setExceptionType("PHPMailer Error");
-
-	elseif ($exception instanceof Exception)
-		$errorObj->setExceptionType("PHP-Runtime Error");
-
-	else
-		$errorObj->setExceptionType("Uncaught Error");
-
-
-	$errorObj->setExceptionMessage((string)$exception->getMessage());
+	$errorObj->setExceptionType(get_class($exception));
+	$errorObj->setExceptionMessage($exception->getMessage());
 	$errorObj->setInfile($exception->getFile());
 	$errorObj->setAtLine($exception->getLine());
-	$errorObj->setExceptionCode(intval($exception->getCode()));
+	$errorObj->setExceptionCode($exception->getCode());
 
 	$response = $app->getResponseFactory()->createResponse(500, "Internal server error");
 	$response->getBody()->write(json_encode($errorObj->jsonSerialize()));
