@@ -8,5 +8,10 @@ use Kreait\Firebase\Factory as FirebaseFactory;
 
 class FirebaseStorageServices
 {
-	public function __construct() {}
+	private readonly FirebaseFactory $firebaseFactory;
+	public function __construct(FirebaseFactory $firebaseFactory)
+	{
+		$this->firebaseFactory = $firebaseFactory
+			->withServiceAccount(__DIR__ . '/../../firebase.json');
+	}
 }

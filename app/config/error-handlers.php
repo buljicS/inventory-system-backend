@@ -1,6 +1,7 @@
 <?php
 
 use Models\ExceptionResponse as ExceptionResponse;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * @throws ErrorException
@@ -11,29 +12,33 @@ function defaultErrorHandler($severity, $message, $file, $line): false
 	throw new ErrorException($message, 0, $severity, $file, $line);
 }
 
-function defaultErrorMiddleware(Throwable $exception, $app) {
-
-//	if ($exception instanceof PDOException)
-//		$errorObj->setExceptionType("PDO Error");
-//
-//	elseif ($exception instanceof \PHPMailer\PHPMailer\Exception)
-//		$errorObj->setExceptionType("PHPMailer Error");
-//
-//	elseif ($exception instanceof Exception)
-//		$errorObj->setExceptionType("PHP-Runtime Error");
-//
-//	else
-//		$errorObj->setExceptionType("Uncaught Error");
-
-	$errorObj = new ExceptionResponse();
-	$errorObj->setExceptionType(get_class($exception));
-	$errorObj->setExceptionMessage($exception->getMessage());
-	$errorObj->setInfile($exception->getFile());
-	$errorObj->setAtLine($exception->getLine());
-	$errorObj->setExceptionCode($exception->getCode());
+function defaultErrorMiddleware(Request $request, Throwable $exception, $app) {
 
 	$response = $app->getResponseFactory()->createResponse(500, "Internal server error");
-	$response->getBody()->write(json_encode($errorObj->jsonSerialize()));
+
+	if($_ENV['IS_DEV']) {
+		$errorObj = new ExceptionResponse();
+		$errorObj->setExceptionType(get_class($exception));
+		$errorObj->setExceptionMessage($exception->getMessage());
+		$errorObj->setInfile($exception->getFile());
+		$errorObj->setAtLine($exception->getLine());
+		$errorObj->setExceptionCode($exception->getCode());
+
+		$response->getBody()->write(json_encode($errorObj->jsonSerialize()));
+	}
+	else {
+		$errorObj = [
+			'status' => 500,
+			'message' => 'Internal server error',
+			'description' => 'Error occurred, please try again or contact the administrator.',
+			'errorDetails' => [
+				'error-message' => $exception->getMessage(),
+				'error-code' => $exception->getCode(),
+			]
+		];
+
+		$response->getBody()->write(json_encode(json_encode($errorObj)));
+	}
 
 	return $response
 		->withHeader('Content-Type', 'application/json')

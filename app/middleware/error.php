@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Slim\App as Slim;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 return function (Slim $app) {
 	require_once __DIR__ . '/../config/error-handlers.php';
@@ -11,7 +12,7 @@ return function (Slim $app) {
 
 	set_error_handler('defaultErrorHandler');
 
-	$errorMiddleware->setDefaultErrorHandler(function (Throwable $exception) use ($app) {
+	$errorMiddleware->setDefaultErrorHandler(function (Request $request, Throwable $exception) use ($app) {
 		return defaultErrorMiddleware($exception, $app);
 	});
 };

@@ -7,57 +7,39 @@ namespace Services;
 use Repositories\UsersRepository;
 use Utilities\MailUtility;
 use Utilities\TokenUtility;
-use Valitron\Validator as VValidator;
+use Utilities\ValidatorUtility;
 use Services\LogServices as LogServices;
 
 class UserServices
 {
-	private UsersRepository $_userRepo;
-	private MailUtility $_email;
-	private TokenUtility $tokenUtility;
-	private LogServices $_logServices;
+	private readonly UsersRepository $userRepo;
+	private readonly MailUtility $email;
+	private readonly TokenUtility $tokenUtility;
+	private readonly LogServices $logServices;
+	private readonly ValidatorUtility $validatorUtility;
 
-	public function __construct(MailUtility $email, TokenUtility $tokenUtility, UsersRepository $usersRepository, LogServices $logServices)
+	public function __construct(MailUtility $email, TokenUtility $tokenUtility, UsersRepository $usersRepository, LogServices $logServices, ValidatorUtility $validatorUtility)
 	{
-		$this->_email = $email;
-		$this->_userRepo = $usersRepository;
+		$this->email = $email;
+		$this->userRepo = $usersRepository;
 		$this->tokenUtility = $tokenUtility;
-		$this->_logServices = $logServices;
+		$this->logServices = $logServices;
+		$this->validatorUtility = $validatorUtility;
 	}
 
 	public function RegisterUser(array $newUserData): array
 	{
-		#region validation
-		$validation = new VValidator($newUserData);
-		$validation->rules(
-			[
-				'required' => [
-					['firstName'],
-					['lastName'],
-					['email'],
-					['password']
-				],
-				'email' => [
-					['email']
-				]
-			]
-		);
-
-		if(!$validation->validate()) {
-			return [
-				'status' => 202,
-				'message' => 'Accepted',
-				'description' => $validation->errors()
-			];
+		$isValid = $this->validatorUtility->validateRegisterUserInput($newUserData);
+		if($isValid !== true) {
+			return $isValid;
 		}
-		#endregion
 
 		$newUserData['password'] = password_hash($newUserData['password'], PASSWORD_DEFAULT);
 		$newUserData['role'] = 'Worker';
 		$newUserData['exp_token'] = $this->tokenUtility->GenerateBasicToken(20);
 		$newUserData['timestamp'] = date('Y-m-d H:i:s', time()+3600);
 
-		$doesUserAlreadyExists = $this->_userRepo->GetUserByEmail($newUserData['email']);
+		$doesUserAlreadyExists = $this->userRepo->GetUserByEmail($newUserData['email']);
 		if($doesUserAlreadyExists != null) {
 			return [
 				'status' => 403,
@@ -66,11 +48,12 @@ class UserServices
 			];
 		}
 
-		if($this->_userRepo->CreateNewUser($newUserData)) {
+		if($this->userRepo->CreateNewUser($newUserData)) {
 			$user_name = $newUserData['firstName'];
 			$user_email = $newUserData['email'];
 			$token = $newUserData['exp_token'];
-			$link = "{$_ENV['MAIN_URL_BE']}api/Users/ActivateUserAccount/{$token}";
+			$link = "{$_ENV['MAIN_URL_BE']}api/Users/ActivateUserAccount/$token";
+
 			$sendActMail = $this->SendConfirmationEmail($user_name, $link, "Activate your account", $user_email);
 			if($sendActMail === 'OK') {
 				return [
@@ -94,46 +77,31 @@ class UserServices
 		$body = str_replace("{{userName}}", $user_name, $rawbody);
 		$body = str_replace("{{activateAccountLink}}", $link, $body);
 
-		return $this->_email->SendEmail($body, $subject, $emailTo, null);
+		return $this->email->SendEmail($body, $subject, $emailTo, null);
 	}
 
 	public function ActivateUser(string $token):int
 	{
-		$user = $this->_userRepo->GetUserByRegistrationToken($token);
+		$user = $this->userRepo->GetUserByRegistrationToken($token);
 		if($user === false) return 0;
 		if(!(date('Y-m-d H:i:s', time()) > $user['registration_expires'])) {
-			$updateResponse = $this->_userRepo->ActivateUser($user['registration_token']);
+			$updateResponse = $this->userRepo->ActivateUser($user['registration_token']);
 			if($updateResponse == "OK")
 				return 1;
 			else
 				return 0;
 		}
-		return $this->_userRepo->DeleteUserWithExpiredRegistration($user["registration_token"]);
+		return $this->userRepo->DeleteUserWithExpiredRegistration($user["registration_token"]);
 	}
 
 	public function LoginUser(array $loginData): array {
 
-		$validation = new VValidator($loginData);
-		$validation->rules([
-			'required' => [
-				['email'],
-				['password']
-			],
-			'email' => [
-				['email']
-			]
-		]);
-
-		if(!$validation->validate()) {
-			return [
-				'status' => 202,
-				'message' => 'Accepted',
-				'description' => $validation->errors()
-			];
+		$isValid = $this->validatorUtility->validateLoginUserInput($loginData);
+		if($isValid !== true) {
+			return $isValid;
 		}
 
-
-		$response = $this->_userRepo->GetUserByEmail($loginData['email']);
+		$response = $this->userRepo->GetUserByEmail($loginData['email']);
 
 		$loggedIn = match (true) {
 			$response === false || !password_verify($loginData['password'], $response['worker_password']) => [
@@ -162,24 +130,23 @@ class UserServices
 		$isLoggedIn = ($loggedIn['status'] == 200);
 		$workerId = $response['worker_id'];
 
-		$this->_logServices->LogAccess($isLoggedIn, $workerId);
+		$this->logServices->LogAccess($isLoggedIn, $workerId);
 
 		return $loggedIn;
-
 	}
 
 	public function SendPasswordResetMail(string $emailTo):array
 	{
 		$cleanEmail = strip_tags(trim($emailTo));
 		if(filter_var($cleanEmail, FILTER_VALIDATE_EMAIL)) {
-			$user = $this->_userRepo->GetUserByEmail($cleanEmail);
+			$user = $this->userRepo->GetUserByEmail($cleanEmail);
 			if($user != null)
 			{
 				$token = $this->tokenUtility->GenerateBasicToken(20);
 				$expTime = date('Y-m-d H:i:s',time() + 3600);
 
-				$this->_userRepo->InsertPasswordResetToken($user['worker_id'], $token, $expTime);
-				$link = "{$_ENV['MAIN_URL_FE']}/change-password?token={$token}";
+				$this->userRepo->InsertPasswordResetToken($user['worker_id'], $token, $expTime);
+				$link = "{$_ENV['MAIN_URL_FE']}/change-password?token=$token";
 
 				$rawBody = file_get_contents('../templates/email/ResetMail.html');
 				$body = str_replace("{{userName}}", $user['worker_fname'], $rawBody);
@@ -188,7 +155,7 @@ class UserServices
 				$subject = "Reset your password";
 				$cc = null;
 
-				$resp = $this->_email->SendEmail($body, $subject, $user['worker_email'], $cc);
+				$resp = $this->email->SendEmail($body, $subject, $user['worker_email'], $cc);
 
 				return [
 					'status' => 200,
@@ -206,9 +173,9 @@ class UserServices
 	public function ResetPassword(string $token, string $newPassword):array
 	{
 		$password = password_hash($newPassword, PASSWORD_DEFAULT);
-		$user = $this->_userRepo->GetUserByPasswordRestToken($token);
+		$user = $this->userRepo->GetUserByPasswordRestToken($token);
 		if(!empty($user)) {
-			$this->_userRepo->UpdatePassword($password, $user['worker_id']);
+			$this->userRepo->UpdatePassword($password, $user['worker_id']);
 			return [
 				'status' => 200,
 				'message' => 'Success',
