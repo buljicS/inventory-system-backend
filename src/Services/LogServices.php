@@ -2,6 +2,7 @@
 
 namespace Services;
 
+use Detection\Exception\MobileDetectException;
 use Detection\MobileDetect as MobileDetect;
 use Repositories\LogRepository as LogRepository;
 use Valitron\Validator as vValidator;
@@ -21,7 +22,10 @@ class LogServices
 		return $this->_logRepository->GetAllLogs();
 	}
 
-	public function LogAccess(bool $isLoggedInSuccessfully, int $workerId): array
+	/**
+	 * @throws MobileDetectException
+	 */
+	public function LogAccess(bool $isLoggedInSuccessfully, ?int $workerId, ?string $note): array
 	{
 		$accessLog = [];
 		$mobileDetect = $this->_mobileDetect;
@@ -38,6 +42,7 @@ class LogServices
 		$accessLog['date_accessed'] = date("Y-m-d H:i:s", time());
 		$accessLog['worker_id'] = $workerId;
 		$accessLog['is_logged_in'] = $isLoggedInSuccessfully;
+		$accessLog['note'] = $note;
 
 		$this->_logRepository->InsertNewLog($accessLog);
 

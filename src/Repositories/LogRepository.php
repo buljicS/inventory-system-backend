@@ -25,8 +25,8 @@ class LogRepository
 	public function InsertNewLog(array $accessLog):void
 	{
 		$conn = $this->_database->OpenConnection();
-		$sql = "INSERT INTO access_logs (user_agent, worker_id, referer, ip_address, device_type, is_logged_in)
-					   VALUE (:user_agent, :worker_id, :referer, :ip_address, :device_type, :is_logged_in)";
+		$sql = "INSERT INTO access_logs (user_agent, worker_id, referer, ip_address, device_type, is_logged_in, note)
+					   VALUE (:user_agent, :worker_id, :referer, :ip_address, :device_type, :is_logged_in, :note)";
 		$stmt = $conn->prepare($sql);
 		$stmt->bindValue(':user_agent', $accessLog['user_agent']);
 		$stmt->bindValue(':worker_id', $accessLog['worker_id']);
@@ -34,6 +34,7 @@ class LogRepository
 		$stmt->bindValue(':ip_address', $accessLog['ip_address']);
 		$stmt->bindValue(':device_type', $accessLog['device_type']);
 		$stmt->bindValue(':is_logged_in', $accessLog['is_logged_in']);
+		$stmt->bindValue(':note', $accessLog['note']);
 		$stmt->execute();
 		$conn = null;
 	}

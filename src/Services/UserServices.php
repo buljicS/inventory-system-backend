@@ -128,9 +128,10 @@ class UserServices
 		};
 
 		$isLoggedIn = ($loggedIn['status'] == 200);
-		$workerId = $response['worker_id'];
+		$workerId = $response ? $response['worker_id'] : null;
+		$note = $loggedIn['status'] != 200 ? $loggedIn['description'] : null;
 
-		$this->logServices->LogAccess($isLoggedIn, $workerId);
+		$this->logServices->LogAccess($isLoggedIn, $workerId, $note);
 
 		return $loggedIn;
 	}

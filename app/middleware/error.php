@@ -13,7 +13,7 @@ return function (Slim $app) {
 	set_error_handler('defaultErrorHandler');
 
 	$errorMiddleware->setDefaultErrorHandler(function (Request $request, Throwable $exception) use ($app) {
-		return defaultErrorMiddleware($exception, $app);
+		return defaultErrorMiddleware($request, $exception, $app);
 	});
 };
 
