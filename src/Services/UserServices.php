@@ -190,4 +190,9 @@ class UserServices
 			'description' => 'This link is no longer active'
 		];
 	}
+
+	public function SetNewPassword($newPassword, $oldPassword): array
+	{
+
+	}
 }

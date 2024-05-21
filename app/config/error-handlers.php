@@ -18,11 +18,11 @@ function defaultErrorMiddleware(Request $request, Throwable $exception, $app) {
 
 	if($_ENV['IS_DEV']) {
 		$errorObj = new ExceptionResponse();
-		$errorObj->setExceptionType(get_class($exception));
-		$errorObj->setExceptionMessage($exception->getMessage());
-		$errorObj->setInfile($exception->getFile());
-		$errorObj->setAtLine($exception->getLine());
-		$errorObj->setExceptionCode($exception->getCode());
+		$errorObj->setExceptionType((string)get_class($exception));
+		$errorObj->setExceptionMessage((string)$exception->getMessage());
+		$errorObj->setInfile((string)$exception->getFile());
+		$errorObj->setAtLine((string)$exception->getLine());
+		$errorObj->setExceptionCode((int)$exception->getCode());
 
 		$response->getBody()->write(json_encode($errorObj->jsonSerialize()));
 	}
