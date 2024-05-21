@@ -5,24 +5,20 @@ declare(strict_types=1);
 namespace Services;
 
 use Kreait\Firebase\Factory as FirebaseFactory;
-use Kreait\Firebase\Storage as FirebaseStorage;
+use Kreait\Firebase\Storage;
 
 class FirebaseStorageServices
 {
 	private readonly FirebaseFactory $firebaseFactory;
-	private FirebaseStorage $storage;
-
+	private Storage $storage;
 	public function __construct(FirebaseFactory $firebaseFactory)
 	{
-		$this->firebaseFactory = $firebaseFactory
-			->withServiceAccount(__DIR__ . '/../../firebase.json');
-
+		$this->firebaseFactory = $firebaseFactory->withServiceAccount(__DIR__ . '/../../firebase.json');
 		$this->storage = $this->firebaseFactory->createStorage();
 	}
 
-	public function GetAllFilesByDir(string $dir): string
+	public function getStorage(): Storage
 	{
-		$storage = $this->storage->getBucket();
-		$storage->upload($file);
+		return $this->storage;
 	}
 }

@@ -27,7 +27,7 @@ use Services\FirebaseStorageServices as FirebaseStorageServices;
  * @OA\SecurityScheme (
  *      securityScheme="Bearer",
  *      type="http",
- *      scheme="bearer",
+ *      scheme="bearer
  *      bearerFormat="JWT",
  *      description="Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
  *      name="Authorization",
@@ -83,23 +83,9 @@ class WebAPIController
 	 */
 	public function GetAllFiles(Request $request, Response $response): Response
 	{
-		$json = $this->firebaseStorageServices->connectToFirebase();
-		$response->getBody()->write(json_encode($json));
+		$response->getBody()->write("Hi from GetAllFiles");
 		return $response
 			->withHeader('Content-type', 'application/json');
-	}
-
-	/**
-	 * @OA\Get(
-	 *     path="/api/FirebaseStorage/GetFileByName/{fileName}",
-	 *     description="Get single file by file name",
-	 *     tags={"FirebaseStorage"},
-	 *     @OA\Response(response="200", description="An example resource")
-	 * )
-	 */
-	public function GetFileByName(Request $request, Response $response, array $args): Response
-	{
-		return $response;
 	}
 	#endregion
 
@@ -136,7 +122,7 @@ class WebAPIController
 	 */
 	public function LogAccess(Request $request, Response $response): Response {
 		$requestBody = (array)$request->getParsedBody();
-		$resp = $this->logServices->LogAccess($requestBody['isLoggedInSuccessfully'], $requestBody['workerId']);
+		$resp = $this->logServices->LogAccess($requestBody['isLoggedInSuccessfully'], $requestBody['workerId'], $requestBody['note']);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
