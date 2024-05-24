@@ -33,3 +33,7 @@ export const handleBodyScroll = (scrollState) => {
         document.body.classList.remove("no-scroll");
     }
 };
+
+export const getUserId = () => {
+    return JSON.parse(sessionStorage.getItem("user")!).token;
+};

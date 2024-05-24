@@ -41,6 +41,14 @@
         padding: 5px;
         background-color: #e2e8f0;
     }
+
+    .p-link {
+        transition: scale 0.3s ease;
+
+        &:hover {
+            scale: 1.15;
+        }
+    }
 }
 
 .rooms {

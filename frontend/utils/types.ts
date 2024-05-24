@@ -101,7 +101,7 @@ export type TProfileData = {
 };
 
 export type TPasswordProfileData = {
-    currentPassword: string;
+    oldPassword: string;
     newPassword: string;
     repeatNewPassword: string;
 };
@@ -143,4 +143,8 @@ export type TItems = {
     itemName: string;
     itemQuantity: number;
     itemCountryOrigin: string;
+};
+
+export type TApiEndpoints = {
+    [key: string]: string;
 };

@@ -10,6 +10,8 @@ import ItemTableHeader from "./ItemTableHeader";
 import MOCK_DATA_ITEMS from "@/resources/MOCK_DATA_ITEMS.json";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
+import { QRCodeGenerateIcon } from "@/resources/icons";
+import Image from "next/image";
 
 const ItemsTable = () => {
     const [items, setItems] = useState<TItems[]>(MOCK_DATA_ITEMS);
@@ -44,7 +46,6 @@ const ItemsTable = () => {
     };
 
     const stockBodyTemplate = (rowData) => {
-        console.log(rowData);
         const stockClassName = classNames("stock", {
             "stock-bg-red": rowData.itemQuantity === 0,
             "stock-bg-blue":
@@ -53,6 +54,19 @@ const ItemsTable = () => {
         });
 
         return <div className={stockClassName}>{rowData.itemQuantity}</div>;
+    };
+
+    const generateQRTemplate = () => {
+        return (
+            <div className="qr-code-template">
+                <Image
+                    src={QRCodeGenerateIcon}
+                    width={24}
+                    height={24}
+                    alt="Qr code icon"
+                />
+            </div>
+        );
     };
 
     return (
@@ -92,6 +106,7 @@ const ItemsTable = () => {
                     />
                 ))}
 
+                <Column body={generateQRTemplate}></Column>
                 <Column rowEditor></Column>
             </DataTable>
         </div>

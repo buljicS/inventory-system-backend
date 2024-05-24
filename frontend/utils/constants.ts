@@ -7,6 +7,7 @@ import {
     TSideBarLinks,
     TTableColumns,
     TAddRoomsInputs,
+    TApiEndpoints,
 } from "./types";
 import {
     FacebookIcon,
@@ -23,6 +24,14 @@ import {
 } from "@/resources/icons";
 import { z } from "zod";
 import { SliderImage1, SliderImage2 } from "@/resources/images";
+
+export const API_ENDPOINT: TApiEndpoints = {
+    LOGIN: "Users/LoginUser",
+    REGISTER: "Users/RegisterUser",
+    FORGOT_PASSWORD: "Users/ResetPassword",
+    FORGOT_PASSWORD_SEND_MAIL: "Users/SendPasswordResetEmail",
+};
+
 export const REGISTER_INPUTS: TInputs[] = [
     {
         id: 1,
@@ -305,7 +314,7 @@ export const PROFILE_INFORMATION_SCHEMA = z.object({
 
 export const PASSWORD_PROFILE_SCHEMA = z
     .object({
-        currentPassword: z
+        oldPassword: z
             .string()
             .regex(
                 /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
@@ -420,7 +429,7 @@ export const PROFILE_FORM_INPUTS: TInputs[] = [
 export const PROFILE_PASSWORD_INPUTS: TInputs[] = [
     {
         id: 1,
-        name: "currentPassword",
+        name: "oldPassword",
         label: "Current password",
         type: "password",
         placeholder: "Your current password",

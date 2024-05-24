@@ -24,3 +24,5 @@ export { default as PlusIcon } from "./plus.png";
 export { default as PlusIconSecond } from "./plus2.png";
 export { default as DeleteIcon } from "./delete.png";
 export { default as ExitIcon } from "./exit.png";
+export { default as QRCodeGenerateIcon } from "./qr-code-generate.png";
+export { default as QRCodeActiveIcon } from "./qr-code-active.png";

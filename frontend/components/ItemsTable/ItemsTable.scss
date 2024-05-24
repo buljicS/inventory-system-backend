@@ -58,3 +58,24 @@
         color: #134e4a;
     }
 }
+
+.qr-code-template {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    transition: scale 0.3s ease;
+
+    &:hover {
+        scale: 1.15;
+    }
+}
+
+.p-link {
+    transition: scale 0.3s ease;
+
+    &:hover {
+        scale: 1.15;
+    }
+}

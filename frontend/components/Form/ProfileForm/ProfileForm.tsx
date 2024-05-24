@@ -1,15 +1,14 @@
 import styles from "./ProfileForm.module.scss";
-import { FormInput } from "@/components";
+import { FormInput, FormSubmit } from "@/components";
 import {
     PROFILE_FORM_INPUTS,
     PROFILE_INFORMATION_SCHEMA,
 } from "@/utils/constants";
 import { useForm, SubmitHandler } from "react-hook-form";
-import Spinner from "react-bootstrap/Spinner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TProfileData } from "@/utils/types";
 import { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 const ProfileForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -43,13 +42,7 @@ const ProfileForm = () => {
                             />
                         </div>
                     ))}
-                    <Button type="submit">
-                        {isLoading ? (
-                            <Spinner animation="border" size="sm" />
-                        ) : (
-                            "Update"
-                        )}
-                    </Button>
+                    <FormSubmit isLoading={isLoading} value="Update" />
                 </Form>
             </div>
         </div>

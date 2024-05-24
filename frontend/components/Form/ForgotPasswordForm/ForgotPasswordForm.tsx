@@ -1,15 +1,15 @@
 import styles from "./ForgotPasswordForm.module.scss";
 import {
+    API_ENDPOINT,
     CHANGE_PASSWORD_INPUTS,
     CHANGE_PASSWORD_SCHEMA,
 } from "@/utils/constants";
 import { useState } from "react";
-import { Form, Button } from "react-bootstrap";
-import FormInput from "../FormInput/FormInput";
+import { Form } from "react-bootstrap";
+import { FormInput, FormSubmit } from "@/components";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TForgotPasswordData } from "@/utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Spinner from "react-bootstrap/Spinner";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useToastMessage } from "@/utils/hooks";
@@ -38,7 +38,7 @@ const ForgotPasswordForm = () => {
             const { repeatNewPassword, ...changePasswordData } = data;
             setIsLoading(true);
             const response = await axiosInstance.post(
-                `${process.env.BASE_URL}/Users/ResetPassword`,
+                `${process.env.BASE_URL}${API_ENDPOINT.FORGOT_PASSWORD}`,
                 changePasswordData
             );
             switch (response.data.status) {
@@ -77,13 +77,7 @@ const ForgotPasswordForm = () => {
                         />
                     ))}
 
-                    <Button type="submit">
-                        {isLoading ? (
-                            <Spinner animation="border" size="sm" />
-                        ) : (
-                            "Submit"
-                        )}
-                    </Button>
+                    <FormSubmit isLoading={isLoading} value="Submit" />
                 </Form>
             </div>
         </div>

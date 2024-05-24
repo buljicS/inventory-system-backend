@@ -1,7 +1,11 @@
 import styles from "./LoginForm.module.scss";
 import { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
-import { LOGIN_SCHEMA, FORGOT_PASSWORD_SCHEMA } from "@/utils/constants";
+import {
+    LOGIN_SCHEMA,
+    FORGOT_PASSWORD_SCHEMA,
+    API_ENDPOINT,
+} from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LOGIN_INPUTS, FORGOT_PASSWORD_INPUT } from "@/utils/constants";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -13,8 +17,7 @@ import {
 import { userAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
-import { FormInput } from "@/components";
-import Spinner from "react-bootstrap/Spinner";
+import { FormInput, FormSubmit } from "@/components";
 import { useSearchParams } from "next/navigation";
 import { userActionMessages } from "@/utils/functions";
 import { useToastMessage } from "@/utils/hooks";
@@ -56,7 +59,7 @@ const LoginForm = () => {
         try {
             setIsLoading(true);
             const response = await axiosInstance.post(
-                `${process.env.BASE_URL}/Users/LoginUser`,
+                `${process.env.BASE_URL}${API_ENDPOINT.LOGIN}`,
                 data
             );
 
@@ -109,7 +112,7 @@ const LoginForm = () => {
         try {
             setIsLoading(true);
             const response = await axiosInstance.post(
-                `${process.env.BASE_URL}/Users/SendPasswordResetEmail`,
+                `${process.env.BASE_URL}${API_ENDPOINT.FORGOT_PASSWORD_SEND_MAIL}`,
                 data
             );
             showToast(
@@ -169,13 +172,7 @@ const LoginForm = () => {
                 )}
 
                 <div className={styles.form_buttons}>
-                    <Button type="submit">
-                        {isLoading ? (
-                            <Spinner animation="border" size="sm" />
-                        ) : (
-                            "Submit"
-                        )}
-                    </Button>
+                    <FormSubmit isLoading={isLoading} value="Submit" />
                     {showForgotPassword.button && (
                         <Button
                             onClick={() =>
