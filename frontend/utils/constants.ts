@@ -513,3 +513,6 @@ export const ITEM_TABLE_COLUMNS: TTableColumns[] = [
         sortable: false,
     },
 ];
+
+export const MAX_PROFILE_IMAGE_SIZE: number = 2 * 1204 * 1024;
+export const VALID_IMAGE_TYPES: string[] = ["image/jpeg", "image/png"];
