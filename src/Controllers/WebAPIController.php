@@ -12,16 +12,16 @@ use Services\UserServices as UserServices;
 use Services\LogServices as LogServices;
 use Services\FirebaseServices as FirebaseServices;
 
-
+define("MAIN_URL", $_ENV['MAIN_URL_BE']);
 
 /**
  * @OA\Info(
  *     title="Inventory management system API",
- *     version="1.0.0",
+ *     version="1.0.1",
  *     description="Inventory web based system for tracking items and stuff in company"
  *	 )
  * @OA\Server(
- *      url="http://www.insystem-api.localhost/",
+ *      url=MAIN_URL,
  *  )
  *
  * @OA\SecurityScheme (
@@ -67,7 +67,7 @@ class WebAPIController
 		$file = fopen("../public/swagger/openapi.json", "wa+");
 		fwrite($file, $openapi);
 		fclose($file);
-		$response->getBody()->write(file_get_contents(__DIR__ . "/../public/swagger/openapi.json"));
+		$response->getBody()->write(file_get_contents("../public/swagger/openapi.json"));
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}

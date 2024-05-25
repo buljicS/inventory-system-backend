@@ -3,7 +3,7 @@
     "info": {
         "title": "Inventory management system API",
         "description": "Inventory web based system for tracking items and stuff in company",
-        "version": "1.0.0"
+        "version": "1.0.1"
     },
     "servers": [
         {
@@ -18,20 +18,6 @@
                 ],
                 "description": "Get all files from single directory",
                 "operationId": "33ecda801b018981b44edaa83ab24704",
-                "responses": {
-                    "200": {
-                        "description": "An example resource"
-                    }
-                }
-            }
-        },
-        "/api/FirebaseStorage/GetFileByName/{fileName}": {
-            "get": {
-                "tags": [
-                    "FirebaseStorage"
-                ],
-                "description": "Get single file by file name",
-                "operationId": "13710456501287533a6b8cca3f034e35",
                 "responses": {
                     "200": {
                         "description": "An example resource"
