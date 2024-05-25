@@ -3,11 +3,9 @@
 use Slim\Factory\AppFactory;
 use Dotenv\Dotenv as dotSetup;
 use DI\Container;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-use Tuupola\Middleware\JwtAuthentication as Auth;
 
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../app/config/config.php';
 
 #region loadenv
 $dEnv = dotSetup::createImmutable(__DIR__ . '/../');
@@ -16,6 +14,8 @@ $dEnv->safeLoad();
 
 #region di-container
 $container = new Container();
+array_walk($serviceProviders, fn($sProvider) => $sProvider::register($container));
+array_walk($serviceProviders, fn($sProvider) => $sProvider::boot());
 AppFactory::setContainer($container);
 #endregion
 

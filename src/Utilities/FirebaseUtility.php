@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Services;
+namespace Utilities;
 
+use Google\Cloud\Storage\Bucket;
 use Kreait\Firebase\Factory as FirebaseFactory;
 use Kreait\Firebase\Storage;
 
-class FirebaseStorageServices
+class FirebaseUtility
 {
 	private readonly FirebaseFactory $firebaseFactory;
-	private Storage $storage;
+	private readonly Storage $storage;
+
 	public function __construct(FirebaseFactory $firebaseFactory)
 	{
 		$this->firebaseFactory = $firebaseFactory->withServiceAccount(__DIR__ . '/../../firebase.json');
@@ -20,5 +22,10 @@ class FirebaseStorageServices
 	public function getStorage(): Storage
 	{
 		return $this->storage;
+	}
+
+	public function getStorageBucket(): Bucket
+	{
+		return $this->storage->getBucket();
 	}
 }

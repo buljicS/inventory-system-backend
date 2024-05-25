@@ -5,7 +5,6 @@ namespace Services;
 use Detection\Exception\MobileDetectException;
 use Detection\MobileDetect as MobileDetect;
 use Repositories\LogRepository as LogRepository;
-use Valitron\Validator as vValidator;
 
 class LogServices
 {
