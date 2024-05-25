@@ -10,3 +10,7 @@
 /.idea
 /.vscode
 
+#server files
+/prepareDeployment.sh
+/deployment
+

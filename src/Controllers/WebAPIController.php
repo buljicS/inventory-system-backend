@@ -27,7 +27,7 @@ use Services\FirebaseServices as FirebaseServices;
  * @OA\SecurityScheme (
  *      securityScheme="Bearer",
  *      type="http",
- *      scheme="bearer
+ *      scheme="bearer",
  *      bearerFormat="JWT",
  *      description="Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
  *      name="Authorization",
