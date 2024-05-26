@@ -221,7 +221,7 @@ class UserServices
 
 		if($checkPasswd['status'] != 200) return $checkPasswd;
 
-		$this->userRepo->UpdatePassword($userInfo['worker_id'], $userInfo['new_password']);
+		$this->userRepo->UpdatePassword($userInfo['worker_id'], password_hash($userInfo['new_password'], PASSWORD_DEFAULT));
 		return [
 			'status' => 200,
 			'message' => 'Success',
