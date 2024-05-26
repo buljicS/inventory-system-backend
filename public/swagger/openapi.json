@@ -294,11 +294,15 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "oldPassword": {
+                                    "worker_id": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "old_password": {
                                         "type": "string",
                                         "example": "string"
                                     },
-                                    "newPassword": {
+                                    "new_password": {
                                         "type": "string",
                                         "example": "string"
                                     }

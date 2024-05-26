@@ -6,16 +6,16 @@ use Controllers\DatabaseController as DBController;
 
 class UsersRepository
 {
-	private DBController $_database;
+	private DBController $database;
 
 	public function __construct(DBController $database)
 	{
-		$this->_database = $database;
+		$this->database = $database;
 	}
 
 	public function CreateNewUser(array $userData):bool
 	{
-		$dbCon = $this->_database->OpenConnection();
+		$dbCon = $this->database->OpenConnection();
 
 		$sql = "INSERT INTO workers(
                     worker_fname, 
@@ -51,8 +51,18 @@ class UsersRepository
 
 	}
 
+	public function GetUserById(int $workerId)
+	{
+		$dbCon = $this->database->OpenConnection();
+		$sql = "SELECT worker_id, worker_email, worker_password FROM workers WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':worker_id', $workerId);
+		$stmt->execute();
+		return $stmt->fetch();
+	}
+
 	public function GetUserByEmail(string $email): array | bool {
-		$dbCon = $this->_database->OpenConnection();
+		$dbCon = $this->database->OpenConnection();
 		$sql = "SELECT worker_id,
     				   worker_password,
        				   worker_fname,
@@ -75,7 +85,7 @@ class UsersRepository
 
 	public function GetUserByRegistrationToken(string $token): array|bool
 	{
-		$dbCon = $this->_database->OpenConnection();
+		$dbCon = $this->database->OpenConnection();
 		$sql = "SELECT registration_token, worker_id, registration_expires
        			FROM workers 
        			WHERE registration_token = :token";
@@ -88,7 +98,7 @@ class UsersRepository
 
 	public function GetUserByPasswordRestToken(string $token): array|bool
 	{
-		$dbCon = $this->_database->OpenConnection();
+		$dbCon = $this->database->OpenConnection();
 		$sql = "SELECT worker_password, worker_id
 				FROM workers
 				WHERE forgoten_password_token = :token && forgoten_password_expires >= NOW()";
@@ -101,7 +111,7 @@ class UsersRepository
 
 	public function InsertPasswordResetToken(int $worker_id, string $token, mixed $expTime):void
 	{
-		$dbCon = $this->_database->OpenConnection();
+		$dbCon = $this->database->OpenConnection();
 		$sql = "UPDATE workers 
 				SET forgoten_password_token = :token,
 				    forgoten_password_expires = :expTime
@@ -116,7 +126,7 @@ class UsersRepository
 
 	public function ActivateUser(string $token): string
 	{
-		$dbCon = $this->_database->OpenConnection();
+		$dbCon = $this->database->OpenConnection();
 		$sql = "UPDATE workers 
 				SET isActive = 1
 				WHERE registration_token = :token";
@@ -139,7 +149,7 @@ class UsersRepository
 
 	public function DeleteUserWithExpiredRegistration(string $token): int
 	{
-		$dbCon = $this->_database->OpenConnection();
+		$dbCon = $this->database->OpenConnection();
 		$sql = "DELETE 
 				FROM workers
 				WHERE registration_token = :token";
@@ -150,9 +160,9 @@ class UsersRepository
 		return 0;
 	}
 
-	public function UpdatePassword(string $password, int $worker_id):void
+	public function UpdatePassword(int $worker_id, string $password):void
 	{
-		$dbCon = $this->_database->OpenConnection();
+		$dbCon = $this->database->OpenConnection();
 		$sql = "UPDATE workers
 				SET worker_password = :password, 
 				    forgoten_password_token = NULL, 
@@ -165,4 +175,6 @@ class UsersRepository
 		$stmt->execute();
 		$dbCon = null;
 	}
+
+
 }

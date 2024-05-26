@@ -74,6 +74,7 @@ class WebAPIController
 	#endregion
 
 	#region FirebaseStorage
+
 	/**
 	 * @OA\Get(
 	 *     path="/api/FirebaseStorage/GetAllFilesFromDir/{dir}",
@@ -405,13 +406,18 @@ class WebAPIController
 	 *             mediaType="application/json",
 	 *             @OA\Schema(
 	 *                 type="object",
+	 *     				@OA\Property(
+	 *                      property="worker_id",
+	 *                      type="int",
+	 *                      example="0"
+	 *                  ),
 	 *                 @OA\Property(
-	 *                     property="oldPassword",
+	 *                     property="old_password",
 	 *                     type="string",
 	 *                     example="string"
 	 *                 ),
 	 *                 @OA\Property(
-	 *                     property="newPassword",
+	 *                     property="new_password",
 	 *                     type="string",
 	 *                     example="string"
 	 *                  ),
@@ -427,7 +433,8 @@ class WebAPIController
 	public function SetNewPassword(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$response->getBody()->write(json_encode("Hi from this one"));
+		$resp = $this->userServices->SetNewPassword($requestBody);
+		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}

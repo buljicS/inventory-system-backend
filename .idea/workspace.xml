@@ -5,241 +5,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="23d2fb0d-ae85-45f6-bcca-0ed7535534cb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/.htaccess" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeception.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeception.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/inventory-system.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inventory-system.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/phpspec.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/phpspec.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/phpunit.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/phpunit.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config/error-handlers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/error-handlers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config/routes.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/routes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/middleware/authorization.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/middleware/authorization.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/middleware/base.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/middleware/base.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/middleware/cors.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/middleware/cors.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/middleware/error.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/middleware/error.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/programatori.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/programatori.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/programatori_03_05.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/programatori_03_05.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/pages/env-vars.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/pages/env-vars.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/pages/project-structure.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/pages/project-structure.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/pages/slimerrormiddleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/docs/pages/slimerrormiddleware.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/pages/swagger-php-doc.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/pages/swagger-php-doc.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/pages/virhost.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/pages/virhost.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/admin/login/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/admin/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/change-password/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/dashboard/archive/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/dashboard/companies/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/dashboard/inventory-items/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/dashboard/inventory-rooms/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/dashboard/layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/dashboard/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/dashboard/profile/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/dashboard/tasks/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/dashboard/teams/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/login/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/signup/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/workbench/layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/workbench/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/ButtonIcon/Icon.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/DashboardHeader/DashboardHeader.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/DashboardHeader/DashboardHeader.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Date/Date.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Date/Date.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Footer/Footer.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Footer/Footer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Form/AdminForm/AdminForm.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Form/AdminForm/AdminForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Form/ForgotPasswordForm/ForgotPasswordForm.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Form/ForgotPasswordForm/ForgotPasswordForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Form/LoginForm/LoginForm.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Form/LoginForm/LoginForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Form/ProfileForm/ProfileForm.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Form/ProfileForm/ProfileForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Form/ProfilePasswordForm/ProfilePasswordForm.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Form/ProfilePasswordForm/ProfilePasswordForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Form/SignupForm/SignupForm.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Form/SignupForm/SignupForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/FormElements/FormInput/FormInput.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/FormElements/FormInput/FormInput.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/FormElements/FormInput/FormNumberInput.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/FormElements/FormInput/FormPasswordInput.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/FormElements/FormInput/FormSelectInput.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/FormElements/FormInput/FormTextInput.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/FormElements/FormInput/FormTextareaInput.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/FormElements/FormSubmit/FormSubmit.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/FormElements/FormSubmit/FormSubmit.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/IndexCard/IndexCard.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/IndexCard/IndexCard.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/ItemsTable/AddItemModal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/ItemsTable/DeleteItemModal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/ItemsTable/ItemTableHeader.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/ItemsTable/ItemsTable.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/ItemsTable/ItemsTable.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Navigation/Navigation.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Navigation/Navigation.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/ProfilePhoto/ProfilePhoto.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/ProfilePhoto/ProfilePhoto.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/ProfileProgress/ProfileProgress.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/ProfileProgress/ProfileProgress.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/RoomTable/AddRoomModal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/RoomTable/DeleteRoomsModal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/RoomTable/RoomTable.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/RoomTable/RoomTable.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/RoomTable/RoomTableHeader.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/SideBar/SideBar.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/SideBar/SideBar.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/SideBar/SideBarNavigation.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/SideBar/SideBarNavigationItem.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Slider/Slider.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/Slider/Slider.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/UserLogout/Logout.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/UserLogout/Logout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/UserNavigation/UserNavigation.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/UserNavigation/UserNavigation.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/WorkbenchCard/WorkbenchCard.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/WorkbenchCard/WorkbenchCard.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/WorkbenchCard/WorkbenchCardModal.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/WorkbenchCard/WorkbenchCardModal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/WorkbenchSlider/WorkbenchSlider.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/WorkbenchSlider/WorkbenchSlider.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/next.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/MOCK_DATA.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/MOCK_DATA_ITEMS.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/archive.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/building.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/dashboard.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/delete.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/down-arrow.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/error.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/exit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/facebook.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/hide-password.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/instagram.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/item.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/logout.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/mail.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/personal-data.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/plus.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/plus2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/power.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/qr-code-active.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/qr-code-generate.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/rooms.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/scroll-down.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/show-password.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/team.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/todo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/user.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/user_white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/icons/youtube.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/images/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/images/login_image.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/images/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/images/slider_image.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/resources/images/slider_image2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/styles/Dashboard.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/styles/DashboardLayout.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/styles/Index.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/styles/Items.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/styles/Login.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/styles/Profile.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/styles/SignUp.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/styles/Workbench.module.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/styles/globals.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/utils/atoms/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/utils/axiosInstance.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/utils/constants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/utils/functions.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/utils/hooks/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/utils/hooks/useFetch.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/utils/hooks/useToastMessage.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/utils/hooks/useUserProgress.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/utils/types.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/App.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/babel.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/components/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/resources/icons/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/resources/images/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/styles/globals.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/utils/constants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/utils/functions.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/utils/hooks/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/utils/types.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/public/.htaccess" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/swagger/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/swagger/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/swagger/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/swagger/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/swagger/oauth2-redirect.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/swagger/oauth2-redirect.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/swagger/openapi.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/swagger/openapi.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/swagger/swagger-initializer.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/swagger/swagger-initializer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/swagger/swagger-ui-bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/swagger/swagger-ui-bundle.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/swagger/swagger-ui-es-bundle-core.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/swagger/swagger-ui-es-bundle-core.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/swagger/swagger-ui-es-bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/swagger/swagger-ui-es-bundle.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/swagger/swagger-ui-standalone-preset.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/swagger/swagger-ui-standalone-preset.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/swagger/swagger-ui.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/swagger/swagger-ui.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/swagger/swagger-ui.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/swagger/swagger-ui.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controllers/DatabaseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/DatabaseController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controllers/FirebaseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/FirebaseController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controllers/WebAPIController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/WebAPIController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interfaces/ServiceProviderInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interfaces/ServiceProviderInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Models/ExceptionResponse.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Models/ExceptionResponse.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Providers/FirebaseServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Providers/FirebaseServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Providers/PDOServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Providers/PDOServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repositories/LogRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repositories/LogRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repositories/UsersRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repositories/UsersRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/FirebaseServices.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/FirebaseServices.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/LogServices.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/LogServices.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Services/UserServices.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/UserServices.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utilities/FirebaseUtility.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/FirebaseUtility.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utilities/MailUtility.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/MailUtility.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utilities/TokenUtility.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/TokenUtility.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utilities/UploadFileUtillity.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/UploadFileUtillity.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Utilities/ValidatorUtility.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/ValidatorUtility.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/email/ActivateAccount.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/email/ActivateAccount.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/email/ResetMail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/email/ResetMail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/pages/welcome_screen.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pages/welcome_screen.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerConfigs">
+    <option name="configs">
+      <option value="$PROJECT_DIR$/build/composer.json" />
+    </option>
+  </component>
+  <component name="ComposerSettings" notifyAboutMissingVendor="false" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "buljicS"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;buljicS&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/buljicS/inventory-system.git&quot;,
@@ -344,11 +141,76 @@
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
       <path value="$PROJECT_DIR$/vendor/tuupola/cors-middleware" />
       <path value="$PROJECT_DIR$/vendor/tuupola/callable-handler" />
+      <path value="$PROJECT_DIR$/build/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/build/vendor/fig/http-message-util" />
+      <path value="$PROJECT_DIR$/build/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/build/vendor/psr/clock" />
+      <path value="$PROJECT_DIR$/build/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/build/vendor/psr/http-client" />
+      <path value="$PROJECT_DIR$/build/vendor/psr/http-server-handler" />
+      <path value="$PROJECT_DIR$/build/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/build/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/build/vendor/psr/http-server-middleware" />
+      <path value="$PROJECT_DIR$/build/vendor/grpc/grpc" />
+      <path value="$PROJECT_DIR$/build/vendor/psr/simple-cache" />
+      <path value="$PROJECT_DIR$/build/vendor/slim/psr7" />
+      <path value="$PROJECT_DIR$/build/vendor/rize/uri-template" />
+      <path value="$PROJECT_DIR$/build/vendor/beste/clock" />
+      <path value="$PROJECT_DIR$/build/vendor/slim/slim" />
+      <path value="$PROJECT_DIR$/build/vendor/beste/json" />
+      <path value="$PROJECT_DIR$/build/vendor/beste/in-memory-cache" />
+      <path value="$PROJECT_DIR$/build/vendor/nikic/fast-route" />
+      <path value="$PROJECT_DIR$/build/vendor/brick/math" />
+      <path value="$PROJECT_DIR$/build/vendor/google/cloud-core" />
+      <path value="$PROJECT_DIR$/build/vendor/google/auth" />
+      <path value="$PROJECT_DIR$/build/vendor/google/common-protos" />
+      <path value="$PROJECT_DIR$/build/vendor/google/cloud-storage" />
+      <path value="$PROJECT_DIR$/build/vendor/google/grpc-gcp" />
+      <path value="$PROJECT_DIR$/build/vendor/google/gax" />
+      <path value="$PROJECT_DIR$/build/vendor/google/protobuf" />
+      <path value="$PROJECT_DIR$/build/vendor/google/longrunning" />
+      <path value="$PROJECT_DIR$/build/vendor/kreait/firebase-tokens" />
+      <path value="$PROJECT_DIR$/build/vendor/kreait/firebase-php" />
+      <path value="$PROJECT_DIR$/build/vendor/php-di/php-di" />
+      <path value="$PROJECT_DIR$/build/vendor/php-di/invoker" />
+      <path value="$PROJECT_DIR$/build/vendor/ramsey/uuid" />
+      <path value="$PROJECT_DIR$/build/vendor/ramsey/collection" />
+      <path value="$PROJECT_DIR$/build/vendor/vlucas/valitron" />
+      <path value="$PROJECT_DIR$/build/vendor/vlucas/phpdotenv" />
+      <path value="$PROJECT_DIR$/build/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/build/vendor/laravel/serializable-closure" />
+      <path value="$PROJECT_DIR$/build/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/build/vendor/neomerx/cors-psr7" />
+      <path value="$PROJECT_DIR$/build/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/build/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/build/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/build/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/build/vendor/tuupola/callable-handler" />
+      <path value="$PROJECT_DIR$/build/vendor/composer" />
+      <path value="$PROJECT_DIR$/build/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/build/vendor/tuupola/http-factory" />
+      <path value="$PROJECT_DIR$/build/vendor/tuupola/cors-middleware" />
+      <path value="$PROJECT_DIR$/build/vendor/zircote/swagger-php" />
+      <path value="$PROJECT_DIR$/build/vendor/doctrine/annotations" />
+      <path value="$PROJECT_DIR$/build/vendor/firebase/php-jwt" />
+      <path value="$PROJECT_DIR$/build/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/build/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/build/vendor/jimtools/jwt-auth" />
+      <path value="$PROJECT_DIR$/build/vendor/phpmailer/phpmailer" />
+      <path value="$PROJECT_DIR$/build/vendor/mtdowling/jmespath.php" />
+      <path value="$PROJECT_DIR$/build/vendor/ralouphie/getallheaders" />
+      <path value="$PROJECT_DIR$/build/vendor/phpoption/phpoption" />
+      <path value="$PROJECT_DIR$/build/vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/build/vendor/selective/basepath" />
+      <path value="$PROJECT_DIR$/build/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/build/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/build/vendor/graham-campbell/result-type" />
+      <path value="$PROJECT_DIR$/build/vendor/mobiledetect/mobiledetectlib" />
     </include_path>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2h17DgUuVZfrMXMBr8UGhaJHmf9" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -361,10 +223,11 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "dev",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/inventory system-backend",
+    "last_opened_file_path": "C:/xampp/htdocs/inventory-system-backend",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -388,12 +251,25 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1716749613510</updated>
-      <workItem from="1716749614405" duration="3082000" />
+      <workItem from="1716749614405" duration="3413000" />
+      <workItem from="1716753078476" duration="286000" />
+      <workItem from="1716753388150" duration="2229000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />

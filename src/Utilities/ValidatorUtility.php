@@ -69,4 +69,24 @@ class ValidatorUtility
 		];
 	}
 
+	public function validateNewPasswordData(array $userInfo): bool|array
+	{
+		$this->_vValidator = new vValidator($userInfo);
+		$this->_vValidator->rules([
+				'required' => [
+					['old_password'],
+					['new_password'],
+					['worker_id']
+				]
+			]
+		);
+
+		if($this->_vValidator->validate()) return true;
+
+		return [
+			'status' => 202,
+			'message' => 'Accepted',
+			'description' => $this->_vValidator->errors()
+		];
+	}
 }

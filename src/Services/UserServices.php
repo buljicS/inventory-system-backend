@@ -176,7 +176,7 @@ class UserServices
 		$password = password_hash($newPassword, PASSWORD_DEFAULT);
 		$user = $this->userRepo->GetUserByPasswordRestToken($token);
 		if(!empty($user)) {
-			$this->userRepo->UpdatePassword($password, $user['worker_id']);
+			$this->userRepo->UpdatePassword($user['worker_id'], $password);
 			return [
 				'status' => 200,
 				'message' => 'Success',
@@ -191,8 +191,41 @@ class UserServices
 		];
 	}
 
-	public function SetNewPassword($newPassword, $oldPassword): array
+	public function SetNewPassword(array $userInfo): array
 	{
+		$isValid = $this->validatorUtility->validateNewPasswordData($userInfo);
+		if($isValid !== true) {
+			return $isValid;
+		}
 
+		$user = $this->userRepo->GetUserById($userInfo['worker_id']);
+
+		$checkPasswd = match(true) {
+			$user === false => [
+				'status' => 404,
+				'message' => 'Not found',
+				'description' => 'User not found'
+			],
+
+			!password_verify($userInfo['old_password'], $user['worker_password']) => [
+				'status' => 401,
+				'message' => 'Wrong credentials',
+				'description' => "Password you provided doesn't match your current password!"
+			],
+
+			default => [
+				'status' => 200,
+				'message' => 'Success'
+			]
+		};
+
+		if($checkPasswd['status'] != 200) return $checkPasswd;
+
+		$this->userRepo->UpdatePassword($userInfo['worker_id'], $userInfo['new_password']);
+		return [
+			'status' => 200,
+			'message' => 'Success',
+			'description' => 'Your password has been changed successfully'
+		];
 	}
 }
