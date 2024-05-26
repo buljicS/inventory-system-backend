@@ -24,7 +24,7 @@ class LogServices
 	/**
 	 * @throws MobileDetectException
 	 */
-	public function LogAccess(bool $isLoggedInSuccessfully, ?int $workerId, ?string $note): array
+	public function LogAccess(int $isLoggedInSuccessfully, ?int $workerId, ?string $note): array
 	{
 		$accessLog = [];
 		$mobileDetect = $this->_mobileDetect;

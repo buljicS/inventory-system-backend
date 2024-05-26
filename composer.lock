@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a9b1c0ce49967ea355721792bc11875",
+    "content-hash": "07af84616b78b7f46e634fd55f979f0a",
     "packages": [
         {
             "name": "beste/clock",
@@ -918,16 +918,16 @@
         },
         {
             "name": "google/protobuf",
-            "version": "v4.26.1",
+            "version": "v4.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "5c46b0eb09e7ad3e6efef3c5a85e2a34108c52ae"
+                "reference": "28cf84ac822e2c8f82edd7c84cc792cacb822faa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/5c46b0eb09e7ad3e6efef3c5a85e2a34108c52ae",
-                "reference": "5c46b0eb09e7ad3e6efef3c5a85e2a34108c52ae",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/28cf84ac822e2c8f82edd7c84cc792cacb822faa",
+                "reference": "28cf84ac822e2c8f82edd7c84cc792cacb822faa",
                 "shasum": ""
             },
             "require": {
@@ -956,9 +956,9 @@
                 "proto"
             ],
             "support": {
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v4.26.1"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v4.27.0"
             },
-            "time": "2024-03-27T19:56:50+00:00"
+            "time": "2024-05-22T21:40:13+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -1461,16 +1461,16 @@
         },
         {
             "name": "kreait/firebase-php",
-            "version": "7.11.0",
+            "version": "7.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kreait/firebase-php.git",
-                "reference": "022c3e8cd78f035557ad114fb374eca05af6c922"
+                "reference": "6535aeedb5786d7dd330e83eba4599a9d405c4c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kreait/firebase-php/zipball/022c3e8cd78f035557ad114fb374eca05af6c922",
-                "reference": "022c3e8cd78f035557ad114fb374eca05af6c922",
+                "url": "https://api.github.com/repos/kreait/firebase-php/zipball/6535aeedb5786d7dd330e83eba4599a9d405c4c7",
+                "reference": "6535aeedb5786d7dd330e83eba4599a9d405c4c7",
                 "shasum": ""
             },
             "require": {
@@ -1555,7 +1555,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-15T23:01:16+00:00"
+            "time": "2024-05-26T12:44:04+00:00"
         },
         {
             "name": "kreait/firebase-tokens",
@@ -4319,9 +4319,7 @@
     "prefer-lowest": false,
     "platform": {
         "ext-pdo": "*",
-        "ext-json": "*",
-        "ext-sodium": "*",
-        "ext-gd": "*"
+        "ext-json": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

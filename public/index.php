@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('Europe/Belgrade');
+
 use Slim\Factory\AppFactory;
 use Dotenv\Dotenv as dotSetup;
 use DI\Container;

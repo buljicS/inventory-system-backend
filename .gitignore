@@ -11,6 +11,6 @@
 /.vscode
 
 #server files
-/prepareDeployment.sh
-/deployment
+/build.sh
+/build
 
