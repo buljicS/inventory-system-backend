@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activate Account</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 420px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+
+        .footer {
+            max-width: 100%;
+            background-color: #202930;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            margin-top: 16px;
+        }
+        h1 {
+            color: #333333;
+        }
+        p {
+            color: #666666;
+            line-height: 150%;
+            padding: 0 20px;
+            text-align: center;
+        }
+        .button {
+            background-color: #202930;
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: block;
+            margin: 32px auto;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            width: fit-content;
+        }
+        .button:hover {
+            background-color: #1a2129;
+        }
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+            }
+        }
+
+        .header {
+            padding-top: 20px;
+            letter-spacing: 5px;
+            text-align: center;
+        }
+
+        .password-reset img {
+            max-width: 80px;
+        }
+
+        .password-reset {
+            width: fit-content;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>PASSWORD RESET</h1>
+    </div>
+    <div class="password-reset">
+        <img src="https://i.ibb.co/5MZkmhy/reset-password.png" alt="Hand shake icon">
+    </div>
+    <div class="content">
+        <p>Hi {{userName}},</p>
+        <p>Resetting your password is quick and easy. Just follow the link below to regain access to your account.</p>
+        <a href="{{resetPasswordLink}}" class="button">Reset your password</a>
+    </div>
+
+    <div class="footer">
+        Inventory System - 2024
+    </div>
+</div>
+</body>
+</html>

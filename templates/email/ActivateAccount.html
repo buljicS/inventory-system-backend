@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activate Account</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 420px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+
+        .footer {
+            max-width: 100%;
+            background-color: #202930;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            margin-top: 16px;
+        }
+        h1 {
+            color: #333333;
+        }
+        p {
+            color: #666666;
+            line-height: 150%;
+            padding: 0 20px;
+            text-align: center;
+        }
+        .button {
+            background-color: #202930;
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: block;
+            margin: 32px auto;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            width: fit-content;
+        }
+        .button:hover {
+            background-color: #1a2129;
+        }
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+            }
+        }
+
+        .header {
+            padding-top: 20px;
+            letter-spacing: 10px;
+            text-align: center;
+        }
+
+        .hand-shake img {
+            max-width: 80px;
+        }
+
+        .hand-shake {
+            width: fit-content;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>WELCOME</h1>
+    </div>
+    <div class="hand-shake">
+        <img src="https://i.ibb.co/N3FmWxL/hand-shake-icon.png" alt="Hand shake icon">
+    </div>
+    <div class="content">
+        <p>Hi, <b>{{userName}}</b></p>
+        <p>We're excited to have you get started. First, you need to confirm your account. Just press the button below.</p>
+        <a href="{{activateAccountLink}}" class="button" id="activateAccount">Activate Your Account</a>
+    </div>
+
+    <div class="footer">
+        Inventory System - 2024
+    </div>
+</div>
+</body>
+</html>

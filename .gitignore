@@ -1,0 +1,16 @@
+# enviroment files
+/.env
+/firebase.json
+
+# composer files
+/vendor
+/composer.json
+
+# IDE files
+/.idea
+/.vscode
+
+#server files
+/prepareDeployment.sh
+/deployment
+

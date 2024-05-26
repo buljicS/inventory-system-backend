@@ -1,0 +1,338 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Inventory management system API",
+        "description": "Inventory web based system for tracking items and stuff in company",
+        "version": "1.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://www.insystem-api.localhost/"
+        }
+    ],
+    "paths": {
+        "/api/FirebaseStorage/GetAllFilesFromDir/{dir}": {
+            "get": {
+                "tags": [
+                    "FirebaseStorage"
+                ],
+                "description": "Get all files from single directory",
+                "operationId": "33ecda801b018981b44edaa83ab24704",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                }
+            }
+        },
+        "/api/Logs/LogAccess": {
+            "post": {
+                "tags": [
+                    "Logs"
+                ],
+                "operationId": "25d7284e5aa4e104a221f6573b8e8966",
+                "requestBody": {
+                    "description": "Log user access on login",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "isLoggedInSuccessfully": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "workerId": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Logs/GetAllLogs": {
+            "get": {
+                "tags": [
+                    "Logs"
+                ],
+                "description": "Get all previous logs",
+                "operationId": "6806ae02a3db691fb23b405cd9a0738b",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                }
+            }
+        },
+        "/api/Users/RegisterUser": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "a7cbfcabd232cfb6ab5639161945bfed",
+                "requestBody": {
+                    "description": "Create new user account",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "firstName": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "lastName": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "phoneNumber": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/LoginUser": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "8fa770d0f296602cd0ccd7d6df04161d",
+                "requestBody": {
+                    "description": "Enter user email and password",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "Your password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "401": {
+                        "description": "Wrong credentials"
+                    }
+                }
+            }
+        },
+        "/api/Users/SendPasswordResetEmail": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "8b33e6f0e714cf60b1418fd477916e29",
+                "requestBody": {
+                    "description": "Provide user email",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/Users/ActivateUserAccount/{token}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Do not run this route from swagger since it's supposed to redirect user to specific page. <br/> Swagger will return `NetworkError` cause redirection can not happen",
+                "operationId": "209b3e8841d300b2b34fcfd143aefa11",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                }
+            }
+        },
+        "/api/Users/UpdateUser": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "e3c9ff2ad6ffab44631d1ced0b929776",
+                "requestBody": {
+                    "description": "Update user informations",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "userId": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "phoneNumber": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "companies": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/ResetPassword": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "d41cc03d9b770b8ab701216be8bd9d61",
+                "requestBody": {
+                    "description": "Reset password from email",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "hash": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "newPassword": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Users/SetNewPassword": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "9ba598eb41caa40902a99803369c205f",
+                "requestBody": {
+                    "description": "This endpoint servers as a option for loged user to reset password",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "oldPassword": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "newPassword": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "description": "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+                "name": "Authorization",
+                "in": "header",
+                "flows": {
+                    "password": {
+                        "tokenUrl": "/oauth/token",
+                        "refreshUrl": "/oauth/token/refresh",
+                        "scopes": {}
+                    }
+                },
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
