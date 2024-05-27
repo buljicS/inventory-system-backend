@@ -2,6 +2,8 @@
 
 ### Dependencies
 - PHP 8.2
+- Slim 4
+- Swagger UI
 - Apache
 
 <hr/>
