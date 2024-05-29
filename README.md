@@ -2,6 +2,8 @@
 
 ### Dependencies
 - PHP 8.2
+- Slim 4
+- Swagger UI
 - Apache
 
 <hr/>
@@ -9,6 +11,12 @@
 ### Overview
 - Run `composer install` to install all dependencies
 - Read docs [here](docs/README.md)
+
+<hr/>
+
+### Frontend
+- Frontend for this project is wrriten in React
+- It can be found on [@cofi333/inventory-system-frontend](https://github.com/cofi333/inventory-system-frontend)
 
 <hr/>
 
