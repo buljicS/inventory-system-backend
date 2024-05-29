@@ -30,17 +30,17 @@ class UserServices
 	public function RegisterUser(array $newUserData): array
 	{
 		$isValid = $this->validatorUtility->validateRegisterUserInput($newUserData);
-		if($isValid !== true) {
+		if ($isValid !== true) {
 			return $isValid;
 		}
 
 		$newUserData['password'] = password_hash($newUserData['password'], PASSWORD_DEFAULT);
 		$newUserData['role'] = 'Worker';
 		$newUserData['exp_token'] = $this->tokenUtility->GenerateBasicToken(20);
-		$newUserData['timestamp'] = date('Y-m-d H:i:s', time()+3600);
+		$newUserData['timestamp'] = date('Y-m-d H:i:s', time() + 3600);
 
 		$doesUserAlreadyExists = $this->userRepo->GetUserByEmail($newUserData['email']);
-		if($doesUserAlreadyExists != null) {
+		if ($doesUserAlreadyExists != null) {
 			return [
 				'status' => 403,
 				'message' => 'Forbidden',
@@ -48,14 +48,14 @@ class UserServices
 			];
 		}
 
-		if($this->userRepo->CreateNewUser($newUserData)) {
+		if ($this->userRepo->CreateNewUser($newUserData)) {
 			$user_name = $newUserData['firstName'];
 			$user_email = $newUserData['email'];
 			$token = $newUserData['exp_token'];
 			$link = "{$_ENV['MAIN_URL_BE']}api/Users/ActivateUserAccount/$token";
 
 			$sendActMail = $this->SendConfirmationEmail($user_name, $link, "Activate your account", $user_email);
-			if($sendActMail === 'OK') {
+			if ($sendActMail === 'OK') {
 				return [
 					'status' => 200,
 					'message' => 'Success',
@@ -71,7 +71,7 @@ class UserServices
 		];
 	}
 
-	public function SendConfirmationEmail(string $user_name, string $link, string $subject, string $emailTo):string
+	public function SendConfirmationEmail(string $user_name, string $link, string $subject, string $emailTo): string
 	{
 		$rawbody = file_get_contents('../templates/email/ActivateAccount.html');
 		$body = str_replace("{{userName}}", $user_name, $rawbody);
@@ -80,13 +80,13 @@ class UserServices
 		return $this->email->SendEmail($body, $subject, $emailTo, null);
 	}
 
-	public function ActivateUser(string $token):int
+	public function ActivateUser(string $token): int
 	{
 		$user = $this->userRepo->GetUserByRegistrationToken($token);
-		if($user === false) return 0;
-		if(!(date('Y-m-d H:i:s', time()) > $user['registration_expires'])) {
+		if ($user === false) return 0;
+		if (!(date('Y-m-d H:i:s', time()) > $user['registration_expires'])) {
 			$updateResponse = $this->userRepo->ActivateUser($user['registration_token']);
-			if($updateResponse == "OK")
+			if ($updateResponse == "OK")
 				return 1;
 			else
 				return 0;
@@ -94,10 +94,11 @@ class UserServices
 		return $this->userRepo->DeleteUserWithExpiredRegistration($user["registration_token"]);
 	}
 
-	public function LoginUser(array $loginData): array {
+	public function LoginUser(array $loginData): array
+	{
 
 		$isValid = $this->validatorUtility->validateLoginUserInput($loginData);
-		if($isValid !== true) {
+		if ($isValid !== true) {
 			return $isValid;
 		}
 
@@ -136,15 +137,14 @@ class UserServices
 		return $loggedIn;
 	}
 
-	public function SendPasswordResetMail(string $emailTo):array
+	public function SendPasswordResetMail(string $emailTo): array
 	{
 		$cleanEmail = strip_tags(trim($emailTo));
-		if(filter_var($cleanEmail, FILTER_VALIDATE_EMAIL)) {
+		if (filter_var($cleanEmail, FILTER_VALIDATE_EMAIL)) {
 			$user = $this->userRepo->GetUserByEmail($cleanEmail);
-			if($user != null)
-			{
+			if ($user != null) {
 				$token = $this->tokenUtility->GenerateBasicToken(20);
-				$expTime = date('Y-m-d H:i:s',time() + 3600);
+				$expTime = date('Y-m-d H:i:s', time() + 3600);
 
 				$this->userRepo->InsertPasswordResetToken($user['worker_id'], $token, $expTime);
 				$link = "{$_ENV['MAIN_URL_FE']}/change-password?token=$token";
@@ -171,11 +171,11 @@ class UserServices
 		];
 	}
 
-	public function ResetPassword(string $token, string $newPassword):array
+	public function ResetPassword(string $token, string $newPassword): array
 	{
 		$password = password_hash($newPassword, PASSWORD_DEFAULT);
 		$user = $this->userRepo->GetUserByPasswordRestToken($token);
-		if(!empty($user)) {
+		if (!empty($user)) {
 			$this->userRepo->UpdatePassword($user['worker_id'], $password);
 			return [
 				'status' => 200,
@@ -194,13 +194,13 @@ class UserServices
 	public function SetNewPassword(array $userInfo): array
 	{
 		$isValid = $this->validatorUtility->validateNewPasswordData($userInfo);
-		if($isValid !== true) {
+		if ($isValid !== true) {
 			return $isValid;
 		}
 
 		$user = $this->userRepo->GetUserById($userInfo['worker_id']);
 
-		$checkPasswd = match(true) {
+		$checkPasswd = match (true) {
 			$user === false => [
 				'status' => 404,
 				'message' => 'Not found',
@@ -219,7 +219,7 @@ class UserServices
 			]
 		};
 
-		if($checkPasswd['status'] != 200) return $checkPasswd;
+		if ($checkPasswd['status'] != 200) return $checkPasswd;
 
 		$this->userRepo->UpdatePassword($userInfo['worker_id'], password_hash($userInfo['new_password'], PASSWORD_DEFAULT));
 		return [
@@ -227,5 +227,13 @@ class UserServices
 			'message' => 'Success',
 			'description' => 'Your password has been changed successfully'
 		];
+	}
+
+	public function UpdateUserData(array $newUserData): array
+	{
+		$isValid = $this->validatorUtility->validateUpdatedUserData($newUserData);
+		if($isValid !== true) return $isValid;
+
+
 	}
 }

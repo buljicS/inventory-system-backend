@@ -11,6 +11,6 @@
 /.vscode
 
 #server files
-/build.sh
+/bin/build-vars.sh
 /build
 

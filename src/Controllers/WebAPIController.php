@@ -327,19 +327,19 @@ class WebAPIController
 	 *             @OA\Schema(
 	 *                 type="object",
 	 *     			   @OA\Property (
-	 *     			     property="userId",
-	 *     				 type="integer",
+	 *     			     property="worker_id",
+	 *     				 type="int",
 	 *     				 example="0"
 	 *     			   ),
 	 *                 @OA\Property(
-	 *                     property="phoneNumber",
+	 *                     property="phone_number",
 	 *                     type="string",
-	 *                     example="string"
+	 *                     example="+12345"
 	 *                 ),
 	 *                 @OA\Property(
-	 *                     property="companies",
-	 *                     type="string",
-	 *                     example="string"
+	 *                     property="company_id",
+	 *                     type="int",
+	 *                     example="0"
 	 *                  ),
 	 *             )
 	 *         )

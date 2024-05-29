@@ -89,4 +89,25 @@ class ValidatorUtility
 			'description' => $this->_vValidator->errors()
 		];
 	}
+
+	public function validateUpdatedUserData(array $newUserData)
+	{
+		$this->_vValidator = new vValidator($newUserData);
+		$this->_vValidator->rules([
+				'required' => [
+					['worker_id'],
+					['phone_number'],
+					['company_id']
+				]
+			]
+		);
+
+		if($this->_vValidator->validate()) return true;
+
+		return [
+			'status' => 202,
+			'message' => 'Accepted',
+			'description' => $this->_vValidator->errors()
+		];
+	}
 }
