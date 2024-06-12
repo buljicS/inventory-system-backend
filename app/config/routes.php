@@ -20,6 +20,7 @@ return function (Slim $app) {
 	$app->post('/api/Users/ResetPassword' , [API::class, 'ResetPassword']);
 	$app->get('/api/Users/ActivateUserAccount/{token}', [API::class, 'ActivateUserAccount']);
 	$app->post('/api/Users/SetNewPassword', [API::class, 'SetNewPassword']);
+	$app->post('/api/Users/UpdateUser', [API::class, 'UpdateUserData']);
 	#endregion
 
 	#region Logs

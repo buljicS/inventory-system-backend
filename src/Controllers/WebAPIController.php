@@ -350,10 +350,11 @@ class WebAPIController
 	 *     ),
 	 * )
 	 */
-	public function UpdateUserInfo(Request $request, Response $response): Response
+	public function UpdateUserData(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$response->getBody()->write(json_encode("Hi from this one"));
+		$updatedUser = $this->userServices->UpdateUserData($requestBody);
+		$response->getBody()->write(json_encode($updatedUser));
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
