@@ -236,7 +236,13 @@ class UserServices
 
 		$updatedUser = $this->userRepo->UpdateUser($newUserData);
 		if($updatedUser !== false)
-			return $updatedUser;
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'User data has been updated',
+				'updatedUser' => $updatedUser
+			];
+
 		else
 			return [
 				'status' => 500,

@@ -21,6 +21,7 @@ return function (Slim $app) {
 	$app->get('/api/Users/ActivateUserAccount/{token}', [API::class, 'ActivateUserAccount']);
 	$app->post('/api/Users/SetNewPassword', [API::class, 'SetNewPassword']);
 	$app->post('/api/Users/UpdateUser', [API::class, 'UpdateUserData']);
+	$app->get('/api/Users/GetUserInfo', [API::class, 'GetUserInfo']);
 	#endregion
 
 	#region Logs
