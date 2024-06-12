@@ -61,6 +61,16 @@ class UsersRepository
 		return $stmt->fetch();
 	}
 
+	public function GetUpdatedUserInfo(int $workerId)
+	{
+		$dbCon = $this->database->OpenConnection();
+		$sql = "SELECT company_id, phone_number FROM workers WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':worker_id', $workerId);
+		$stmt->execute();
+		return $stmt->fetch();
+	}
+
 	public function GetUserByEmail(string $email): array | bool {
 		$dbCon = $this->database->OpenConnection();
 		$sql = "SELECT worker_id,
@@ -188,7 +198,7 @@ class UsersRepository
 		$stmt->bindValue(':worker_id', $newUserData['worker_id']);
 
 		if($stmt->execute())
-			return $this->GetUserById($newUserData['worker_id']);
+			return $this->GetUpdatedUserInfo($newUserData['worker_id']);
 		else
 			return false;
 	}
