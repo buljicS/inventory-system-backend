@@ -90,7 +90,7 @@ class ValidatorUtility
 		];
 	}
 
-	public function validateUpdatedUserData(array $newUserData)
+	public function validateUpdatedUserData(array $newUserData): bool|array
 	{
 		$this->_vValidator = new vValidator($newUserData);
 		$this->_vValidator->rules([

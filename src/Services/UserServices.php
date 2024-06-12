@@ -234,6 +234,14 @@ class UserServices
 		$isValid = $this->validatorUtility->validateUpdatedUserData($newUserData);
 		if($isValid !== true) return $isValid;
 
-
+		$updatedUser = $this->userRepo->UpdateUser($newUserData);
+		if($updatedUser !== false)
+			return $updatedUser;
+		else
+			return [
+				'status' => 500,
+				'message' => "Internal Server Error",
+				'description' => "Failed to updated user"
+			];
 	}
 }

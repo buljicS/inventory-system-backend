@@ -224,17 +224,17 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "userId": {
+                                    "worker_id": {
                                         "type": "integer",
                                         "example": "0"
                                     },
-                                    "phoneNumber": {
+                                    "phone_number": {
                                         "type": "string",
-                                        "example": "string"
+                                        "example": "+12345"
                                     },
-                                    "companies": {
-                                        "type": "string",
-                                        "example": "string"
+                                    "company_id": {
+                                        "type": "integer",
+                                        "example": "0"
                                     }
                                 },
                                 "type": "object"

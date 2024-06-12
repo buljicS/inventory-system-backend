@@ -176,5 +176,22 @@ class UsersRepository
 		$dbCon = null;
 	}
 
+	public function UpdateUser(array $newUserData): array|bool
+	{
+		$dbCon = $this->database->OpenConnection();
+
+
+		$sql = "UPDATE workers SET phone_number = :phone_number, company_id = :company_id WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':phone_number', $newUserData['phone_number']);
+		$stmt->bindValue(':company_id', $newUserData['company_id']);
+		$stmt->bindValue(':worker_id', $newUserData['worker_id']);
+
+		if($stmt->execute())
+			return $this->GetUserById($newUserData['worker_id']);
+		else
+			return false;
+	}
+
 
 }
