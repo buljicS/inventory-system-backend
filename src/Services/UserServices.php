@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Services;
 
+use Repositories\CompaniesRepository;
 use Repositories\UsersRepository;
 use Utilities\MailUtility;
 use Utilities\TokenUtility;
@@ -13,18 +14,20 @@ use Services\LogServices as LogServices;
 class UserServices
 {
 	private readonly UsersRepository $userRepo;
+	private readonly CompaniesRepository $companiesRepo;
 	private readonly MailUtility $email;
 	private readonly TokenUtility $tokenUtility;
 	private readonly LogServices $logServices;
 	private readonly ValidatorUtility $validatorUtility;
 
-	public function __construct(MailUtility $email, TokenUtility $tokenUtility, UsersRepository $usersRepository, LogServices $logServices, ValidatorUtility $validatorUtility)
+	public function __construct(MailUtility $email, TokenUtility $tokenUtility, UsersRepository $usersRepository, LogServices $logServices, ValidatorUtility $validatorUtility, CompaniesRepository $companiesRepository)
 	{
 		$this->email = $email;
 		$this->userRepo = $usersRepository;
 		$this->tokenUtility = $tokenUtility;
 		$this->logServices = $logServices;
 		$this->validatorUtility = $validatorUtility;
+		$this->companiesRepository = $companiesRepository;
 	}
 
 	public function RegisterUser(array $newUserData): array
@@ -232,6 +235,8 @@ class UserServices
 	public function GetUserInfo(int $user_id): array
 	{
 		$userInfo = $this->userRepo->GetUpdatedUserInfo($user_id);
+		$companies = $this->companiesRepository->GetAllCompaniesForUser();
+
 		if($userInfo === false)
 			return [
 				'status' => 404,
@@ -242,8 +247,8 @@ class UserServices
 		return [
 			'status' => 200,
 			'message' => 'Success',
-			'description' => 'User found',
-			'userInfo' => $userInfo
+			'userInfo' => $userInfo,
+			'companies' => $companies
 		];
 	}
 

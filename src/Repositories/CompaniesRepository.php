@@ -13,5 +13,14 @@ class CompaniesRepository
 		$this->database = $database;
 	}
 
-	public function GetAllCompanies() {}
+	public function GetAllCompaniesForUser(): ?array
+	{
+		$dbCon = $this->database->OpenConnection();
+		$sql = "SELECT company_id, company_name FROM companies WHERE isActive = 1";
+		$stmt = $dbCon->prepare($sql);
+		if($stmt->execute())
+			return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		return null;
+	}
 }
