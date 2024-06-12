@@ -72,6 +72,30 @@
                 }
             }
         },
+        "/api/Users/GetUserInfo/{worker_id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Get user info",
+                "operationId": "0746b750b6a9d2134c11b8489698e61e",
+                "parameters": [
+                    {
+                        "name": "worker_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                }
+            }
+        },
         "/api/Users/RegisterUser": {
             "post": {
                 "tags": [
@@ -217,7 +241,7 @@
                 "tags": [
                     "Users"
                 ],
-                "operationId": "e3c9ff2ad6ffab44631d1ced0b929776",
+                "operationId": "c60e08298b6de9b5a11813b41ad17bac",
                 "requestBody": {
                     "description": "Update user informations",
                     "content": {

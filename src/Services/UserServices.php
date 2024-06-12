@@ -229,6 +229,24 @@ class UserServices
 		];
 	}
 
+	public function GetUserInfo(int $user_id): array
+	{
+		$userInfo = $this->userRepo->GetUpdatedUserInfo($user_id);
+		if($userInfo === false)
+			return [
+				'status' => 404,
+				'message' => 'Not found',
+				'description' => 'User not found'
+			];
+
+		return [
+			'status' => 200,
+			'message' => 'Success',
+			'description' => 'User found',
+			'userInfo' => $userInfo
+		];
+	}
+
 	public function UpdateUserData(array $newUserData): array
 	{
 		$isValid = $this->validatorUtility->validateUpdatedUserData($newUserData);

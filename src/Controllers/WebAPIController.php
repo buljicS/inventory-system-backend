@@ -151,6 +151,30 @@ class WebAPIController
 	#region Users
 
 	/**
+	 * @OA\Get(
+	 *     path="/api/Users/GetUserInfo/{worker_id}",
+	 *     description="Get user info",
+	 *     tags={"Users"},
+	 *     @OA\Parameter(
+	 *         name="worker_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource")
+	 * )
+	 */
+	public function GetUserInfo(Request $request, Response $response, array $args): Response {
+		$userId = (int)$args['worker_id'];
+		$resp = $this->userServices->GetUserInfo($userId);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
 	 * @OA\Post(
 	 *     path="/api/Users/RegisterUser",
 	 *     tags={"Users"},
