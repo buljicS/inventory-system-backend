@@ -24,21 +24,15 @@ define("MAIN_URL", $_ENV['MAIN_URL_BE']);
  *      url=MAIN_URL,
  *  )
  *
- * @OA\SecurityScheme (
- *      securityScheme="Bearer",
- *      type="http",
- *      scheme="bearer",
- *      bearerFormat="JWT",
- *      description="Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
- *      name="Authorization",
- *      in="header",
- *      @OA\Flow(
- *          flow="password",
- *          tokenUrl="/oauth/token",
- *          refreshUrl="/oauth/token/refresh",
- *          scopes={}
- *      )
- *  )
+ * @OA\SecurityScheme(
+ * *     securityScheme="bearerAuth",
+ * *     type="http",
+ * *     scheme="bearer",
+ * *     bearerFormat="JWT",
+ * *     description="Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+ * *     name="bearerAuth",
+ * *     in="header"
+ * * )
  */
 
 class WebAPIController
@@ -80,7 +74,8 @@ class WebAPIController
 	 *     path="/api/FirebaseStorage/GetAllFilesFromDir/{dir}",
 	 *     description="Get all files from single directory",
 	 *     tags={"FirebaseStorage"},
-	 *     @OA\Response(response="200", description="An example resource")
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
 	public function GetAllFiles(Request $request, Response $response): Response
@@ -121,6 +116,7 @@ class WebAPIController
 	 *         response=200,
 	 *         description="Success"
 	 *     ),
+	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
 	public function LogAccess(Request $request, Response $response): Response {
@@ -136,7 +132,8 @@ class WebAPIController
 	 *     path="/api/Logs/GetAllLogs",
 	 *     description="Get all previous logs",
 	 *     tags={"Logs"},
-	 *     @OA\Response(response="200", description="An example resource")
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
 	public function GetAllLogs(Request $request, Response $response): Response
@@ -163,7 +160,8 @@ class WebAPIController
 	 *             type="integer"
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="200", description="An example resource")
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
 	public function GetUserInfo(Request $request, Response $response, array $args): Response {
@@ -216,7 +214,8 @@ class WebAPIController
 	 *     @OA\Response(
 	 *         response=200,
 	 *         description="Success"
-	 *     )
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
 	public function RegisterUser(Request $request, Response $response): Response {
@@ -264,6 +263,7 @@ class WebAPIController
 	 *         response=401,
 	 *         description="Wrong credentials"
 	 *      ),
+	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
 	public function LoginUser(Request $request, Response $response): Response
@@ -303,6 +303,7 @@ class WebAPIController
 	 *         response=404,
 	 *         description="Not found"
 	 *     ),
+	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
 	public function SendPasswordResetMail(Request $request, Response $response): Response
@@ -328,7 +329,8 @@ class WebAPIController
 	 *             type="string"
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="200", description="An example resource")
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
 	public function ActivateUserAccount(Request $request, Response $response, array $args): Response
@@ -372,6 +374,7 @@ class WebAPIController
 	 *         response=200,
 	 *         description="Success"
 	 *     ),
+	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
 	public function UpdateUserData(Request $request, Response $response): Response
@@ -410,6 +413,7 @@ class WebAPIController
 	 *         response=200,
 	 *         description="Success"
 	 *     ),
+	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
 	public function ResetPassword(Request $request, Response $response): Response
@@ -453,6 +457,7 @@ class WebAPIController
 	 *         response=200,
 	 *         description="Success"
 	 *     ),
+	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
 	public function SetNewPassword(Request $request, Response $response): Response

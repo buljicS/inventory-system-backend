@@ -22,7 +22,12 @@
                     "200": {
                         "description": "An example resource"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/Logs/LogAccess": {
@@ -55,7 +60,12 @@
                     "200": {
                         "description": "Success"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/Logs/GetAllLogs": {
@@ -69,7 +79,12 @@
                     "200": {
                         "description": "An example resource"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/Users/GetUserInfo/{worker_id}": {
@@ -93,7 +108,12 @@
                     "200": {
                         "description": "An example resource"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/Users/RegisterUser": {
@@ -138,7 +158,12 @@
                     "200": {
                         "description": "Success"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/Users/LoginUser": {
@@ -177,7 +202,12 @@
                     "401": {
                         "description": "Wrong credentials"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/Users/SendPasswordResetEmail": {
@@ -209,7 +239,12 @@
                     "404": {
                         "description": "Not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/Users/ActivateUserAccount/{token}": {
@@ -233,7 +268,12 @@
                     "200": {
                         "description": "An example resource"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/Users/UpdateUser": {
@@ -270,7 +310,12 @@
                     "200": {
                         "description": "Success"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/Users/ResetPassword": {
@@ -303,7 +348,12 @@
                     "200": {
                         "description": "Success"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/Users/SetNewPassword": {
@@ -340,24 +390,22 @@
                     "200": {
                         "description": "Success"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
     "components": {
         "securitySchemes": {
-            "Bearer": {
+            "bearerAuth": {
                 "type": "http",
                 "description": "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
-                "name": "Authorization",
+                "name": "bearerAuth",
                 "in": "header",
-                "flows": {
-                    "password": {
-                        "tokenUrl": "/oauth/token",
-                        "refreshUrl": "/oauth/token/refresh",
-                        "scopes": {}
-                    }
-                },
                 "bearerFormat": "JWT",
                 "scheme": "bearer"
             }
