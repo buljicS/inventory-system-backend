@@ -3,7 +3,7 @@
     "info": {
         "title": "Inventory management system API",
         "description": "Inventory web based system for tracking items and stuff in company",
-        "version": "1.0.1"
+        "version": "1.1.0"
     },
     "servers": [
         {
@@ -389,6 +389,50 @@
                 "responses": {
                     "200": {
                         "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Admins/LoginAdmin": {
+            "post": {
+                "tags": [
+                    "Admins"
+                ],
+                "operationId": "8d6e0acc817f4fc436e19a5b23386a44",
+                "requestBody": {
+                    "description": "Authenticate admin",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "admin_email": {
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    },
+                                    "admin_password": {
+                                        "type": "string",
+                                        "example": "Your password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "401": {
+                        "description": "Wrong credentials"
                     }
                 },
                 "security": [

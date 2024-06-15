@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use OpenApi\Generator as Generator;
 
+use Services\AdminServices;
 use Services\UserServices as UserServices;
 use Services\LogServices as LogServices;
 use Services\FirebaseServices as FirebaseServices;
@@ -17,7 +18,7 @@ define("MAIN_URL", $_ENV['MAIN_URL_BE']);
 /**
  * @OA\Info(
  *     title="Inventory management system API",
- *     version="1.0.1",
+ *     version="1.1.0",
  *     description="Inventory web based system for tracking items and stuff in company"
  *	 )
  * @OA\Server(
@@ -38,12 +39,14 @@ define("MAIN_URL", $_ENV['MAIN_URL_BE']);
 class WebAPIController
 {
 	private UserServices $userServices;
+	private AdminServices $adminServices;
 	private LogServices $logServices;
 	private FirebaseServices $firebaseServices;
 
-	public function __construct(UserServices $userServices, LogServices $logServices, FirebaseServices $firebaseServices)
+	public function __construct(UserServices $userServices, AdminServices $adminServices, LogServices $logServices, FirebaseServices $firebaseServices)
 	{
 		$this->userServices = $userServices;
+		$this->adminServices = $adminServices;
 		$this->logServices = $logServices;
 		$this->firebaseServices = $firebaseServices;
 	}
@@ -470,6 +473,55 @@ class WebAPIController
 	}
 
 	#endregion
+
+	#region Admins
+	/**
+	 * @OA\Post(
+	 *     path="/api/Admins/LoginAdmin",
+	 *     tags={"Admins"},
+	 *     @OA\RequestBody(
+	 *         description="Authenticate admin",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *                 @OA\Property(
+	 *                     property="admin_username",
+	 *                     type="string",
+	 *                     example="example@email.com"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="admin_password",
+	 *                     type="string",
+	 *                     example="Your password"
+	 *                 ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=404,
+	 *         description="Not found"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=401,
+	 *         description="Wrong credentials"
+	 *      ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function LoginAdmin(Request $request, Response $response): Response {
+		$credentials = (array)$request->getParsedBody();
+		$resp = $this->adminServices->LoginAdmin($credentials);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+	#endregion
+
 
 
 

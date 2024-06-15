@@ -24,6 +24,10 @@ return function (Slim $app) {
 	$app->get('/api/Users/GetUserInfo/{worker_id}', [API::class, 'GetUserInfo']);
 	#endregion
 
+	#region Admins
+	$app->post('/api/Admins/LoginAdmin', [API::class, 'LoginAdmin']);
+	#endregions
+
 	#region Logs
 	$app->post('/api/Logs/LogAccess', [API::class, 'LogAccess']);
 	$app->get('/api/Logs/GetAllLogs', [API::class, 'GetAllLogs']);

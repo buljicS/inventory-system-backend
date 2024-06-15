@@ -10,7 +10,8 @@ $pdoOptions = [
 
 #region Authorization config
 $authPath = [
-	"/api/Users/"
+	"/api/Users/",
+	"/api/Admins/"
 ];
 
 $ignorePath = [
@@ -19,13 +20,13 @@ $ignorePath = [
 	"/api/Users/RegisterUser",
 	"/api/Users/SendPasswordResetEmail",
 	"/api/Users/ActivateUserAccount/",
-	"/api/Users/ResetPassword"
+	"/api/Users/ResetPassword",
+	"/api/Admins/LoginAdmin",
 ];
 #endregion
 
 #region ServiceProviders
 $serviceProviders = [
-	\Providers\FirebaseServiceProvider::class,
-	\Providers\PDOServiceProvider::class
+	\Providers\FirebaseServiceProvider::class
 ];
 #endregion

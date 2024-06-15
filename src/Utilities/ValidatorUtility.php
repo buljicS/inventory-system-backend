@@ -110,4 +110,24 @@ class ValidatorUtility
 			'description' => $this->_vValidator->errors()
 		];
 	}
+
+	public function validateAdminCredentials(array $credentials): bool|array
+	{
+		$this->_vValidator = new vValidator($credentials);
+		$this->_vValidator->rules([
+				'required' => [
+					['admin_username'],
+					['admin_password']
+				]
+			]
+		);
+
+		if($this->_vValidator->validate()) return true;
+
+		return [
+			'status' => 202,
+			'message' => 'Accepted',
+			'description' => $this->_vValidator->errors()
+		];
+	}
 }
