@@ -116,8 +116,8 @@ class ValidatorUtility
 		$this->_vValidator = new vValidator($credentials);
 		$this->_vValidator->rules([
 				'required' => [
-					['admin_username'],
-					['admin_password']
+					['email'],
+					['password']
 				]
 			]
 		);

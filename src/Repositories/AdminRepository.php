@@ -18,7 +18,7 @@ class AdminRepository
 		$dbConn = $this->database->OpenConnection();
 		$sql = "SELECT * FROM admins WHERE admin_username = :admin_username";
 		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(':admin_username', $credentials['admin_username']);
+		$stmt->bindParam(':admin_username', $credentials['email']);
 		$stmt->execute();
 		return $stmt->fetch();
 	}

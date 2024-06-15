@@ -475,6 +475,7 @@ class WebAPIController
 	#endregion
 
 	#region Admins
+
 	/**
 	 * @OA\Post(
 	 *     path="/api/Admins/LoginAdmin",
@@ -486,12 +487,12 @@ class WebAPIController
 	 *             @OA\Schema(
 	 *                 type="object",
 	 *                 @OA\Property(
-	 *                     property="admin_username",
+	 *                     property="email",
 	 *                     type="string",
 	 *                     example="example@email.com"
 	 *                 ),
 	 *                 @OA\Property(
-	 *                     property="admin_password",
+	 *                     property="password",
 	 *                     type="string",
 	 *                     example="Your password"
 	 *                 ),
@@ -520,6 +521,8 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+
 	#endregion
 
 

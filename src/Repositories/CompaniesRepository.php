@@ -23,4 +23,15 @@ class CompaniesRepository
 
 		return null;
 	}
+
+	public function GetAllCompaniesForAdmin(): ?array
+	{
+		$dbCon = $this->database->OpenConnection();
+		$sql = "SELECT * FROM companies";
+		$stmt = $dbCon->prepare($sql);
+		if($stmt->execute())
+			return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		return null;
+	}
 }
