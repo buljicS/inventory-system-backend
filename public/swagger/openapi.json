@@ -410,11 +410,11 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "admin_email": {
+                                    "email": {
                                         "type": "string",
                                         "example": "example@email.com"
                                     },
-                                    "admin_password": {
+                                    "password": {
                                         "type": "string",
                                         "example": "Your password"
                                     }
@@ -433,6 +433,25 @@
                     },
                     "401": {
                         "description": "Wrong credentials"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Admins/GetAllCompanies": {
+            "get": {
+                "tags": [
+                    "Admins"
+                ],
+                "description": "Get all companies and their information",
+                "operationId": "9d63481c1054a926f2b0243f35c3d75f",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
                     }
                 },
                 "security": [

@@ -26,6 +26,7 @@ return function (Slim $app) {
 
 	#region Admins
 	$app->post('/api/Admins/LoginAdmin', [API::class, 'LoginAdmin']);
+	$app->get('/api/Admins/GetAllCompanies', [API::class, 'GetAllCompanies']);
 	#endregions
 
 	#region Logs

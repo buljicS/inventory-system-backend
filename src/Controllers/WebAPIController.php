@@ -522,7 +522,22 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
-
+	/**
+	 * @OA\Get(
+	 *     path="/api/Admins/GetAllCompanies",
+	 *     description="Get all companies and their information",
+	 *     tags={"Admins"},
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function GetAllCompanies(Request $request, Response $response): Response
+	{
+		$resp = $this->adminServices->GetAllCompaniesForAdmin();
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 
