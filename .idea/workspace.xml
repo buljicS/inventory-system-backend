@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2fe0606b-9c02-4a9b-9f70-86605797264e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Writerside/cfg/buildprofiles.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/h.tree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/images/completion_procedure.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/images/completion_procedure_dark.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/images/convert_table_to_xml.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/images/convert_table_to_xml_dark.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/images/docs/images/docsHeading.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/images/new_topic_options.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/images/new_topic_options_dark.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/isd.tree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/r.tree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/redirection-rules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/t.tree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Apache-virtual-hosts.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Authorization-setup.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Bash-script.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Basic-Slim-setup.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/CORS-setup.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Composer-intallation.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Decoupling.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Deploy-via-FileZilla.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Deployment.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Environment-variables.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Error-Handling.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/FirebasePHP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/General-Setup.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/PHPStorm-Deploy.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/PHPUnit.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Problem.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Project-structure.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Read-more.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Server-installation.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Serving-Swagger-PHP-from-Slim.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Set-default-error-handler.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Set-default-error-middleware.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/SlimPHP-Installation.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/Swagger-PHP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/SwaggerPHP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/help.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/starter-topic.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Writerside/topics/test.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="InstanceColorv3">
+    <option name="map">
+      <map>
+        <entry key="$PROJECT_DIR$/Writerside/h.tree">
+          <value>
+            <ColorState>
+              <option name="customOrder" value="4" />
+              <option name="first">
+                <RgbState>
+                  <option name="blue" value="112" />
+                  <option name="darkBlue" value="112" />
+                  <option name="darkGreen" value="83" />
+                  <option name="darkRed" value="215" />
+                  <option name="green" value="83" />
+                  <option name="red" value="215" />
+                </RgbState>
+              </option>
+              <option name="second">
+                <RgbState>
+                  <option name="blue" value="163" />
+                  <option name="darkBlue" value="163" />
+                  <option name="darkGreen" value="111" />
+                  <option name="darkRed" value="233" />
+                  <option name="green" value="111" />
+                  <option name="red" value="233" />
+                </RgbState>
+              </option>
+            </ColorState>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Writerside/isd.tree">
+          <value>
+            <ColorState>
+              <option name="customOrder" value="2" />
+              <option name="first">
+                <RgbState>
+                  <option name="blue" value="225" />
+                  <option name="darkBlue" value="225" />
+                  <option name="darkGreen" value="149" />
+                  <option name="darkRed" value="56" />
+                  <option name="green" value="149" />
+                  <option name="red" value="56" />
+                </RgbState>
+              </option>
+              <option name="second">
+                <RgbState>
+                  <option name="blue" value="234" />
+                  <option name="darkBlue" value="234" />
+                  <option name="darkGreen" value="197" />
+                  <option name="darkRed" value="81" />
+                  <option name="green" value="197" />
+                  <option name="red" value="81" />
+                </RgbState>
+              </option>
+            </ColorState>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Writerside/r.tree">
+          <value>
+            <ColorState>
+              <option name="customOrder" value="1" />
+              <option name="first">
+                <RgbState>
+                  <option name="blue" value="60" />
+                  <option name="darkBlue" value="60" />
+                  <option name="darkGreen" value="68" />
+                  <option name="darkRed" value="206" />
+                  <option name="green" value="68" />
+                  <option name="red" value="206" />
+                </RgbState>
+              </option>
+              <option name="second">
+                <RgbState>
+                  <option name="blue" value="65" />
+                  <option name="darkBlue" value="65" />
+                  <option name="darkGreen" value="126" />
+                  <option name="darkRed" value="231" />
+                  <option name="green" value="126" />
+                  <option name="red" value="231" />
+                </RgbState>
+              </option>
+            </ColorState>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Writerside/t.tree">
+          <value>
+            <ColorState>
+              <option name="customOrder" value="3" />
+              <option name="first">
+                <RgbState>
+                  <option name="blue" value="147" />
+                  <option name="darkBlue" value="147" />
+                  <option name="darkGreen" value="69" />
+                  <option name="darkRed" value="143" />
+                  <option name="green" value="69" />
+                  <option name="red" value="143" />
+                </RgbState>
+              </option>
+              <option name="second">
+                <RgbState>
+                  <option name="blue" value="227" />
+                  <option name="darkBlue" value="227" />
+                  <option name="darkGreen" value="114" />
+                  <option name="darkRed" value="181" />
+                  <option name="green" value="114" />
+                  <option name="red" value="181" />
+                </RgbState>
+              </option>
+            </ColorState>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2iH9A7oJ4A24grrJwtYsNHJEsFp" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Writerside.PDF (r).executor": "Run",
+    "Writerside.Web Archive (isd).executor": "Run",
+    "git-widget-placeholder": "documentation-v2",
+    "last_opened_file_path": "D:/GitHub_Repos",
+    "settings.editor.selected.configurable": "preferences.editor",
+    "writerside.last.selected.productinSystem-docs": "isd"
+  }
+}]]></component>
+  <component name="RunManager" selected="Writerside.Web Archive (isd)">
+    <configuration name="PDF (r)" type="StardustRunConfiguration" factoryName="build-pdf">
+      <option name="addCover" value="true" />
+      <option name="copyright" />
+      <option name="description" />
+      <option name="folderPath" value="$PROJECT_DIR$" />
+      <option name="footer" />
+      <option name="header" />
+      <option name="instanceId" value="r" />
+      <option name="instanceName" value="root" />
+      <option name="layout" />
+      <option name="logoPath" />
+      <option name="title" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Web Archive (isd)" type="StardustRunConfiguration" factoryName="save-as-zip">
+      <option name="folderPath" value="$PROJECT_DIR$" />
+      <option name="instanceId" value="isd" />
+      <option name="instanceName" value="Inventory System Docs" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/documentation-v2" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>

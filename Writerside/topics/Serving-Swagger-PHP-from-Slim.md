@@ -1,0 +1,3 @@
+# Serving Swagger-PHP from Slim
+
+Start typing here...

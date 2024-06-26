@@ -1,0 +1,3 @@
+# Basic Slim setup
+
+Start typing here...

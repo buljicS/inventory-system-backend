@@ -1,0 +1,3 @@
+# Project structure
+
+Start typing here...

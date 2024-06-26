@@ -1,0 +1,3 @@
+# SlimPHP installation and setup
+
+Start typing here...

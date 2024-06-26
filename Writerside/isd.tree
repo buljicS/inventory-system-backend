@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="isd"
+                 name="Inventory System Docs"
+                 start-page="starter-topic.md">
+
+    <toc-element topic="starter-topic.md"/>
+    <toc-element topic="General-Setup.md">
+        <toc-element topic="Server-installation.md"/>
+        <toc-element topic="Composer-intallation.md"/>
+        <toc-element topic="Apache-virtual-hosts.md"/>
+        <toc-element topic="Swagger-PHP.md"/>
+        <toc-element topic="Environment-variables.md"/>
+    </toc-element>
+    <toc-element topic="Basic-Slim-setup.md">
+        <toc-element topic="SlimPHP-Installation.md"/>
+        <toc-element topic="Project-structure.md"/>
+        <toc-element topic="Decoupling.md"/>
+        <toc-element topic="Serving-Swagger-PHP-from-Slim.md"/>
+        <toc-element topic="CORS-setup.md"/>
+        <toc-element topic="Authorization-setup.md"/>
+    </toc-element>
+    <toc-element topic="Error-Handling.md">
+        <toc-element topic="Problem.md"/>
+        <toc-element topic="Set-default-error-handler.md"/>
+        <toc-element topic="Set-default-error-middleware.md"/>
+    </toc-element>
+    <toc-element topic="SwaggerPHP.md"/>
+    <toc-element topic="FirebasePHP.md"/>
+    <toc-element topic="PHPUnit.md"/>
+    <toc-element topic="Deployment.md">
+        <toc-element topic="Bash-script.md"/>
+        <toc-element topic="PHPStorm-Deploy.md"/>
+        <toc-element topic="Deploy-via-FileZilla.md"/>
+    </toc-element>
+    <toc-element topic="Read-more.md"/>
+</instance-profile>
