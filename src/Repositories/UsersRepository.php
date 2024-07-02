@@ -3,6 +3,7 @@
 namespace Repositories;
 
 use Controllers\DatabaseController as DBController;
+use PDO;
 
 class UsersRepository
 {
@@ -13,9 +14,28 @@ class UsersRepository
 		$this->database = $database;
 	}
 
+	public function GetAllUsersForAdmin(): bool|array
+	{
+		$dbCon = $this->database->openConnection();
+
+		$sql = "SELECT worker_id, 
+       				   worker_fname, 
+       				   worker_lname, 
+       				   worker_email, 
+       				   phone_number, 
+       				   date_created, 
+       				   role, 
+       				   isActive 
+			    FROM workers";
+
+		$stmt = $dbCon->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 	public function CreateNewUser(array $userData):bool
 	{
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 
 		$sql = "INSERT INTO workers(
                     worker_fname, 
@@ -53,7 +73,7 @@ class UsersRepository
 
 	public function GetUserById(int $workerId)
 	{
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 		$sql = "SELECT worker_id, worker_email, worker_password FROM workers WHERE worker_id = :worker_id";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':worker_id', $workerId);
@@ -63,7 +83,7 @@ class UsersRepository
 
 	public function GetUpdatedUserInfo(int $workerId)
 	{
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 		$sql = "SELECT company_id, phone_number FROM workers WHERE worker_id = :worker_id";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':worker_id', $workerId);
@@ -72,7 +92,7 @@ class UsersRepository
 	}
 
 	public function GetUserByEmail(string $email): array | bool {
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 		$sql = "SELECT worker_id,
     				   worker_password,
        				   worker_fname,
@@ -95,7 +115,7 @@ class UsersRepository
 
 	public function GetUserByRegistrationToken(string $token): array|bool
 	{
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 		$sql = "SELECT registration_token, worker_id, registration_expires
        			FROM workers 
        			WHERE registration_token = :token";
@@ -108,7 +128,7 @@ class UsersRepository
 
 	public function GetUserByPasswordRestToken(string $token): array|bool
 	{
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 		$sql = "SELECT worker_password, worker_id
 				FROM workers
 				WHERE forgoten_password_token = :token && forgoten_password_expires >= NOW()";
@@ -121,7 +141,7 @@ class UsersRepository
 
 	public function InsertPasswordResetToken(int $worker_id, string $token, mixed $expTime):void
 	{
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 		$sql = "UPDATE workers 
 				SET forgoten_password_token = :token,
 				    forgoten_password_expires = :expTime
@@ -136,7 +156,7 @@ class UsersRepository
 
 	public function ActivateUser(string $token): string
 	{
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 		$sql = "UPDATE workers 
 				SET isActive = 1
 				WHERE registration_token = :token";
@@ -159,7 +179,7 @@ class UsersRepository
 
 	public function DeleteUserWithExpiredRegistration(string $token): int
 	{
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 		$sql = "DELETE 
 				FROM workers
 				WHERE registration_token = :token";
@@ -172,7 +192,7 @@ class UsersRepository
 
 	public function UpdatePassword(int $worker_id, string $password):void
 	{
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 		$sql = "UPDATE workers
 				SET worker_password = :password, 
 				    forgoten_password_token = NULL, 
@@ -188,7 +208,7 @@ class UsersRepository
 
 	public function UpdateUser(array $newUserData): array|bool
 	{
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 
 
 		$sql = "UPDATE workers SET phone_number = :phone_number, company_id = :company_id WHERE worker_id = :worker_id";

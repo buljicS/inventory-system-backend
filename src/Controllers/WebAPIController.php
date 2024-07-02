@@ -8,10 +8,11 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use OpenApi\Generator as Generator;
 
-use Services\AdminServices;
+use Services\AdminServices as AdminServices;
 use Services\UserServices as UserServices;
 use Services\LogServices as LogServices;
 use Services\FirebaseServices as FirebaseServices;
+use Services\CompaniesServices as CompaniesServices;
 
 define("MAIN_URL", $_ENV['MAIN_URL_BE']);
 
@@ -42,13 +43,15 @@ class WebAPIController
 	private AdminServices $adminServices;
 	private LogServices $logServices;
 	private FirebaseServices $firebaseServices;
+	private CompaniesServices $companiesServices;
 
-	public function __construct(UserServices $userServices, AdminServices $adminServices, LogServices $logServices, FirebaseServices $firebaseServices)
+	public function __construct(UserServices $userServices, AdminServices $adminServices, LogServices $logServices, FirebaseServices $firebaseServices, CompaniesServices $companiesServices)
 	{
 		$this->userServices = $userServices;
 		$this->adminServices = $adminServices;
 		$this->logServices = $logServices;
 		$this->firebaseServices = $firebaseServices;
+		$this->companiesServices = $companiesServices;
 	}
 
 	#region Main
@@ -58,7 +61,7 @@ class WebAPIController
 		return $response;
 	}
 
-	public function GenerateDocs(Request $request, Response $response): Response
+	public function generateDocs(Request $request, Response $response): Response
 	{
 		$openapi = Generator::scan(['../src'])->toJson();
 		$file = fopen("../public/swagger/openapi.json", "wa+");
@@ -74,14 +77,14 @@ class WebAPIController
 
 	/**
 	 * @OA\Get(
-	 *     path="/api/FirebaseStorage/GetAllFilesFromDir/{dir}",
+	 *     path="/api/FirebaseStorage/getAllFilesFromDir/{dir}",
 	 *     description="Get all files from single directory",
 	 *     tags={"FirebaseStorage"},
 	 *     @OA\Response(response="200", description="An example resource"),
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function GetAllFiles(Request $request, Response $response): Response
+	public function getAllFiles(Request $request, Response $response): Response
 	{
 		$resp = $this->firebaseServices->getFirebaseInstance();
 		$response->getBody()->write(json_encode($resp->name()));
@@ -94,7 +97,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Post(
-	 *     path="/api/Logs/LogAccess",
+	 *     path="/api/Logs/logAccess",
 	 *     tags={"Logs"},
 	 *     @OA\RequestBody(
 	 *         description="Log user access on login",
@@ -122,9 +125,9 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function LogAccess(Request $request, Response $response): Response {
+	public function logAccess(Request $request, Response $response): Response {
 		$requestBody = (array)$request->getParsedBody();
-		$resp = $this->logServices->LogAccess($requestBody['isLoggedInSuccessfully'], $requestBody['workerId'], $requestBody['note']);
+		$resp = $this->logServices->logAccess($requestBody['isLoggedInSuccessfully'], $requestBody['workerId'], $requestBody['note']);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -132,14 +135,14 @@ class WebAPIController
 
 	/**
 	 * @OA\Get(
-	 *     path="/api/Logs/GetAllLogs",
+	 *     path="/api/Logs/getAllLogs",
 	 *     description="Get all previous logs",
 	 *     tags={"Logs"},
 	 *     @OA\Response(response="200", description="An example resource"),
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function GetAllLogs(Request $request, Response $response): Response
+	public function getAllLogs(Request $request, Response $response): Response
 	{
 		$resp = $this->logServices->GetAllLogs();
 		$response->getBody()->write(json_encode($resp));
@@ -152,7 +155,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Get(
-	 *     path="/api/Users/GetUserInfo/{worker_id}",
+	 *     path="/api/Users/getUserInfo/{worker_id}",
 	 *     description="Get user info",
 	 *     tags={"Users"},
 	 *     @OA\Parameter(
@@ -167,9 +170,9 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function GetUserInfo(Request $request, Response $response, array $args): Response {
+	public function getUserInfo(Request $request, Response $response, array $args): Response {
 		$userId = (int)$args['worker_id'];
-		$resp = $this->userServices->GetUserInfo($userId);
+		$resp = $this->userServices->getUserInfo($userId);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -177,7 +180,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Post(
-	 *     path="/api/Users/RegisterUser",
+	 *     path="/api/Users/registerUser",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
 	 *         description="Create new user account",
@@ -221,9 +224,9 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function RegisterUser(Request $request, Response $response): Response {
+	public function registerUser(Request $request, Response $response): Response {
 		$requestBody = (array)$request->getParsedBody();
-		$newUser = $this->userServices->RegisterUser($requestBody);
+		$newUser = $this->userServices->registerUser($requestBody);
 		$response->getBody()->write(json_encode($newUser));
 		return $response
 			->withHeader('Content-type', 'application/json')
@@ -233,7 +236,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Post(
-	 *     path="/api/Users/LoginUser",
+	 *     path="/api/Users/loginUser",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
 	 *         description="Enter user email and password",
@@ -269,10 +272,10 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function LoginUser(Request $request, Response $response): Response
+	public function loginUser(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$authUser = $this->userServices->LoginUser($requestBody);
+		$authUser = $this->userServices->loginUser($requestBody);
 
 		$response->getBody()->write(json_encode($authUser));
 		return $response
@@ -282,7 +285,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Post(
-	 *     path="/api/Users/SendPasswordResetEmail",
+	 *     path="/api/Users/sendPasswordResetEmail",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
 	 *         description="Provide user email",
@@ -309,10 +312,10 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function SendPasswordResetMail(Request $request, Response $response): Response
+	public function sendPasswordResetMail(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$resetMail = $this->userServices->SendPasswordResetMail($requestBody['email']);
+		$resetMail = $this->userServices->sendPasswordResetMail($requestBody['email']);
 		$response->getBody()->write(json_encode($resetMail));
 		return $response
 			->withHeader('Content-type', 'application/json')
@@ -321,7 +324,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Get(
-	 *     path="/api/Users/ActivateUserAccount/{token}",
+	 *     path="/api/Users/activateUserAccount/{token}",
 	 *     description="Do not run this route from swagger since it's supposed to redirect user to specific page. <br/> Swagger will return `NetworkError` cause redirection can not happen",
 	 *     tags={"Users"},
 	 *     @OA\Parameter(
@@ -336,10 +339,10 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function ActivateUserAccount(Request $request, Response $response, array $args): Response
+	public function activateUserAccount(Request $request, Response $response, array $args): Response
 	{
 		$token = $args['token'];
-		$actResponse = $this->userServices->ActivateUser($token);
+		$actResponse = $this->userServices->activateUser($token);
 		return $response
 			->withHeader("Location", "{$_ENV['MAIN_URL_FE']}/login?status=$actResponse")
 			->withStatus(302);
@@ -347,7 +350,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Put(
-	 *     path="/api/Users/UpdateUser",
+	 *     path="/api/Users/updateUser",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
 	 *         description="Update user informations",
@@ -380,10 +383,10 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function UpdateUserData(Request $request, Response $response): Response
+	public function updateUserData(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$updatedUser = $this->userServices->UpdateUserData($requestBody);
+		$updatedUser = $this->userServices->updateUserData($requestBody);
 		$response->getBody()->write(json_encode($updatedUser));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -391,7 +394,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Post(
-	 *     path="/api/Users/ResetPassword",
+	 *     path="/api/Users/resetPassword",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
 	 *         description="Reset password from email",
@@ -419,10 +422,10 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function ResetPassword(Request $request, Response $response): Response
+	public function resetPassword(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$actResponse = $this->userServices->ResetPassword($requestBody['hash'], $requestBody['newPassword']);
+		$actResponse = $this->userServices->resetPassword($requestBody['hash'], $requestBody['newPassword']);
 		$response->getBody()->write(json_encode($actResponse));
 		return $response
 			->withHeader("Content-type", "application/json");
@@ -430,7 +433,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Post(
-	 *     path="/api/Users/SetNewPassword",
+	 *     path="/api/Users/setNewPassword",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
 	 *         description="This endpoint servers as a option for loged user to reset password",
@@ -463,10 +466,10 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function SetNewPassword(Request $request, Response $response): Response
+	public function setNewPassword(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$resp = $this->userServices->SetNewPassword($requestBody);
+		$resp = $this->userServices->setNewPassword($requestBody);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -474,11 +477,86 @@ class WebAPIController
 
 	#endregion
 
+	#region Companies
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Companies/getAllCompanies",
+	 *     description="Get all companies and their information",
+	 *     tags={"Companies"},
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getAllCompanies(Request $request, Response $response): Response
+	{
+		$resp = $this->companiesServices->getAllCompanies();
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Put(
+	 *     path="/api/Companies/updateCompany",
+	 *     tags={"Companies"},
+	 *     @OA\RequestBody(
+	 *         description="Update company information",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     			   @OA\Property (
+	 *     			     property="company_id",
+	 *     				 type="int",
+	 *     				 example="0"
+	 *     			   ),
+	 *                 @OA\Property(
+	 *                     property="company_name",
+	 *                     type="string",
+	 *                     example="NameCo"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                      property="company_email",
+	 *                      type="string",
+	 *                      example="officecompany@domain.com"
+	 *                  ),
+	 *                 @OA\Property(
+	 *                     property="company_state",
+	 *                     type="string",
+	 *                     example="USA"
+	 *                  ),
+	 *                 @OA\Property(
+	 *                      property="company_address",
+	 *                      type="string",
+	 *                      example="Address 1"
+	 *                   ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function updateCompany(Request $request, Response $response, array $args): Response
+	{
+		$companyId = (int)$args['company_id'];
+		$newCompanyData = (array)$request->getParsedBody();
+		$resp = $this->companiesServices->updateCompany($companyId, $newCompanyData);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+	#endregion
+
 	#region Admins
 
 	/**
 	 * @OA\Post(
-	 *     path="/api/Admins/LoginAdmin",
+	 *     path="/api/Admins/loginAdmin",
 	 *     tags={"Admins"},
 	 *     @OA\RequestBody(
 	 *         description="Authenticate admin",
@@ -514,9 +592,9 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function LoginAdmin(Request $request, Response $response): Response {
+	public function loginAdmin(Request $request, Response $response): Response {
 		$credentials = (array)$request->getParsedBody();
-		$resp = $this->adminServices->LoginAdmin($credentials);
+		$resp = $this->adminServices->loginAdmin($credentials);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -524,24 +602,20 @@ class WebAPIController
 
 	/**
 	 * @OA\Get(
-	 *     path="/api/Admins/GetAllCompanies",
-	 *     description="Get all companies and their information",
+	 *     path="/api/Admins/getAllUsers",
+	 *     description="Get all users and their information",
 	 *     tags={"Admins"},
 	 *     @OA\Response(response="200", description="An example resource"),
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function GetAllCompanies(Request $request, Response $response): Response
+	public function getAllUsers(Request $request, Response $response): Response
 	{
-		$resp = $this->adminServices->GetAllCompaniesForAdmin();
+		$resp = $this->adminServices->GetAllUsersForAdmin();
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
 	#endregion
-
-
-
-
 
 }

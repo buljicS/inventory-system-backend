@@ -13,18 +13,20 @@ class AdminServices
 	private readonly Validator $validator;
 	private readonly Token $token;
 	private readonly CompaniesServices $companiesServices;
+	private readonly UserServices $userServices;
 
 
-	public function __construct(AdminRepository $adminRepository, Validator $validator, Token $token, CompaniesServices $companiesServices)
+	public function __construct(UserServices $userServices, AdminRepository $adminRepository, Validator $validator, Token $token, CompaniesServices $companiesServices)
 	{
 		$this->adminRepository = $adminRepository;
 		$this->validator = $validator;
 		$this->token = $token;
 		$this->companiesServices = $companiesServices;
+		$this->userServices = $userServices;
 	}
 
 
-	public function LoginAdmin(array $credentials): array {
+	public function loginAdmin(array $credentials): array {
 		$isValid = $this->validator->validateAdminCredentials($credentials);
 
 		if (!$isValid)
@@ -49,14 +51,9 @@ class AdminServices
 		};
 	}
 
-	public function InsertNewCompany(array $company): array
-	{
-
+	#region UsersControlFlow
+	public function GetAllUsersForAdmin(): array {
+		return $this->userServices->getAllUsers();
 	}
-
-	public function GetAllCompaniesForAdmin(): array
-	{
-		return $this->companiesServices->GetAllCompanies();
-	}
-
+	#endregion
 }

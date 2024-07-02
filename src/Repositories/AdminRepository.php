@@ -15,7 +15,7 @@ class AdminRepository
 
 	public function GetAdminByEmail(array $credentials)
 	{
-		$dbConn = $this->database->OpenConnection();
+		$dbConn = $this->database->openConnection();
 		$sql = "SELECT * FROM admins WHERE admin_username = :admin_username";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':admin_username', $credentials['email']);

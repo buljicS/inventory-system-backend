@@ -14,11 +14,11 @@ use Services\LogServices as LogServices;
 class UserServices
 {
 	private readonly UsersRepository $userRepo;
-	private readonly CompaniesRepository $companiesRepo;
 	private readonly MailUtility $email;
 	private readonly TokenUtility $tokenUtility;
 	private readonly LogServices $logServices;
 	private readonly ValidatorUtility $validatorUtility;
+	private readonly CompaniesRepository $companyRepo;
 
 	public function __construct(MailUtility $email, TokenUtility $tokenUtility, UsersRepository $usersRepository, LogServices $logServices, ValidatorUtility $validatorUtility, CompaniesRepository $companiesRepository)
 	{
@@ -27,10 +27,10 @@ class UserServices
 		$this->tokenUtility = $tokenUtility;
 		$this->logServices = $logServices;
 		$this->validatorUtility = $validatorUtility;
-		$this->companiesRepository = $companiesRepository;
+		$this->companyRepo = $companiesRepository;
 	}
 
-	public function RegisterUser(array $newUserData): array
+	public function registerUser(array $newUserData): array
 	{
 		$isValid = $this->validatorUtility->validateRegisterUserInput($newUserData);
 		if ($isValid !== true) {
@@ -57,7 +57,7 @@ class UserServices
 			$token = $newUserData['exp_token'];
 			$link = "{$_ENV['MAIN_URL_BE']}api/Users/ActivateUserAccount/$token";
 
-			$sendActMail = $this->SendConfirmationEmail($user_name, $link, "Activate your account", $user_email);
+			$sendActMail = $this->sendConfirmationEmail($user_name, $link, "Activate your account", $user_email);
 			if ($sendActMail === 'OK') {
 				return [
 					'status' => 200,
@@ -74,7 +74,7 @@ class UserServices
 		];
 	}
 
-	public function SendConfirmationEmail(string $user_name, string $link, string $subject, string $emailTo): string
+	public function sendConfirmationEmail(string $user_name, string $link, string $subject, string $emailTo): string
 	{
 		$rawbody = file_get_contents('../templates/email/ActivateAccount.html');
 		$body = str_replace("{{userName}}", $user_name, $rawbody);
@@ -83,7 +83,7 @@ class UserServices
 		return $this->email->SendEmail($body, $subject, $emailTo, null);
 	}
 
-	public function ActivateUser(string $token): int
+	public function activateUser(string $token): int
 	{
 		$user = $this->userRepo->GetUserByRegistrationToken($token);
 		if ($user === false) return 0;
@@ -97,7 +97,7 @@ class UserServices
 		return $this->userRepo->DeleteUserWithExpiredRegistration($user["registration_token"]);
 	}
 
-	public function LoginUser(array $loginData): array
+	public function loginUser(array $loginData): array
 	{
 
 		$isValid = $this->validatorUtility->validateLoginUserInput($loginData);
@@ -135,12 +135,12 @@ class UserServices
 		$workerId = $response ? $response['worker_id'] : null;
 		$note = $loggedIn['status'] != 200 ? $loggedIn['description'] : null;
 
-		$this->logServices->LogAccess($isLoggedIn, $workerId, $note);
+		$this->logServices->logAccess($isLoggedIn, $workerId, $note);
 
 		return $loggedIn;
 	}
 
-	public function SendPasswordResetMail(string $emailTo): array
+	public function sendPasswordResetMail(string $emailTo): array
 	{
 		$cleanEmail = strip_tags(trim($emailTo));
 		if (filter_var($cleanEmail, FILTER_VALIDATE_EMAIL)) {
@@ -174,7 +174,7 @@ class UserServices
 		];
 	}
 
-	public function ResetPassword(string $token, string $newPassword): array
+	public function resetPassword(string $token, string $newPassword): array
 	{
 		$password = password_hash($newPassword, PASSWORD_DEFAULT);
 		$user = $this->userRepo->GetUserByPasswordRestToken($token);
@@ -194,7 +194,7 @@ class UserServices
 		];
 	}
 
-	public function SetNewPassword(array $userInfo): array
+	public function setNewPassword(array $userInfo): array
 	{
 		$isValid = $this->validatorUtility->validateNewPasswordData($userInfo);
 		if ($isValid !== true) {
@@ -232,10 +232,10 @@ class UserServices
 		];
 	}
 
-	public function GetUserInfo(int $user_id): array
+	public function getUserInfo(int $user_id): array
 	{
 		$userInfo = $this->userRepo->GetUpdatedUserInfo($user_id);
-		$companies = $this->companiesRepository->GetAllCompaniesForUser();
+		$companies = $this->companyRepo->GetAllCompaniesForUser();
 
 		if($userInfo === false)
 			return [
@@ -252,7 +252,7 @@ class UserServices
 		];
 	}
 
-	public function UpdateUserData(array $newUserData): array
+	public function updateUserData(array $newUserData): array
 	{
 		$isValid = $this->validatorUtility->validateUpdatedUserData($newUserData);
 		if($isValid !== true) return $isValid;
@@ -272,5 +272,10 @@ class UserServices
 				'message' => "Internal Server Error",
 				'description' => "Failed to updated user"
 			];
+	}
+
+	public function getAllUsers(): array
+	{
+		return $this->userRepo->GetAllUsersForAdmin();
 	}
 }

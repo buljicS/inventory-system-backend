@@ -13,8 +13,10 @@ class CompaniesServices
 		$this->companiesRepository = $companiesRepository;
 	}
 
-	public function GetAllCompanies(): array
+	public function getAllCompanies(): array
 	{
 		return $this->companiesRepository->GetAllCompaniesForAdmin();
 	}
+
+	public function updateCompany(int $companyId, array $newCompanyData) {}
 }

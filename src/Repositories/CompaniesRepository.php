@@ -15,7 +15,7 @@ class CompaniesRepository
 
 	public function GetAllCompaniesForUser(): ?array
 	{
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 		$sql = "SELECT company_id, company_name FROM companies WHERE isActive = 1";
 		$stmt = $dbCon->prepare($sql);
 		if($stmt->execute())
@@ -26,7 +26,7 @@ class CompaniesRepository
 
 	public function GetAllCompaniesForAdmin(): ?array
 	{
-		$dbCon = $this->database->OpenConnection();
+		$dbCon = $this->database->openConnection();
 		$sql = "SELECT * FROM companies";
 		$stmt = $dbCon->prepare($sql);
 		if($stmt->execute())

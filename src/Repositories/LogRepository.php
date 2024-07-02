@@ -15,7 +15,7 @@ class LogRepository
 
 	public function GetAllLogs(): ?array
 	{
-		$conn = $this->_database->OpenConnection();
+		$conn = $this->_database->openConnection();
 		$sql = "SELECT * FROM access_logs";
 		$stmt = $conn->prepare($sql);
 		$stmt->execute();
@@ -24,7 +24,7 @@ class LogRepository
 
 	public function InsertNewLog(array $accessLog):void
 	{
-		$conn = $this->_database->OpenConnection();
+		$conn = $this->_database->openConnection();
 		$sql = "INSERT INTO access_logs (user_agent, worker_id, referer, ip_address, device_type, is_logged_in, note)
 					   VALUE (:user_agent, :worker_id, :referer, :ip_address, :device_type, :is_logged_in, :note)";
 		$stmt = $conn->prepare($sql);

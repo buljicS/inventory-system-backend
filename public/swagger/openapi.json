@@ -11,13 +11,13 @@
         }
     ],
     "paths": {
-        "/api/FirebaseStorage/GetAllFilesFromDir/{dir}": {
+        "/api/FirebaseStorage/getAllFilesFromDir/{dir}": {
             "get": {
                 "tags": [
                     "FirebaseStorage"
                 ],
                 "description": "Get all files from single directory",
-                "operationId": "33ecda801b018981b44edaa83ab24704",
+                "operationId": "43053dcb833a48c8415c83137b43eab3",
                 "responses": {
                     "200": {
                         "description": "An example resource"
@@ -30,12 +30,12 @@
                 ]
             }
         },
-        "/api/Logs/LogAccess": {
+        "/api/Logs/logAccess": {
             "post": {
                 "tags": [
                     "Logs"
                 ],
-                "operationId": "25d7284e5aa4e104a221f6573b8e8966",
+                "operationId": "a273fb5261c534a80e90c7312f3a5490",
                 "requestBody": {
                     "description": "Log user access on login",
                     "content": {
@@ -68,13 +68,13 @@
                 ]
             }
         },
-        "/api/Logs/GetAllLogs": {
+        "/api/Logs/getAllLogs": {
             "get": {
                 "tags": [
                     "Logs"
                 ],
                 "description": "Get all previous logs",
-                "operationId": "6806ae02a3db691fb23b405cd9a0738b",
+                "operationId": "94a588ad23fc56afcf5e0a2b04198f5b",
                 "responses": {
                     "200": {
                         "description": "An example resource"
@@ -87,13 +87,13 @@
                 ]
             }
         },
-        "/api/Users/GetUserInfo/{worker_id}": {
+        "/api/Users/getUserInfo/{worker_id}": {
             "get": {
                 "tags": [
                     "Users"
                 ],
                 "description": "Get user info",
-                "operationId": "0746b750b6a9d2134c11b8489698e61e",
+                "operationId": "a98a8480b9fd7be22bc1b0c0d9ee70d9",
                 "parameters": [
                     {
                         "name": "worker_id",
@@ -116,12 +116,12 @@
                 ]
             }
         },
-        "/api/Users/RegisterUser": {
+        "/api/Users/registerUser": {
             "post": {
                 "tags": [
                     "Users"
                 ],
-                "operationId": "a7cbfcabd232cfb6ab5639161945bfed",
+                "operationId": "20550d7115538c8539a374bb24f09cce",
                 "requestBody": {
                     "description": "Create new user account",
                     "content": {
@@ -166,12 +166,12 @@
                 ]
             }
         },
-        "/api/Users/LoginUser": {
+        "/api/Users/loginUser": {
             "post": {
                 "tags": [
                     "Users"
                 ],
-                "operationId": "8fa770d0f296602cd0ccd7d6df04161d",
+                "operationId": "8f32dce7a460eb80f0d77671e21efffe",
                 "requestBody": {
                     "description": "Enter user email and password",
                     "content": {
@@ -210,12 +210,12 @@
                 ]
             }
         },
-        "/api/Users/SendPasswordResetEmail": {
+        "/api/Users/sendPasswordResetEmail": {
             "post": {
                 "tags": [
                     "Users"
                 ],
-                "operationId": "8b33e6f0e714cf60b1418fd477916e29",
+                "operationId": "a06e71a6bded5a365bc3f6d90c09dc4d",
                 "requestBody": {
                     "description": "Provide user email",
                     "content": {
@@ -247,13 +247,13 @@
                 ]
             }
         },
-        "/api/Users/ActivateUserAccount/{token}": {
+        "/api/Users/activateUserAccount/{token}": {
             "get": {
                 "tags": [
                     "Users"
                 ],
                 "description": "Do not run this route from swagger since it's supposed to redirect user to specific page. <br/> Swagger will return `NetworkError` cause redirection can not happen",
-                "operationId": "209b3e8841d300b2b34fcfd143aefa11",
+                "operationId": "9772e34f23d0930298a942cd017fc69c",
                 "parameters": [
                     {
                         "name": "token",
@@ -276,12 +276,12 @@
                 ]
             }
         },
-        "/api/Users/UpdateUser": {
+        "/api/Users/updateUser": {
             "put": {
                 "tags": [
                     "Users"
                 ],
-                "operationId": "c60e08298b6de9b5a11813b41ad17bac",
+                "operationId": "fdcf5063581b32c2284b5976b4385a75",
                 "requestBody": {
                     "description": "Update user informations",
                     "content": {
@@ -318,12 +318,12 @@
                 ]
             }
         },
-        "/api/Users/ResetPassword": {
+        "/api/Users/resetPassword": {
             "post": {
                 "tags": [
                     "Users"
                 ],
-                "operationId": "d41cc03d9b770b8ab701216be8bd9d61",
+                "operationId": "122bed2543eb42c114e5946b40e826d4",
                 "requestBody": {
                     "description": "Reset password from email",
                     "content": {
@@ -356,12 +356,12 @@
                 ]
             }
         },
-        "/api/Users/SetNewPassword": {
+        "/api/Users/setNewPassword": {
             "post": {
                 "tags": [
                     "Users"
                 ],
-                "operationId": "9ba598eb41caa40902a99803369c205f",
+                "operationId": "cba58cbbc8f13115625e7a790946750f",
                 "requestBody": {
                     "description": "This endpoint servers as a option for loged user to reset password",
                     "content": {
@@ -398,12 +398,81 @@
                 ]
             }
         },
-        "/api/Admins/LoginAdmin": {
+        "/api/Companies/getAllCompanies": {
+            "get": {
+                "tags": [
+                    "Companies"
+                ],
+                "description": "Get all companies and their information",
+                "operationId": "1a612606379998a585c0b1d9ed78fa6a",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Companies/updateCompany": {
+            "put": {
+                "tags": [
+                    "Companies"
+                ],
+                "operationId": "08d4c645183c96c873a35ee04be95855",
+                "requestBody": {
+                    "description": "Update company information",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "company_id": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "company_name": {
+                                        "type": "string",
+                                        "example": "NameCo"
+                                    },
+                                    "company_email": {
+                                        "type": "string",
+                                        "example": "officecompany@domain.com"
+                                    },
+                                    "company_state": {
+                                        "type": "string",
+                                        "example": "USA"
+                                    },
+                                    "company_address": {
+                                        "type": "string",
+                                        "example": "Address 1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [
                     "Admins"
                 ],
-                "operationId": "8d6e0acc817f4fc436e19a5b23386a44",
+                "operationId": "a9310ff734a82576d77d0a1c5dd4fcbc",
                 "requestBody": {
                     "description": "Authenticate admin",
                     "content": {
@@ -442,13 +511,13 @@
                 ]
             }
         },
-        "/api/Admins/GetAllCompanies": {
+        "/api/Admins/getAllUsers": {
             "get": {
                 "tags": [
                     "Admins"
                 ],
-                "description": "Get all companies and their information",
-                "operationId": "9d63481c1054a926f2b0243f35c3d75f",
+                "description": "Get all users and their information",
+                "operationId": "a525bb1a8f84bcb09faf2ac0de64b293",
                 "responses": {
                     "200": {
                         "description": "An example resource"
