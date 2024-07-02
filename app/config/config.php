@@ -16,12 +16,12 @@ $authPath = [
 
 $ignorePath = [
 	"/getDoc",
-	"/api/Users/LoginUser",
-	"/api/Users/RegisterUser",
-	"/api/Users/SendPasswordResetEmail",
-	"/api/Users/ActivateUserAccount/",
-	"/api/Users/ResetPassword",
-	"/api/Admins/LoginAdmin",
+	"/api/Users/loginUser",
+	"/api/Users/registerUser",
+	"/api/Users/sendPasswordResetEmail",
+	"/api/Users/activateUserAccount/",
+	"/api/Users/resetPassword",
+	"/api/Admins/loginAdmin",
 ];
 #endregion
 
