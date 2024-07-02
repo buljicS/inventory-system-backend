@@ -14,33 +14,33 @@ return function (Slim $app) {
 	#endregion
 
 	#region Users
-	$app->post('/api/Users/LoginUser', [API::class, 'loginUser']);
-	$app->post('/api/Users/RegisterUser', [API::class, 'registerUser']);
-	$app->post('/api/Users/SendPasswordResetEmail' , [API::class, 'sendPasswordResetMail']);
-	$app->post('/api/Users/ResetPassword' , [API::class, 'resetPassword']);
-	$app->get('/api/Users/ActivateUserAccount/{token}', [API::class, 'activateUserAccount']);
-	$app->post('/api/Users/SetNewPassword', [API::class, 'setNewPassword']);
-	$app->post('/api/Users/UpdateUser', [API::class, 'updateUserData']);
-	$app->get('/api/Users/GetUserInfo/{worker_id}', [API::class, 'getUserInfo']);
+	$app->post('/api/Users/loginUser', [API::class, 'loginUser']);
+	$app->post('/api/Users/registerUser', [API::class, 'registerUser']);
+	$app->post('/api/Users/sendPasswordResetEmail' , [API::class, 'sendPasswordResetMail']);
+	$app->post('/api/Users/resetPassword' , [API::class, 'resetPassword']);
+	$app->get('/api/Users/activateUserAccount/{token}', [API::class, 'activateUserAccount']);
+	$app->post('/api/Users/setNewPassword', [API::class, 'setNewPassword']);
+	$app->post('/api/Users/updateUser', [API::class, 'updateUserData']);
+	$app->get('/api/Users/getUserInfo/{worker_id}', [API::class, 'getUserInfo']);
 	#endregion
 
 	#region Admins
-	$app->post('/api/Admins/LoginAdmin', [API::class, 'loginAdmin']);
-	$app->get('/api/Admins/GetAllUsers', [API::class, 'getAllUsers']);
+	$app->post('/api/Admins/loginAdmin', [API::class, 'loginAdmin']);
+	$app->get('/api/Admins/getAllUsers', [API::class, 'getAllUsers']);
 	#endregions
 
 	#region Logs
-	$app->post('/api/Logs/LogAccess', [API::class, 'LogAccess']);
-	$app->get('/api/Logs/GetAllLogs', [API::class, 'getAllLogs']);
+	$app->post('/api/Logs/logAccess', [API::class, 'LogAccess']);
+	$app->get('/api/Logs/getAllLogs', [API::class, 'getAllLogs']);
 	#endregion
 
 	#region FirebaseBucket
-	$app->get('/api/FirebaseStorage/GetAllFilesFromDir/{dir}', [API::class, 'getAllFiles']);
+	$app->get('/api/FirebaseStorage/getAllFilesFromDir/{dir}', [API::class, 'getAllFiles']);
 	#endregion
 
 	#region Companies
-	$app->get('/api/Companies/GetAllCompanies', [API::class, 'getAllCompanies']);
-	$app->post('/api/Companies/UpdateCompany', [API::class, 'updateCompany']);
+	$app->get('/api/Companies/getAllCompanies', [API::class, 'getAllCompanies']);
+	$app->post('/api/Companies/updateCompany', [API::class, 'updateCompany']);
 	#endregion
 
 };
