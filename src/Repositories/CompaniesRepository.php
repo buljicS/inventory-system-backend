@@ -34,4 +34,19 @@ class CompaniesRepository
 
 		return null;
 	}
+
+	public function insertNewCompany(array $newCompanyData): bool {
+		$dbCon = $this->database->openConnection();
+		$sql = "INSERT INTO companies (company_name, company_mail, company_address, company_state) VALUES (:company_name, :company_mail, :company_address, :company_state)";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindParam(':company_name', $newCompanyData['company_name']);
+		$stmt->bindParam(':company_mail', $newCompanyData['company_mail']);
+		$stmt->bindParam(':company_address', $newCompanyData['company_address']);
+		$stmt->bindParam(':company_state', $newCompanyData['company_state']);
+		if($stmt->execute())
+			return true;
+
+		return false;
+
+	}
 }

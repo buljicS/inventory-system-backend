@@ -497,6 +497,55 @@ class WebAPIController
 	}
 
 	/**
+	 * @OA\Post(
+	 *     path="/api/Companies/addCompany",
+	 *     tags={"Companies"},
+	 *     @OA\RequestBody(
+	 *         description="Create new company",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     				@OA\Property(
+	 *                      property="company_name",
+	 *                      type="string",
+	 *                      example="string"
+	 *                  ),
+	 *     				@OA\Property(
+	 *                       property="company_mail",
+	 *                       type="string",
+	 *                       example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="company_state",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="company_address",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 )
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function addCompany(Request $request, Response $response): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$newCompany = $this->companiesServices->addNewCompany($requestBody);
+		$response->getBody()->write(json_encode($newCompany));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
 	 * @OA\Put(
 	 *     path="/api/Companies/updateCompany",
 	 *     tags={"Companies"},

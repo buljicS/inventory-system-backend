@@ -14,6 +14,7 @@ class ValidatorUtility
 		$this->_vValidator = $vValidator;
 	}
 
+	#region UserValidation
 	public function validateRegisterUserInput(array $newUserInput): bool|array
 	{
 		$this->_vValidator = new vValidator($newUserInput);
@@ -110,7 +111,36 @@ class ValidatorUtility
 			'description' => $this->_vValidator->errors()
 		];
 	}
+	#endregion
 
+	#region CompanyValidation
+	public function validateNewCompany(array $newCompanyData): bool|array
+	{
+		$this->_vValidator = new vValidator($newCompanyData);
+		$this->_vValidator->rules([
+			'required' => [
+				 ['company_name'],
+				 ['company_mail'],
+				 ['company_state'],
+				 ['company_address'],
+
+				'email' => [
+					['company_mail']
+				]
+			]
+		]);
+
+		if($this->_vValidator->validate()) return true;
+
+		return [
+			'status' => 202,
+			'message' => 'Accepted',
+			'description' => $this->_vValidator->errors()
+		];
+	}
+	#endregion
+
+	#region AdminValidation
 	public function validateAdminCredentials(array $credentials): bool|array
 	{
 		$this->_vValidator = new vValidator($credentials);
@@ -130,4 +160,5 @@ class ValidatorUtility
 			'description' => $this->_vValidator->errors()
 		];
 	}
+	#endregion
 }

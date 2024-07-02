@@ -417,6 +417,52 @@
                 ]
             }
         },
+        "/api/Companies/addCompany": {
+            "post": {
+                "tags": [
+                    "Companies"
+                ],
+                "operationId": "3cad82aab7ab724a08be365f04334b2c",
+                "requestBody": {
+                    "description": "Create new company",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "company_name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "company_mail": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "company_state": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "company_address": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Companies/updateCompany": {
             "put": {
                 "tags": [
