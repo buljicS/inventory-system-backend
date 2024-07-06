@@ -17,7 +17,7 @@
                     "FirebaseStorage"
                 ],
                 "description": "Get all files from single directory",
-                "operationId": "43053dcb833a48c8415c83137b43eab3",
+                "operationId": "getAllFilesFromDir",
                 "responses": {
                     "200": {
                         "description": "An example resource"
@@ -35,7 +35,7 @@
                 "tags": [
                     "Logs"
                 ],
-                "operationId": "a273fb5261c534a80e90c7312f3a5490",
+                "operationId": "logAccess",
                 "requestBody": {
                     "description": "Log user access on login",
                     "content": {
@@ -74,7 +74,7 @@
                     "Logs"
                 ],
                 "description": "Get all previous logs",
-                "operationId": "94a588ad23fc56afcf5e0a2b04198f5b",
+                "operationId": "getAllLogs",
                 "responses": {
                     "200": {
                         "description": "An example resource"
@@ -93,7 +93,7 @@
                     "Users"
                 ],
                 "description": "Get user info",
-                "operationId": "a98a8480b9fd7be22bc1b0c0d9ee70d9",
+                "operationId": "getSingleUser",
                 "parameters": [
                     {
                         "name": "worker_id",
@@ -121,7 +121,7 @@
                 "tags": [
                     "Users"
                 ],
-                "operationId": "20550d7115538c8539a374bb24f09cce",
+                "operationId": "registerUser",
                 "requestBody": {
                     "description": "Create new user account",
                     "content": {
@@ -171,7 +171,7 @@
                 "tags": [
                     "Users"
                 ],
-                "operationId": "8f32dce7a460eb80f0d77671e21efffe",
+                "operationId": "loginUser",
                 "requestBody": {
                     "description": "Enter user email and password",
                     "content": {
@@ -215,7 +215,7 @@
                 "tags": [
                     "Users"
                 ],
-                "operationId": "a06e71a6bded5a365bc3f6d90c09dc4d",
+                "operationId": "sendPasswordResetEmail",
                 "requestBody": {
                     "description": "Provide user email",
                     "content": {
@@ -253,7 +253,7 @@
                     "Users"
                 ],
                 "description": "Do not run this route from swagger since it's supposed to redirect user to specific page. <br/> Swagger will return `NetworkError` cause redirection can not happen",
-                "operationId": "9772e34f23d0930298a942cd017fc69c",
+                "operationId": "activateUserAccount",
                 "parameters": [
                     {
                         "name": "token",
@@ -281,7 +281,7 @@
                 "tags": [
                     "Users"
                 ],
-                "operationId": "fdcf5063581b32c2284b5976b4385a75",
+                "operationId": "updateUser",
                 "requestBody": {
                     "description": "Update user informations",
                     "content": {
@@ -323,7 +323,7 @@
                 "tags": [
                     "Users"
                 ],
-                "operationId": "122bed2543eb42c114e5946b40e826d4",
+                "operationId": "resetPassword",
                 "requestBody": {
                     "description": "Reset password from email",
                     "content": {
@@ -361,7 +361,7 @@
                 "tags": [
                     "Users"
                 ],
-                "operationId": "cba58cbbc8f13115625e7a790946750f",
+                "operationId": "setNewPassword",
                 "requestBody": {
                     "description": "This endpoint servers as a option for loged user to reset password",
                     "content": {
@@ -404,7 +404,7 @@
                     "Companies"
                 ],
                 "description": "Get all companies and their information",
-                "operationId": "1a612606379998a585c0b1d9ed78fa6a",
+                "operationId": "getAllCompanies",
                 "responses": {
                     "200": {
                         "description": "An example resource"
@@ -422,7 +422,7 @@
                 "tags": [
                     "Companies"
                 ],
-                "operationId": "3cad82aab7ab724a08be365f04334b2c",
+                "operationId": "addCompany",
                 "requestBody": {
                     "description": "Create new company",
                     "content": {
@@ -468,7 +468,7 @@
                 "tags": [
                     "Companies"
                 ],
-                "operationId": "08d4c645183c96c873a35ee04be95855",
+                "operationId": "updateCompany",
                 "requestBody": {
                     "description": "Update company information",
                     "content": {
@@ -513,12 +513,42 @@
                 ]
             }
         },
+        "/api/Companies/deleteCompany": {
+            "delete": {
+                "tags": [
+                    "Companies"
+                ],
+                "operationId": "deleteCompany",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "description": "ID of company to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Company not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [
                     "Admins"
                 ],
-                "operationId": "a9310ff734a82576d77d0a1c5dd4fcbc",
+                "operationId": "loginAdmin",
                 "requestBody": {
                     "description": "Authenticate admin",
                     "content": {
@@ -563,7 +593,7 @@
                     "Admins"
                 ],
                 "description": "Get all users and their information",
-                "operationId": "a525bb1a8f84bcb09faf2ac0de64b293",
+                "operationId": "getAllUsers",
                 "responses": {
                     "200": {
                         "description": "An example resource"
@@ -574,6 +604,75 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/Tests/listTest": {
+            "post": {
+                "tags": [
+                    "Tests"
+                ],
+                "summary": "Create a Test",
+                "operationId": "0a4548179af4eff5036a5a81e6956a39",
+                "requestBody": {
+                    "description": "Data packet for Test",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "testItems": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "firstName": {
+                                                    "type": "string",
+                                                    "example": ""
+                                                },
+                                                "lastName": {
+                                                    "type": "string",
+                                                    "example": ""
+                                                },
+                                                "companyId": {
+                                                    "type": "string",
+                                                    "example": ""
+                                                },
+                                                "accountNumber": {
+                                                    "type": "number",
+                                                    "example": ""
+                                                },
+                                                "netPay": {
+                                                    "type": "money",
+                                                    "example": ""
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "example": [
+                                            {
+                                                "firstName": "Bob",
+                                                "lastName": "Fanger",
+                                                "company": "Triple",
+                                                "id": "808"
+                                            },
+                                            {
+                                                "firstName": "",
+                                                "lastName": "",
+                                                "company": "",
+                                                "id": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
             }
         }
     },

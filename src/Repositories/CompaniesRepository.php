@@ -49,4 +49,16 @@ class CompaniesRepository
 		return false;
 
 	}
+
+	public function deleteCompany(int $company_id): bool
+	{
+		$dbCon = $this->database->openConnection();
+		$sql = "UPDATE companies SET isActive = 0 WHERE company_id = :company_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindParam(':company_id', $company_id);
+		if($stmt->execute())
+			return true;
+
+		return false;
+	}
 }

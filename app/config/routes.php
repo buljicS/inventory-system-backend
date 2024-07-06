@@ -42,6 +42,11 @@ return function (Slim $app) {
 	$app->get('/api/Companies/getAllCompanies', [API::class, 'getAllCompanies']);
 	$app->post('/api/Companies/addCompany', [API::class, 'addCompany']);
 	$app->post('/api/Companies/updateCompany', [API::class, 'updateCompany']);
+	$app->delete('/api/Companies/deleteCompany', [API::class, 'deleteCompany']);
+	#endregion
+
+	#region TestEndpoints
+	$app->post('/api/Test/listTest', [API::class, 'listTest']);
 	#endregion
 
 };

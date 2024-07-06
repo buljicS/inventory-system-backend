@@ -11,7 +11,8 @@
  #region Authorization config
 	$authPath = [
 		"/api/Users/",
-		"/api/Admins/"
+		"/api/Admins/",
+		"/api/Companies/"
 	];
 
 	$ignorePath = [

@@ -48,4 +48,22 @@ class CompaniesServices
 
 	public function updateCompany(int $companyId, array $newCompanyData) {}
 
+	public function deleteCompany(int $company_id): array
+	{
+		$isCompanyDeleted = $this->companies->deleteCompany($company_id);
+
+		if($isCompanyDeleted)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'Company deleted successfully'
+			];
+
+		return [
+			'status' => 500,
+			'message' => 'Internal Server Error',
+			'description' => 'Error while deleting company, please try again'
+		];
+	}
+
 }

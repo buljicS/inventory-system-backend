@@ -35,7 +35,10 @@ define("MAIN_URL", $_ENV['MAIN_URL_BE']);
  * *     name="bearerAuth",
  * *     in="header"
  * * )
+ *
+ *
  */
+
 
 class WebAPIController
 {
@@ -78,6 +81,7 @@ class WebAPIController
 	/**
 	 * @OA\Get(
 	 *     path="/api/FirebaseStorage/getAllFilesFromDir/{dir}",
+	 *     operationId="getAllFilesFromDir",
 	 *     description="Get all files from single directory",
 	 *     tags={"FirebaseStorage"},
 	 *     @OA\Response(response="200", description="An example resource"),
@@ -98,6 +102,7 @@ class WebAPIController
 	/**
 	 * @OA\Post(
 	 *     path="/api/Logs/logAccess",
+	 *     operationId="logAccess",
 	 *     tags={"Logs"},
 	 *     @OA\RequestBody(
 	 *         description="Log user access on login",
@@ -136,6 +141,7 @@ class WebAPIController
 	/**
 	 * @OA\Get(
 	 *     path="/api/Logs/getAllLogs",
+	 *     operationId="getAllLogs",
 	 *     description="Get all previous logs",
 	 *     tags={"Logs"},
 	 *     @OA\Response(response="200", description="An example resource"),
@@ -155,7 +161,26 @@ class WebAPIController
 
 	/**
 	 * @OA\Get(
+	 *     path="/api/Users/getAllUsers",
+	 *     operationId="getAllUsers",
+	 *     description="Get all users and their information",
+	 *     tags={"Users"},
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getAllUsers(Request $request, Response $response): Response
+	{
+		$resp = $this->adminServices->GetAllUsersForAdmin();
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Get(
 	 *     path="/api/Users/getUserInfo/{worker_id}",
+	 *     operationId="getSingleUser",
 	 *     description="Get user info",
 	 *     tags={"Users"},
 	 *     @OA\Parameter(
@@ -181,6 +206,7 @@ class WebAPIController
 	/**
 	 * @OA\Post(
 	 *     path="/api/Users/registerUser",
+	 *     operationId="registerUser",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
 	 *         description="Create new user account",
@@ -237,6 +263,7 @@ class WebAPIController
 	/**
 	 * @OA\Post(
 	 *     path="/api/Users/loginUser",
+	 *     operationId="loginUser",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
 	 *         description="Enter user email and password",
@@ -286,6 +313,7 @@ class WebAPIController
 	/**
 	 * @OA\Post(
 	 *     path="/api/Users/sendPasswordResetEmail",
+	 *     operationId="sendPasswordResetEmail",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
 	 *         description="Provide user email",
@@ -325,6 +353,7 @@ class WebAPIController
 	/**
 	 * @OA\Get(
 	 *     path="/api/Users/activateUserAccount/{token}",
+	 *     operationId="activateUserAccount",
 	 *     description="Do not run this route from swagger since it's supposed to redirect user to specific page. <br/> Swagger will return `NetworkError` cause redirection can not happen",
 	 *     tags={"Users"},
 	 *     @OA\Parameter(
@@ -351,6 +380,7 @@ class WebAPIController
 	/**
 	 * @OA\Put(
 	 *     path="/api/Users/updateUser",
+	 *     operationId="updateUser",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
 	 *         description="Update user informations",
@@ -395,6 +425,7 @@ class WebAPIController
 	/**
 	 * @OA\Post(
 	 *     path="/api/Users/resetPassword",
+	 *     operationId="resetPassword",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
 	 *         description="Reset password from email",
@@ -434,6 +465,7 @@ class WebAPIController
 	/**
 	 * @OA\Post(
 	 *     path="/api/Users/setNewPassword",
+	 *     operationId="setNewPassword",
 	 *     tags={"Users"},
 	 *     @OA\RequestBody(
 	 *         description="This endpoint servers as a option for loged user to reset password",
@@ -482,6 +514,7 @@ class WebAPIController
 	/**
 	 * @OA\Get(
 	 *     path="/api/Companies/getAllCompanies",
+	 *     operationId="getAllCompanies",
 	 *     description="Get all companies and their information",
 	 *     tags={"Companies"},
 	 *     @OA\Response(response="200", description="An example resource"),
@@ -499,6 +532,7 @@ class WebAPIController
 	/**
 	 * @OA\Post(
 	 *     path="/api/Companies/addCompany",
+	 *     operationId="addCompany",
 	 *     tags={"Companies"},
 	 *     @OA\RequestBody(
 	 *         description="Create new company",
@@ -548,6 +582,7 @@ class WebAPIController
 	/**
 	 * @OA\Put(
 	 *     path="/api/Companies/updateCompany",
+	 *     operationId="updateCompany",
 	 *     tags={"Companies"},
 	 *     @OA\RequestBody(
 	 *         description="Update company information",
@@ -599,6 +634,37 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Delete(
+	 *     path="/api/Companies/deleteCompany",
+	 *     operationId="deleteCompany",
+	 *     tags={"Companies"},
+	 *     @OA\Parameter(
+	 *         description="ID of company to delete",
+	 *         in="path",
+	 *         name="company_id",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer",
+	 *             format="int64"
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=404,
+	 *         description="Company not found"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function deleteCompany(Request $request, Response $response, array $args): Response
+	{
+		$company_id = (int)$args['company_id'];
+		$resp = $this->companiesServices->deleteCompany($company_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Admins
@@ -606,6 +672,7 @@ class WebAPIController
 	/**
 	 * @OA\Post(
 	 *     path="/api/Admins/loginAdmin",
+	 *     operationId="loginAdmin",
 	 *     tags={"Admins"},
 	 *     @OA\RequestBody(
 	 *         description="Authenticate admin",
@@ -648,22 +715,73 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+	#endregion
+
+	#region TestEndpoints
 
 	/**
-	 * @OA\Get(
-	 *     path="/api/Admins/getAllUsers",
-	 *     description="Get all users and their information",
-	 *     tags={"Admins"},
-	 *     @OA\Response(response="200", description="An example resource"),
-	 *     security={{"bearerAuth": {}}}
+	 * @OA\Post(
+	 *     path="/api/Tests/listTest",
+	 *     summary="Create a Test",
+	 *     tags={"Tests"},
+	 *     @OA\RequestBody(
+	 *        required = true,
+	 *        description = "Data packet for Test",
+	 *        @OA\JsonContent(
+	 *             type="object",
+	 *             @OA\Property(
+	 *                property="testItems",
+	 *                type="array",
+	 *                example={{
+	 *                  "firstName": "Bob",
+	 *                  "lastName": "Fanger",
+	 *                  "company": "Triple",
+	 *                  "id": "808",
+	 *                }, {
+	 *                  "firstName": "",
+	 *                  "lastName": "",
+	 *                  "company": "",
+	 *                  "id": ""
+	 *                }},
+	 *                @OA\Items(
+	 *                      @OA\Property(
+	 *                         property="firstName",
+	 *                         type="string",
+	 *                         example=""
+	 *                      ),
+	 *                      @OA\Property(
+	 *                         property="lastName",
+	 *                         type="string",
+	 *                         example=""
+	 *                      ),
+	 *                      @OA\Property(
+	 *                         property="companyId",
+	 *                         type="string",
+	 *                         example=""
+	 *                      ),
+	 *                      @OA\Property(
+	 *                         property="accountNumber",
+	 *                         type="number",
+	 *                         example=""
+	 *                      ),
+	 *                      @OA\Property(
+	 *                         property="netPay",
+	 *                         type="money",
+	 *                         example=""
+	 *                      ),
+	 *                ),
+	 *             ),
+	 *        ),
+	 *     ),
+	 *     @OA\Response(
+	 *        response="200",
+	 *        description="Successful response",
+	 *     ),
 	 * )
 	 */
-	public function getAllUsers(Request $request, Response $response): Response
+	public function listTest(Request $request, Response $response, array $args): Response
 	{
-		$resp = $this->adminServices->GetAllUsersForAdmin();
-		$response->getBody()->write(json_encode($resp));
-		return $response
-			->withHeader('Content-type', 'application/json');
+		return $response;
 	}
 	#endregion
 
