@@ -16,7 +16,7 @@ class TokenUtility
 		return bin2hex($bytes);
 	}
 
-	public function GenerateJWTToken(int $userid):string
+	public function GenerateJWTToken(int $userid): string
 	{
 		$headers = [
 			'typ' => 'JWT',
@@ -27,7 +27,7 @@ class TokenUtility
 			'iss' => $_ENV['MAIN_URL_BE'],
 			'aud' => $_ENV['MAIN_URL_FE'],
 			'iat' => time(),
-			'exp' => time() + 3600,
+			'exp' => time() + 28800,
 			'userid' => $userid
 		];
 

@@ -2,23 +2,23 @@
 
 namespace Utilities;
 
-use Valitron\Validator as vValidator;
+use Valitron\Validator as Validator;
 
 
 class ValidatorUtility
 {
-	private vValidator $_vValidator;
+	private Validator $validator;
 
-	public function __construct(vValidator $vValidator)
+	public function __construct(Validator $validator)
 	{
-		$this->_vValidator = $vValidator;
+		$this->validator = $validator;
 	}
 
 	#region UserValidation
 	public function validateRegisterUserInput(array $newUserInput): bool|array
 	{
-		$this->_vValidator = new vValidator($newUserInput);
-		$this->_vValidator->rules(
+		$this->validator = new Validator($newUserInput);
+		$this->validator->rules(
 			[
 				'required' => [
 					['firstName'],
@@ -32,22 +32,22 @@ class ValidatorUtility
 			]
 		);
 
-		if ($this->_vValidator->validate()) {
+		if ($this->validator->validate()) {
 			return true;
 		}
 
 		return [
-			'status' => 202,
-			'message' => 'Accepted',
-			'description' => $this->_vValidator->errors()
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
 		];
 
 	}
 
 	public function validateLoginUserInput(array $userInput): bool|array
 	{
-		$this->_vValidator = new vValidator($userInput);
-		$this->_vValidator->rules(
+		$this->validator = new Validator($userInput);
+		$this->validator->rules(
 			[
 				'required' => [
 					['email'],
@@ -59,21 +59,21 @@ class ValidatorUtility
 			]
 		);
 
-		if($this->_vValidator->validate()) {
+		if($this->validator->validate()) {
 			return true;
 		}
 
 		return [
-			'status' => 202,
-			'message' => 'Accepted',
-			'description' => $this->_vValidator->errors()
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
 		];
 	}
 
 	public function validateNewPasswordData(array $userInfo): bool|array
 	{
-		$this->_vValidator = new vValidator($userInfo);
-		$this->_vValidator->rules([
+		$this->validator = new Validator($userInfo);
+		$this->validator->rules([
 				'required' => [
 					['old_password'],
 					['new_password'],
@@ -82,19 +82,19 @@ class ValidatorUtility
 			]
 		);
 
-		if($this->_vValidator->validate()) return true;
+		if($this->validator->validate()) return true;
 
 		return [
-			'status' => 202,
-			'message' => 'Accepted',
-			'description' => $this->_vValidator->errors()
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
 		];
 	}
 
 	public function validateUpdatedUserData(array $newUserData): bool|array
 	{
-		$this->_vValidator = new vValidator($newUserData);
-		$this->_vValidator->rules([
+		$this->validator = new Validator($newUserData);
+		$this->validator->rules([
 				'required' => [
 					['worker_id'],
 					['phone_number'],
@@ -103,12 +103,12 @@ class ValidatorUtility
 			]
 		);
 
-		if($this->_vValidator->validate()) return true;
+		if($this->validator->validate()) return true;
 
 		return [
-			'status' => 202,
-			'message' => 'Accepted',
-			'description' => $this->_vValidator->errors()
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
 		];
 	}
 	#endregion
@@ -116,8 +116,8 @@ class ValidatorUtility
 	#region CompanyValidation
 	public function validateNewCompany(array $newCompanyData): bool|array
 	{
-		$this->_vValidator = new vValidator($newCompanyData);
-		$this->_vValidator->rules([
+		$this->validator = new Validator($newCompanyData);
+		$this->validator->rules([
 			'required' => [
 				 ['company_name'],
 				 ['company_mail'],
@@ -130,34 +130,37 @@ class ValidatorUtility
 			]
 		]);
 
-		if($this->_vValidator->validate()) return true;
+		if($this->validator->validate()) return true;
 
 		return [
-			'status' => 202,
-			'message' => 'Accepted',
-			'description' => $this->_vValidator->errors()
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
 		];
 	}
 
 	public function validateNewCompanyData(array $newCompanyData): bool|array
 	{
-		$this->_vValidator = new vValidator($newCompanyData);
-		$this->_vValidator->rules([
+		$this->validator = new Validator($newCompanyData);
+		$this->validator->rules([
 			'required' => [
 				['company_id'],
 				['company_name'],
-				['company_mail'],
+				['company_email'],
 				['company_state'],
 				['company_address']
+			],
+			'min' => [
+				[['company_id'], 1]
 			]
 		]);
 
-		if($this->_vValidator->validate()) return true;
+		if($this->validator->validate()) return true;
 
 		return [
-			'status' => 202,
-			'message' => 'Accepted',
-			'description' => $this->_vValidator->errors()
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
 		];
 	}
 	#endregion
@@ -165,8 +168,8 @@ class ValidatorUtility
 	#region AdminValidation
 	public function validateAdminCredentials(array $credentials): bool|array
 	{
-		$this->_vValidator = new vValidator($credentials);
-		$this->_vValidator->rules([
+		$this->validator = new Validator($credentials);
+		$this->validator->rules([
 				'required' => [
 					['email'],
 					['password']
@@ -174,13 +177,14 @@ class ValidatorUtility
 			]
 		);
 
-		if($this->_vValidator->validate()) return true;
+		if($this->validator->validate()) return true;
 
 		return [
-			'status' => 202,
-			'message' => 'Accepted',
-			'description' => $this->_vValidator->errors()
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
 		];
 	}
 	#endregion
+
 }

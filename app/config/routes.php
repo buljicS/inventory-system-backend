@@ -40,8 +40,9 @@ return function (Slim $app) {
 
 	#region Companies
 	$app->get('/api/Companies/getAllCompanies', [API::class, 'getAllCompanies']);
+	$app->get('/api/Companies/getCompanyById/{company_id}', [API::class, 'getCompanyById']);
 	$app->post('/api/Companies/addCompany', [API::class, 'addCompany']);
-	$app->post('/api/Companies/updateCompany', [API::class, 'updateCompany']);
+	$app->put('/api/Companies/updateCompany', [API::class, 'updateCompany']);
 	$app->delete('/api/Companies/deleteCompany/{company_id}', [API::class, 'deleteCompany']);
 	#endregion
 

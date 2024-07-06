@@ -46,7 +46,8 @@ class CompaniesServices
 		];
 	}
 
-	public function updateCompany(array $newCompanyData) {
+	public function updateCompany(array $newCompanyData): bool|array
+	{
 		$isCompanyDataValid = $this->validator->validateNewCompanyData($newCompanyData);
 
 		if($isCompanyDataValid !== true) {
