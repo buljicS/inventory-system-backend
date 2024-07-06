@@ -80,14 +80,16 @@ class UsersRepository
                     worker_email, 
                     worker_password, 
                     role,
-                    company_id) 
+                    company_id,
+                    isActive) 
 					VALUE (
 					       :worker_fname, 
 					       :worker_lname, 
 					       :worker_email, 
 					       :worker_password, 
 					       :role, 
-					       :company_id
+					       :company_id,
+					       :is_active
 					)";
 
 		$stmt = $dbCon->prepare($sql);
@@ -97,6 +99,7 @@ class UsersRepository
 		$stmt->bindValue(':worker_password', $userData['worker_password']);
 		$stmt->bindValue(':role', "employer");
 		$stmt->bindValue(':company_id', $userData['company_id']);
+		$stmt->bindValue(':is_active', false);
 		$stmt->execute();
 
 		$newUser = "SELECT worker_id FROM workers WHERE worker_email = :worker_email";
@@ -241,6 +244,17 @@ class UsersRepository
 		$stmt->bindValue(':worker_id', $worker_id);
 		$stmt->execute();
 		$dbCon = null;
+	}
+
+	public function setPasswordForEmployer(array $updateData): bool
+	{
+		$dbCon = $this->database->openConnection();
+		$sql = "UPDATE workers SET worker_password = :password, isActive = 1 WHERE worker_password = :tempPassword AND worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':password', $updateData['newPassword']);
+		$stmt->bindValue(':tempPassword', $updateData['oldPassword']);
+		$stmt->bindValue(':worker_id', $updateData['worker_id']);
+		return $stmt->execute();
 	}
 
 	public function UpdateUser(array $newUserData): array|bool

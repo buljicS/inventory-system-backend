@@ -114,10 +114,6 @@
                                     "company_id": {
                                         "type": "integer",
                                         "example": 0
-                                    },
-                                    "role": {
-                                        "type": "string",
-                                        "example": "string"
                                     }
                                 },
                                 "type": "object"
@@ -446,6 +442,48 @@
                                         "example": "string"
                                     },
                                     "new_password": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Users/changeTempPassword": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "changeTempPassword",
+                "requestBody": {
+                    "description": "Endpoint for chaning temp password that has been set for user (employer) by admin",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "worker_id": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "oldPassword": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "newPassword": {
                                         "type": "string",
                                         "example": "string"
                                     }

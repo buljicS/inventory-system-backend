@@ -557,6 +557,51 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
+	/**
+	 * @OA\Put(
+	 *     path="/api/Users/changeTempPassword",
+	 *     operationId="changeTempPassword",
+	 *     tags={"Users"},
+	 *     @OA\RequestBody(
+	 *         description="Endpoint for chaning temp password that has been set for user (employer) by admin",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     				@OA\Property(
+	 *                      property="worker_id",
+	 *                      type="int",
+	 *                      example="0"
+	 *                  ),
+	 *                 @OA\Property(
+	 *                     property="oldPassword",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="newPassword",
+	 *                     type="string",
+	 *                     example="string"
+	 *                  ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function changeTempPassword(Request $request, Response $response): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$resp = $this->userServices->changeTempPassword($requestBody);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
 	#endregion
 
 	#region Companies

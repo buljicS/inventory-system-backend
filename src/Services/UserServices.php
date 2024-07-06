@@ -285,7 +285,8 @@ class UserServices
 
 		if($isValid !== true) return $isValid;
 
-		$newUser['worker_password'] = password_hash($_ENV['JWT_SECRET'], PASSWORD_DEFAULT);
+		$newUser['forgoten_password_token'] = password_hash($_ENV['JWT_SECRET'], PASSWORD_DEFAULT);
+		$newUser['forgoten_password_expires'] = time() + 3600;
 
 		$doesUserAlreadyExists = $this->userRepo->GetUserByEmail($newUser['worker_email']);
 		if ($doesUserAlreadyExists != null) {
@@ -320,6 +321,23 @@ class UserServices
 			'status' => 500,
 			'message' => 'Internal Server Error',
 			'description' => 'Error while creating user, please try again'
+		];
+	}
+
+	public function changeTempPassword(array $updateData): array
+	{
+		$isPasswordChanged = $this->userRepo->setPasswordForEmployer($updateData);
+		if(!$isPasswordChanged)
+			return [
+				'status' => 500,
+				'message' => 'Internal Server Error',
+				'description' => "Failed to change password, please try again"
+			];
+
+		return [
+			'status' => 200,
+			'message' => 'Success',
+			'description' => 'Password has been changed successfully'
 		];
 	}
 }
