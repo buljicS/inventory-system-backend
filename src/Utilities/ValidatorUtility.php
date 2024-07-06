@@ -146,7 +146,7 @@ class ValidatorUtility
 			'required' => [
 				['company_id'],
 				['company_name'],
-				['company_email'],
+				['company_mail'],
 				['company_state'],
 				['company_address']
 			],

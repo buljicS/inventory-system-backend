@@ -53,10 +53,10 @@ class CompaniesRepository
 	public function updateCompany(array $newCompanyData): bool
 	{
 		$dbCon = $this->database->openConnection();
-		$sql = "UPDATE companies SET company_name = :company_name, company_mail = :company_email , company_address = :company_address, company_state = :company_state WHERE company_id = :id";
+		$sql = "UPDATE companies SET company_name = :company_name, company_mail = :company_mail , company_address = :company_address, company_state = :company_state WHERE company_id = :id";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindParam(':company_name', $newCompanyData['company_name']);
-		$stmt->bindParam(':company_email', $newCompanyData['company_email']);
+		$stmt->bindParam(':company_mail', $newCompanyData['company_mail']);
 		$stmt->bindParam(':company_address', $newCompanyData['company_address']);
 		$stmt->bindParam(':company_state', $newCompanyData['company_state']);
 		$stmt->bindParam(':id', $newCompanyData['company_id']);

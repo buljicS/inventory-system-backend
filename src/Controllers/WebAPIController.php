@@ -529,6 +529,12 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
+	public function getCompanyById(Request $request, Response $response, array $args): Response
+	{
+		$companyId = (int)$args['company_id'];
+
+	}
+
 	/**
 	 * @OA\Post(
 	 *     path="/api/Companies/addCompany",
@@ -601,7 +607,7 @@ class WebAPIController
 	 *                     example="NameCo"
 	 *                 ),
 	 *                 @OA\Property(
-	 *                      property="company_email",
+	 *                      property="company_mail",
 	 *                      type="string",
 	 *                      example="officecompany@domain.com"
 	 *                  ),
