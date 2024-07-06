@@ -50,6 +50,22 @@ class CompaniesRepository
 
 	}
 
+	public function updateCompany(array $newCompanyData): bool
+	{
+		$dbCon = $this->database->openConnection();
+		$sql = "UPDATE companies SET company_name = :company_name, company_mail = :company_email , company_address = :company_address, company_state = :company_state WHERE company_id = :id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindParam(':company_name', $newCompanyData['company_name']);
+		$stmt->bindParam(':company_email', $newCompanyData['company_email']);
+		$stmt->bindParam(':company_address', $newCompanyData['company_address']);
+		$stmt->bindParam(':company_state', $newCompanyData['company_state']);
+		$stmt->bindParam(':id', $newCompanyData['company_id']);
+		if($stmt->execute())
+			return true;
+
+		return false;
+	}
+
 	public function deleteCompany(int $company_id): bool
 	{
 		$dbCon = $this->database->openConnection();

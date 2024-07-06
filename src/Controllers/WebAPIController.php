@@ -625,11 +625,10 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function updateCompany(Request $request, Response $response, array $args): Response
+	public function updateCompany(Request $request, Response $response): Response
 	{
-		$companyId = (int)$args['company_id'];
 		$newCompanyData = (array)$request->getParsedBody();
-		$resp = $this->companiesServices->updateCompany($companyId, $newCompanyData);
+		$resp = $this->companiesServices->updateCompany($newCompanyData);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -637,7 +636,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Delete(
-	 *     path="/api/Companies/deleteCompany",
+	 *     path="/api/Companies/deleteCompany/{company_id}",
 	 *     operationId="deleteCompany",
 	 *     tags={"Companies"},
 	 *     @OA\Parameter(

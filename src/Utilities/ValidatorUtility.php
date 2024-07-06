@@ -138,6 +138,28 @@ class ValidatorUtility
 			'description' => $this->_vValidator->errors()
 		];
 	}
+
+	public function validateNewCompanyData(array $newCompanyData): bool|array
+	{
+		$this->_vValidator = new vValidator($newCompanyData);
+		$this->_vValidator->rules([
+			'required' => [
+				['company_id'],
+				['company_name'],
+				['company_mail'],
+				['company_state'],
+				['company_address']
+			]
+		]);
+
+		if($this->_vValidator->validate()) return true;
+
+		return [
+			'status' => 202,
+			'message' => 'Accepted',
+			'description' => $this->_vValidator->errors()
+		];
+	}
 	#endregion
 
 	#region AdminValidation

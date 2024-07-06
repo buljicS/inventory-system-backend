@@ -46,7 +46,28 @@ class CompaniesServices
 		];
 	}
 
-	public function updateCompany(int $companyId, array $newCompanyData) {}
+	public function updateCompany(array $newCompanyData) {
+		$isCompanyDataValid = $this->validator->validateNewCompanyData($newCompanyData);
+
+		if($isCompanyDataValid !== true) {
+			return $isCompanyDataValid;
+		}
+
+		$isCompanyUpdated = $this->companies->updateCompany($newCompanyData);
+
+		if($isCompanyUpdated)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'Company updated successfully'
+			];
+
+		return [
+			'status' => 500,
+			'message' => 'Internal Server Error',
+			'description' => 'Error while updating company, please try again'
+		];
+	}
 
 	public function deleteCompany(int $company_id): array
 	{
