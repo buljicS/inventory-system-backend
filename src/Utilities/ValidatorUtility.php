@@ -15,7 +15,7 @@ class ValidatorUtility
 	}
 
 	#region UserValidation
-	public function validateRegisterUserInput(array $newUserInput): bool|array
+	public function validateNewUserData(array $newUserInput): bool|array
 	{
 		$this->validator = new Validator($newUserInput);
 		$this->validator->rules(
@@ -42,6 +42,36 @@ class ValidatorUtility
 			'description' => $this->validator->errors()
 		];
 
+	}
+
+	public function validateUserToBeAdded(array $newUser)
+	{
+		$this->validator = new Validator($newUser);
+		$this->validator->rules([
+			'required' => [
+				['worker_fname'],
+				['worker_lname'],
+				['worker_email'],
+				['company_id'],
+				['role']
+			],
+			'email' => [
+				['worker_email']
+			],
+			'min' => [
+				[['company_id'], 1]
+			]
+		]);
+
+		if ($this->validator->validate()) {
+			return true;
+		}
+
+		return [
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
+		];
 	}
 
 	public function validateLoginUserInput(array $userInput): bool|array
@@ -186,5 +216,6 @@ class ValidatorUtility
 		];
 	}
 	#endregion
+
 
 }

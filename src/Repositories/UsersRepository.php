@@ -43,7 +43,7 @@ class UsersRepository
                     phone_number, 
                     worker_email, 
                     worker_password, 
-                    role, 
+                    role,
                     registration_token, 
                     registration_expires) 
 					VALUE (
@@ -68,7 +68,44 @@ class UsersRepository
 		$stmt->bindValue(':registration_expires', $userData['timestamp']);
 		$dbCon = null;
 		return $stmt->execute();
+	}
 
+	public function CreateNewUserByAdmin(array $userData):bool|array
+	{
+		$dbCon = $this->database->openConnection();
+
+		$sql = "INSERT INTO workers(
+                    worker_fname, 
+                    worker_lname, 
+                    worker_email, 
+                    worker_password, 
+                    role,
+                    company_id) 
+					VALUE (
+					       :worker_fname, 
+					       :worker_lname, 
+					       :worker_email, 
+					       :worker_password, 
+					       :role, 
+					       :company_id
+					)";
+
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindValue(':worker_fname', $userData['worker_fname']);
+		$stmt->bindValue(':worker_lname', $userData['worker_lname']);
+		$stmt->bindValue(':worker_email', $userData['worker_email']);
+		$stmt->bindValue(':worker_password', $userData['worker_password']);
+		$stmt->bindValue(':role', $userData['role']);
+		$stmt->bindValue(':company_id', $userData['company_id']);
+		$stmt->execute();
+
+		$newUser = "SELECT worker_id FROM workers WHERE worker_email = :worker_email";
+		$stmt = $dbCon->prepare($newUser);
+		$stmt->bindValue(':worker_email', $userData['worker_email']);
+		if($stmt->execute())
+			return $stmt->fetch(PDO::FETCH_ASSOC);
+
+		return false;
 	}
 
 	public function GetUserById(int $workerId)

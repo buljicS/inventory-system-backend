@@ -23,6 +23,7 @@ return function (Slim $app) {
 	$app->post('/api/Users/updateUser', [API::class, 'updateUserData']);
 	$app->get('/api/Users/getUserInfo/{worker_id}', [API::class, 'getUserInfo']);
 	$app->get('/api/Users/getAllUsers', [API::class, 'getAllUsers']);
+	$app->post("/api/Users/createUser", [API::class, 'createUser']);
 	#endregion
 
 	#region Admins

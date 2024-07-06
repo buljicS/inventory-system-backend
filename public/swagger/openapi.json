@@ -87,6 +87,75 @@
                 ]
             }
         },
+        "/api/Users/createUser": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "createUser",
+                "requestBody": {
+                    "description": "Create new user",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "worker_fname": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "worker_lname": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "worker_email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "company_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Users/getAllUsers": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Get all users and their information",
+                "operationId": "getAllUsers",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Users/getUserInfo/{worker_id}": {
             "get": {
                 "tags": [
@@ -398,25 +467,6 @@
                 ]
             }
         },
-        "/api/Companies/getAllCompanies": {
-            "get": {
-                "tags": [
-                    "Companies"
-                ],
-                "description": "Get all companies and their information",
-                "operationId": "getAllCompanies",
-                "responses": {
-                    "200": {
-                        "description": "An example resource"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
         "/api/Companies/addCompany": {
             "post": {
                 "tags": [
@@ -463,6 +513,44 @@
                 ]
             }
         },
+        "/api/Companies/getAllCompanies": {
+            "get": {
+                "tags": [
+                    "Companies"
+                ],
+                "description": "Get all companies and their information",
+                "operationId": "getAllCompanies",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Companies/getCompanyById": {
+            "get": {
+                "tags": [
+                    "Companies"
+                ],
+                "description": "Get company by id",
+                "operationId": "getCompanyById",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Companies/updateCompany": {
             "put": {
                 "tags": [
@@ -483,7 +571,7 @@
                                         "type": "string",
                                         "example": "NameCo"
                                     },
-                                    "company_email": {
+                                    "company_mail": {
                                         "type": "string",
                                         "example": "officecompany@domain.com"
                                     },
@@ -513,7 +601,7 @@
                 ]
             }
         },
-        "/api/Companies/deleteCompany": {
+        "/api/Companies/deleteCompany/{company_id}": {
             "delete": {
                 "tags": [
                     "Companies"
@@ -578,25 +666,6 @@
                     },
                     "401": {
                         "description": "Wrong credentials"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/Admins/getAllUsers": {
-            "get": {
-                "tags": [
-                    "Admins"
-                ],
-                "description": "Get all users and their information",
-                "operationId": "getAllUsers",
-                "responses": {
-                    "200": {
-                        "description": "An example resource"
                     }
                 },
                 "security": [

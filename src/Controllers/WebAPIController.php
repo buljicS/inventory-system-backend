@@ -160,6 +160,61 @@ class WebAPIController
 	#region Users
 
 	/**
+	 * @OA\Post(
+	 *     path="/api/Users/createUser",
+	 *     operationId="createUser",
+	 *     tags={"Users"},
+	 *     @OA\RequestBody(
+	 *         description="Create new user",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     				@OA\Property(
+	 *                      property="worker_fname",
+	 *                      type="string",
+	 *                      example="string"
+	 *                  ),
+	 *     				@OA\Property(
+	 *                       property="worker_lname",
+	 *                       type="string",
+	 *                       example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="worker_email",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="company_id",
+	 *                     type="integer",
+	 *                     example=0
+	 *                  ),
+	 *                 @OA\Property(
+	 *                     property="role",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 )
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function createUser(Request $request, Response $response): Response
+	{
+		$newUserData = (array)$request->getParsedBody();
+		$resp = $this->userServices->createNewUser($newUserData);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
 	 * @OA\Get(
 	 *     path="/api/Users/getAllUsers",
 	 *     operationId="getAllUsers",
@@ -512,41 +567,6 @@ class WebAPIController
 	#region Companies
 
 	/**
-	 * @OA\Get(
-	 *     path="/api/Companies/getAllCompanies",
-	 *     operationId="getAllCompanies",
-	 *     description="Get all companies and their information",
-	 *     tags={"Companies"},
-	 *     @OA\Response(response="200", description="An example resource"),
-	 *     security={{"bearerAuth": {}}}
-	 * )
-	 */
-	public function getAllCompanies(Request $request, Response $response): Response
-	{
-		$resp = $this->companiesServices->getAllCompanies();
-		$response->getBody()->write(json_encode($resp));
-		return $response
-			->withHeader('Content-type', 'application/json');
-	}
-
-	/**
-	 * @OA\Get(
-	 *     path="/api/Companies/getCompanyById",
-	 *     operationId="getCompanyById",
-	 *     description="Get company by id",
-	 *     tags={"Companies"},
-	 *     @OA\Response(response="200", description="An example resource"),
-	 *     security={{"bearerAuth": {}}}
-	 * )
-	 */
-	public function getCompanyById(Request $request, Response $response, array $args): Response
-	{
-		$companyId = (int)$args['company_id'];
-		return $response
-			->withHeader('Content-type', 'application/json');
-	}
-
-	/**
 	 * @OA\Post(
 	 *     path="/api/Companies/addCompany",
 	 *     operationId="addCompany",
@@ -592,6 +612,41 @@ class WebAPIController
 		$requestBody = (array)$request->getParsedBody();
 		$newCompany = $this->companiesServices->addNewCompany($requestBody);
 		$response->getBody()->write(json_encode($newCompany));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Companies/getAllCompanies",
+	 *     operationId="getAllCompanies",
+	 *     description="Get all companies and their information",
+	 *     tags={"Companies"},
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getAllCompanies(Request $request, Response $response): Response
+	{
+		$resp = $this->companiesServices->getAllCompanies();
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Companies/getCompanyById",
+	 *     operationId="getCompanyById",
+	 *     description="Get company by id",
+	 *     tags={"Companies"},
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getCompanyById(Request $request, Response $response, array $args): Response
+	{
+		$companyId = (int)$args['company_id'];
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}

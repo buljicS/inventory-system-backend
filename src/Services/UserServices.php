@@ -32,7 +32,7 @@ class UserServices
 
 	public function registerUser(array $newUserData): array
 	{
-		$isValid = $this->validatorUtility->validateRegisterUserInput($newUserData);
+		$isValid = $this->validatorUtility->validateNewUserData($newUserData);
 		if ($isValid !== true) {
 			return $isValid;
 		}
@@ -277,5 +277,49 @@ class UserServices
 	public function getAllUsers(): array
 	{
 		return $this->userRepo->GetAllUsersForAdmin();
+	}
+
+	public function createNewUser(array $newUser): array
+	{
+		$isValid = $this->validatorUtility->validateUserToBeAdded($newUser);
+
+		if($isValid !== true) return $isValid;
+
+		$newUser['worker_password'] = password_hash($_ENV['JWT_SECRET'], PASSWORD_DEFAULT);
+
+		$doesUserAlreadyExists = $this->userRepo->GetUserByEmail($newUser['worker_email']);
+		if ($doesUserAlreadyExists != null) {
+			return [
+				'status' => 403,
+				'message' => 'Forbidden',
+				'description' => 'This email is already taken'
+			];
+		}
+
+		$isUserCreated = $this->userRepo->CreateNewUserByAdmin($newUser);
+		if($isUserCreated === false) {
+			return [
+				'status' => 500,
+				'message' => 'Internal Server Error',
+				'description' => 'Error while creating user, please try again'
+			];
+		}
+
+		$activateUrl = "{$_ENV['MAIN_URL_FE']}/change-password?worker_id={$isUserCreated['worker_id']}&old_password={$newUser['worker_password']}&flag=1";
+		$subject = "Activate your account";
+		$isMailSent = $this->sendConfirmationEmail($newUser['worker_fname'], $activateUrl, $subject, $newUser['worker_email']);
+
+		if($isMailSent === 'OK')
+			return [
+				'status' => 202,
+				'message' => 'Created',
+				'description' => 'User has been created, mail with instructions has been sent to user'
+			];
+
+		return [
+			'status' => 500,
+			'message' => 'Internal Server Error',
+			'description' => 'Error while creating user, please try again'
+		];
 	}
 }
