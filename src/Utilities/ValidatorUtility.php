@@ -52,8 +52,7 @@ class ValidatorUtility
 				['worker_fname'],
 				['worker_lname'],
 				['worker_email'],
-				['company_id'],
-				['role']
+				['company_id']
 			],
 			'email' => [
 				['worker_email']

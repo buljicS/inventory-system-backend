@@ -189,12 +189,7 @@ class WebAPIController
 	 *                     property="company_id",
 	 *                     type="integer",
 	 *                     example=0
-	 *                  ),
-	 *                 @OA\Property(
-	 *                     property="role",
-	 *                     type="string",
-	 *                     example="string"
-	 *                 )
+	 *                  )
 	 *             )
 	 *         )
 	 *     ),

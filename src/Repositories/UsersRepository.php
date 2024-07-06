@@ -95,7 +95,7 @@ class UsersRepository
 		$stmt->bindValue(':worker_lname', $userData['worker_lname']);
 		$stmt->bindValue(':worker_email', $userData['worker_email']);
 		$stmt->bindValue(':worker_password', $userData['worker_password']);
-		$stmt->bindValue(':role', $userData['role']);
+		$stmt->bindValue(':role', "employer");
 		$stmt->bindValue(':company_id', $userData['company_id']);
 		$stmt->execute();
 
