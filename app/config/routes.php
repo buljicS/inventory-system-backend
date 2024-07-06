@@ -22,11 +22,12 @@ return function (Slim $app) {
 	$app->post('/api/Users/setNewPassword', [API::class, 'setNewPassword']);
 	$app->post('/api/Users/updateUser', [API::class, 'updateUserData']);
 	$app->get('/api/Users/getUserInfo/{worker_id}', [API::class, 'getUserInfo']);
+	$app->get('/api/Users/getAllUsers', [API::class, 'getAllUsers']);
 	#endregion
 
 	#region Admins
 	$app->post('/api/Admins/loginAdmin', [API::class, 'loginAdmin']);
-	$app->get('/api/Admins/getAllUsers', [API::class, 'getAllUsers']);
+
 	#endregions
 
 	#region Logs

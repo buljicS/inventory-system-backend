@@ -50,10 +50,4 @@ class AdminServices
 			]
 		};
 	}
-
-	#region UsersControlFlow
-	public function GetAllUsersForAdmin(): array {
-		return $this->userServices->getAllUsers();
-	}
-	#endregion
 }

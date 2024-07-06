@@ -171,7 +171,7 @@ class WebAPIController
 	 */
 	public function getAllUsers(Request $request, Response $response): Response
 	{
-		$resp = $this->adminServices->GetAllUsersForAdmin();
+		$resp = $this->userServices->GetAllUsers();
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -529,10 +529,21 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
+	/**
+	 * @OA\Get(
+	 *     path="/api/Companies/getCompanyById",
+	 *     operationId="getCompanyById",
+	 *     description="Get company by id",
+	 *     tags={"Companies"},
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
 	public function getCompanyById(Request $request, Response $response, array $args): Response
 	{
 		$companyId = (int)$args['company_id'];
-
+		return $response
+			->withHeader('Content-type', 'application/json');
 	}
 
 	/**
