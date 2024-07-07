@@ -13,7 +13,7 @@ class AdminRepository
 		$this->database = $database;
 	}
 
-	public function GetAdminByEmail(array $credentials)
+	public function getAdminByEmail(array $credentials)
 	{
 		$dbConn = $this->database->openConnection();
 		$sql = "SELECT * FROM admins WHERE admin_username = :admin_username";

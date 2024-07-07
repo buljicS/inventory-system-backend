@@ -14,7 +14,7 @@ class UsersRepository
 		$this->database = $database;
 	}
 
-	public function GetAllUsersForAdmin(): bool|array
+	public function getAllUsersForAdmin(): bool|array
 	{
 		$dbCon = $this->database->openConnection();
 
@@ -33,7 +33,7 @@ class UsersRepository
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function CreateNewUser(array $userData):bool
+	public function createNewUser(array $userData):bool
 	{
 		$dbCon = $this->database->openConnection();
 
@@ -70,7 +70,7 @@ class UsersRepository
 		return $stmt->execute();
 	}
 
-	public function CreateNewUserByAdmin(array $userData):bool|array
+	public function createNewUserByAdmin(array $userData):bool|array
 	{
 		$dbCon = $this->database->openConnection();
 
@@ -111,7 +111,7 @@ class UsersRepository
 		return false;
 	}
 
-	public function GetUserById(int $workerId)
+	public function getUserById(int $workerId)
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "SELECT worker_id, worker_email, worker_password FROM workers WHERE worker_id = :worker_id";
@@ -121,7 +121,7 @@ class UsersRepository
 		return $stmt->fetch();
 	}
 
-	public function GetUpdatedUserInfo(int $workerId)
+	public function getUpdatedUserInfo(int $workerId)
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "SELECT company_id, phone_number FROM workers WHERE worker_id = :worker_id";
@@ -131,7 +131,7 @@ class UsersRepository
 		return $stmt->fetch();
 	}
 
-	public function GetUserByEmail(string $email): array | bool {
+	public function getUserByEmail(string $email): array | bool {
 		$dbCon = $this->database->openConnection();
 		$sql = "SELECT worker_id,
     				   worker_password,
@@ -153,7 +153,7 @@ class UsersRepository
 		return $stmt->fetch();
 	}
 
-	public function GetUserByRegistrationToken(string $token): array|bool
+	public function getUserByRegistrationToken(string $token): array|bool
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "SELECT registration_token, worker_id, registration_expires
@@ -166,7 +166,7 @@ class UsersRepository
 		return $stmt->fetch();
 	}
 
-	public function GetUserByPasswordRestToken(string $token): array|bool
+	public function getUserByPasswordRestToken(string $token): array|bool
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "SELECT worker_password, worker_id
@@ -179,7 +179,7 @@ class UsersRepository
 		return $stmt->fetch();
 	}
 
-	public function InsertPasswordResetToken(int $worker_id, string $token, mixed $expTime):void
+	public function insertPasswordResetToken(int $worker_id, string $token, mixed $expTime):void
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "UPDATE workers 
@@ -194,7 +194,7 @@ class UsersRepository
 		$dbCon = null;
 	}
 
-	public function ActivateUser(string $token): string
+	public function activateUser(string $token): string
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "UPDATE workers 
@@ -217,7 +217,7 @@ class UsersRepository
 		return "OK";
 	}
 
-	public function DeleteUserWithExpiredRegistration(string $token): int
+	public function deleteUserWithExpiredRegistration(string $token): int
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "DELETE 
@@ -230,7 +230,7 @@ class UsersRepository
 		return 0;
 	}
 
-	public function UpdatePassword(int $worker_id, string $password):void
+	public function updatePassword(int $worker_id, string $password):void
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "UPDATE workers
@@ -257,7 +257,7 @@ class UsersRepository
 		return $stmt->execute();
 	}
 
-	public function UpdateUser(array $newUserData): array|bool
+	public function updateUser(array $newUserData): array|bool
 	{
 		$dbCon = $this->database->openConnection();
 
@@ -269,7 +269,7 @@ class UsersRepository
 		$stmt->bindValue(':worker_id', $newUserData['worker_id']);
 
 		if($stmt->execute())
-			return $this->GetUpdatedUserInfo($newUserData['worker_id']);
+			return $this->getUpdatedUserInfo($newUserData['worker_id']);
 		else
 			return false;
 	}

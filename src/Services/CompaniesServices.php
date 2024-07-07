@@ -21,7 +21,7 @@ class CompaniesServices
 
 	public function getAllCompanies(): array
 	{
-		return $this->companiesRepository->GetAllCompaniesForAdmin();
+		return $this->companiesRepository->getAllCompaniesForAdmin();
 	}
 
 	public function addNewCompany(array $newCompany): array

@@ -42,7 +42,7 @@ class UserServices
 		$newUserData['exp_token'] = $this->tokenUtility->GenerateBasicToken(20);
 		$newUserData['timestamp'] = date('Y-m-d H:i:s', time() + 3600);
 
-		$doesUserAlreadyExists = $this->userRepo->GetUserByEmail($newUserData['email']);
+		$doesUserAlreadyExists = $this->userRepo->getUserByEmail($newUserData['email']);
 		if ($doesUserAlreadyExists != null) {
 			return [
 				'status' => 403,
@@ -51,7 +51,7 @@ class UserServices
 			];
 		}
 
-		if ($this->userRepo->CreateNewUser($newUserData)) {
+		if ($this->userRepo->createNewUser($newUserData)) {
 			$user_name = $newUserData['firstName'];
 			$user_email = $newUserData['email'];
 			$token = $newUserData['exp_token'];
@@ -85,16 +85,16 @@ class UserServices
 
 	public function activateUser(string $token): int
 	{
-		$user = $this->userRepo->GetUserByRegistrationToken($token);
+		$user = $this->userRepo->getUserByRegistrationToken($token);
 		if ($user === false) return 0;
 		if (!(date('Y-m-d H:i:s', time()) > $user['registration_expires'])) {
-			$updateResponse = $this->userRepo->ActivateUser($user['registration_token']);
+			$updateResponse = $this->userRepo->activateUser($user['registration_token']);
 			if ($updateResponse == "OK")
 				return 1;
 			else
 				return 0;
 		}
-		return $this->userRepo->DeleteUserWithExpiredRegistration($user["registration_token"]);
+		return $this->userRepo->deleteUserWithExpiredRegistration($user["registration_token"]);
 	}
 
 	public function loginUser(array $loginData): array
@@ -105,7 +105,7 @@ class UserServices
 			return $isValid;
 		}
 
-		$response = $this->userRepo->GetUserByEmail($loginData['email']);
+		$response = $this->userRepo->getUserByEmail($loginData['email']);
 
 		$loggedIn = match (true) {
 			$response === false || !password_verify($loginData['password'], $response['worker_password']) => [
@@ -144,12 +144,12 @@ class UserServices
 	{
 		$cleanEmail = strip_tags(trim($emailTo));
 		if (filter_var($cleanEmail, FILTER_VALIDATE_EMAIL)) {
-			$user = $this->userRepo->GetUserByEmail($cleanEmail);
+			$user = $this->userRepo->getUserByEmail($cleanEmail);
 			if ($user != null) {
 				$token = $this->tokenUtility->GenerateBasicToken(20);
 				$expTime = date('Y-m-d H:i:s', time() + 3600);
 
-				$this->userRepo->InsertPasswordResetToken($user['worker_id'], $token, $expTime);
+				$this->userRepo->insertPasswordResetToken($user['worker_id'], $token, $expTime);
 				$link = "{$_ENV['MAIN_URL_FE']}/change-password?token=$token";
 
 				$rawBody = file_get_contents('../templates/email/ResetMail.html');
@@ -177,9 +177,9 @@ class UserServices
 	public function resetPassword(string $token, string $newPassword): array
 	{
 		$password = password_hash($newPassword, PASSWORD_DEFAULT);
-		$user = $this->userRepo->GetUserByPasswordRestToken($token);
+		$user = $this->userRepo->getUserByPasswordRestToken($token);
 		if (!empty($user)) {
-			$this->userRepo->UpdatePassword($user['worker_id'], $password);
+			$this->userRepo->updatePassword($user['worker_id'], $password);
 			return [
 				'status' => 200,
 				'message' => 'Success',
@@ -201,7 +201,7 @@ class UserServices
 			return $isValid;
 		}
 
-		$user = $this->userRepo->GetUserById($userInfo['worker_id']);
+		$user = $this->userRepo->getUserById($userInfo['worker_id']);
 
 		$checkPasswd = match (true) {
 			$user === false => [
@@ -224,7 +224,7 @@ class UserServices
 
 		if ($checkPasswd['status'] != 200) return $checkPasswd;
 
-		$this->userRepo->UpdatePassword($userInfo['worker_id'], password_hash($userInfo['new_password'], PASSWORD_DEFAULT));
+		$this->userRepo->updatePassword($userInfo['worker_id'], password_hash($userInfo['new_password'], PASSWORD_DEFAULT));
 		return [
 			'status' => 200,
 			'message' => 'Success',
@@ -234,8 +234,8 @@ class UserServices
 
 	public function getUserInfo(int $user_id): array
 	{
-		$userInfo = $this->userRepo->GetUpdatedUserInfo($user_id);
-		$companies = $this->companyRepo->GetAllCompaniesForUser();
+		$userInfo = $this->userRepo->getUpdatedUserInfo($user_id);
+		$companies = $this->companyRepo->getAllCompaniesForUser();
 
 		if($userInfo === false)
 			return [
@@ -257,7 +257,7 @@ class UserServices
 		$isValid = $this->validatorUtility->validateUpdatedUserData($newUserData);
 		if($isValid !== true) return $isValid;
 
-		$updatedUser = $this->userRepo->UpdateUser($newUserData);
+		$updatedUser = $this->userRepo->updateUser($newUserData);
 		if($updatedUser !== false)
 			return [
 				'status' => 200,
@@ -276,7 +276,7 @@ class UserServices
 
 	public function getAllUsers(): array
 	{
-		return $this->userRepo->GetAllUsersForAdmin();
+		return $this->userRepo->getAllUsersForAdmin();
 	}
 
 	public function createNewUser(array $newUser): array
@@ -287,7 +287,7 @@ class UserServices
 
 		$newUser['worker_password'] = password_hash($_ENV['JWT_SECRET'], PASSWORD_DEFAULT);
 
-		$doesUserAlreadyExists = $this->userRepo->GetUserByEmail($newUser['worker_email']);
+		$doesUserAlreadyExists = $this->userRepo->getUserByEmail($newUser['worker_email']);
 		if ($doesUserAlreadyExists != null) {
 			return [
 				'status' => 403,
@@ -296,7 +296,7 @@ class UserServices
 			];
 		}
 
-		$isUserCreated = $this->userRepo->CreateNewUserByAdmin($newUser);
+		$isUserCreated = $this->userRepo->createNewUserByAdmin($newUser);
 		if($isUserCreated === false) {
 			return [
 				'status' => 500,

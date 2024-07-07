@@ -18,7 +18,7 @@ class LogServices
 	}
 
 	public function GetAllLogs(): array {
-		return $this->_logRepository->GetAllLogs();
+		return $this->_logRepository->getAllLogs();
 	}
 
 	/**
@@ -43,7 +43,7 @@ class LogServices
 		$accessLog['is_logged_in'] = $isLoggedInSuccessfully;
 		$accessLog['note'] = $note;
 
-		$this->_logRepository->InsertNewLog($accessLog);
+		$this->_logRepository->insertNewLog($accessLog);
 
 		return $accessLog;
 	}

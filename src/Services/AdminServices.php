@@ -32,7 +32,7 @@ class AdminServices
 		if (!$isValid)
 			return $isValid;
 
-		$admin = $this->adminRepository->GetAdminByEmail($credentials);
+		$admin = $this->adminRepository->getAdminByEmail($credentials);
 
 		return match (true) {
 			$admin === false || !password_verify($credentials['password'], $admin['admin_password']) => [

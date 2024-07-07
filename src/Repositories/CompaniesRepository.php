@@ -13,7 +13,7 @@ class CompaniesRepository
 		$this->database = $database;
 	}
 
-	public function GetAllCompaniesForUser(): ?array
+	public function getAllCompaniesForUser(): ?array
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "SELECT company_id, company_name, isActive FROM companies WHERE isActive = 1";
@@ -24,7 +24,7 @@ class CompaniesRepository
 		return null;
 	}
 
-	public function GetAllCompaniesForAdmin(): ?array
+	public function getAllCompaniesForAdmin(): ?array
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "SELECT * FROM companies";
