@@ -860,7 +860,7 @@ class WebAPIController
 	 *		@OA\Parameter(
 	 *          description="ID of company that needs to be restored",
 	 *          in="path",
-	 *          name="comapny_id",
+	 *          name="company_id",
 	 *          required=true,
 	 *          @OA\Schema(
 	 *              type="integer",
