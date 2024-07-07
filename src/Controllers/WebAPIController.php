@@ -602,6 +602,77 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
+	/**
+	 * @OA\Delete(
+	 *     path="/api/Users/banUser/{worker_id}",
+	 *     operationId="banUser",
+	 *     description="Endpoint for admin to ban user account",
+	 *     tags={"Users"},
+	 *     @OA\Parameter(
+	 *         description="ID of user to ban",
+	 *         in="path",
+	 *         name="worker_id",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer",
+	 *             format="int64"
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *        response=200,
+	 *        description="Success"
+	 *      ),
+	 *      @OA\Response(
+	 *        response=404,
+	 *        description="User not found"
+	 *      ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function banUser(Request $request, Response $response, array $args): Response {
+		$worker_id = (int)$args['worker_id'];
+		$resp = $this->userServices->banUser($worker_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Put(
+	 *     path="/api/Users/revokeUserAccess/{worker_id}",
+	 *     operationId="revokeUserAccess",
+	 *     description="Endpoint for admin to revoke ban for banned users",
+	 *     tags={"Users"},
+	 *		@OA\Parameter(
+	 *          description="ID of user to revoke ban",
+	 *          in="path",
+	 *          name="worker_id",
+	 *          required=true,
+	 *          @OA\Schema(
+	 *              type="integer",
+	 *              format="int64"
+	 *          )
+	 *      ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=404,
+	 *     	   description="User not found"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function revokeUserAccess(Request $request, Response $response, array $args): Response
+	{
+		$worker_id = (int)$args['worker_id'];
+		$resp = $this->userServices->revokeUserAccess($worker_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
 	#endregion
 
 	#region Companies

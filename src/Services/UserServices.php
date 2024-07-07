@@ -339,4 +339,13 @@ class UserServices
 			'description' => 'Password has been changed successfully'
 		];
 	}
+
+	public function banUser(int $worker_id): ?array
+	{
+		return null;
+	}
+
+	public function revokeUserAccess(int $worker_id)
+	{
+	}
 }
