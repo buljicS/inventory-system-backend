@@ -16,7 +16,7 @@ class CompaniesRepository
 	public function GetAllCompaniesForUser(): ?array
 	{
 		$dbCon = $this->database->openConnection();
-		$sql = "SELECT company_id, company_name FROM companies WHERE isActive = 1";
+		$sql = "SELECT company_id, company_name, isActive FROM companies WHERE isActive = 1";
 		$stmt = $dbCon->prepare($sql);
 		if($stmt->execute())
 			return $stmt->fetchAll(PDO::FETCH_ASSOC);
