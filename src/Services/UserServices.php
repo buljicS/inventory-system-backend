@@ -285,8 +285,7 @@ class UserServices
 
 		if($isValid !== true) return $isValid;
 
-		$newUser['forgoten_password_token'] = password_hash($_ENV['JWT_SECRET'], PASSWORD_DEFAULT);
-		$newUser['forgoten_password_expires'] = time() + 3600;
+		$newUser['worker_password'] = password_hash($_ENV['JWT_SECRET'], PASSWORD_DEFAULT);
 
 		$doesUserAlreadyExists = $this->userRepo->GetUserByEmail($newUser['worker_email']);
 		if ($doesUserAlreadyExists != null) {
