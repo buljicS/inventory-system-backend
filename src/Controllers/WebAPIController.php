@@ -853,7 +853,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Put(
-	 *     path="/api/Users/restoreCompany/{company_id}",
+	 *     path="/api/Companies/restoreCompany/{company_id}",
 	 *     operationId="restoreCompany",
 	 *     description="Endpoint for admin to restored deleted company",
 	 *     tags={"Companies"},
