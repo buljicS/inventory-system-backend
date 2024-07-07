@@ -22,6 +22,7 @@
 		"/api/Users/sendPasswordResetEmail",
 		"/api/Users/activateUserAccount/",
 		"/api/Users/resetPassword",
+		"/api/Users/changeTempPassword",
 		"/api/Admins/loginAdmin",
 	];
  #endregion
