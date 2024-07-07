@@ -375,4 +375,24 @@ class UserServices
 			'description' => 'Error while restoring user access, please try again'
 		];
 	}
+
+	public function updateUserByAdmin(array $userData): array {
+		$isNewUserDataValid = $this->validatorUtility->validateUpdateUserDataProvidedByAdmin($userData);
+		if($isNewUserDataValid !== true) return $isNewUserDataValid;
+
+
+		$updatedUser = $this->userRepo->updateUserByAdmin($userData);
+		if($updatedUser !== false)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'User has been updated'
+			];
+
+		return [
+			'status' => 500,
+			'message' => "Internal Server Error",
+			'description' => "Failed to updated user"
+		];
+	}
 }

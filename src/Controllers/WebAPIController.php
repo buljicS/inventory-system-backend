@@ -676,6 +676,66 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
+	/**
+	 * @OA\Put(
+	 *     path="/api/Users/updateUserByAdmin",
+	 *     operationId="updateUserByAdmin",
+	 *     description="Endpoint for admin to update information about users",
+	 *     tags={"Users"},
+	 *     @OA\RequestBody(
+	 *         description="New company information",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *                   @OA\Property (
+	 *                     property="company_id",
+	 *                     type="int",
+	 *                     example=0
+	 *                   ),
+	 *                 @OA\Property(
+	 *                     property="worker_id",
+	 *                     type="integer",
+	 *                     example=0
+	 *                 ),
+	 *                 @OA\Property(
+	 *                      property="worker_fname",
+	 *                      type="string",
+	 *                      example="Name"
+	 *                  ),
+	 *                 @OA\Property(
+	 *                     property="worker_lname",
+	 *                     type="string",
+	 *                     example="Last"
+	 *                  ),
+	 *                 @OA\Property(
+	 *                      property="role",
+	 *                      type="string",
+	 *                      example="role"
+	 *                   ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=404,
+	 *     	   description="User not found"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function updateUserByAdmin(Request $request, Response $response, array $args): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$resp = $this->userServices->updateUserByAdmin($requestBody);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
 	#endregion
 
 	#region Companies

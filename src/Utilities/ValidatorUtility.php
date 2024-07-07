@@ -44,7 +44,7 @@ class ValidatorUtility
 
 	}
 
-	public function validateUserToBeAdded(array $newUser)
+	public function validateUserToBeAdded(array $newUser): bool|array
 	{
 		$this->validator = new Validator($newUser);
 		$this->validator->rules([
@@ -131,6 +131,25 @@ class ValidatorUtility
 				]
 			]
 		);
+
+		if($this->validator->validate()) return true;
+
+		return [
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
+		];
+	}
+
+	public function validateUpdateUserDataProvidedByAdmin(array $updatedUserInfo): bool|array {
+		$this->validator = new Validator($updatedUserInfo);
+		$this->validator->rules([
+			'required' => [
+				['worker_id'],
+				['worker_lname'],
+				['worker_fname'],
+			]
+		]);
 
 		if($this->validator->validate()) return true;
 

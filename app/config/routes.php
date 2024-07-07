@@ -27,6 +27,7 @@ return function (Slim $app) {
 	$app->put("/api/Users/changeTempPassword", [API::class, 'changeTempPassword']);
 	$app->delete("/api/Users/banUser/{worker_id}", [API::class, 'banUser']);
 	$app->put("/api/Users/revokeUserAccess/{worker_id}", [API::class, 'revokeUserAccess']);
+	$app->put("/api/Users/updateUserByAdmin", [API::class, 'updateUserByAdmin']);
 	#endregion
 
 	#region Admins

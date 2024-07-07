@@ -280,7 +280,7 @@ ON
 			return false;
 	}
 
-	public function banUser(int $worker_id):bool
+	public function banUser(int $worker_id): bool
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "UPDATE workers SET isActive = 0 WHERE worker_id = :worker_id";
@@ -292,12 +292,28 @@ ON
 		return false;
 	}
 
-	public function revokeUserAccess(int $worker_id)
+	public function revokeUserAccess(int $worker_id): bool
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "UPDATE workers SET isActive = 1 WHERE worker_id = :worker_id";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindParam(':worker_id', $worker_id);
+		if ($stmt->execute())
+			return true;
+
+		return false;
+	}
+
+	public function updateUserByAdmin(array $userData): bool
+	{
+		$dbCon = $this->database->openConnection();
+		$sql = "UPDATE workers SET worker_fname = :worker_fname, worker_lname = :worker_lname, role = :role, company_id = :company_id WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindParam(':worker_id', $userData['worker_id']);
+		$stmt->bindParam(':worker_fname', $userData['worker_fname']);
+		$stmt->bindParam(':worker_lname', $userData['worker_lname']);
+		$stmt->bindParam(':role', $userData['role']);
+		$stmt->bindParam(':company_id', $userData['company_id']);
 		if ($stmt->execute())
 			return true;
 

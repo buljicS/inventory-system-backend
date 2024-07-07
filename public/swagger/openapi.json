@@ -583,6 +583,64 @@
                 ]
             }
         },
+        "/api/Users/updateUserByAdmin": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Endpoint for admin to update information about users",
+                "operationId": "updateUserByAdmin",
+                "requestBody": {
+                    "description": "New company information",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "company_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "worker_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "worker_fname": {
+                                        "type": "string",
+                                        "example": "Name"
+                                    },
+                                    "worker_lname": {
+                                        "type": "string",
+                                        "example": "Last"
+                                    },
+                                    "worker_email": {
+                                        "type": "string",
+                                        "example": "example@gmail.com"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "example": "role"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Companies/addCompany": {
             "post": {
                 "tags": [
@@ -756,7 +814,7 @@
                 "operationId": "restoreCompany",
                 "parameters": [
                     {
-                        "name": "comapny_id",
+                        "name": "company_id",
                         "in": "path",
                         "description": "ID of company that needs to be restored",
                         "required": true,
