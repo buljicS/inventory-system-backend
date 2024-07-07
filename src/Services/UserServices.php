@@ -305,7 +305,7 @@ class UserServices
 			];
 		}
 
-		$activateUrl = "{$_ENV['MAIN_URL_FE']}/change-password?worker_id={$isUserCreated['worker_id']}&old_password={$newUser['worker_password']}&flag=1";
+		$activateUrl = "{$_ENV['MAIN_URL_FE']}/set-new-password?worker_id={$isUserCreated['worker_id']}&old_password={$newUser['worker_password']}&flag=1";
 		$subject = "Activate your account";
 		$isMailSent = $this->sendConfirmationEmail($newUser['worker_fname'], $activateUrl, $subject, $newUser['worker_email']);
 
