@@ -20,25 +20,20 @@ define("MAIN_URL", $_ENV['MAIN_URL_BE']);
  * @OA\Info(
  *     title="Inventory management system API",
  *     version="1.1.0",
- *     description="Inventory web based system for tracking items and stuff in company"
- *	 )
+ *     description="Inventory web-based system for tracking items and stuff in company"
+ * )
  * @OA\Server(
- *      url=MAIN_URL,
- *  )
+ *     url=MAIN_URL,
+ * )
  *
  * @OA\SecurityScheme(
- * *     securityScheme="bearerAuth",
- * *     type="http",
- * *     scheme="bearer",
- * *     bearerFormat="JWT",
- * *     description="Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
- * *     name="bearerAuth",
- * *     in="header"
- * * )
- *
- *
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT",
+ *     description="Enter the Bearer Authorization string as follows: `Bearer Generated-JWT-Token`"
+ * )
  */
-
 
 class WebAPIController
 {
@@ -84,6 +79,14 @@ class WebAPIController
 	 *     operationId="getAllFilesFromDir",
 	 *     description="Get all files from single directory",
 	 *     tags={"FirebaseStorage"},
+	 *     @OA\Parameter(
+	 *        name="dir",
+	 *        in="path",
+	 *        required=true,
+	 *        @OA\Schema(
+	 *           type="string"
+	 *        )
+	 *      ),
 	 *     @OA\Response(response="200", description="An example resource"),
 	 *     security={{"bearerAuth": {}}}
 	 * )
@@ -847,6 +850,42 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Put(
+	 *     path="/api/Users/restoreCompany/{company_id}",
+	 *     operationId="restoreCompany",
+	 *     description="Endpoint for admin to restored deleted company",
+	 *     tags={"Companies"},
+	 *		@OA\Parameter(
+	 *          description="ID of company that needs to be restored",
+	 *          in="path",
+	 *          name="comapny_id",
+	 *          required=true,
+	 *          @OA\Schema(
+	 *              type="integer",
+	 *              format="int64"
+	 *          )
+	 *      ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=404,
+	 *     	   description="Company not found"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function restoreCompany(Request $request, Response $response, array $args): Response
+	{
+		$company_id = (int)$args['company_id'];
+		$resp = $this->companiesServices->restoreCompany($company_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Admins
@@ -944,12 +983,12 @@ class WebAPIController
 	 *                      @OA\Property(
 	 *                         property="accountNumber",
 	 *                         type="number",
-	 *                         example=""
+	 *                         example="000123"
 	 *                      ),
 	 *                      @OA\Property(
 	 *                         property="netPay",
-	 *                         type="money",
-	 *                         example=""
+	 *                         type="number",
+	 *                         example="12345"
 	 *                      ),
 	 *                ),
 	 *             ),

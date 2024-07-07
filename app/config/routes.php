@@ -49,6 +49,7 @@ return function (Slim $app) {
 	$app->post('/api/Companies/addCompany', [API::class, 'addCompany']);
 	$app->put('/api/Companies/updateCompany', [API::class, 'updateCompany']);
 	$app->delete('/api/Companies/deleteCompany/{company_id}', [API::class, 'deleteCompany']);
+	$app->put('/api/Companies/restoreCompany/{company_id}', [API::class, 'restoreCompany']);
 	#endregion
 
 	#region TestEndpoints

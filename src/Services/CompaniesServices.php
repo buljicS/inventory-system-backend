@@ -88,4 +88,22 @@ class CompaniesServices
 		];
 	}
 
+	public function restoreCompany(int $company_id): array
+	{
+		$isCompanyRestored = $this->companies->restoreCompany($company_id);
+		if($isCompanyRestored) {
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'Company restored successfully'
+			];
+		}
+
+		return [
+			'status' => 500,
+			'message' => 'Internal Server Error',
+			'description' => 'Error while restoring company, please try again'
+		];
+	}
+
 }
