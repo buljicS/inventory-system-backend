@@ -18,16 +18,7 @@ class UsersRepository
 	{
 		$dbCon = $this->database->openConnection();
 
-		$sql = "SELECT worker_id, 
-       				   worker_fname, 
-       				   worker_lname, 
-       				   worker_email, 
-       				   phone_number, 
-       				   date_created, 
-       				   role, 
-       				   isActive 
-			    FROM workers";
-
+		$sql = "SELECT C.company_name, C.company_id, W.worker_id, W.worker_fname, W.worker_lname, W.worker_email, W.role, W.isActive FROM workers W INNER JOIN companies C;";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
