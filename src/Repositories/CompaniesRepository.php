@@ -86,6 +86,7 @@ class CompaniesRepository
 		$stmt->bindParam(':company_id', $company_id);
 		if($stmt->execute())
 			return true;
+
 		return false;
 	}
 }

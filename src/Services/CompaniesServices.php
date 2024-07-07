@@ -8,20 +8,18 @@ use Repositories\CompaniesRepository as Companies;
 
 class CompaniesServices
 {
-	private readonly CompaniesRepository $companiesRepository;
 	private readonly Validator $validator;
 	private readonly Companies $companies;
 
-	public function __construct(CompaniesRepository $companiesRepository, Validator $validator, Companies $companies)
+	public function __construct(Validator $validator, Companies $companies)
 	{
-		$this->companiesRepository = $companiesRepository;
 		$this->validator = $validator;
 		$this->companies = $companies;
 	}
 
 	public function getAllCompanies(): array
 	{
-		return $this->companiesRepository->getAllCompaniesForAdmin();
+		return $this->companies->getAllCompaniesForAdmin();
 	}
 
 	public function addNewCompany(array $newCompany): array
