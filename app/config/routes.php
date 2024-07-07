@@ -25,7 +25,7 @@ return function (Slim $app) {
 	$app->get('/api/Users/getAllUsers', [API::class, 'getAllUsers']);
 	$app->post("/api/Users/createUser", [API::class, 'createUser']);
 	$app->put("/api/Users/changeTempPassword", [API::class, 'changeTempPassword']);
-	$app->put("/api/Users/banUser/{worker_id}", [API::class, 'banUser']);
+	$app->delete("/api/Users/banUser/{worker_id}", [API::class, 'banUser']);
 	$app->put("/api/Users/revokeUserAccess/{worker_id}", [API::class, 'revokeUserAccess']);
 	#endregion
 
