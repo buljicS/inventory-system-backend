@@ -274,5 +274,27 @@ class UsersRepository
 			return false;
 	}
 
+	public function banUser(int $worker_id):bool
+	{
+		$dbCon = $this->database->openConnection();
+		$sql = "UPDATE workers SET isActive = 0 WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindParam(':worker_id', $worker_id);
+		if($stmt->execute())
+			return true;
 
+		return false;
+	}
+
+	public function revokeUserAccess(int $worker_id)
+	{
+		$dbCon = $this->database->openConnection();
+		$sql = "UPDATE workers SET isActive = 1 WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindParam(':worker_id', $worker_id);
+		if ($stmt->execute())
+			return true;
+
+		return false;
+	}
 }

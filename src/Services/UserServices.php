@@ -340,12 +340,39 @@ class UserServices
 		];
 	}
 
-	public function banUser(int $worker_id): ?array
+	public function banUser(int $worker_id): array
 	{
-		return null;
+		$isUserBanned = $this->userRepo->banUser($worker_id);
+
+		if($isUserBanned)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'User has been banned successfully'
+			];
+
+		return [
+			'status' => 500,
+			'message' => 'Internal Server Error',
+			'description' => 'Error while banning user, please try again'
+		];
 	}
 
-	public function revokeUserAccess(int $worker_id)
+	public function revokeUserAccess(int $worker_id): array
 	{
+		$isUserRestored = $this->userRepo->revokeUserAccess($worker_id);
+		if($isUserRestored) {
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'User access has been restored successfully'
+			];
+		}
+
+		return [
+			'status' => 500,
+			'message' => 'Internal Server Error',
+			'description' => 'Error while restoring user access, please try again'
+		];
 	}
 }
