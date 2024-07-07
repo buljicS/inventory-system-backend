@@ -251,7 +251,7 @@ class UsersRepository
 		$dbCon = $this->database->openConnection();
 		$sql = "UPDATE workers SET worker_password = :password, isActive = 1 WHERE worker_password = :tempPassword AND worker_id = :worker_id";
 		$stmt = $dbCon->prepare($sql);
-		$stmt->bindValue(':password', $updateData['newPassword']);
+		$stmt->bindValue(':password', password_hash($updateData['newPassword'], PASSWORD_DEFAULT));
 		$stmt->bindValue(':tempPassword', $updateData['oldPassword']);
 		$stmt->bindValue(':worker_id', $updateData['worker_id']);
 		return $stmt->execute();
