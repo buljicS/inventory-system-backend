@@ -11,6 +11,7 @@ return function (Slim $app) {
 	#region Main
 	$app->get('/', [API::class, 'Index']);
 	$app->get("/getDoc", [API::class, 'generateDocs']);
+	$app->get("/openMainScreen", [API::class, 'openMainScreen']);
 	#endregion
 
 	#region Users

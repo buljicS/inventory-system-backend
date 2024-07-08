@@ -55,7 +55,7 @@ class WebAPIController
 	#region Main
 	public function Index(Request $request, Response $response): Response
 	{
-		$response->getBody()->write(file_get_contents('../templates/pages/welcome_screen.html'));
+		$response->getBody()->write(file_get_contents('../templates/pages/login_screen.html'));
 		return $response;
 	}
 
@@ -68,6 +68,12 @@ class WebAPIController
 		$response->getBody()->write(file_get_contents("../public/swagger/openapi.json"));
 		return $response
 			->withHeader('Content-type', 'application/json');
+	}
+
+	public function openMainScreen(Request $request, Response $response): Response 
+	{
+		$response->getBody()->write(file_get_contents('../templates/pages/main_screen.html'));
+		return $response;
 	}
 	#endregion
 

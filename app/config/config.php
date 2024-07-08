@@ -12,7 +12,8 @@
 	$authPath = [
 		"/api/Users/",
 		"/api/Admins/",
-		"/api/Companies/"
+		"/api/Companies/",
+		"/openMainScreen"
 	];
 
 	$ignorePath = [
