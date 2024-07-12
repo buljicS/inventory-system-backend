@@ -900,6 +900,35 @@
                 ]
             }
         },
+        "/api/Rooms/getAllRoomsByCompanyId/{company_id}": {
+            "get": {
+                "tags": [
+                    "Rooms"
+                ],
+                "description": "Get all rooms by company",
+                "operationId": "getAllRoomsByCompanyId",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [

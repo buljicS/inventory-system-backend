@@ -39,8 +39,13 @@ class RoomServices
 		];
 	}
 
-	public function getAllRooms(): array
+	public function getAllRooms(): ?array
 	{
 		return $this->roomRepo->getAllRooms();
+	}
+
+	public function getAllRoomsByCompanyId(int $company_id): ?array
+	{
+		return $this->roomRepo->getRoomByCompanyId($company_id);
 	}
 }

@@ -1026,6 +1026,35 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Rooms/getAllRoomsByCompanyId/{company_id}",
+	 *     operationId="getAllRoomsByCompanyId",
+	 *     description="Get all rooms by company",
+	 *     tags={"Rooms"},
+	 *     @OA\Parameter(
+	 *         name="company_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getAllRoomsByCompanyId(Request $request, Response $response, array $args): Response
+	{
+		$company_id = (int)$args['company_id'];
+		$resp = $this->roomServices->getAllRoomsByCompanyId($company_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+
 	#endregion
 
 	#region Admins

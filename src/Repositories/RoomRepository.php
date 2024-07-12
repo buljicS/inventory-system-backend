@@ -33,4 +33,14 @@ class RoomRepository
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
+
+	public function getRoomByCompanyId(int $company_id): ?array
+	{
+		$dbConn = $this->dbConn->openConnection();
+		$sql = "SELECT * FROM rooms WHERE company_id = :company_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':company_id', $company_id);
+		$stmt->execute();
+		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
 }
