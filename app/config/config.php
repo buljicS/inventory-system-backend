@@ -13,7 +13,7 @@
 		"/api/Users/",
 		"/api/Admins/",
 		"/api/Companies/",
-		"/openMainScreen"
+		"/api/Rooms/"
 	];
 
 	$ignorePath = [

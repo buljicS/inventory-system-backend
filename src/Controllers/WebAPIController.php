@@ -13,6 +13,7 @@ use Services\UserServices as UserServices;
 use Services\LogServices as LogServices;
 use Services\FirebaseServices as FirebaseServices;
 use Services\CompaniesServices as CompaniesServices;
+use Services\RoomServices as RoomServices;
 
 define("MAIN_URL", $_ENV['MAIN_URL_BE']);
 
@@ -42,20 +43,27 @@ class WebAPIController
 	private LogServices $logServices;
 	private FirebaseServices $firebaseServices;
 	private CompaniesServices $companiesServices;
+	private RoomServices $roomServices;
 
-	public function __construct(UserServices $userServices, AdminServices $adminServices, LogServices $logServices, FirebaseServices $firebaseServices, CompaniesServices $companiesServices)
+	public function __construct(UserServices $userServices,
+								AdminServices $adminServices,
+								LogServices $logServices,
+								FirebaseServices $firebaseServices,
+								CompaniesServices $companiesServices,
+								RoomServices $roomServices)
 	{
 		$this->userServices = $userServices;
 		$this->adminServices = $adminServices;
 		$this->logServices = $logServices;
 		$this->firebaseServices = $firebaseServices;
 		$this->companiesServices = $companiesServices;
+		$this->roomServices = $roomServices;
 	}
 
 	#region Main
-	public function Index(Request $request, Response $response): Response
+	public function index(Request $request, Response $response): Response
 	{
-		$response->getBody()->write(file_get_contents('../templates/pages/login_screen.html'));
+		$response->getBody()->write(file_get_contents('../templates/pages/main_screen.html'));
 		return $response;
 	}
 
@@ -68,12 +76,6 @@ class WebAPIController
 		$response->getBody()->write(file_get_contents("../public/swagger/openapi.json"));
 		return $response
 			->withHeader('Content-type', 'application/json');
-	}
-
-	public function openMainScreen(Request $request, Response $response): Response 
-	{
-		$response->getBody()->write(file_get_contents('../templates/pages/main_screen.html'));
-		return $response;
 	}
 	#endregion
 
@@ -951,6 +953,60 @@ class WebAPIController
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
+	}
+	#endregion
+
+	#region Rooms
+
+	/**
+	 * @OA\Post(
+	 *     path="/api/Rooms/addRoom",
+	 *     operationId="addRoom",
+	 *     tags={"Rooms"},
+	 *     @OA\RequestBody(
+	 *         description="Create new room",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     				@OA\Property(
+	 *                      property="company_id",
+	 *                      type="integer",
+	 *                      example=0
+	 *                  ),
+	 *     				@OA\Property(
+	 *                       property="room_name",
+	 *                       type="string",
+	 *                       example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="room_number",
+	 *                     type="integer",
+	 *                     example=0
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="room_description",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 )
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function addRoom(Request $request, Response $response): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$resp = $this->roomServices->addNewRoom($requestBody);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+
 	}
 	#endregion
 

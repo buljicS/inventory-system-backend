@@ -9,9 +9,8 @@ use Controllers\WebAPIController as API;
 return function (Slim $app) {
 
 	#region Main
-	$app->get('/', [API::class, 'Index']);
+	$app->get('/', [API::class, 'index']);
 	$app->get("/getDoc", [API::class, 'generateDocs']);
-	$app->get("/openMainScreen", [API::class, 'openMainScreen']);
 	#endregion
 
 	#region Users
@@ -52,6 +51,10 @@ return function (Slim $app) {
 	$app->put('/api/Companies/updateCompany', [API::class, 'updateCompany']);
 	$app->delete('/api/Companies/deleteCompany/{company_id}', [API::class, 'deleteCompany']);
 	$app->put('/api/Companies/restoreCompany/{company_id}', [API::class, 'restoreCompany']);
+	#endregion
+
+	#region Rooms
+	$app->post("/api/Rooms/addRoom", [API::class, 'addRoom']);
 	#endregion
 
 	#region TestEndpoints

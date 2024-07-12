@@ -213,6 +213,33 @@ class ValidatorUtility
 	}
 	#endregion
 
+	#region RoomValidation
+	public function validateNewRoom(array $newRoom):bool|array
+	{
+		$this->validator = new Validator($newRoom);
+		$this->validator->rules([
+			'required' => [
+				['company_id'],
+				['room_name'],
+				['room_number'],
+				['room_description']
+			],
+			'min' => [
+				[['company_id'], 1],
+				[['room_number'], 1]
+			]
+		]);
+
+		if($this->validator->validate()) return true;
+
+		return [
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
+		];
+	}
+	#endregion
+
 	#region AdminValidation
 	public function validateAdminCredentials(array $credentials): bool|array
 	{

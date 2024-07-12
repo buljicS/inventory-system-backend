@@ -2,7 +2,6 @@
 
 namespace Services;
 
-use Repositories\CompaniesRepository;
 use Utilities\ValidatorUtility as Validator;
 use Repositories\CompaniesRepository as Companies;
 
