@@ -41,6 +41,6 @@ class RoomRepository
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':company_id', $company_id);
 		$stmt->execute();
-		return $stmt->fetch(PDO::FETCH_ASSOC);
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 }

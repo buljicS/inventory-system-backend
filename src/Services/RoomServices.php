@@ -46,10 +46,11 @@ class RoomServices
 
 	public function getAllRoomsByCompanyId(int $company_id): ?array
 	{
-		$room = $this->roomRepo->getRoomByCompanyId($company_id);
-		if(!$room)
-			return [];
+		return $this->roomRepo->getRoomByCompanyId($company_id);
+	}
 
-		return $room;
+	public function deleteRoom(int $room_id): array
+	{
+		return ['ok'];
 	}
 }
