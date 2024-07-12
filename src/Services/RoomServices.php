@@ -38,4 +38,9 @@ class RoomServices
 			'description' => 'Error while adding new room, please try again'
 		];
 	}
+
+	public function getAllRooms(): array
+	{
+		return $this->roomRepo->getAllRooms();
+	}
 }

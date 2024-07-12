@@ -89,4 +89,16 @@ class CompaniesRepository
 
 		return false;
 	}
+
+	public function getCompanyByWorker(int $worker_id): array|bool
+	{
+		$dbCon = $this->database->openConnection();
+		$sql = "SELECT W.company_id, C.company_name FROM workers W
+                LEFT JOIN companies C ON C.company_id = W.company_id
+                WHERE W.worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindParam(':worker_id', $worker_id);
+		$stmt->execute();
+		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
 }

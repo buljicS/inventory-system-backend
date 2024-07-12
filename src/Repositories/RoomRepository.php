@@ -24,4 +24,13 @@ class RoomRepository
 		$stmt->bindParam(':room_description', $newRoom['room_description']);
 		return $stmt->execute();
 	}
+
+	public function getAllRooms(): ?array
+	{
+		$dbConn = $this->dbConn->openConnection();
+		$sql = "SELECT * FROM rooms";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 }

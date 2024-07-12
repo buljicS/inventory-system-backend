@@ -1008,6 +1008,24 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 
 	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Rooms/getAllRooms",
+	 *     operationId="getAllRooms",
+	 *     description="Get all rooms",
+	 *     tags={"Rooms"},
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getAllRooms(Request $request, Response $response): Response
+	{
+		$resp = $this->roomServices->getAllRooms();
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Admins

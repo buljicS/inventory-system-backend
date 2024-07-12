@@ -881,6 +881,25 @@
                 ]
             }
         },
+        "/api/Rooms/getAllRooms": {
+            "get": {
+                "tags": [
+                    "Rooms"
+                ],
+                "description": "Get all rooms",
+                "operationId": "getAllRooms",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [
