@@ -12,8 +12,9 @@ use Services\AdminServices as AdminServices;
 use Services\UserServices as UserServices;
 use Services\LogServices as LogServices;
 use Services\FirebaseServices as FirebaseServices;
-use Services\CompaniesServices as CompaniesServices;
+use Services\CompaniesServices as CompanyServices;
 use Services\RoomServices as RoomServices;
+use Services\ItemServices as ItemServices;
 
 define("MAIN_URL", $_ENV['MAIN_URL_BE']);
 
@@ -35,29 +36,31 @@ define("MAIN_URL", $_ENV['MAIN_URL_BE']);
  *     description="Enter the Bearer Authorization string as follows: `Bearer Generated-JWT-Token`"
  * )
  */
-
 class WebAPIController
 {
 	private UserServices $userServices;
 	private AdminServices $adminServices;
 	private LogServices $logServices;
 	private FirebaseServices $firebaseServices;
-	private CompaniesServices $companiesServices;
+	private CompanyServices $companyServices;
 	private RoomServices $roomServices;
+	private ItemServices $itemServices;
 
-	public function __construct(UserServices $userServices,
-								AdminServices $adminServices,
-								LogServices $logServices,
+	public function __construct(UserServices     $userServices,
+								AdminServices    $adminServices,
+								LogServices      $logServices,
 								FirebaseServices $firebaseServices,
-								CompaniesServices $companiesServices,
-								RoomServices $roomServices)
+								CompanyServices  $companyServices,
+								RoomServices     $roomServices,
+								ItemServices     $itemServices)
 	{
 		$this->userServices = $userServices;
 		$this->adminServices = $adminServices;
 		$this->logServices = $logServices;
 		$this->firebaseServices = $firebaseServices;
-		$this->companiesServices = $companiesServices;
+		$this->companyServices = $companyServices;
 		$this->roomServices = $roomServices;
+		$this->itemServices = $itemServices;
 	}
 
 	#region Main
@@ -792,7 +795,7 @@ class WebAPIController
 	public function addCompany(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
-		$newCompany = $this->companiesServices->addNewCompany($requestBody);
+		$newCompany = $this->companyServices->addNewCompany($requestBody);
 		$response->getBody()->write(json_encode($newCompany));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -810,7 +813,7 @@ class WebAPIController
 	 */
 	public function getAllCompanies(Request $request, Response $response): Response
 	{
-		$resp = $this->companiesServices->getAllCompanies();
+		$resp = $this->companyServices->getAllCompanies();
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -882,7 +885,7 @@ class WebAPIController
 	public function updateCompany(Request $request, Response $response): Response
 	{
 		$newCompanyData = (array)$request->getParsedBody();
-		$resp = $this->companiesServices->updateCompany($newCompanyData);
+		$resp = $this->companyServices->updateCompany($newCompanyData);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -913,7 +916,7 @@ class WebAPIController
 	public function deleteCompany(Request $request, Response $response, array $args): Response
 	{
 		$company_id = (int)$args['company_id'];
-		$resp = $this->companiesServices->deleteCompany($company_id);
+		$resp = $this->companyServices->deleteCompany($company_id);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -949,7 +952,7 @@ class WebAPIController
 	public function restoreCompany(Request $request, Response $response, array $args): Response
 	{
 		$company_id = (int)$args['company_id'];
-		$resp = $this->companiesServices->restoreCompany($company_id);
+		$resp = $this->companyServices->restoreCompany($company_id);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -1145,6 +1148,36 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
+	#endregion
+
+	#region Items
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Items/getItemsByRoom/{room_id}",
+	 *     operationId="getItemsByRoom",
+	 *     description="Get all items from given room",
+	 *     tags={"Items"},
+	 *     @OA\Parameter(
+	 *        name="room_id",
+	 *        in="path",
+	 *        required=true,
+	 *        @OA\Schema(
+	 *           type="string"
+	 *        )
+	 *      ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getItemsByRoom(Request $request, Response $response, array $args): Response
+	{
+		$room_id = (int)$args['room_id'];
+		$resp = $this->itemServices->getItemsByRoom($room_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Admins
