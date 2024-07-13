@@ -1178,6 +1178,89 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Post(
+	 *     path="/api/Items/createNewItems",
+	 *     operationId="createNewItems",
+	 *     tags={"Items"},
+	 *     @OA\RequestBody(
+	 *         description="Create new items or one single item",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 title="options",
+	 *                 type="object",
+	 *     			   @OA\Property (
+	 *     			       property="generate_options",
+	 *     				   type="object",
+	 *     				   @OA\Property(
+	 *                       	property="batch_generate",
+	 *                       	type="boolean",
+	 *                       	example=false
+	 *                   	),
+	 *           			@OA\Property(
+	 *                       	property="item_quantity",
+	 *                       	type="integer",
+	 *                       	example=0
+	 *                   	),
+	 *                   	@OA\Property(
+	 *                      	property="name_pattern",
+	 *                      	type="string",
+	 *                      	example="myitem1"
+	 *                    	),
+	 *                    	@OA\Property(
+	 *                      	property="with_qrcodes",
+	 *                      	type="boolean",
+	 *                      	example=false
+	 *                    ),
+	 *     			   ),
+	 *     			   @OA\Property (
+	 *     			       property="item",
+	 * 					   type="object",
+	 *     				   @OA\Property(
+	 *                        property="room_id",
+	 *                        type="integer",
+	 *                        example=0
+	 *                     ),
+	 *          		   @OA\Property(
+	 *                        property="item_name",
+	 *                        type="string",
+	 *                        example="string"
+	 *                     ),
+	 *               	   @OA\Property(
+	 *                        property="country_of_origin",
+	 *                        type="string",
+	 *                        example="EN"
+	 *                     ),
+	 *                     @OA\Property(
+	 *                        property="serial_no",
+	 *                        type="string",
+	 *                        example="string"
+	 *                     ),
+	 *     			   )
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=500,
+	 *         description="Error"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function createNewItems(Request $request, Response $response, array $args): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$resp = $this->itemServices->createNewItems($requestBody);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Admins

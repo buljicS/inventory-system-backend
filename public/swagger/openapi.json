@@ -1042,6 +1042,82 @@
                 ]
             }
         },
+        "/api/Items/createNewItems": {
+            "post": {
+                "tags": [
+                    "Items"
+                ],
+                "operationId": "createNewItems",
+                "requestBody": {
+                    "description": "Create new items or one single item",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "options",
+                                "properties": {
+                                    "generate_options": {
+                                        "properties": {
+                                            "batch_generate": {
+                                                "type": "boolean",
+                                                "example": false
+                                            },
+                                            "item_quantity": {
+                                                "type": "integer",
+                                                "example": 0
+                                            },
+                                            "name_pattern": {
+                                                "type": "string",
+                                                "example": "myitem1"
+                                            },
+                                            "with_qrcodes": {
+                                                "type": "boolean",
+                                                "example": false
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "item": {
+                                        "properties": {
+                                            "room_id": {
+                                                "type": "integer",
+                                                "example": 0
+                                            },
+                                            "item_name": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "country_of_origin": {
+                                                "type": "string",
+                                                "example": "EN"
+                                            },
+                                            "serial_no": {
+                                                "type": "string",
+                                                "example": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [

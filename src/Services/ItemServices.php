@@ -16,4 +16,8 @@ class ItemServices
 	{
 		return $this->itemRepository->getItemsByRoom($room_id);
 	}
+
+	public function createNewItems(array $requestBody)
+	{
+	}
 }
