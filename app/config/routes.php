@@ -20,7 +20,7 @@ return function (Slim $app) {
 	$app->post('/api/Users/resetPassword' , [API::class, 'resetPassword']);
 	$app->get('/api/Users/activateUserAccount/{token}', [API::class, 'activateUserAccount']);
 	$app->post('/api/Users/setNewPassword', [API::class, 'setNewPassword']);
-	$app->put('/api/Users/updateUser', [API::class, 'updateUserData']);
+	$app->post('/api/Users/updateUser', [API::class, 'updateUserData']);
 	$app->get('/api/Users/getUserInfo/{worker_id}', [API::class, 'getUserInfo']);
 	$app->get('/api/Users/getAllUsers', [API::class, 'getAllUsers']);
 	$app->post("/api/Users/createUser", [API::class, 'createUser']);

@@ -8,9 +8,15 @@
 	];
  #endregion
 
- #region Authorization middleware config
+ #region Authorization config
+	$authPath = [
+		"/api/Users/",
+		"/api/Admins/",
+		"/api/Companies/",
+		"/api/Rooms/"
+	];
+
 	$ignorePath = [
-		"/",
 		"/getDoc",
 		"/api/Users/loginUser",
 		"/api/Users/registerUser",
@@ -21,23 +27,6 @@
 		"/api/Admins/loginAdmin",
 	];
  #endregion
-
- #region RBAC middleware config
-
-	//ignore this middleware for all routes that are not going through JWT authorization
-	$ignoreMiddlewareFor = $ignorePath;
-
-	$roleBasedAccess = [
-		"worker" => [
-			"/api/Logs/logAccess",
-			"/api/Users/updateUser",
-			"/api/Users/setNewPassword",
-		],
-		"employer" => [
-
-		]
-];
-#endregion
 
  #region ServiceProviders
 	$serviceProviders = [

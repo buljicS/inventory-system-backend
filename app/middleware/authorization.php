@@ -10,11 +10,11 @@ return function (Slim $app) {
 	require __DIR__ . '/../config/config.php';
 
 	$app->add(new Auth([
+		"path" => $authPath,
 		"ignore" => $ignorePath,
 		"secure" => false,
 		"secret" => $_ENV["JWT_SECRET"],
 		"algorithm" => "HS256",
-		"attribute" => "decoded-jwt",
 		"error" => function ($response, $arguments) {
 			$data["status"] = "Authorization Error";
 			$data["message"] = $arguments["message"];

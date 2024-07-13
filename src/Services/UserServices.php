@@ -128,7 +128,7 @@ class UserServices
 				'profilePicture' => null,
 				'userRole' => $response['role'],
 				'company' => $this->companyRepo->getCompanyByWorker((int)$response['worker_id']),
-				'token' => $this->tokenUtility->GenerateJWTToken($response['worker_id'], $response['role'])
+				'token' => $this->tokenUtility->GenerateJWTToken($response['worker_id'])
 			],
 		};
 
