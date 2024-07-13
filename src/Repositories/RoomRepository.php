@@ -37,7 +37,7 @@ class RoomRepository
 	public function getRoomByCompanyId(int $company_id): ?array
 	{
 		$dbConn = $this->dbConn->openConnection();
-		$sql = "SELECT room_number, room_name, room_description, isActive FROM rooms WHERE company_id = :company_id";
+		$sql = "SELECT * FROM rooms WHERE company_id = :company_id";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':company_id', $company_id);
 		$stmt->execute();
