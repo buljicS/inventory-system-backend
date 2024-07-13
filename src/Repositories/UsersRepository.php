@@ -111,7 +111,8 @@ ON
 		$newUser = "SELECT worker_id FROM workers WHERE worker_email = :worker_email";
 		$stmt = $dbCon->prepare($newUser);
 		$stmt->bindValue(':worker_email', $userData['worker_email']);
-		if($stmt->execute())
+		$stmt->execute();
+		if($stmt->rowCount() > 0)
 			return $stmt->fetch(PDO::FETCH_ASSOC);
 
 		return false;
@@ -260,7 +261,8 @@ ON
 		$stmt->bindValue(':password', password_hash($updateData['newPassword'], PASSWORD_DEFAULT));
 		$stmt->bindValue(':tempPassword', $updateData['oldPassword']);
 		$stmt->bindValue(':worker_id', $updateData['worker_id']);
-		return $stmt->execute();
+		$stmt->execute();
+		return $stmt->rowCount() > 0;
 	}
 
 	public function updateUser(array $newUserData): array|bool

@@ -57,6 +57,7 @@ return function (Slim $app) {
 	$app->post("/api/Rooms/addRoom", [API::class, 'addRoom']);
 	$app->get("/api/Rooms/getAllRooms", [API::class, 'getAllRooms']);
 	$app->get("/api/Rooms/getAllRoomsByCompanyId/{company_id}", [API::class, 'getAllRoomsByCompanyId']);
+	$app->delete("/api/Rooms/deleteRoom/{room_id}", [API::class, 'deleteRoom']);
 	#endregion
 
 	#region TestEndpoints

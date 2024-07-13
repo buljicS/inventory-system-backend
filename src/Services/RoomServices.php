@@ -48,4 +48,22 @@ class RoomServices
 	{
 		return $this->roomRepo->getRoomByCompanyId($company_id);
 	}
+
+	public function deleteRoom(int $room_id): array
+	{
+		$isRoomDeleted = $this->roomRepo->deleteRoom($room_id);
+
+		if($isRoomDeleted)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'Room deleted successfully'
+			];
+
+		return [
+			'status' => 404,
+			'message' => 'Not found',
+			'description' => 'Room not found'
+		];
+	}
 }

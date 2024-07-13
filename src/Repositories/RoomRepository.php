@@ -43,4 +43,14 @@ class RoomRepository
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
+
+	public function deleteRoom(int $room_id): bool
+	{
+		$dbConn = $this->dbConn->openConnection();
+		$sql = "DELETE FROM rooms WHERE room_id = :room_id AND isActive = 0";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':room_id', $room_id);
+		$stmt->execute();
+		return $stmt->rowCount() > 0;
+	}
 }

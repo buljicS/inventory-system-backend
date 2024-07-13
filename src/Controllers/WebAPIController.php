@@ -1054,6 +1054,42 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
+	/**
+	 * @OA\Delete(
+	 *     path="/api/Rooms/deleteRoom/{room_id}",
+	 *     operationId="deleteRoom",
+	 *     description="Delete inactive rooms (rooms that have no active inventory event)",
+	 *     tags={"Rooms"},
+	 *     @OA\Parameter(
+	 *         description="ID of room to be deleted",
+	 *         in="path",
+	 *         name="room_id",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer",
+	 *             format="int64"
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *        response=200,
+	 *        description="Success"
+	 *      ),
+	 *      @OA\Response(
+	 *        response=404,
+	 *        description="Room not found"
+	 *      ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function deleteRoom(Request $request, Response $response, array $args): Response
+	{
+		$room_id = (int)$args['room_id'];
+		$resp = $this->roomServices->deleteRoom($room_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
 
 	#endregion
 

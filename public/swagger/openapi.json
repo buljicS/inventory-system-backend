@@ -929,6 +929,40 @@
                 ]
             }
         },
+        "/api/Rooms/deleteRoom/{room_id}": {
+            "delete": {
+                "tags": [
+                    "Rooms"
+                ],
+                "description": "Delete inactive rooms (rooms that have no active inventory event)",
+                "operationId": "deleteRoom",
+                "parameters": [
+                    {
+                        "name": "room_id",
+                        "in": "path",
+                        "description": "ID of room to be deleted",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Room not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [
