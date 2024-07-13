@@ -963,6 +963,56 @@
                 ]
             }
         },
+        "/api/Rooms/updateRoom": {
+            "put": {
+                "tags": [
+                    "Rooms"
+                ],
+                "operationId": "updateRoom",
+                "requestBody": {
+                    "description": "Update room information",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "room_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "room_name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "room_number": {
+                                        "type": "integer",
+                                        "example": 123
+                                    },
+                                    "room_description": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "isActive": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [

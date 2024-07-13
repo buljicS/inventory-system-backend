@@ -1090,6 +1090,60 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
+	/**
+	 * @OA\Put(
+	 *     path="/api/Rooms/updateRoom",
+	 *     operationId="updateRoom",
+	 *     tags={"Rooms"},
+	 *     @OA\RequestBody(
+	 *         description="Update room information",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     			   @OA\Property (
+	 *     			     property="room_id",
+	 *     				 type="integer",
+	 *     				 example=0
+	 *     			   ),
+	 *     			   @OA\Property(
+	 *                     property="room_name",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="room_number",
+	 *                     type="integer",
+	 *                     example=123
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="room_description",
+	 *                     type="string",
+	 *                     example="string"
+	 *                  ),
+	 *                  @OA\Property(
+	 *                     property="isActive",
+	 *                     type="integer",
+	 *                     example=1
+	 *                  ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function updateRoom(Request $request, Response $response): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$resp = $this->roomServices->updateRoom($requestBody);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 
 	#endregion
 

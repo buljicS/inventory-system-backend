@@ -53,4 +53,18 @@ class RoomRepository
 		$stmt->execute();
 		return $stmt->rowCount() > 0;
 	}
+
+	public function updateRoom(array $updatedRoom): bool
+	{
+		$dbConn = $this->dbConn->openConnection();
+		$sql = "UPDATE rooms SET room_name = :room_name, room_number = :room_number, room_description = :room_description, isActive = :isActive WHERE room_id = :room_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':room_id', $updatedRoom['room_id']);
+		$stmt->bindParam(':room_name', $updatedRoom['room_name']);
+		$stmt->bindParam(':room_number', $updatedRoom['room_number']);
+		$stmt->bindParam(':room_description', $updatedRoom['room_description']);
+		$stmt->bindParam(':isActive', $updatedRoom['isActive']);
+		$stmt->execute();
+		return $stmt->rowCount() > 0;
+	}
 }

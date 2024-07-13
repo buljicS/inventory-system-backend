@@ -238,6 +238,36 @@ class ValidatorUtility
 			'description' => $this->validator->errors()
 		];
 	}
+
+	public function validateUpdatedRoom(array $updatedRoom): bool|array
+	{
+		$this->validator = new Validator($updatedRoom);
+		$this->validator->rules([
+			'required' => [
+				['room_id'],
+				['room_name'],
+				['room_number'],
+				['room_description'],
+				['isActive']
+			],
+			'min' => [
+				[['room_id'], 1],
+				[['room_number'], 1],
+				[['isActive'], 0]
+			],
+			'max' => [
+				[['isActive'], 1]
+			]
+		]);
+
+		if($this->validator->validate()) return true;
+
+		return [
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
+		];
+	}
 	#endregion
 
 	#region AdminValidation

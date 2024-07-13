@@ -66,4 +66,24 @@ class RoomServices
 			'description' => 'Room not found'
 		];
 	}
+
+	public function updateRoom(array $updatedRoom): array
+	{
+		$isNewRoomValid = $this->validator->validateUpdatedRoom($updatedRoom);
+		if($isNewRoomValid !== true) return $isNewRoomValid;
+
+		$isCompanyUpdated = $this->roomRepo->updateRoom($updatedRoom);
+		if($isCompanyUpdated)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'Room updated successfully'
+			];
+
+		return [
+			'status' => 404,
+			'message' => 'Not found',
+			'description' => 'Room not found, please try again'
+		];
+	}
 }
