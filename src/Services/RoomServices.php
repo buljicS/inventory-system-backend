@@ -46,10 +46,6 @@ class RoomServices
 
 	public function getAllRoomsByCompanyId(int $company_id): ?array
 	{
-		$room = $this->roomRepo->getRoomByCompanyId($company_id);
-		if(!$room)
-			return [];
-
-		return $room;
+		return $this->roomRepo->getRoomByCompanyId($company_id);
 	}
 }

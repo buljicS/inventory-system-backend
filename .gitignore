@@ -6,7 +6,7 @@
 /vendor
 
 # IDE files
-/.idea
+.idea
 /.vscode
 
 #server files
