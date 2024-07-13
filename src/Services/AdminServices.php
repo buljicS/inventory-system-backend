@@ -47,7 +47,7 @@ class AdminServices
 				'userId' => $admin['admin_id'],
 				'userEmail' => $admin['admin_username'],
 				'userRole' => 'admin',
-				'token' => $this->token->GenerateJWTToken($admin['admin_id'])
+				'token' => $this->token->GenerateJWTToken($admin['admin_id'], 'admin')
 			]
 		};
 	}

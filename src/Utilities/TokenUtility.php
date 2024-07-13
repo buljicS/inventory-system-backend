@@ -16,7 +16,7 @@ class TokenUtility
 		return bin2hex($bytes);
 	}
 
-	public function GenerateJWTToken(int $userid): string
+	public function GenerateJWTToken(int $userid, string $role): string
 	{
 		$headers = [
 			'typ' => 'JWT',
@@ -28,7 +28,8 @@ class TokenUtility
 			'aud' => $_ENV['MAIN_URL_FE'],
 			'iat' => time(),
 			'exp' => time() + 28800,
-			'userid' => $userid
+			'userid' => $userid,
+			'role' => $role
 		];
 
 		return JWT::encode($payload, $_ENV['JWT_SECRET'], 'HS256', null, $headers);
