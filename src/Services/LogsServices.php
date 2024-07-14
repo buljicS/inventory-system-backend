@@ -4,14 +4,14 @@ namespace Services;
 
 use Detection\Exception\MobileDetectException;
 use Detection\MobileDetect as MobileDetect;
-use Repositories\LogRepository as LogRepository;
+use Repositories\LogsRepository as LogRepository;
 
-class LogServices
+class LogsServices
 {
 	private MobileDetect $_mobileDetect;
-	private LogRepository $_logRepository;
+	private LogsRepository $_logRepository;
 
-	public function __construct(MobileDetect $mobileDetect, LogRepository $logRepository)
+	public function __construct(MobileDetect $mobileDetect, LogsRepository $logRepository)
 	{
 		$this->_logRepository = $logRepository;
 		$this->_mobileDetect = $mobileDetect;

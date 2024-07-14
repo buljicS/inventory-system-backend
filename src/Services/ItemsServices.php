@@ -2,12 +2,12 @@
 
 namespace Services;
 
-use Repositories\ItemRepository as ItemRepository;
+use Repositories\ItemsRepository as ItemRepository;
 
-class ItemServices
+class ItemsServices
 {
-	private readonly ItemRepository $itemRepository;
-	public function __construct(ItemRepository $itemRepository)
+	private readonly ItemsRepository $itemRepository;
+	public function __construct(ItemsRepository $itemRepository)
 	{
 		$this->itemRepository = $itemRepository;
 	}

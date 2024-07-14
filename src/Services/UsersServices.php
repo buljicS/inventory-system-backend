@@ -9,18 +9,18 @@ use Repositories\UsersRepository;
 use Utilities\MailUtility;
 use Utilities\TokenUtility;
 use Utilities\ValidatorUtility;
-use Services\LogServices as LogServices;
+use Services\LogsServices as LogServices;
 
-class UserServices
+class UsersServices
 {
 	private readonly UsersRepository $userRepo;
 	private readonly MailUtility $email;
 	private readonly TokenUtility $tokenUtility;
-	private readonly LogServices $logServices;
+	private readonly LogsServices $logServices;
 	private readonly ValidatorUtility $validatorUtility;
 	private readonly CompaniesRepository $companyRepo;
 
-	public function __construct(MailUtility $email, TokenUtility $tokenUtility, UsersRepository $usersRepository, LogServices $logServices, ValidatorUtility $validatorUtility, CompaniesRepository $companiesRepository)
+	public function __construct(MailUtility $email, TokenUtility $tokenUtility, UsersRepository $usersRepository, LogsServices $logServices, ValidatorUtility $validatorUtility, CompaniesRepository $companiesRepository)
 	{
 		$this->email = $email;
 		$this->userRepo = $usersRepository;

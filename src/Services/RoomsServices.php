@@ -2,10 +2,10 @@
 
 namespace Services;
 
-use Repositories\RoomRepository as RoomRepo;
+use Repositories\RoomsRepository as RoomRepo;
 use Utilities\ValidatorUtility as Validator;
 
-class RoomServices
+class RoomsServices
 {
 	private readonly RoomRepo $roomRepo;
 	private readonly Validator $validator;

@@ -195,7 +195,7 @@
     });
 
     async function generateDocs(path) {
-        return await fetch(path);
+        await fetch(path);
     }
 
     let urlObjects = document.querySelectorAll(".nav-items");
@@ -216,9 +216,7 @@
             }
 
             else if (currentPath === "/swagger") {
-                let resp = await generateDocs(baseURLBE + "/getDoc");
-                let jsonDecoded = await resp.json();
-                console.log(jsonDecoded);
+                await generateDocs(baseURLBE + "/getDoc");
                 iFrame.setAttribute("src", baseURLBE + currentPath);
             }
 

@@ -5,7 +5,7 @@ namespace Repositories;
 use Controllers\DatabaseController as DBController;
 use PDO;
 
-class LogRepository
+class LogsRepository
 {
 	private DBController $_database;
 	public function __construct(DBController $database)

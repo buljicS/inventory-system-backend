@@ -2,22 +2,22 @@
 
 namespace Services;
 
-use Services\UserServices as UserServices;
-use Repositories\AdminRepository as AdminRepository;
+use Services\UsersServices as UserServices;
+use Repositories\AdminsRepository as AdminRepository;
 use Services\CompaniesServices as CompaniesServices;
 use Utilities\ValidatorUtility as Validator;
 use Utilities\TokenUtility as Token;
 
-class AdminServices
+class AdminsServices
 {
-	private readonly AdminRepository $adminRepository;
+	private readonly AdminsRepository $adminRepository;
 	private readonly Validator $validator;
 	private readonly Token $token;
 	private readonly CompaniesServices $companiesServices;
-	private readonly UserServices $userServices;
+	private readonly UsersServices $userServices;
 
 
-	public function __construct(UserServices $userServices, AdminRepository $adminRepository, Validator $validator, Token $token, CompaniesServices $companiesServices)
+	public function __construct(UsersServices $userServices, AdminsRepository $adminRepository, Validator $validator, Token $token, CompaniesServices $companiesServices)
 	{
 		$this->adminRepository = $adminRepository;
 		$this->validator = $validator;

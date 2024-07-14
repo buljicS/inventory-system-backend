@@ -4,7 +4,7 @@ namespace Repositories;
 
 use Controllers\DatabaseController as DBController;
 
-class AdminRepository
+class AdminsRepository
 {
 	private DBController $database;
 

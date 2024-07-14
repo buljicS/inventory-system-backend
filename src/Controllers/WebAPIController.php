@@ -8,13 +8,13 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use OpenApi\Generator as Generator;
 
-use Services\AdminServices as AdminServices;
-use Services\UserServices as UserServices;
-use Services\LogServices as LogServices;
+use Services\AdminsServices as AdminServices;
+use Services\UsersServices as UserServices;
+use Services\LogsServices as LogServices;
 use Services\FirebaseServices as FirebaseServices;
 use Services\CompaniesServices as CompanyServices;
-use Services\RoomServices as RoomServices;
-use Services\ItemServices as ItemServices;
+use Services\RoomsServices as RoomServices;
+use Services\ItemsServices as ItemServices;
 
 define("MAIN_URL", $_ENV['MAIN_URL_BE']);
 
@@ -38,21 +38,21 @@ define("MAIN_URL", $_ENV['MAIN_URL_BE']);
  */
 class WebAPIController
 {
-	private UserServices $userServices;
-	private AdminServices $adminServices;
-	private LogServices $logServices;
+	private UsersServices $userServices;
+	private AdminsServices $adminServices;
+	private LogsServices $logServices;
 	private FirebaseServices $firebaseServices;
-	private CompanyServices $companyServices;
-	private RoomServices $roomServices;
-	private ItemServices $itemServices;
+	private CompaniesServices $companyServices;
+	private RoomsServices $roomServices;
+	private ItemsServices $itemServices;
 
-	public function __construct(UserServices     $userServices,
-								AdminServices    $adminServices,
-								LogServices      $logServices,
-								FirebaseServices $firebaseServices,
-								CompanyServices  $companyServices,
-								RoomServices     $roomServices,
-								ItemServices     $itemServices)
+	public function __construct(UsersServices     $userServices,
+								AdminsServices    $adminServices,
+								LogsServices      $logServices,
+								FirebaseServices  $firebaseServices,
+								CompaniesServices $companyServices,
+								RoomsServices     $roomServices,
+								ItemsServices     $itemServices)
 	{
 		$this->userServices = $userServices;
 		$this->adminServices = $adminServices;

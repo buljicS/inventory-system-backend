@@ -4,7 +4,7 @@ namespace Models;
 
 use JsonSerializable;
 
-class ExceptionResponse implements JsonSerializable
+class ExceptionModel implements JsonSerializable
 {
 	private string $exceptionType;
 	private string $exceptionMessage;

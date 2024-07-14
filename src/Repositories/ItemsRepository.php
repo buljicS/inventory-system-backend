@@ -5,7 +5,7 @@ namespace Repositories;
 use Controllers\DatabaseController as DBController;
 use PDO;
 
-class ItemRepository
+class ItemsRepository
 {
 
 	private readonly DBController $dbController;

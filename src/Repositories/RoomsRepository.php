@@ -5,7 +5,7 @@ namespace Repositories;
 use Controllers\DatabaseController as DBController;
 use PDO;
 
-class RoomRepository
+class RoomsRepository
 {
 	private readonly DBController $dbConn;
 	public function __construct(DBController $dbConn)
