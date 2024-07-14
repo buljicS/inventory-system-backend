@@ -66,8 +66,18 @@ class WebAPIController
 	#region Main
 	public function index(Request $request, Response $response): Response
 	{
-		$response->getBody()->write(file_get_contents('../templates/pages/main_screen.html'));
-		return $response;
+		return $response
+			->withHeader('Content-Type', 'text/html')
+			->withHeader('Location' , '/login')
+			->withStatus(302);
+	}
+
+	public function dashboard(Request $request, Response $response): Response
+	{
+		return $response
+			->withHeader('Content-Type', 'text/html')
+			->withHeader('Location' , '/dashboard')
+			->withStatus(302);
 	}
 
 	public function generateDocs(Request $request, Response $response): Response

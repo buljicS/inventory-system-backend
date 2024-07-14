@@ -10,6 +10,7 @@ return function (Slim $app) {
 
 	#region Main
 	$app->get('/', [API::class, 'index']);
+	$app->get("/dashboard", [API::class, 'dashboard']);
 	$app->get("/getDoc", [API::class, 'generateDocs']);
 	#endregion
 

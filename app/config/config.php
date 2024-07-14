@@ -17,7 +17,6 @@
 	];
 
 	$ignorePath = [
-		"/getDoc",
 		"/api/Users/loginUser",
 		"/api/Users/registerUser",
 		"/api/Users/sendPasswordResetEmail",
