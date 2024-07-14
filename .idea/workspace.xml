@@ -6,10 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="23d2fb0d-ae85-45f6-bcca-0ed7535534cb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/config/error-handlers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/error-handlers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controllers/FirebaseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/FirebaseController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controllers/WebAPIController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controllers/WebAPIController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/AdminServices.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/AdminServices.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/CompaniesServices.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/CompanyServices.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/pages/main_screen.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pages/main_screen.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/AdminsServices.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/AdminsServices.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/ItemsServices.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/ItemsServices.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/LogsServices.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/LogsServices.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/UsersServices.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/UsersServices.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -276,7 +279,7 @@
       <workItem from="1720340631103" duration="1141000" />
       <workItem from="1720359492935" duration="12100000" />
       <workItem from="1720805899357" duration="11157000" />
-      <workItem from="1720957401506" duration="126000" />
+      <workItem from="1720957401506" duration="885000" />
     </task>
     <servers />
   </component>

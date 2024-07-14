@@ -2,8 +2,8 @@
 
 namespace Services;
 
-use Services\UsersServices as UserServices;
-use Repositories\AdminsRepository as AdminRepository;
+use Services\UsersServices as UsersServices;
+use Repositories\AdminsRepository as AdminsRepository;
 use Services\CompaniesServices as CompaniesServices;
 use Utilities\ValidatorUtility as Validator;
 use Utilities\TokenUtility as Token;

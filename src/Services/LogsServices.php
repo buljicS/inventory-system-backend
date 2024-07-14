@@ -4,7 +4,7 @@ namespace Services;
 
 use Detection\Exception\MobileDetectException;
 use Detection\MobileDetect as MobileDetect;
-use Repositories\LogsRepository as LogRepository;
+use Repositories\LogsRepository as LogsRepository;
 
 class LogsServices
 {

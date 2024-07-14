@@ -9,7 +9,7 @@ use Repositories\UsersRepository;
 use Utilities\MailUtility;
 use Utilities\TokenUtility;
 use Utilities\ValidatorUtility;
-use Services\LogsServices as LogServices;
+use Services\LogsServices as LogsServices;
 
 class UsersServices
 {

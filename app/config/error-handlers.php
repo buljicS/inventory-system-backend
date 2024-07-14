@@ -1,6 +1,6 @@
 <?php
 
-use Models\ExceptionModel as ExceptionResponse;
+use Models\ExceptionModel as ExceptionModel;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
@@ -17,7 +17,7 @@ function defaultErrorMiddleware(Request $request, Throwable $exception, $app) {
 	$response = $app->getResponseFactory()->createResponse(500, "Internal server error");
 
 	if($_ENV['IS_DEV']) {
-		$errorObj = new Exception();
+		$errorObj = new ExceptionModel();
 		$errorObj->setExceptionType((string)get_class($exception));
 		$errorObj->setExceptionMessage((string)$exception->getMessage());
 		$errorObj->setInfile((string)$exception->getFile());

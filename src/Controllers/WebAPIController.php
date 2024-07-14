@@ -8,13 +8,13 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use OpenApi\Generator as Generator;
 
-use Services\AdminsServices as AdminServices;
-use Services\UsersServices as UserServices;
-use Services\LogsServices as LogServices;
+use Services\AdminsServices as AdminsServices;
+use Services\UsersServices as UsersServices;
+use Services\LogsServices as LogsServices;
 use Services\FirebaseServices as FirebaseServices;
-use Services\CompaniesServices as CompanyServices;
-use Services\RoomsServices as RoomServices;
-use Services\ItemsServices as ItemServices;
+use Services\CompaniesServices as CompaniesServices;
+use Services\RoomsServices as RoomsServices;
+use Services\ItemsServices as ItemsServices;
 
 define("MAIN_URL", $_ENV['MAIN_URL_BE']);
 
@@ -738,7 +738,7 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function updateUserByAdmin(Request $request, Response $response, array $args): Response
+	public function updateUserByAdmin(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
 		$resp = $this->userServices->updateUserByAdmin($requestBody);
@@ -1253,7 +1253,7 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function createNewItems(Request $request, Response $response, array $args): Response
+	public function createNewItems(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
 		$resp = $this->itemServices->createNewItems($requestBody);
@@ -1375,7 +1375,7 @@ class WebAPIController
 	 *     ),
 	 * )
 	 */
-	public function listTest(Request $request, Response $response, array $args): Response
+	public function listTest(Request $request, Response $response): Response
 	{
 		return $response;
 	}

@@ -2,7 +2,7 @@
 
 namespace Services;
 
-use Repositories\ItemsRepository as ItemRepository;
+use Repositories\ItemsRepository as ItemsRepository;
 
 class ItemsServices
 {
