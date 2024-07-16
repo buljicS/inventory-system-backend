@@ -66,6 +66,7 @@ return function (Slim $app) {
 	$app->get('/api/Items/getItemsByRoom/{room_id}', [API::class, 'getItemsByRoom']);
 	$app->post('/api/Items/createNewItems', [API::class, 'createNewItems']);
 	$app->put('/api/Items/updateItem', [API::class, 'updateItem']);
+	$app->delete('/api/Items/deleteItem/{item_id}', [API::class, 'deleteItem']);
 	#endregion
 
 	#region TestEndpoints

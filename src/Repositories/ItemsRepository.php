@@ -36,4 +36,40 @@ class ItemsRepository
 		$stmt->execute();
 		return $stmt->rowCount() > 0;
 	}
+
+	public function checkIfItemIsActive(int $item_id): bool
+	{
+		$dbConn = $this->dbController->openConnection();
+		$takeRoomIdQuery = $dbConn->prepare("SELECT room_id FROM items WHERE item_id = :item_id");
+		$takeRoomIdQuery->bindParam(':item_id', $item_id, PDO::PARAM_INT);
+		$takeRoomIdQuery->execute();
+		$roomId = $takeRoomIdQuery->fetch()['room_id'];
+
+		$isOnActiveInventoryQuery = $dbConn->prepare("SELECT task_id FROM tasks WHERE room_id = $roomId AND isActive = 1");
+		$isOnActiveInventoryQuery->execute();
+		$isOnActiveInventory = $isOnActiveInventoryQuery->fetch();
+		if(!empty($isOnActiveInventory))
+			return true;
+
+		return false;
+	}
+
+	public function deleteItem(int $item_id): bool
+	{
+		$dbConn = $this->dbController->openConnection();
+
+		//delete QR code for item that is being deleted
+		$deleteCorrespondingQRCode = "DELETE FROM qr_codes WHERE item_id = :item_id";
+		$stmt = $dbConn->prepare($deleteCorrespondingQRCode);
+		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
+		$stmt->execute();
+		$stmt = null;
+
+		//delete item
+		$deleteItem = "DELETE FROM items WHERE item_id = :item_id";
+		$stmt = $dbConn->prepare($deleteItem);
+		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
+		return $stmt->execute();
+
+	}
 }

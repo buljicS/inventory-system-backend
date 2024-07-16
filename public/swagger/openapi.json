@@ -1163,6 +1163,43 @@
                 ]
             }
         },
+        "/api/Items/deleteItem/{item_id}": {
+            "delete": {
+                "tags": [
+                    "Items"
+                ],
+                "description": "Delete item",
+                "operationId": "deleteItem",
+                "parameters": [
+                    {
+                        "name": "item_id",
+                        "in": "path",
+                        "description": "ID of item to be deleted",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Item is in active inventory process"
+                    },
+                    "404": {
+                        "description": "Item not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [

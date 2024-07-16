@@ -1320,6 +1320,46 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Delete(
+	 *     path="/api/Items/deleteItem/{item_id}",
+	 *     operationId="deleteItem",
+	 *     description="Delete item",
+	 *     tags={"Items"},
+	 *     @OA\Parameter(
+	 *         description="ID of item to be deleted",
+	 *         in="path",
+	 *         name="item_id",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer",
+	 *             format="int64"
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *        response=200,
+	 *        description="Success"
+	 *      ),
+	 *           @OA\Response(
+	 *         response=400,
+	 *         description="Item is in active inventory process"
+	 *       ),
+	 *      @OA\Response(
+	 *        response=404,
+	 *        description="Item not found"
+	 *      ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function deleteItem(Request $request, Response $response, array $args): Response
+	{
+		$item_id = (int)$args['item_id'];
+		$resp = $this->itemServices->deleteItem($item_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Admins

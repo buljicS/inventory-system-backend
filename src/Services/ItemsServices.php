@@ -81,6 +81,34 @@ class ItemsServices
 			'message' => 'Not found',
 			'description' => 'Item not found'
 		];
+	}
+
+	public function deleteItem(int $item_id): array
+	{
+		$isItemDeleted = null;
+		$isItemInActiveInventoryProcess = $this->itemRepository->checkIfItemIsActive($item_id);
+		if($isItemInActiveInventoryProcess)
+			return [
+				'status' => 400,
+				'message' => 'Forbidden',
+				'description' => 'This item is in active inventory process or it does not exist'
+			];
+		else
+			$isItemDeleted = $this->itemRepository->deleteItem($item_id);
+
+
+		if($isItemDeleted)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'Item deleted successfully'
+			];
+
+		return [
+			'status' => 500,
+			'message' => 'Internal Server Error',
+			'description' => 'Error while deleting item, please try again later'
+		];
 
 	}
 }

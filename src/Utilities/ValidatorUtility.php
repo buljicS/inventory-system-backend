@@ -313,7 +313,7 @@ class ValidatorUtility
 		];
 	}
 
-	public function validateUpdateItem(array $updatedItem)
+	public function validateUpdateItem(array $updatedItem): bool|array
 	{
 		$this->validator = new Validator($updatedItem);
 		$this->validator->rules([
