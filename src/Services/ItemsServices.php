@@ -62,4 +62,25 @@ class ItemsServices
 			'description' => 'Error while processing your request, please try again later',
 		];
 	}
+
+	public function updateItem(array $updatedItem): array
+	{
+		$isUpdateItemValid = $this->validator->validateUpdateItem($updatedItem);
+		if($isUpdateItemValid !== true) return $isUpdateItemValid;
+
+		$isItemUpdated = $this->itemRepository->updateItem($updatedItem);
+		if($isItemUpdated)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'Item updated successfully'
+			];
+
+		return [
+			'status' => 404,
+			'message' => 'Not found',
+			'description' => 'Item not found'
+		];
+
+	}
 }

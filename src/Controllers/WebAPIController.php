@@ -1270,6 +1270,56 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Put(
+	 *     path="/api/Items/updateItem",
+	 *     operationId="updateItem",
+	 *     tags={"Items"},
+	 *     @OA\RequestBody(
+	 *         description="Update item information",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *          	  @OA\Property (
+	 *                   property="item_id",
+	 *                   type="integer",
+	 *                   example=0
+	 *                 ),
+	 *     			   @OA\Property (
+	 *     			     property="item_name",
+	 *     				 type="string",
+	 *     				 example="string"
+	 *     			   ),
+	 *     			   @OA\Property(
+	 *                     property="country_of_origin",
+	 *                     type="string",
+	 *                     example="EN"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="serial_no",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function updateItem(Request $request, Response $response): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$resp = $this->itemServices->updateItem($requestBody);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Admins

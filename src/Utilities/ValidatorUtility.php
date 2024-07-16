@@ -312,6 +312,33 @@ class ValidatorUtility
 			'description' => $this->validator->errors()
 		];
 	}
+
+	public function validateUpdateItem(array $updatedItem)
+	{
+		$this->validator = new Validator($updatedItem);
+		$this->validator->rules([
+			'required' => [
+				['item_id'],
+				['item_name'],
+				['serial_no'],
+				['country_of_origin'],
+			],
+			'min' => [
+				[['item_id'], 1],
+			],
+			'lengthMin' => [
+				[['serial_no'], 3]
+			]
+		]);
+
+		if($this->validator->validate()) return true;
+
+		return [
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
+		];
+	}
 	#endregion
 
 
@@ -336,8 +363,6 @@ class ValidatorUtility
 		];
 	}
 	#endregion
-
-
 
 
 }
