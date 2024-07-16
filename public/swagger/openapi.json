@@ -1117,6 +1117,52 @@
                 ]
             }
         },
+        "/api/Items/updateItem": {
+            "put": {
+                "tags": [
+                    "Items"
+                ],
+                "operationId": "updateItem",
+                "requestBody": {
+                    "description": "Update item information",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "item_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "item_name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "country_of_origin": {
+                                        "type": "string",
+                                        "example": "EN"
+                                    },
+                                    "serial_no": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [
