@@ -1199,7 +1199,6 @@ class WebAPIController
 	 *         @OA\MediaType(
 	 *             mediaType="application/json",
 	 *             @OA\Schema(
-	 *                 title="options",
 	 *                 type="object",
 	 *     			   @OA\Property (
 	 *     			       property="generate_options",

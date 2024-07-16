@@ -270,6 +270,51 @@ class ValidatorUtility
 	}
 	#endregion
 
+	#region ItemValidation
+	public function validateNewItems(array $newItems): bool|array
+	{
+		$this->validator = new Validator($newItems);
+		$this->validator->rules([
+			'required' => [
+				//options
+				'generate_options.batch_generate',
+				'generate_options.item_quantity',
+				['generate_options.name_pattern', true],
+				'generate_options.with_qrcodes',
+
+				//item
+				'item.room_id',
+				['item.item_name', true],
+				'item.country_of_origin',
+				'item.serial_no',
+			],
+			'boolean' => [
+				'generate_options.batch_generate',
+				'generate_options.with_qrcodes'
+			],
+			'lengthMin' => [
+				['generate_options.name_pattern', 3]
+			],
+			'min' => [
+				['generate_options.item_quantity', 1],
+				['item.room_id', 1]
+			],
+			'max' => [
+				['generate_options.item_quantity', 50]
+			]
+		]);
+
+		if($this->validator->validate()) return true;
+
+		return [
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
+		];
+	}
+	#endregion
+
+
 	#region AdminValidation
 	public function validateAdminCredentials(array $credentials): bool|array
 	{
@@ -291,6 +336,8 @@ class ValidatorUtility
 		];
 	}
 	#endregion
+
+
 
 
 }
