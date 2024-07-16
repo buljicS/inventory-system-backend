@@ -1240,5 +1240,39 @@
                 "scheme": "bearer"
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "FirebaseStorage",
+            "description": "FirebaseStorage"
+        },
+        {
+            "name": "Logs",
+            "description": "Logs"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Companies",
+            "description": "Companies"
+        },
+        {
+            "name": "Rooms",
+            "description": "Rooms"
+        },
+        {
+            "name": "Items",
+            "description": "Items"
+        },
+        {
+            "name": "Admins",
+            "description": "Admins"
+        },
+        {
+            "name": "Tests",
+            "description": "Tests"
+        }
+    ]
 }
