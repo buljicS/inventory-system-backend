@@ -144,7 +144,9 @@ ON
     				   worker_password,
        				   worker_fname,
        				   worker_lname,
-       				   worker_email, 
+       				   worker_email,
+       				   picture_id,
+       				   phone_number,
        				   role,
        				   registration_token,
        				   registration_expires,
@@ -320,5 +322,20 @@ ON
 			return true;
 
 		return false;
+	}
+
+	public function getUserProfilePicture(int $picture_id): ?string
+	{
+		if(empty($picture_id))
+			return null;
+
+		else {
+			$dbCon = $this->database->openConnection();
+			$sql = "SELECT picture_path FROM pictures WHERE picture_id = :picture_id AND picture_type_id = 1";
+			$stmt = $dbCon->prepare($sql);
+			$stmt->bindParam(':picture_id', $picture_id);
+			$stmt->execute();
+			return $stmt->fetchColumn();
+		}
 	}
 }

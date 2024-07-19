@@ -95,7 +95,7 @@ class CompaniesRepository
 		$dbCon = $this->database->openConnection();
 		$sql = "SELECT W.company_id, C.company_name FROM workers W
                 LEFT JOIN companies C ON C.company_id = W.company_id
-                WHERE W.worker_id = :worker_id";
+                WHERE W.worker_id = :worker_id AND c.isActive = 1";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindParam(':worker_id', $worker_id);
 		$stmt->execute();

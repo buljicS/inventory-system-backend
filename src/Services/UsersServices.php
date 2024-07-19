@@ -99,13 +99,14 @@ class UsersServices
 
 	public function loginUser(array $loginData): array
 	{
-
 		$isValid = $this->validatorUtility->validateLoginUserInput($loginData);
 		if ($isValid !== true) {
 			return $isValid;
 		}
 
 		$response = $this->userRepo->getUserByEmail($loginData['email']);
+		$response['company'] = $this->companyRepo->getCompanyByWorker((int)$response['worker_id']);
+		$response['picture'] = $this->userRepo->getUserProfilePicture((int)$response['picture_id']);
 
 		$loggedIn = match (true) {
 			$response === false || !password_verify($loginData['password'], $response['worker_password']) => [
@@ -120,17 +121,15 @@ class UsersServices
 				'description' => "Please activate your account!"
 			],
 
+
+
 			default => [
 				'status' => 200,
-				'userId' => $response['worker_id'],
-				'userFullName' => $response['worker_fname'] . " " . $response['worker_lname'],
-				'userEmail' => $response['worker_email'],
-				'profilePicture' => null,
-				'userRole' => $response['role'],
-				'company' => $this->companyRepo->getCompanyByWorker((int)$response['worker_id']),
-				'token' => $this->tokenUtility->GenerateJWTToken($response['worker_id'])
+				'token' => $this->tokenUtility->GenerateJWTToken($response)
 			],
 		};
+
+
 
 		$isLoggedIn = $loggedIn['status'] == 200 ? 1 : 0;
 		$workerId = $response ? $response['worker_id'] : null;

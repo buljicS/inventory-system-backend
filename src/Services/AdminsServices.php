@@ -34,6 +34,8 @@ class AdminsServices
 			return $isValid;
 
 		$admin = $this->adminRepository->getAdminByEmail($credentials);
+		$admin['role'] = 'admin';
+
 
 		return match (true) {
 			$admin === false || !password_verify($credentials['password'], $admin['admin_password']) => [
@@ -44,10 +46,7 @@ class AdminsServices
 
 			default => [
 				'status' => 200,
-				'userId' => $admin['admin_id'],
-				'userEmail' => $admin['admin_username'],
-				'userRole' => 'admin',
-				'token' => $this->token->GenerateJWTToken($admin['admin_id'])
+				'token' => $this->token->GenerateJWTToken($admin)
 			]
 		};
 	}

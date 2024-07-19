@@ -161,13 +161,13 @@
                 break;
 
             case 200:
+				//decode jwt token
                 document.getElementById("toastHeading").innerText = decodedResp.message;
                 document.getElementById("toastBody").innerHTML = "Redirecting...";
                 toast.fadeIn(400, function () {
                     setTimeout(() => { toast.fadeOut(400) }, 1700);
                 });
                 sessionStorage.setItem("adminToken", decodedResp.token);
-                sessionStorage.setItem("adminEmail", decodedResp.userEmail);
                 setTimeout(() => location.href = '/dashboard', 500);
                 break;
 
