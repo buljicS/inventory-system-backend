@@ -71,7 +71,7 @@ return function (Slim $app) {
 
 	#region TestEndpoints
 	$app->post('/api/Test/listTest', [API::class, 'listTest']);
-	$app->post('/api/Tests/uploadFile', [API::class, 'uploadFile']);
+	$app->post('/api/Tests/uploadFile', [API::class, 'acceptFile']);
 	#endregion
 
 };
