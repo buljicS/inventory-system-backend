@@ -223,7 +223,7 @@
             }
 
             else if (currentPath.startsWith("https://")) {
-                window.open(currentPath, "_blank");
+                window.open(URL_FE, "_blank");
             }
 
             else if (currentPath === "/phpmyadmin") {
@@ -231,7 +231,10 @@
             }
 
             else if (currentPath === "/swagger") {
-                let resp = (await generateDocs(baseURLBE + "/getDoc")).json();
+				await generateDocs(baseURLBE + "/getDoc");
+                let resp = await generateDocs(baseURLBE + "/getDoc");
+				let decodedResp = await resp.json();
+				console.log(decodedResp);
                 iFrame.setAttribute("src", baseURLBE + currentPath);
             }
 

@@ -34,11 +34,16 @@ class AdminsServices
 			return $isValid;
 
 		$admin = $this->adminRepository->getAdminByEmail($credentials);
+		if(empty($admin))
+			return [
+				'status' => 401,
+				'message' => 'Unauthorized',
+				'description' => 'Invalid credentials',
+			];
+
 		$admin['role'] = 'admin';
-
-
 		return match (true) {
-			$admin === false || !password_verify($credentials['password'], $admin['admin_password']) => [
+			!password_verify($credentials['password'], $admin['admin_password']) => [
 				'status' => 401,
 				'message' => 'Unauthorized',
 				'description' => 'Invalid credentials',

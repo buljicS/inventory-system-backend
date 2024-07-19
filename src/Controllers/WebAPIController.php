@@ -96,29 +96,22 @@ class WebAPIController
 
 	/**
 	 * @OA\Get(
-	 *     path="/api/FirebaseStorage/getAllFilesFromDir/{dir}",
-	 *     operationId="getAllFilesFromDir",
-	 *     description="Get all files from single directory",
+	 *     path="/api/FirebaseStorage/testConnection",
+	 *     operationId="testConnection",
+	 *     description="Test firebase connection and basic functions",
 	 *     tags={"FirebaseStorage"},
-	 *     @OA\Parameter(
-	 *        name="dir",
-	 *        in="path",
-	 *        required=true,
-	 *        @OA\Schema(
-	 *           type="string"
-	 *        )
-	 *      ),
 	 *     @OA\Response(response="200", description="An example resource"),
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function getAllFiles(Request $request, Response $response): Response
+	public function testConnection(Request $request, Response $response): Response
 	{
 		$resp = $this->firebaseServices->getFirebaseInstance();
-		$response->getBody()->write(json_encode($resp->name()));
+		$response->getBody()->write(json_encode($resp));
 		return $response
-			->withHeader('Content-type', 'application/json');
+			->withHeader('Content-Type', 'text/html');
 	}
+
 	#endregion
 
 	#region AccessLogs
@@ -1477,6 +1470,43 @@ class WebAPIController
 	public function listTest(Request $request, Response $response): Response
 	{
 		return $response;
+	}
+
+	/**
+	 * @OA\Post(
+	 *   path="/api/Tests/uploadFile",
+	 *   tags={"Tests"},
+	 *   summary="Test upload file",
+	 *   description="Test upload file",
+	 *   @OA\RequestBody(
+	 *     required=true,
+	 *     description="File body",
+	 *     @OA\MediaType(
+	 *       mediaType="multipart/form-data",
+	 *       @OA\Schema(
+	 *         @OA\Property(
+	 *           property="data",
+	 *           type="object",
+	 *           @OA\Property(
+	 *             property="file",
+	 *             type="string",
+	 *             format="binary"
+	 *           )
+	 *         )
+	 *       )
+	 *     )
+	 *   ),
+	 *   @OA\Response(
+	 *     response="200",
+	 *     description="Successful response"
+	 *   )
+	 * )
+	 */
+	public function acceptFile(Request $request, Response $response): Response
+	{
+		$requestFile = $request->getUploadedFiles();
+		$fileInResponse = json_encode($requestFile);
+		return $response->withHeader('Content-type', 'application/json');
 	}
 	#endregion
 

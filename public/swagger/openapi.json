@@ -11,23 +11,13 @@
         }
     ],
     "paths": {
-        "/api/FirebaseStorage/getAllFilesFromDir/{dir}": {
+        "/api/FirebaseStorage/testConnection": {
             "get": {
                 "tags": [
                     "FirebaseStorage"
                 ],
-                "description": "Get all files from single directory",
-                "operationId": "getAllFilesFromDir",
-                "parameters": [
-                    {
-                        "name": "dir",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "description": "Test firebase connection and basic functions",
+                "operationId": "testConnection",
                 "responses": {
                     "200": {
                         "description": "An example resource"
@@ -1312,6 +1302,43 @@
                     }
                 }
             }
+        },
+        "/api/Tests/uploadFile": {
+            "post": {
+                "tags": [
+                    "Tests"
+                ],
+                "summary": "Test upload file",
+                "description": "Test upload file",
+                "operationId": "81cecd6938f9dc1553fc078a2a91677c",
+                "requestBody": {
+                    "description": "File body",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "data": {
+                                        "properties": {
+                                            "file": {
+                                                "type": "string",
+                                                "format": "binary"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1323,39 +1350,5 @@
                 "scheme": "bearer"
             }
         }
-    },
-    "tags": [
-        {
-            "name": "FirebaseStorage",
-            "description": "FirebaseStorage"
-        },
-        {
-            "name": "Logs",
-            "description": "Logs"
-        },
-        {
-            "name": "Users",
-            "description": "Users"
-        },
-        {
-            "name": "Companies",
-            "description": "Companies"
-        },
-        {
-            "name": "Rooms",
-            "description": "Rooms"
-        },
-        {
-            "name": "Items",
-            "description": "Items"
-        },
-        {
-            "name": "Admins",
-            "description": "Admins"
-        },
-        {
-            "name": "Tests",
-            "description": "Tests"
-        }
-    ]
+    }
 }

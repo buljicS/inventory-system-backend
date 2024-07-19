@@ -22,6 +22,4 @@ class AdminsRepository
 		$stmt->execute();
 		return $stmt->fetch();
 	}
-
-
 }

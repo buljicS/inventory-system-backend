@@ -105,11 +105,19 @@ class UsersServices
 		}
 
 		$response = $this->userRepo->getUserByEmail($loginData['email']);
+		if(empty($response))
+			return [
+				'status' => 401,
+				'message' => 'Unauthorized',
+				'description' => "Wrong credentials, please try again!"
+			];
+
+
 		$response['company'] = $this->companyRepo->getCompanyByWorker((int)$response['worker_id']);
 		$response['picture'] = $this->userRepo->getUserProfilePicture((int)$response['picture_id']);
 
 		$loggedIn = match (true) {
-			$response === false || !password_verify($loginData['password'], $response['worker_password']) => [
+			!password_verify($loginData['password'], $response['worker_password']) => [
 				'status' => 401,
 				'message' => 'Unauthorized',
 				'description' => "Wrong credentials, please try again!"

@@ -33,7 +33,6 @@ return function (Slim $app) {
 
 	#region Admins
 	$app->post('/api/Admins/loginAdmin', [API::class, 'loginAdmin']);
-
 	#endregions
 
 	#region Logs
@@ -42,6 +41,7 @@ return function (Slim $app) {
 	#endregion
 
 	#region FirebaseBucket
+	$app->get('/api/FirebaseStorage/testConnection', [API::class, 'testConnection']);
 	$app->get('/api/FirebaseStorage/getAllFilesFromDir/{dir}', [API::class, 'getAllFiles']);
 	#endregion
 
@@ -71,6 +71,7 @@ return function (Slim $app) {
 
 	#region TestEndpoints
 	$app->post('/api/Test/listTest', [API::class, 'listTest']);
+	$app->post('/api/Tests/uploadFile', [API::class, 'uploadFile']);
 	#endregion
 
 };
