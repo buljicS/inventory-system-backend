@@ -1506,7 +1506,9 @@ class WebAPIController
 	{
 		$requestFile = $request->getUploadedFiles();
 		$fileInResponse = json_encode($requestFile);
-		return $response->withHeader('Content-type', 'application/json');
+		$response->getBody()->write($fileInResponse);
+		return $response
+			->withHeader('Content-type', 'application/json');
 	}
 	#endregion
 
