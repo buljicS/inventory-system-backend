@@ -11,23 +11,50 @@
         }
     ],
     "paths": {
-        "/api/FirebaseStorage/testConnection": {
-            "get": {
+        "/api/FirebaseStorage/uploadUserImage/{worker_id}": {
+            "post": {
                 "tags": [
                     "FirebaseStorage"
                 ],
-                "description": "Test firebase connection and basic functions",
-                "operationId": "testConnection",
-                "responses": {
-                    "200": {
-                        "description": "An example resource"
+                "description": "Upload user profile image",
+                "operationId": "uploadUserImage",
+                "parameters": [
+                    {
+                        "name": "worker_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "File body",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "data": {
+                                        "properties": {
+                                            "user_image": {
+                                                "type": "string",
+                                                "format": "base64"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
                 },
-                "security": [
-                    {
-                        "bearerAuth": []
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
                     }
-                ]
+                }
             }
         },
         "/api/Logs/logAccess": {
@@ -1289,43 +1316,6 @@
                                                 "id": ""
                                             }
                                         ]
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful response"
-                    }
-                }
-            }
-        },
-        "/api/Tests/uploadFile": {
-            "post": {
-                "tags": [
-                    "Tests"
-                ],
-                "summary": "Test upload file",
-                "description": "Test upload file",
-                "operationId": "81cecd6938f9dc1553fc078a2a91677c",
-                "requestBody": {
-                    "description": "File body",
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "data": {
-                                        "properties": {
-                                            "images[]": {
-                                                "type": "string",
-                                                "format": "base64"
-                                            }
-                                        },
-                                        "type": "object"
                                     }
                                 },
                                 "type": "object"

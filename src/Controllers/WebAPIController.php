@@ -96,10 +96,18 @@ class WebAPIController
 
 	/**
 	 * @OA\Post(
-	 *   path="/api/FirebaseStorage/uploadUserImage",
+	 *   path="/api/FirebaseStorage/uploadUserImage/{worker_id}",
 	 *   operationId="uploadUserImage",
 	 *   tags={"FirebaseStorage"},
 	 *   description="Upload user profile image",
+	 *   @OA\Parameter(
+	 *   	name="worker_id",
+	 *      in="path",
+	 *      required=true,
+	 *      @OA\Schema(
+	 *      	type="integer"
+	 *   	)
+	 *   ),
 	 *   @OA\RequestBody(
 	 *     required=true,
 	 *     description="File body",
@@ -124,10 +132,11 @@ class WebAPIController
 	 *   )
 	 * )
 	 */
-	public function uploadUserImage(Request $request, Response $response): Response
+	public function uploadUserImage(Request $request, Response $response, array $args): Response
 	{
 		$requestFiles = $request->getUploadedFiles();
-		$resp = $this->firebaseServices->uploadUserImage($requestFiles);
+		$worker_id = (int)$args['worker_id'];
+		$resp = $this->firebaseServices->uploadUserImage($requestFiles, $worker_id);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');

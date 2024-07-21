@@ -27,7 +27,7 @@ class FirebaseServices
 		return $firebaseInstance->getStorageBucket();
 	}
 
-	public function uploadUserImage(array $uploadedFiles): array
+	public function uploadUserImage(array $uploadedFiles, int $worker_id): array
 	{
 		//set base path to local file folder and get uploaded image
 		$localStoragePath = $_SERVER['DOCUMENT_ROOT'] . 'tempUploads';
@@ -46,7 +46,7 @@ class FirebaseServices
 
 			//upload file options
 			$imageOptions = [
-				'name' => 'userPictures/' . $this->tokenUtility->GenerateBasicToken(16) . $fileExt,
+				'name' => 'userPictures/' . $this->tokenUtility->GenerateBasicToken(16) . "." . $fileExt,
 				'type' => $mimeType,
 				'predefinedAcl' => 'PUBLICREAD'
 			];
@@ -56,15 +56,19 @@ class FirebaseServices
 
 			//delete image from temp folder and save its data to database
 			unlink($fullImagePath);
-			$imageOptions['picture_path'] = $_ENV['BUCKET_URL'] . DIRECTORY_SEPARATOR . $imageOptions['name'];
+			$imageOptions['picture_path'] = $_ENV['BUCKET_URL'] . $imageOptions['name'];
 			$imageOptions['picture_type'] = 1;
 
-			$isImageSaved = $this->firebaseRepository->saveImage($imageOptions);
+			$isImageSaved = $this->firebaseRepository->saveImage($imageOptions, $worker_id);
 			if ($isImageSaved)
 				return [
 					'status' => 202,
 					'message' => 'Created',
-					'description' => 'Image uploaded successfully'
+					'description' => 'Image uploaded successfully',
+					'data' => [
+						'image_name' => $imageOptions['name'],
+						'image_path' => $imageOptions['picture_path']
+					]
 				];
 		}
 
@@ -72,7 +76,7 @@ class FirebaseServices
 			'status' => 400,
 			'message' => 'Bad request',
 			'description' => 'Image upload failed',
-			'additional-details' => $uploadedImage->getError()
+			'details' => $uploadedImage->getError()
 		];
 	}
 }
