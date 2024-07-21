@@ -26,8 +26,9 @@ class FirebaseRepository
 		$stmt->closeCursor();
 
 		//fetch image id
-		$imageIdQuery = "SELECT picture_id FROM pictures WHERE picture_name =" . $imageProps['name'];
+		$imageIdQuery = "SELECT picture_id FROM pictures WHERE picture_name = :picture_name";
 		$stmt = $dbConn->prepare($imageIdQuery);
+		$stmt->bindParam(':picture_name', $imageProps['encoded_name']);
 		$stmt->execute();
 		$imageId = $stmt->fetch();
 		$stmt->closeCursor();

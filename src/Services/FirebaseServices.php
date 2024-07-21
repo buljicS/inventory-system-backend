@@ -39,6 +39,7 @@ class FirebaseServices
 			$fileExt = pathinfo($uploadedImageName, PATHINFO_EXTENSION);
 			$mimeType = 'image/' . $fileExt;
 			$fullImagePath = $localStoragePath . DIRECTORY_SEPARATOR . $uploadedImageName;
+			$encodedImageName = $this->tokenUtility->GenerateBasicToken(16) . "." . $fileExt;
 
 			//move image to temp folder and prepare it for firebase upload
 			$uploadedImage->moveTo($fullImagePath);
@@ -46,7 +47,7 @@ class FirebaseServices
 
 			//upload file options
 			$imageOptions = [
-				'name' => 'userPictures/' . $this->tokenUtility->GenerateBasicToken(16) . "." . $fileExt,
+				'name' => 'userPictures/' . $encodedImageName,
 				'type' => $mimeType,
 				'predefinedAcl' => 'PUBLICREAD'
 			];
@@ -58,6 +59,7 @@ class FirebaseServices
 			unlink($fullImagePath);
 			$imageOptions['picture_path'] = $_ENV['BUCKET_URL'] . $imageOptions['name'];
 			$imageOptions['picture_type'] = 1;
+			$imageOptions['encoded_name'] = $encodedImageName;
 
 			$isImageSaved = $this->firebaseRepository->saveImage($imageOptions, $worker_id);
 			if ($isImageSaved)
@@ -66,7 +68,7 @@ class FirebaseServices
 					'message' => 'Created',
 					'description' => 'Image uploaded successfully',
 					'data' => [
-						'image_name' => $imageOptions['name'],
+						'image_name' => $imageOptions['encoded_name'],
 						'image_path' => $imageOptions['picture_path']
 					]
 				];
