@@ -30,7 +30,7 @@ class FirebaseServices
 	public function uploadUserImage(array $uploadedFiles): array
 	{
 		//set base path to local file folder and get uploaded image
-		$localStoragePath = $_SERVER['DOCUMENT_ROOT']  . '/'   . 'tempUploads';
+		$localStoragePath = $_SERVER['DOCUMENT_ROOT'] . 'tempUploads';
 		$uploadedImage = $uploadedFiles['image'];
 
 		if ($uploadedImage->getError() === UPLOAD_ERR_OK) {
@@ -38,17 +38,15 @@ class FirebaseServices
 			$uploadedImageName = $uploadedImage->getClientFileName();
 			$fileExt = pathinfo($uploadedImageName, PATHINFO_EXTENSION);
 			$mimeType = 'image/' . $fileExt;
-			$fullImagePath = $localStoragePath . '/'   . $uploadedImageName;
+			$fullImagePath = $localStoragePath . DIRECTORY_SEPARATOR . $uploadedImageName;
 
-
-            //move image to temp folder and prepare it for firebase upload
+			//move image to temp folder and prepare it for firebase upload
 			$uploadedImage->moveTo($fullImagePath);
 			$imageToUpload = file_get_contents($fullImagePath);
 
-
 			//upload file options
 			$imageOptions = [
-				'name' => 'userPictures/' . $this->tokenUtility->GenerateBasicToken(16) . '.' . $fileExt,
+				'name' => 'userPictures/' . $this->tokenUtility->GenerateBasicToken(16) . $fileExt,
 				'type' => $mimeType,
 				'predefinedAcl' => 'PUBLICREAD'
 			];

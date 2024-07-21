@@ -10,7 +10,7 @@ class FirebaseRepository
 	private readonly DBController $db;
 	function __construct(DBController $databaseController)
 	{
-		$this->db = $databaseController;
+		$this->database = $databaseController;
 	}
 
 	public function saveImage(array $imageProps): bool
@@ -21,7 +21,7 @@ class FirebaseRepository
 		$stmt->bindParam(':picture_type_id', $imageProps["picture_type"]);
 		$stmt->bindParam(':picture_name', $imageProps["name"]);
 		$stmt->bindParam(':picture_path', $imageProps["picture_path"]);
-		$stmt->bindParam(':mime_type', $imageProps["type"]);
+		$stmt->bindParam(':mime_type', $imageProps["mime_type"]);
 		return $stmt->execute();
 	}
 }
