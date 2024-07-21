@@ -18,6 +18,7 @@ sed -i "s/^${ENV_DB_USER}=.*/${ENV_DB_USER}='$(printf '%s\n' "$NEW_DB_USER" | se
 sed -i "s/^${ENV_DB_PASSWD}=.*/${ENV_DB_PASSWD}='$(printf '%s\n' "$NEW_DB_PASSWD" | sed 's/[\/&]/\\&/g')'/" ./.env
 sed -i "s/^${ENV_URL_FE}=.*/${ENV_URL_FE}='$(printf '%s\n' "$NEW_URL_FE" | sed 's/[\/&]/\\&/g')'/" ./.env
 sed -i "s/^${ENV_URL_BE}=.*/${ENV_URL_BE}='$(printf '%s\n' "$NEW_URL_BE" | sed 's/[\/&]/\\&/g')'/" ./.env
+sed -i "s/^${ENV_LOCAL_STORAGE_URL}=.*/${ENV_LOCAL_STORAGE_URL}='$(printf '%s\n' "$NEW_LOCAL_STORAGE_URL" | sed 's/[\/&]/\\&/g')'/" ./.env
 
 end=$(date +%s)
 
