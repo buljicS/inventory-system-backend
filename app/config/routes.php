@@ -41,8 +41,7 @@ return function (Slim $app) {
 	#endregion
 
 	#region FirebaseBucket
-	$app->get('/api/FirebaseStorage/testConnection', [API::class, 'testConnection']);
-	$app->get('/api/FirebaseStorage/getAllFilesFromDir/{dir}', [API::class, 'getAllFiles']);
+	$app->post('/api/Logs/uploadImage', [API::class, 'uploadUserImage']);
 	#endregion
 
 	#region Companies

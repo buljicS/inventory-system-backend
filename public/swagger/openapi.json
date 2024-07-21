@@ -1320,9 +1320,9 @@
                                 "properties": {
                                     "data": {
                                         "properties": {
-                                            "file": {
+                                            "images[]": {
                                                 "type": "string",
-                                                "format": "binary"
+                                                "format": "base64"
                                             }
                                         },
                                         "type": "object"

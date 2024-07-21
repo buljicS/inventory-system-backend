@@ -10,7 +10,7 @@ class TokenUtility
 	/**
 	 * @throws RandomException on random_bytes
 	 */
-	public function GenerateBasicToken(int $randomBytes):string
+	public function GenerateBasicToken(int $randomBytes): string
 	{
 		$bytes = random_bytes($randomBytes);
 		return bin2hex($bytes);
