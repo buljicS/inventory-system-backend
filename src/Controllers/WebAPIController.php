@@ -97,7 +97,7 @@ class WebAPIController
 	/**
 	 * @OA\Post(
 	 *   path="/api/FirebaseStorage/uploadUserImage",
-	 *   operationid="uploadUserImage",
+	 *   operationId="uploadUserImage",
 	 *   tags={"FirebaseStorage"},
 	 *   description="Upload user profile image",
 	 *   @OA\RequestBody(
