@@ -30,9 +30,12 @@ class FirebaseServices
 	public function uploadUserImage(array $uploadedFiles, int $worker_id): array
 	{
 		//set base path to local file folder and get uploaded image
-		$localStoragePath = $_SERVER['DOCUMENT_ROOT'] . 'tempUploads';
-		$uploadedImage = $uploadedFiles['image'];
+		if(!file_exists('tmp'))
+			mkdir('tmp', 755);
 
+		$localStoragePath = $_ENV['LOCAL_STORAGE_URL'] . 'tmp';
+
+		$uploadedImage = $uploadedFiles['image'];
 		if ($uploadedImage->getError() === UPLOAD_ERR_OK) {
 			//get basic image info
 			$uploadedImageName = $uploadedImage->getClientFileName();
@@ -57,6 +60,7 @@ class FirebaseServices
 
 			//delete image from temp folder and save its data to database
 			unlink($fullImagePath);
+			rmdir('tmp');
 			$imageOptions['picture_path'] = $_ENV['BUCKET_URL'] . $imageOptions['name'];
 			$imageOptions['picture_type'] = 1;
 			$imageOptions['encoded_name'] = $encodedImageName;
@@ -67,7 +71,7 @@ class FirebaseServices
 					'status' => 202,
 					'message' => 'Created',
 					'description' => 'Image uploaded successfully',
-					'data' => [
+					'image' => [
 						'image_name' => $imageOptions['encoded_name'],
 						'image_path' => $imageOptions['picture_path']
 					]

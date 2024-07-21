@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="23d2fb0d-ae85-45f6-bcca-0ed7535534cb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repositories/FirebaseRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repositories/FirebaseRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/build.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Services/FirebaseServices.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/FirebaseServices.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
