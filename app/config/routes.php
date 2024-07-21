@@ -41,7 +41,7 @@ return function (Slim $app) {
 	#endregion
 
 	#region FirebaseBucket
-	$app->post('/api/Logs/uploadUserImage', [API::class, 'uploadUserImage']);
+	$app->post('/api/FirebaseStorage/uploadUserImage', [API::class, 'uploadUserImage']);
 	#endregion
 
 	#region Companies
