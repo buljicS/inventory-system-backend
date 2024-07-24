@@ -103,7 +103,7 @@
 <script>
 
     document.addEventListener("DOMContentLoaded", function () {
-        let token = sessionStorage.getItem("adminToken");
+        let token = sessionStorage.getItem("token");
         if(token != null) {
             let apiInput = document.getElementById("apiKey");
             apiInput.setAttribute("value",  token);

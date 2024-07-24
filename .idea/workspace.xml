@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23d2fb0d-ae85-45f6-bcca-0ed7535534cb" name="Changes" comment="" />
+    <list default="true" id="23d2fb0d-ae85-45f6-bcca-0ed7535534cb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/dashboard/homepage.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/dashboard/homepage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/dashboard/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/dashboard/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/login/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/login/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/swagger/openapi.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/swagger/openapi.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,7 +42,7 @@
     &quot;accountId&quot;: &quot;d5d60e12-10b1-43ae-a5c1-632bc527b93d&quot;
   }
 }</component>
-  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP">
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\xampp\php\php.exe">
     <include_path>
       <path value="$PROJECT_DIR$/backend/vendor/fig/http-message-util" />
       <path value="$PROJECT_DIR$/backend/vendor/psr/container" />
@@ -249,8 +257,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PS-241.17890.8" />
-        <option value="bundled-php-predefined-ba97393d7c68-48a1a656d44e-com.jetbrains.php.sharedIndexes-PS-241.17890.8" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PS-241.18034.69" />
+        <option value="bundled-php-predefined-ba97393d7c68-48a1a656d44e-com.jetbrains.php.sharedIndexes-PS-241.18034.69" />
       </set>
     </attachedChunks>
   </component>
@@ -288,6 +296,8 @@
       <workItem from="1721160628673" duration="596000" />
       <workItem from="1721369411214" duration="4105000" />
       <workItem from="1721564378804" duration="3176000" />
+      <workItem from="1721799767955" duration="2754000" />
+      <workItem from="1721811555341" duration="311000" />
     </task>
     <servers />
   </component>

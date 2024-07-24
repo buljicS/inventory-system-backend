@@ -155,7 +155,7 @@
             case 401:
                 document.getElementById("toastBody").innerHTML = decodedResp.description;
                 document.getElementById("toastHeading").innerText = decodedResp.message;
-                toast.fadeIn(400, function () {
+                toast.fadeIn(250, function () {
                     setTimeout(() => { toast.fadeOut(400) }, 1700);
                 });
                 break;
@@ -164,10 +164,10 @@
 				//decode jwt token
                 document.getElementById("toastHeading").innerText = decodedResp.message;
                 document.getElementById("toastBody").innerHTML = "Redirecting...";
-                toast.fadeIn(400, function () {
+                toast.fadeIn(250, function () {
                     setTimeout(() => { toast.fadeOut(400) }, 1700);
                 });
-                sessionStorage.setItem("adminToken", decodedResp.token);
+                sessionStorage.setItem("token", decodedResp.token);
                 setTimeout(() => location.href = '/dashboard', 500);
                 break;
 
