@@ -331,8 +331,8 @@ class UsersServices
 				$currentPicture = $this->userRepo->checkUserForPicture($worker_id);
 				if($currentPicture != null)
 				{
-					$this->userRepo->removeUserPicture($worker_id, $currentPicture);
-					$this->firebaseServices->deleteFileFromStorage($imageOptions['dir'], $imageOptions['name']);
+					$this->userRepo->removeUserPicture($worker_id, (int)$currentPicture['picture_id']);
+					$this->firebaseServices->deleteFileFromStorage('userPictures', $currentPicture['picture_name']);
 				}
 
 				$this->userRepo->saveUserPicture($worker_id, $uploadedPicture);
@@ -480,16 +480,23 @@ class UsersServices
 		];
 	}
 
-	public function deleteUserPicture(int $worker_id, string $userPicture)
+	public function deleteUserPicture(int $worker_id, string $userPicture): array
 	{
 		$isPictureDeleteFromFirebase = $this->firebaseServices->deleteFileFromStorage('userPictures', $userPicture);
-		if($isPictureDeleteFromFirebase['status'] !== 200)
-			return [
-				'status' => 404,
-				'message' => 'Not found',
-				'description' => 'Picture not found or it has already been deleted'
-			];
+		if($isPictureDeleteFromFirebase['status'] == 200) {
+			$isPictureDeleted = $this->userRepo->deleteUserPicture($worker_id, $userPicture);
+			if($isPictureDeleted !== false)
+				return [
+					'status' => 200,
+					'message' => 'Success',
+					'description' => 'Picture has been deleted'
+				];
+		}
 
-		$this->userRepo->deleteUserPicture($worker_id, $userPicture);
+		return [
+			'status' => 404,
+			'message' => 'Not found',
+			'description' => 'Picture not found or it has already been deleted'
+		];
 	}
 }

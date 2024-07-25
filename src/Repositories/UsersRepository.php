@@ -339,14 +339,27 @@ ON
 		}
 	}
 
-	public function checkUserForPicture(int $worker_id): ?int
+	public function checkUserForPicture(int $worker_id): ?array
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "SELECT picture_id FROM workers WHERE worker_id = :worker_id";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindParam(':worker_id', $worker_id);
 		$stmt->execute();
-		return $stmt->fetchColumn();
+		$pictureId = $stmt->fetchColumn();
+		if($pictureId != null) {
+			$stmt->closeCursor();
+			$pictureNameQuery = "SELECT picture_name FROM pictures WHERE picture_id = :picture_id";
+			$stmt = $dbCon->prepare($pictureNameQuery);
+			$stmt->bindParam(':picture_id', $pictureId);
+			$stmt->execute();
+			$pictureName = $stmt->fetchColumn();
+			return [
+				'picture_id' => $pictureId,
+				'picture_name' => $pictureName
+			];
+		}
+		return null;
 	}
 
 	public function saveUserPicture(int $worker_id, array $uploadedPicture): bool
@@ -389,7 +402,6 @@ ON
 		$sql = "UPDATE workers SET picture_id = NULL WHERE worker_id = :worker_id";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindParam(':worker_id', $worker_id);
-		$stmt->bindParam(':picture_id', $userPicture);
 		$stmt->execute();
 		$stmt->closeCursor();
 

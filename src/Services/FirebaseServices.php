@@ -108,7 +108,7 @@ class FirebaseServices
 		$storage = $this->getFirebaseInstance();
 		$objToDelete = $storage->object($reqDirPath . $fileName);
 		try {
-			$objToDelete->delete();
+			$isDeleted = $objToDelete->delete();
 		} catch (\Exception $e) {
 			$error = json_decode($e->getMessage());
 			if($error->{'error'}->{'code'} == 404) //accessing stdClass values $decoded->{'prop'}
