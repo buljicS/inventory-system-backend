@@ -10,6 +10,7 @@ use Utilities\MailUtility;
 use Utilities\TokenUtility;
 use Utilities\ValidatorUtility;
 use Services\LogsServices as LogsServices;
+use Services\FirebaseServices as FirebaseServices;
 
 class UsersServices
 {
@@ -19,8 +20,15 @@ class UsersServices
 	private readonly LogsServices $logServices;
 	private readonly ValidatorUtility $validatorUtility;
 	private readonly CompaniesRepository $companyRepo;
+	private readonly FirebaseServices $firebaseServices;
 
-	public function __construct(MailUtility $email, TokenUtility $tokenUtility, UsersRepository $usersRepository, LogsServices $logServices, ValidatorUtility $validatorUtility, CompaniesRepository $companiesRepository)
+	public function __construct(MailUtility $email,
+								TokenUtility $tokenUtility,
+								UsersRepository $usersRepository,
+								LogsServices $logServices,
+								ValidatorUtility $validatorUtility,
+								CompaniesRepository $companiesRepository,
+								FirebaseServices $firebaseServices)
 	{
 		$this->email = $email;
 		$this->userRepo = $usersRepository;
@@ -28,6 +36,7 @@ class UsersServices
 		$this->logServices = $logServices;
 		$this->validatorUtility = $validatorUtility;
 		$this->companyRepo = $companiesRepository;
+		$this->firebaseServices = $firebaseServices;
 	}
 
 	public function registerUser(array $newUserData): array
@@ -280,6 +289,70 @@ class UsersServices
 				'message' => "Internal Server Error",
 				'description' => "Failed to updated user"
 			];
+	}
+
+	public function uploadUserImage(array $uploadedFiles, int $worker_id): array
+	{
+		//set base path to local file folder and get uploaded image
+		if (!file_exists('tmp'))
+			mkdir('tmp', 755);
+
+		$localStoragePath = $_ENV['LOCAL_STORAGE_URL'] . 'tmp';
+
+		$uploadedImage = $uploadedFiles['user_image'];
+		if ($uploadedImage->getError() === UPLOAD_ERR_OK) {
+			//get basic image info
+			$uploadedImageName = $uploadedImage->getClientFileName();
+			$fileExt = pathinfo($uploadedImageName, PATHINFO_EXTENSION);
+			$mimeType = 'image/' . $fileExt;
+			$fullImagePath = $localStoragePath . DIRECTORY_SEPARATOR . $uploadedImageName;
+			$encodedImageName = $this->tokenUtility->GenerateBasicToken(16) . "." . $fileExt;
+
+			//move image to temp folder and prepare it for firebase upload
+			$uploadedImage->moveTo($fullImagePath);
+			$imageToUpload = file_get_contents($fullImagePath);
+
+			//upload file options
+			$imageOptions = [
+				'file-type' => 1,
+				'dir' => 'userPictures/',
+				'name' =>  $encodedImageName,
+				'mime-type' => $mimeType,
+				'predefinedAcl' => 'PUBLICREAD'
+			];
+
+			//upload picture to firebase
+			$uploadedPicture = $this->firebaseServices->uploadFile($imageToUpload, $imageOptions);
+			if($uploadedPicture['status'] == 200) {
+				//delete image from temp and return response
+				unlink($fullImagePath);
+				$uploadedPicture['mime_type'] = $mimeType;
+				$uploadedPicture['picture_type_id'] = 1;
+				$currentPicture = $this->userRepo->checkUserForPicture($worker_id);
+				if($currentPicture != null)
+					$this->userRepo->deleteCurrentUserPicture($worker_id, $currentPicture);
+
+				$this->userRepo->saveUserPicture($worker_id, $uploadedPicture);
+
+				return [
+					'status' => 202,
+					'message' => 'Created',
+					'description' => 'Image uploaded successfully',
+					'image' => [
+						'image_name' => $uploadedPicture['file']['filename'],
+						'image_path' => $uploadedPicture['file']['url']
+					]
+				];
+			}
+			return $uploadedPicture;
+		}
+
+		return [
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => 'Image upload failed',
+			'details' => $uploadedImage->getError()
+		];
 	}
 
 	public function getAllUsers(): array

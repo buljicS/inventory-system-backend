@@ -29,6 +29,7 @@ return function (Slim $app) {
 	$app->delete("/api/Users/banUser/{worker_id}", [API::class, 'banUser']);
 	$app->put("/api/Users/revokeUserAccess/{worker_id}", [API::class, 'revokeUserAccess']);
 	$app->put("/api/Users/updateUserByAdmin", [API::class, 'updateUserByAdmin']);
+	$app->post('/api/Users/uploadUserPicture/{worker_id}', [API::class, 'uploadUserPicture']);
 	#endregion
 
 	#region Admins
@@ -41,7 +42,9 @@ return function (Slim $app) {
 	#endregion
 
 	#region FirebaseBucket
-	$app->post('/api/FirebaseStorage/uploadUserImage/{worker_id}', [API::class, 'uploadUserImage']);
+	$app->get('/api/FirebaseStorage/getFileByName/{dir}/{fileName}', [API::class, 'getFileByName']);
+	$app->get('/api/FirebaseStorage/getAllFilesByDir/{dir}' , [API::class, 'getAllFilesByDir']);
+	$app->post('/api/FirebaseStorage/uploadFile', [API::class, 'uploadFile']);
 	#endregion
 
 	#region Companies

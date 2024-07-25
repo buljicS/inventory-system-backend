@@ -338,4 +338,48 @@ ON
 			return $stmt->fetchColumn();
 		}
 	}
+
+	public function checkUserForPicture(int $worker_id): ?int
+	{
+		$dbCon = $this->database->openConnection();
+		$sql = "SELECT picture_id FROM workers WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindParam(':worker_id', $worker_id);
+		$stmt->execute();
+		return $stmt->fetchColumn();
+	}
+
+	public function saveUserPicture(int $worker_id, array $uploadedPicture): bool
+	{
+		$dbCon = $this->database->openConnection();
+		$pictureId = "SELECT picture_id FROM pictures WHERE picture_name = :picture_name";
+		$stmt = $dbCon->prepare($pictureId);
+		$stmt->bindParam(':picture_name', $uploadedPicture['file']['filename']);
+		$stmt->execute();
+		$pictureId = $stmt->fetchColumn();
+
+		$stmt->closeCursor();
+		$setUserPicture = "UPDATE workers SET picture_id = :pictureId WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($setUserPicture);
+		$stmt->bindParam(':worker_id', $worker_id);
+		$stmt->bindParam(':pictureId', $pictureId);
+		return $stmt->execute();
+	}
+
+	public function deleteCurrentUserPicture(int $worker_id, int $picture_id): bool
+	{
+		$dbCon = $this->database->openConnection();
+
+		//remove current picture from user
+		$removePictureFromUserQuery = "UPDATE workers SET picture_id = NULL WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($removePictureFromUserQuery);
+		$stmt->bindParam(':worker_id', $worker_id);
+		$stmt->execute();
+		$stmt->closeCursor();
+
+		$delPictureQuery = "DELETE FROM pictures WHERE picture_id = :picture_id";
+		$stmt = $dbCon->prepare($delPictureQuery);
+		$stmt->bindParam(':picture_id', $picture_id);
+		return $stmt->execute();
+	}
 }

@@ -8,18 +8,21 @@ use DI\Container;
 use Utilities\FirebaseUtility as FirebaseUtility;
 use Utilities\TokenUtility as TokenUtility;
 use Repositories\FirebaseRepository as FirebaseRepository;
+use Utilities\HelperUtility as Helper;
 
 class FirebaseServices
 {
 	private readonly Container $container;
 	private readonly TokenUtility $tokenUtility;
 	private readonly FirebaseRepository $firebaseRepository;
+	private readonly Helper $helper;
 
-	public function __construct(Container $container, TokenUtility $tokenUtility, FirebaseRepository $firebaseRepository)
+	public function __construct(Container $container, TokenUtility $tokenUtility, FirebaseRepository $firebaseRepository, Helper $helper)
 	{
 		$this->tokenUtility = $tokenUtility;
 		$this->container = $container;
 		$this->firebaseRepository = $firebaseRepository;
+		$this->helper = $helper;
 	}
 
 	public function getFirebaseInstance(): mixed {
@@ -27,62 +30,75 @@ class FirebaseServices
 		return $firebaseInstance->getStorageBucket();
 	}
 
-	public function uploadUserImage(array $uploadedFiles, int $worker_id): array
+	public function uploadFile(string $fileToUpload, array $fileOptions): array
 	{
-		//set base path to local file folder and get uploaded image
-		if(!file_exists('tmp'))
-			mkdir('tmp', 755);
+		//upload file
+		$storage = $this->getFirebaseInstance();
+		$storage->upload($fileToUpload, [
+			'name' => $fileOptions['dir'] . $fileOptions['name'],
+			'type' => $fileOptions['mime-type'],
+			'predefinedAcl' => $fileOptions['predefinedAcl'],
+		]);
 
-		$localStoragePath = $_ENV['LOCAL_STORAGE_URL'] . 'tmp';
+		//save uploaded file to database
+		$fileOptions['file_path'] = $_ENV['BUCKET_URL'] . $fileOptions['dir'] . $fileOptions['name'];
+		$this->firebaseRepository->saveFile($fileOptions);
 
-		$uploadedImage = $uploadedFiles['image'];
-		if ($uploadedImage->getError() === UPLOAD_ERR_OK) {
-			//get basic image info
-			$uploadedImageName = $uploadedImage->getClientFileName();
-			$fileExt = pathinfo($uploadedImageName, PATHINFO_EXTENSION);
-			$mimeType = 'image/' . $fileExt;
-			$fullImagePath = $localStoragePath . DIRECTORY_SEPARATOR . $uploadedImageName;
-			$encodedImageName = $this->tokenUtility->GenerateBasicToken(16) . "." . $fileExt;
+		return [
+			'status' => 200,
+			'message' => 'Success',
+			'description' => 'File uploaded successfully',
+			'file' => [
+				'url' => $fileOptions['file_path'],
+				'filename' => $fileOptions['name']
+			]
+		];
+	}
 
-			//move image to temp folder and prepare it for firebase upload
-			$uploadedImage->moveTo($fullImagePath);
-			$imageToUpload = file_get_contents($fullImagePath);
+	public function getAllFilesByDir(string $requestedDir): array
+	{
+		$reqDirPath = $this->helper->normailzePath($requestedDir);
+		$storage = $this->getFirebaseInstance();
+		$obj = $storage->objects([
+			'prefix' => $reqDirPath,
+			'delimiter' => '/'
+		]);
 
-			//upload file options
-			$imageOptions = [
-				'name' => 'userPictures/' . $encodedImageName,
-				'type' => $mimeType,
-				'predefinedAcl' => 'PUBLICREAD'
-			];
-
-			$storage = $this->getFirebaseInstance();
-			$storage->upload($imageToUpload, $imageOptions);
-
-			//delete image from temp folder and save its data to database
-			unlink($fullImagePath);
-			rmdir('tmp');
-			$imageOptions['picture_path'] = $_ENV['BUCKET_URL'] . $imageOptions['name'];
-			$imageOptions['picture_type'] = 1;
-			$imageOptions['encoded_name'] = $encodedImageName;
-
-			$isImageSaved = $this->firebaseRepository->saveImage($imageOptions, $worker_id);
-			if ($isImageSaved)
-				return [
-					'status' => 202,
-					'message' => 'Created',
-					'description' => 'Image uploaded successfully',
-					'image' => [
-						'image_name' => $imageOptions['encoded_name'],
-						'image_path' => $imageOptions['picture_path']
-					]
+		$objArray = iterator_to_array($obj);
+		if(count($objArray) != 0) {
+			for ($i = 1; $i < count($objArray); $i++) {
+				$meta = $objArray[$i]->info();
+				$files[] = [
+					'url' => $_ENV['BUCKET_URL'] . $objArray[$i]->name(),
+					'size' => $meta['size'],
+					'type' => $meta['contentType'],
 				];
+			}
 		}
 
 		return [
-			'status' => 400,
-			'message' => 'Bad request',
-			'description' => 'Image upload failed',
-			'details' => $uploadedImage->getError()
+			$reqDirPath => $files ?? []
+		];
+	}
+
+	public function getFileByName(string $requestedDir, string $fileName): array
+	{
+		$reqDirPath = $this->helper->normailzePath($requestedDir);
+		$storage = $this->getFirebaseInstance();
+		$obj = $storage->objects([
+			'prefix' => $reqDirPath . $fileName,
+			'delimiter' => '/'
+		]);
+
+		$objArray = iterator_to_array($obj);
+		$meta = $objArray[0]->info();
+		$file[] = [
+			'url' => $_ENV['BUCKET_URL'] . $objArray[0]->name(),
+			'size' => $meta['size'],
+			'type' => $meta['contentType'],
+		];
+		return [
+			'file' => $file ?? []
 		];
 	}
 }

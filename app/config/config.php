@@ -13,7 +13,8 @@
 		"/api/Users/",
 		"/api/Admins/",
 		"/api/Companies/",
-		"/api/Rooms/"
+		"/api/Rooms/",
+		"/api/Firebase/"
 	];
 
 	$ignorePath = [

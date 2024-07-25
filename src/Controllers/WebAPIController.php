@@ -15,6 +15,7 @@ use Services\FirebaseServices as FirebaseServices;
 use Services\CompaniesServices as CompaniesServices;
 use Services\RoomsServices as RoomsServices;
 use Services\ItemsServices as ItemsServices;
+use function DI\string;
 
 define("MAIN_URL", $_ENV['MAIN_URL_BE']);
 
@@ -95,44 +96,127 @@ class WebAPIController
 	#region FirebaseStorage
 
 	/**
+	 * @OA\Get(
+	 *     path="/api/FirebaseStorage/getFileByName/{dir}/{fileName}",
+	 *     operationId="getFileByName",
+	 *     description="Get single file by its name. <br/> Note that you should also send dir location of that file",
+	 *     tags={"FirebaseStorage"},
+	 *     @OA\Parameter(
+	 *         name="dir",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="string"
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *         name="fileName",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *            type="string"
+	 *         )
+	 *      ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getFileByName(Request $request, Response $response, array $args): Response
+	{
+		$dir = (string)$args['dir'];
+		$fileName = (string)$args['fileName'];
+		$resp = $this->firebaseServices->getFileByName($dir, $fileName);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/FirebaseStorage/getAllFilesByDir/{dir}",
+	 *     operationId="getAllFilesByDir",
+	 *     description="Get all files by directory. For example, you can retrieve files from `mydir` or `mydir-mysubdir`. <br/> Sending directory name with `\` will cause `Not Found - 404`",
+	 *     tags={"FirebaseStorage"},
+	 *     @OA\Parameter(
+	 *         name="dir",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="string",
+	 *     		   format="uri"
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getAllFilesByDir(Request $request, Response $response, array $args): Response
+	{
+		$dir = (string)$args['dir'];
+		$resp = $this->firebaseServices->getAllFilesByDir($dir);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
 	 * @OA\Post(
-	 *   path="/api/FirebaseStorage/uploadUserImage/{worker_id}",
-	 *   operationId="uploadUserImage",
+	 *   path="/api/FirebaseStorage/uploadFile",
+	 *   operationId="uploadFile",
 	 *   tags={"FirebaseStorage"},
-	 *   description="Upload user profile image",
-	 *   @OA\Parameter(
-	 *   	name="worker_id",
-	 *      in="path",
-	 *      required=true,
-	 *      @OA\Schema(
-	 *      	type="integer"
-	 *   	)
-	 *   ),
+	 *   description="Upload file to firebase storage and save it's into to database",
 	 *   @OA\RequestBody(
 	 *     required=true,
-	 *     description="File body",
+	 *     description="Create new file object and upload it to firebase <br/> You can read file you whish to upload with `fopen($file, r)` or `file_gets_content($file)`",
 	 *     @OA\MediaType(
-	 *       mediaType="multipart/form-data",
+	 *       mediaType="application/json",
 	 *       @OA\Schema(
+	 *         type="object",
 	 *         @OA\Property(
-	 *           property="data",
+	 *           property="file",
+	 *           type="string",
+	 *           example="decoded-file"
+	 *         ),
+	 *         @OA\Property(
+	 *           property="upload_options",
 	 *           type="object",
 	 *           @OA\Property(
-	 *             property="user_image",
+	 *              property="file-type",
+	 *              type="integer",
+	 *              example=0
+	 *           ),
+	 *     		 @OA\Property(
+	 *              property="dir",
+	 *              type="string",
+	 *              example="mydir/"
+	 *           ),
+	 *           @OA\Property(
+	 *             property="name",
 	 *             type="string",
-	 *             format="base64"
-	 *           )
-	 *         )
+	 *             example="name"
+	 *           ),
+	 *           @OA\Property(
+	 *             property="type",
+	 *             type="string",
+	 *             example="mime/type"
+	 *           ),
+	 *           @OA\Property(
+	 *             property="predefinedAcl",
+	 *             type="string",
+	 *             example="PUBLICREAD"
+	 *           ),
+	 *         ),
 	 *       )
 	 *     )
 	 *   ),
 	 *   @OA\Response(
 	 *     response="200",
 	 *     description="Successful response"
-	 *   )
+	 *   ),
+	 *   security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function uploadUserImage(Request $request, Response $response, array $args): Response
+	public function uploadFile(Request $request, Response $response, array $args): Response
 	{
 		$requestFiles = $request->getUploadedFiles();
 		$worker_id = (int)$args['worker_id'];
@@ -141,7 +225,6 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
-
 	#endregion
 
 	#region AccessLogs
@@ -515,6 +598,52 @@ class WebAPIController
 		$requestBody = (array)$request->getParsedBody();
 		$updatedUser = $this->userServices->updateUserData($requestBody);
 		$response->getBody()->write(json_encode($updatedUser));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Post(
+	 *   path="/api/Users/uploadUserPicture/{worker_id}",
+	 *   operationId="uploadUserPicture",
+	 *   tags={"Users"},
+	 *   description="Upload user profile image",
+	 *   @OA\Parameter(
+	 *     name="worker_id",
+	 *     in="path",
+	 *     required=true,
+	 *     @OA\Schema(
+	 *       type="integer"
+	 *     )
+	 *   ),
+	 *   @OA\RequestBody(
+	 *     required=true,
+	 *     description="File body",
+	 *     @OA\MediaType(
+	 *       mediaType="multipart/form-data",
+	 *       @OA\Schema(
+	 *         type="object",
+	 *         @OA\Property(
+	 *           property="user_image",
+	 *           type="string",
+	 *           format="base64"
+	 *         )
+	 *       )
+	 *     )
+	 *   ),
+	 *   @OA\Response(
+	 *     response="200",
+	 *     description="Successful response"
+	 *   ),
+	 *   security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function uploadUserPicture(Request $request, Response $response, array $args): Response
+	{
+		$worker_id = (int)$args['worker_id'];
+		$files = $request->getUploadedFiles();
+		$resp = $this->userServices->uploadUserImage($files, $worker_id);
+		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
@@ -961,16 +1090,16 @@ class WebAPIController
 	 *     operationId="restoreCompany",
 	 *     description="Endpoint for admin to restored deleted company",
 	 *     tags={"Companies"},
-	 *		@OA\Parameter(
-	 *          description="ID of company that needs to be restored",
+	 *	   @OA\Parameter(
+	 *    		description="ID of company that needs to be restored",
 	 *          in="path",
 	 *          name="company_id",
 	 *          required=true,
 	 *          @OA\Schema(
-	 *              type="integer",
-	 *              format="int64"
-	 *          )
-	 *      ),
+	 *             type="integer",
+	 *             format="int64"
+	 *         )
+	 *     ),
 	 *     @OA\Response(
 	 *         response=200,
 	 *         description="Success"

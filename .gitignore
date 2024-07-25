@@ -7,7 +7,7 @@
 
 # IDE files
 .idea
-/.vscode
+.vscode
 
 #server files
 /bin/build-vars.sh

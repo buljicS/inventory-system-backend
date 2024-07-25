@@ -11,35 +11,112 @@
         }
     ],
     "paths": {
-        "/api/FirebaseStorage/uploadUserImage/{worker_id}": {
+        "/api/FirebaseStorage/getFileByName/{dir}/{fileName}": {
+            "get": {
+                "tags": [
+                    "FirebaseStorage"
+                ],
+                "description": "Get single file by its name. <br/> Note that you should also send dir location of that file",
+                "operationId": "getFileByName",
+                "parameters": [
+                    {
+                        "name": "dir",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fileName",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/FirebaseStorage/getAllFilesByDir/{dir}": {
+            "get": {
+                "tags": [
+                    "FirebaseStorage"
+                ],
+                "description": "Get all files by directory. For example, you can retrieve files from `mydir` or `mydir-mysubdir`. <br/> Sending directory name with `\\` will cause `Not Found - 404`",
+                "operationId": "getAllFilesByDir",
+                "parameters": [
+                    {
+                        "name": "dir",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uri"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/FirebaseStorage/uploadFile": {
             "post": {
                 "tags": [
                     "FirebaseStorage"
                 ],
-                "description": "Upload user profile image",
-                "operationId": "uploadUserImage",
-                "parameters": [
-                    {
-                        "name": "worker_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
+                "description": "Upload file to firebase storage and save it's into to database",
+                "operationId": "uploadFile",
                 "requestBody": {
-                    "description": "File body",
+                    "description": "Create new file object and upload it to firebase <br/> You can read file you whish to upload with `fopen($file, r)` or `file_gets_content($file)`",
                     "required": true,
                     "content": {
-                        "multipart/form-data": {
+                        "application/json": {
                             "schema": {
                                 "properties": {
-                                    "data": {
+                                    "file": {
+                                        "type": "string",
+                                        "example": "decoded-file"
+                                    },
+                                    "upload_options": {
                                         "properties": {
-                                            "user_image": {
+                                            "file-type": {
+                                                "type": "integer",
+                                                "example": 0
+                                            },
+                                            "dir": {
                                                 "type": "string",
-                                                "format": "base64"
+                                                "example": "mydir/"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "name"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "example": "mime/type"
+                                            },
+                                            "predefinedAcl": {
+                                                "type": "string",
+                                                "example": "PUBLICREAD"
                                             }
                                         },
                                         "type": "object"
@@ -54,7 +131,12 @@
                     "200": {
                         "description": "Successful response"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/Logs/logAccess": {
@@ -401,6 +483,52 @@
                 "responses": {
                     "200": {
                         "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Users/uploadUserPicture/{worker_id}": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Upload user profile image",
+                "operationId": "uploadUserPicture",
+                "parameters": [
+                    {
+                        "name": "worker_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "File body",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "user_image": {
+                                        "type": "string",
+                                        "format": "base64"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
                     }
                 },
                 "security": [
