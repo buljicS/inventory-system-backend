@@ -36,15 +36,13 @@ $cors($app);
 $jwtAuth = require '../app/middleware/authorization.php';
 $jwtAuth($app);
 
-//routes
-$routes = require '../app/config/routes.php';
-$routes($app);
-
-$app->addRoutingMiddleware();
-
 //error handling middleware
 $errorHandler = require '../app/middleware/error.php';
 $errorHandler($app);
+
+//routes
+$routes = require '../app/config/routes.php';
+$routes($app);
 #endregion
 
 $app->run();
