@@ -225,6 +225,45 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Delete(
+	 *     path="/api/FirebaseStorage/deleteFile/{dir}/{fileName}",
+	 *     operationId="deleteFile",
+	 *     description="Delete file from firebase storage",
+	 *     tags={"FirebaseStorage"},
+	 *     @OA\Parameter(
+	 *         in="path",
+	 *         name="dir",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="string",
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *         in="path",
+	 *         name="fileName",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="string",
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *        response=200,
+	 *        description="Success"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function deleteFile(Request $request, Response $response, array $args): Response
+	{
+		$dir = (string)$args['dir'];
+		$fileName = (string)$args['fileName'];
+		$resp = $this->firebaseServices->deleteFileFromStorage($dir, $fileName);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region AccessLogs
@@ -643,6 +682,45 @@ class WebAPIController
 		$worker_id = (int)$args['worker_id'];
 		$files = $request->getUploadedFiles();
 		$resp = $this->userServices->uploadUserImage($files, $worker_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Delete(
+	 *     path="/api/Users/deleteUserPicture/{worker_id}/{userPicture}",
+	 *     operationId="deleteUserPicture",
+	 *     description="Permanently delete user picture <br/> This route removes picture from database and from firebase storage <br/> Picture delete with this route `can not be restored`",
+	 *     tags={"Users"},
+	 *     @OA\Parameter(
+	 *         in="path",
+	 *         name="worker_id",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer",
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *         in="path",
+	 *         name="userPicture",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="string",
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *        response=200,
+	 *        description="Success"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function deleteUserPicture(Request $request, Response $response, array $args): Response
+	{
+		$worker_id = (int)$args['worker_id'];
+		$userPicture = (string)$args['userPicture'];
+		$resp = $this->userServices->deleteUserPicture($worker_id, $userPicture);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');

@@ -330,7 +330,10 @@ class UsersServices
 				$uploadedPicture['picture_type_id'] = 1;
 				$currentPicture = $this->userRepo->checkUserForPicture($worker_id);
 				if($currentPicture != null)
-					$this->userRepo->deleteCurrentUserPicture($worker_id, $currentPicture);
+				{
+					$this->userRepo->removeUserPicture($worker_id, $currentPicture);
+					$this->firebaseServices->deleteFileFromStorage($imageOptions['dir'], $imageOptions['name']);
+				}
 
 				$this->userRepo->saveUserPicture($worker_id, $uploadedPicture);
 
@@ -475,5 +478,18 @@ class UsersServices
 			'message' => "Internal Server Error",
 			'description' => "Failed to updated user"
 		];
+	}
+
+	public function deleteUserPicture(int $worker_id, string $userPicture)
+	{
+		$isPictureDeleteFromFirebase = $this->firebaseServices->deleteFileFromStorage('userPictures', $userPicture);
+		if($isPictureDeleteFromFirebase['status'] !== 200)
+			return [
+				'status' => 404,
+				'message' => 'Not found',
+				'description' => 'Picture not found or it has already been deleted'
+			];
+
+		$this->userRepo->deleteUserPicture($worker_id, $userPicture);
 	}
 }

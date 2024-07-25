@@ -101,4 +101,34 @@ class FirebaseServices
 			'file' => $file ?? []
 		];
 	}
+
+	public function deleteFileFromStorage(string $dir, string $fileName): array
+	{
+		$reqDirPath = $this->helper->normailzePath($dir);
+		$storage = $this->getFirebaseInstance();
+		$objToDelete = $storage->object($reqDirPath . $fileName);
+		try {
+			$objToDelete->delete();
+		} catch (\Exception $e) {
+			$error = json_decode($e->getMessage());
+			if($error->{'error'}->{'code'} == 404) //accessing stdClass values $decoded->{'prop'}
+				return [
+					'status' => 400,
+					'message' => 'Not found',
+					'description' => 'File not found'
+				];
+			else
+				return [
+					'status' => $error->{'error'}->{'code'},
+					'message' => 'Firebase error',
+					'description' => $error->{'error'}->{'message'}
+				];
+		}
+
+		return [
+			'status' => 200,
+			'message' => 'Success',
+			'description' => 'File deleted'
+		];
+	}
 }

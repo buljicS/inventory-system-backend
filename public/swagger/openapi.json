@@ -139,6 +139,43 @@
                 ]
             }
         },
+        "/api/FirebaseStorage/deleteFile/{dir}/{fileName}": {
+            "delete": {
+                "tags": [
+                    "FirebaseStorage"
+                ],
+                "description": "Delete file from firebase storage",
+                "operationId": "deleteFile",
+                "parameters": [
+                    {
+                        "name": "dir",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fileName",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Logs/logAccess": {
             "post": {
                 "tags": [
@@ -529,6 +566,43 @@
                 "responses": {
                     "200": {
                         "description": "Successful response"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Users/deleteUserPicture/{worker_id}/{userPicture}": {
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Permanently delete user picture <br/> This route removes picture from database and from firebase storage <br/> Picture delete with this route `can not be restored`",
+                "operationId": "deleteUserPicture",
+                "parameters": [
+                    {
+                        "name": "worker_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "userPicture",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
                     }
                 },
                 "security": [

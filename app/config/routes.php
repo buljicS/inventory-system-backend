@@ -30,6 +30,7 @@ return function (Slim $app) {
 	$app->put("/api/Users/revokeUserAccess/{worker_id}", [API::class, 'revokeUserAccess']);
 	$app->put("/api/Users/updateUserByAdmin", [API::class, 'updateUserByAdmin']);
 	$app->post('/api/Users/uploadUserPicture/{worker_id}', [API::class, 'uploadUserPicture']);
+	$app->delete('/api/Users/deleteUserPicture/{worker_id}/{userPicture}', [API::class, 'deleteUserPicture']);
 	#endregion
 
 	#region Admins
@@ -45,6 +46,7 @@ return function (Slim $app) {
 	$app->get('/api/FirebaseStorage/getFileByName/{dir}/{fileName}', [API::class, 'getFileByName']);
 	$app->get('/api/FirebaseStorage/getAllFilesByDir/{dir}' , [API::class, 'getAllFilesByDir']);
 	$app->post('/api/FirebaseStorage/uploadFile', [API::class, 'uploadFile']);
+	$app->delete('/api/FirebaseStorage/deleteFile/{dir}/{fileName}', [API::class, 'deleteFile']);
 	#endregion
 
 	#region Companies
@@ -73,7 +75,6 @@ return function (Slim $app) {
 
 	#region TestEndpoints
 	$app->post('/api/Test/listTest', [API::class, 'listTest']);
-	$app->post('/api/Tests/uploadFile', [API::class, 'acceptFile']);
 	#endregion
 
 };

@@ -366,7 +366,7 @@ ON
 		return $stmt->execute();
 	}
 
-	public function deleteCurrentUserPicture(int $worker_id, int $picture_id): bool
+	public function removeUserPicture(int $worker_id, int $picture_id): bool
 	{
 		$dbCon = $this->database->openConnection();
 
@@ -380,6 +380,22 @@ ON
 		$delPictureQuery = "DELETE FROM pictures WHERE picture_id = :picture_id";
 		$stmt = $dbCon->prepare($delPictureQuery);
 		$stmt->bindParam(':picture_id', $picture_id);
+		return $stmt->execute();
+	}
+
+	public function deleteUserPicture(int $worker_id, string $userPicture)
+	{
+		$dbCon = $this->database->openConnection();
+		$sql = "UPDATE workers SET picture_id = NULL WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindParam(':worker_id', $worker_id);
+		$stmt->bindParam(':picture_id', $userPicture);
+		$stmt->execute();
+		$stmt->closeCursor();
+
+		$pictureId = "DELETE FROM pictures WHERE picture_name = :picture_name";
+		$stmt = $dbCon->prepare($pictureId);
+		$stmt->bindParam(':picture_name', $userPicture);
 		return $stmt->execute();
 	}
 }
