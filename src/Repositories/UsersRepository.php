@@ -324,18 +324,18 @@ ON
 		return false;
 	}
 
-	public function getUserProfilePicture(int $picture_id): ?string
+	public function getUserProfilePicture(int $picture_id): ?array
 	{
 		if(empty($picture_id))
 			return null;
 
 		else {
 			$dbCon = $this->database->openConnection();
-			$sql = "SELECT picture_path FROM pictures WHERE picture_id = :picture_id AND picture_type_id = 1";
+			$sql = "SELECT picture_path, picture_name FROM pictures WHERE picture_id = :picture_id AND picture_type_id = 1";
 			$stmt = $dbCon->prepare($sql);
 			$stmt->bindParam(':picture_id', $picture_id);
 			$stmt->execute();
-			return $stmt->fetchColumn();
+			return $stmt->fetch(PDO::FETCH_ASSOC);
 		}
 	}
 
