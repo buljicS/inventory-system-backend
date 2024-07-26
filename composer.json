@@ -26,6 +26,8 @@
 
         "ext-pdo": "*",
         "ext-json": "*",
+        "ext-imagick": "*",
+        "ext-gd": "*",
 
         "kreait/firebase-php": "7.*",
         "jimtools/jwt-auth": "^1.0"

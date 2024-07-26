@@ -216,11 +216,10 @@ class WebAPIController
 	 *   security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function uploadFile(Request $request, Response $response, array $args): Response
+	public function uploadFile(Request $request, Response $response): Response
 	{
-		$requestFiles = $request->getUploadedFiles();
-		$worker_id = (int)$args['worker_id'];
-		$resp = $this->firebaseServices->uploadUserImage($requestFiles, $worker_id);
+		$requestFiles = (array)$request->getParsedBody();
+		$resp = $this->firebaseServices->uploadFile($requestFiles['file'], $requestFiles['upload_options']);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');

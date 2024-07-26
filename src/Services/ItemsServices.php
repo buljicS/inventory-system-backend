@@ -27,32 +27,34 @@ class ItemsServices
 		$areNewItemsValid = $this->validator->validateNewItems($newItems);
 		if($areNewItemsValid !== true) return $areNewItemsValid;
 
-		//after validataion separate options and item
+		//after validation separate options and item
 		$options = $newItems['generate_options'];
 		$item = $newItems['item'];
 
-		//go through all possible cases
-		switch (true) {
-			case $options['batch_generate'] == false && $options['with_qrcodes'] == false :
-				//generateItem
-				//insertItem into DB
+		switch(true) {
+			case $options['item_quantity'] == 1:
+				$newItem[] = [
+					$item['item_name'],
+					$item['serial_no'],
+					$item['country_of_origin'],
+					$item['room_id'],
+					$item['with_qrcode'] = $options['with_qrcodes']
+				];
+				return $this->itemRepository->insertNewItems($newItem, 1);
 				break;
 
-			case $options['batch_generate'] == false && $options['with_qrcodes'] == true :
-				//generateItem
-				//generateQRCode
-				//intert into DB
-				break;
-
-			case $options['batch_generate'] == true && $options['with_qrcodes'] == false :
-				//generateMultipleItems
-				//intert them into DB
-				break;
-
-			case $options['batch_generate'] == true && $options['with_qrcodes'] == true :
-				//generateMultipleItems
-				//generateQRCode for each item
-				//save to DB
+			case $options['item_quantity'] > 1:
+				$items = [];
+				for($i = 0; $i < $options['item_quantity']; $i++) {
+					$items[] = [
+						$item['item_name'] = $options['name_pattern'] . $i,
+						$item['serial_no'] => $item['serial_no'] . $i,
+						$item['country_of_origin'],
+						$item['room_id'],
+						$item['with_qrcode'] = $options['with_qrcodes'],
+					];
+				}
+				return $this->itemRepository->insertNewItems($items, $options['item_quantity']);
 				break;
 		}
 

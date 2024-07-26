@@ -14,6 +14,37 @@ class ItemsRepository
 	{
 		$this->dbController = $dbController;
 	}
+
+	public function insertNewItems(array $items, int $numberOfItems): array
+	{
+		$dbConn = $this->dbController->openConnection();
+
+		//prepare items for multiple insertion
+		$flattenedItemProps = array_merge(...array_map('array_values', $items));
+
+		//create rows for multi insertion
+		$columns = ['item_name', 'serial_no', 'country_of_origin', 'room_id', 'with_qrcode']; //entity columns
+		$numOfCols = count($columns);
+
+		$numOfRows = count($flattenedItemProps) / $numOfCols;
+
+		$row = '(' . implode(', ', array_fill(0, $numOfCols, '?')) . ')'; //representation of single row ('?','?','?','?','?')
+		$rows = implode(', ', array_fill(0, $numOfRows, $row));
+		$sql = "INSERT INTO items (item_name, serial_no, country_of_origin, room_id, with_qrcode) VALUES $rows";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->execute($flattenedItemProps);
+
+		//after inserting all items fetch their props in case of qr code generation
+		$stmt->closeCursor();
+		$sql = "SELECT item_id, item_name, room_id FROM items ORDER BY item_id DESC LIMIT :numOfItems";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':numOfItems', $numberOfItems);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		//REFERENCE https://stackoverflow.com/a/4559320
+	}
+
 	public function getItemsByRoom(int $room_id): ?array
 	{
 		$dbConn = $this->dbController->openConnection();

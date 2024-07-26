@@ -277,7 +277,6 @@ class ValidatorUtility
 		$this->validator->rules([
 			'required' => [
 				//options
-				'generate_options.batch_generate',
 				'generate_options.item_quantity',
 				['generate_options.name_pattern', true],
 				'generate_options.with_qrcodes',
@@ -289,7 +288,6 @@ class ValidatorUtility
 				'item.serial_no',
 			],
 			'boolean' => [
-				'generate_options.batch_generate',
 				'generate_options.with_qrcodes'
 			],
 			'lengthMin' => [
