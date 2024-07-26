@@ -73,6 +73,11 @@ return function (Slim $app) {
 	$app->delete('/api/Items/deleteItem/{item_id}', [API::class, 'deleteItem']);
 	#endregion
 
+	#region QRCodes
+	$app->get('/api/QRCodes/generateQRCode', [API::class, 'generateQRCode']);
+	#endregion
+
+
 	#region TestEndpoints
 	$app->post('/api/Test/listTest', [API::class, 'listTest']);
 	#endregion

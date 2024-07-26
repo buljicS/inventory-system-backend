@@ -1419,6 +1419,25 @@
                 ]
             }
         },
+        "/api/QRCodes/generateQRCode": {
+            "get": {
+                "tags": [
+                    "QRCodes"
+                ],
+                "description": "Generate qr code",
+                "operationId": "generateQRCode",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [
@@ -1567,6 +1586,10 @@
         {
             "name": "Items",
             "description": "Items"
+        },
+        {
+            "name": "QRCodes",
+            "description": "QRCodes"
         },
         {
             "name": "Admins",

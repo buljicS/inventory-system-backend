@@ -15,7 +15,7 @@ use Services\FirebaseServices as FirebaseServices;
 use Services\CompaniesServices as CompaniesServices;
 use Services\RoomsServices as RoomsServices;
 use Services\ItemsServices as ItemsServices;
-use function DI\string;
+use Services\QRCodesServices as QRCodesServices;
 
 define("MAIN_URL", $_ENV['MAIN_URL_BE']);
 
@@ -46,6 +46,7 @@ class WebAPIController
 	private CompaniesServices $companyServices;
 	private RoomsServices $roomServices;
 	private ItemsServices $itemServices;
+	private QRCodesServices $qrCodesServices;
 
 	public function __construct(UsersServices     $userServices,
 								AdminsServices    $adminServices,
@@ -53,7 +54,8 @@ class WebAPIController
 								FirebaseServices  $firebaseServices,
 								CompaniesServices $companyServices,
 								RoomsServices     $roomServices,
-								ItemsServices     $itemServices)
+								ItemsServices     $itemServices,
+								QRCodesServices   $qrCodesServices)
 	{
 		$this->userServices = $userServices;
 		$this->adminServices = $adminServices;
@@ -62,6 +64,7 @@ class WebAPIController
 		$this->companyServices = $companyServices;
 		$this->roomServices = $roomServices;
 		$this->itemServices = $itemServices;
+		$this->qrCodesServices = $qrCodesServices;
 	}
 
 	#region Main
@@ -1585,6 +1588,27 @@ class WebAPIController
 	{
 		$item_id = (int)$args['item_id'];
 		$resp = $this->itemServices->deleteItem($item_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+	#endregion
+
+	#region QRCodes
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/QRCodes/generateQRCode",
+	 *     operationId="generateQRCode",
+	 *     description="Generate qr code",
+	 *     tags={"QRCodes"},
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function generateQRCode(Request $request, Response $response): Response
+	{
+		$resp = $this->qrCodesServices->generateQRCode();
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');

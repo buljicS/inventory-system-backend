@@ -29,6 +29,7 @@
         "ext-gd": "*",
 
         "kreait/firebase-php": "7.*",
-        "jimtools/jwt-auth": "^1.0"
+        "jimtools/jwt-auth": "^1.0",
+        "bacon/bacon-qr-code": "^3.0"
     }
 }
