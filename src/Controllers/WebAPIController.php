@@ -1597,18 +1597,80 @@ class WebAPIController
 	#region QRCodes
 
 	/**
-	 * @OA\Get(
-	 *     path="/api/QRCodes/generateQRCode",
-	 *     operationId="generateQRCode",
-	 *     description="Generate qr code",
+	 * @OA\Post(
+	 *     path="/api/QRCodes/generateQRCodes",
+	 *     operationId="generateQRCodes",
 	 *     tags={"QRCodes"},
-	 *     @OA\Response(response="200", description="An example resource"),
+	 *     @OA\RequestBody(
+	 *         description="Create QR codes, upload them to firebase storage and save info in database <br/> Note that `amount` of desired qr codes and amount of `qrcode_data` needs to be equal",
+	 *     	   required=true,
+	 *     @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     			   @OA\Property(
+	 *     			       property="qrcode_options",
+	 *     				   type="object",
+	 *     				   @OA\Property(
+	 *                       	property="saveToDir",
+	 *                       	type="string",
+	 *                       	example="myRoom1_27-07-2024/"
+	 *                   	),
+	 *                  	@OA\Property(
+	 *                      	property="amount",
+	 *                      	type="integer",
+	 *                      	example=1
+	 *                  	),
+	 *     			   ),
+	 *     			   @OA\Property(
+	 *     			       property="qrcode_data",
+	 * 					   type="array",
+	 *     				   @OA\Items(
+	 *     				       	@OA\Property(
+	 *                            	property="room_id",
+	 *                            	type="integer",
+	 *                            	example=1
+	 *                        	),
+	 *                       	@OA\Property(
+	 *                            	property="item_id",
+	 *                            	type="integer",
+	 *                            	example=1
+	 *                        	),
+	 *                          @OA\Property(
+	 *                              property="item_name",
+	 *                              type="string",
+	 *                              example="string"
+	 *                           ),
+	 *     				   ),
+	 *     				   example={{
+	 *     				       "room_id": 1,
+	 *     					   "item_id": 1,
+	 *     					   "item_name": "string"
+	 *     				   },
+	 *     				   {
+	 *                         "room_id": 2,
+	 *                         "item_id": 2,
+	 *                         "item_name": "string"
+	 *                     },},
+	 *     			   ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=500,
+	 *         description="Error"
+	 *     ),
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
 	public function generateQRCode(Request $request, Response $response): Response
 	{
-		$resp = $this->qrCodesServices->generateQRCode();
+		$reqBody = (array)$request->getParsedBody();
+		$resp = $this->qrCodesServices->generateQRCode($reqBody);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');

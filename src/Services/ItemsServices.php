@@ -4,16 +4,21 @@ namespace Services;
 
 use Repositories\ItemsRepository as ItemsRepository;
 use Utilities\ValidatorUtility as Validator;
-
+use Services\QRCodesServices as QRCodesServices;
+use Repositories\RoomsRepository as RoomsRepository;
 class ItemsServices
 {
 	private readonly ItemsRepository $itemRepository;
 	private readonly Validator $validator;
+	private readonly QRCodesServices $qrcodesServices;
+	private readonly RoomsRepository $roomsRepository;
 
-	public function __construct(ItemsRepository $itemRepository, Validator $validator)
+	public function __construct(ItemsRepository $itemRepository, Validator $validator, QRCodesServices $qrcodesServices, RoomsRepository $roomsRepository)
 	{
 		$this->itemRepository = $itemRepository;
 		$this->validator = $validator;
+		$this->qrcodesServices = $qrcodesServices;
+		$this->roomsRepository = $roomsRepository;
 	}
 
 	public function getItemsByRoom(int $room_id): ?array
@@ -40,8 +45,28 @@ class ItemsServices
 					$item['room_id'],
 					$item['with_qrcode'] = $options['with_qrcodes']
 				];
-				return $this->itemRepository->insertNewItems($newItem, 1);
-				break;
+				$qrcode_data = $this->itemRepository->insertNewItems($newItem, 1);
+				if($options['with_qrcodes']) {
+					$qrcode['qrcode_data'] = $qrcode_data;
+					$qrcode['qrcode_options'] = [
+						'saveToDir' => $this->roomsRepository->getRoomName((int)$item['room_id']) . "-" . date('d-m-Y_H:i:s') . "/",
+						'amount' => $options['item_quantity']
+					];
+					$qrCodeGenerated = $this->qrcodesServices->generateQRCode($qrcode);
+					if($qrCodeGenerated['status'] == 202)
+						return [
+							'status' => 200,
+							'message' => 'Success',
+							'description' => 'Items and qr codes generated successfully.'
+						];
+					else
+						return $qrCodeGenerated;
+				}
+				return [
+					'status' => 200,
+					'message' => 'Success',
+					'description' => 'Item created successfully.'
+				];
 
 			case $options['item_quantity'] > 1:
 				$items = [];
@@ -54,8 +79,29 @@ class ItemsServices
 						$item['with_qrcode'] = $options['with_qrcodes'],
 					];
 				}
-				return $this->itemRepository->insertNewItems($items, $options['item_quantity']);
-				break;
+				//watch for naming conventions because here comes integration with another service
+				$qrcode_data = $this->itemRepository->insertNewItems($items, $options['item_quantity']);
+				if($options['with_qrcodes']) {
+					$qrcodes['qrcode_data'] = $qrcode_data;
+					$qrcodes['qrcode_options'] = [
+						'saveToDir' => $this->roomsRepository->getRoomName((int)$item['room_id']) . "-" . date('d-m-Y_H:i:s') . "/",
+						'amount' => $options['item_quantity']
+					];
+					$qrCodesGenerated = $this->qrcodesServices->generateQRCode($qrcodes);
+					if($qrCodesGenerated['status'] == 202)
+						return [
+							'status' => 200,
+							'message' => 'Success',
+							'description' => 'Items and qr codes generated successfully.'
+						];
+					else
+						return $qrCodesGenerated;
+				}
+				return [
+					'status' => 200,
+					'message' => 'Success',
+					'description' => 'Items created successfully.'
+				];
 		}
 
 		return [

@@ -1419,16 +1419,76 @@
                 ]
             }
         },
-        "/api/QRCodes/generateQRCode": {
-            "get": {
+        "/api/QRCodes/generateQRCodes": {
+            "post": {
                 "tags": [
                     "QRCodes"
                 ],
-                "description": "Generate qr code",
-                "operationId": "generateQRCode",
+                "operationId": "generateQRCodes",
+                "requestBody": {
+                    "description": "Create QR codes, upload them to firebase storage and save info in database <br/> Note that `amount` of desired qr codes and amount of `qrcode_data` needs to be equal",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "options": {
+                                        "properties": {
+                                            "saveToDir": {
+                                                "type": "string",
+                                                "example": "myRoom1_27-07-2024/"
+                                            },
+                                            "amount": {
+                                                "type": "integer",
+                                                "example": 1
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "qrcode_data": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "room_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "item_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "item_name": {
+                                                    "type": "string",
+                                                    "example": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "example": [
+                                            {
+                                                "room_id": 1,
+                                                "item_id": 1,
+                                                "item_name": "string"
+                                            },
+                                            {
+                                                "room_id": 2,
+                                                "item_id": 2,
+                                                "item_name": "string"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "An example resource"
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Error"
                     }
                 },
                 "security": [

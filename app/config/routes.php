@@ -74,7 +74,7 @@ return function (Slim $app) {
 	#endregion
 
 	#region QRCodes
-	$app->get('/api/QRCodes/generateQRCode', [API::class, 'generateQRCode']);
+	$app->post('/api/QRCodes/generateQRCodes', [API::class, 'generateQRCode']);
 	#endregion
 
 

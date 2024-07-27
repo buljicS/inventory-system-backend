@@ -13,3 +13,6 @@
 /bin/build-vars.sh
 /build
 
+#project files
+/public/tmp
+

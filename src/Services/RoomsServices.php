@@ -19,13 +19,13 @@ class RoomsServices
 	public function addNewRoom(array $newRoom): array
 	{
 		$isNewRoomValid = $this->validator->validateNewRoom($newRoom);
-		if($isNewRoomValid !== true) {
+		if ($isNewRoomValid !== true) {
 			return $isNewRoomValid;
 		}
 
 		$isRoomAdded = $this->roomRepo->insertNewRoom($newRoom);
 
-		if($isRoomAdded)
+		if ($isRoomAdded)
 			return [
 				'status' => 200,
 				'message' => 'Success',
@@ -53,7 +53,7 @@ class RoomsServices
 	{
 		$isRoomDeleted = $this->roomRepo->deleteRoom($room_id);
 
-		if($isRoomDeleted)
+		if ($isRoomDeleted)
 			return [
 				'status' => 200,
 				'message' => 'Success',
@@ -70,10 +70,10 @@ class RoomsServices
 	public function updateRoom(array $updatedRoom): array
 	{
 		$isNewRoomValid = $this->validator->validateUpdatedRoom($updatedRoom);
-		if($isNewRoomValid !== true) return $isNewRoomValid;
+		if ($isNewRoomValid !== true) return $isNewRoomValid;
 
 		$isCompanyUpdated = $this->roomRepo->updateRoom($updatedRoom);
-		if($isCompanyUpdated)
+		if ($isCompanyUpdated)
 			return [
 				'status' => 200,
 				'message' => 'Success',

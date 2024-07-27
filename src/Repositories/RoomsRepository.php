@@ -67,4 +67,14 @@ class RoomsRepository
 		$stmt->execute();
 		return $stmt->rowCount() > 0;
 	}
+
+	public function getRoomName(int $room_id): string
+	{
+		$dbConn = $this->dbConn->openConnection();
+		$sql = "SELECT room_name FROM rooms WHERE room_id = :room_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':room_id', $room_id);
+		$stmt->execute();
+		return $stmt->fetchColumn();
+	}
 }

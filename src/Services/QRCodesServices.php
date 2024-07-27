@@ -1,46 +1,73 @@
 <?php
 
 namespace Services;
+
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer as QRCodeWriter;
 use BaconQrCode\Renderer\ImageRenderer as QRCodeRenderer;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd as SvgImageBackEnd;
 
 use Services\FirebaseServices as FirebaseServices;
+use Utilities\ValidatorUtility as ValidatorUtility;
 
 class QRCodesServices
 {
 	private readonly FirebaseServices $firebaseServices;
-	public function __construct(FirebaseServices $firebaseServices)
+	private readonly ValidatorUtility $validatorUtility;
+
+	public function __construct(FirebaseServices $firebaseServices, ValidatorUtility $validatorUtility)
 	{
 		$this->firebaseServices = $firebaseServices;
+		$this->validatorUtility = $validatorUtility;
 	}
 
-	public function generateQRCode(): string
+	public function generateQRCode(array $qrCodes): array|string
 	{
-		$startTime = microtime(true);
+		$options = $qrCodes['qrcode_options'];
+		$qrcodes_data = $qrCodes['qrcode_data'];
+
+		if($options["amount"] > count($qrcodes_data))
+			return [
+				'status' => 400,
+				'message' => 'Bad request',
+				'description' => 'Amount of qr codes need to match desired amount for generation'
+			];
+
 		$renderer = new QRCodeRenderer(
 			new RendererStyle(300, 3),
 			new SvgImageBackEnd()
 		);
+
 		$writer = new QRCodeWriter($renderer);
+
 		$uploadOptions = [
 			"file-type" => 2,
-			"dir" => 'qrCodes/',
+			"dir" => 'qrCodes/' . $options['saveToDir'],
 			"mime-type" => "application/svg+xml",
     		"predefinedAcl" => "PUBLICREAD"
 		];
 
-		for($i = 0; $i < 25; $i++) {
-			$fileName = 'test-normal-code' . $i . '.svg';
-			$writer->writeFile("[roomId => 1, itemId = 1, name => 'some text', lastScanned => '26.07.2024']", $_ENV['LOCAL_STORAGE_URL'] . 'tmp/' . $fileName);
+		for($i = 0; $i < $options['amount']; $i++) {
+			//generate qrCode data
+			$fileName = $qrcodes_data[$i]['item_name'] . '_qrc' . '.svg';
+			$content = "{'room_id': {$qrcodes_data[$i]['room_id']}, " .
+				"'item_id': {$qrcodes_data[$i]['item_id']}, " .
+				"'name': '{$qrcodes_data[$i]['item_name']}'}";
+
+			//generate qr codes
+			$writer->writeFile($content, $_ENV['LOCAL_STORAGE_URL'] . 'tmp/' . $fileName);
 			$decodedFile = file_get_contents($_ENV['LOCAL_STORAGE_URL'] . 'tmp/' . $fileName);
+
+			//upload qr codes to firebase
 			$uploadOptions["name"] = $fileName;
 			$this->firebaseServices->uploadFile($decodedFile, $uploadOptions);
 		}
-		$endTime = microtime(true);
 
-		return 'Done in ' . round($endTime - $startTime, 4) . 's';
+		return [
+			'status' => 202,
+			'message' => 'Created',
+			'description' => 'QRCodes created'
+		];
 	}
 
 }
