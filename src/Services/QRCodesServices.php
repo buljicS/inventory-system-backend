@@ -51,6 +51,9 @@ class QRCodesServices
 
 		$newQRCodes = [];
 
+		if (!file_exists('tmp'))
+			mkdir('tmp', 755);
+
 		for($i = 0; $i < $options['amount']; $i++) {
 			//generate qrCode data
 			$fileName = $qrcodes_data[$i]['item_name'] . '_qrc' . '.svg';
@@ -61,8 +64,6 @@ class QRCodesServices
 			]);
 
 			//generate qr codes
-			if(file_exists($_ENV['LOCAL_STORAGE_URL'] . 'tmp/'))
-				mkdi
 			$writer->writeFile($content, $_ENV['LOCAL_STORAGE_URL'] . 'tmp/' . $fileName);
 			$decodedFile = file_get_contents($_ENV['LOCAL_STORAGE_URL'] . 'tmp/' . $fileName);
 
