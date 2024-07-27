@@ -278,20 +278,15 @@ class ValidatorUtility
 			'required' => [
 				//options
 				'generate_options.item_quantity',
-				['generate_options.name_pattern', true],
 				'generate_options.with_qrcodes',
 
 				//item
 				'item.room_id',
-				['item.item_name', true],
 				'item.country_of_origin',
 				'item.serial_no',
 			],
 			'boolean' => [
 				'generate_options.with_qrcodes'
-			],
-			'lengthMin' => [
-				['generate_options.name_pattern', 3]
 			],
 			'min' => [
 				['generate_options.item_quantity', 1],
