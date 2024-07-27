@@ -39,7 +39,7 @@ class RoomsRepository
 		$dbConn = $this->dbConn->openConnection();
 		$sql = "SELECT * FROM rooms WHERE company_id = :company_id";
 		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(':company_id', $company_id);
+		$stmt->bindParam(':company_id', $company_id, PDO::PARAM_INT);
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -49,7 +49,7 @@ class RoomsRepository
 		$dbConn = $this->dbConn->openConnection();
 		$sql = "DELETE FROM rooms WHERE room_id = :room_id AND isActive = 0";
 		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(':room_id', $room_id);
+		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
 		$stmt->execute();
 		return $stmt->rowCount() > 0;
 	}
@@ -64,8 +64,7 @@ class RoomsRepository
 		$stmt->bindParam(':room_number', $updatedRoom['room_number']);
 		$stmt->bindParam(':room_description', $updatedRoom['room_description']);
 		$stmt->bindParam(':isActive', $updatedRoom['isActive']);
-		$stmt->execute();
-		return $stmt->rowCount() > 0;
+		return $stmt->execute();
 	}
 
 	public function getRoomName(int $room_id): string
@@ -73,7 +72,7 @@ class RoomsRepository
 		$dbConn = $this->dbConn->openConnection();
 		$sql = "SELECT room_name FROM rooms WHERE room_id = :room_id";
 		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(':room_id', $room_id);
+		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
 		$stmt->execute();
 		return $stmt->fetchColumn();
 	}

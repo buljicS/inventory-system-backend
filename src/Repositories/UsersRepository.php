@@ -72,7 +72,6 @@ ON
 		$stmt->bindValue(':role', $userData['role']);
 		$stmt->bindValue(':registration_token', $userData['exp_token']);
 		$stmt->bindValue(':registration_expires', $userData['timestamp']);
-		$dbCon = null;
 		return $stmt->execute();
 	}
 
@@ -108,14 +107,12 @@ ON
 		$stmt->bindValue(':is_active', false);
 		$stmt->execute();
 
+		$stmt->closeCursor();
 		$newUser = "SELECT worker_id FROM workers WHERE worker_email = :worker_email";
 		$stmt = $dbCon->prepare($newUser);
-		$stmt->bindValue(':worker_email', $userData['worker_email']);
+		$stmt->bindValue(':worker_email', $userData['worker_email'], PDO::PARAM_STR);
 		$stmt->execute();
-		if($stmt->rowCount() > 0)
-			return $stmt->fetch(PDO::FETCH_ASSOC);
-
-		return false;
+		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
 	public function getUserById(int $workerId)
@@ -207,23 +204,15 @@ ON
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "UPDATE workers 
-				SET isActive = 1
+				SET isActive = 1, registration_token = null, registration_expires = null
 				WHERE registration_token = :token";
-
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':token', $token);
 		$stmt->execute();
+		if($stmt->rowCount() > 0)
+			return "OK";
 
-		$sql_del = "UPDATE workers
-					SET registration_token = null,
-					    registration_expires = null
-					WHERE registration_token = :token";
-
-		$stmt = $dbCon->prepare($sql_del);
-		$stmt->bindValue(':token', $token);
-		$stmt->execute();
-		$dbCon = null;
-		return "OK";
+		return "NOT";
 	}
 
 	public function deleteUserWithExpiredRegistration(string $token): int
@@ -235,7 +224,6 @@ ON
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':token', $token);
 		$stmt->execute();
-		$dbCon = null;
 		return 0;
 	}
 
@@ -270,7 +258,6 @@ ON
 	public function updateUser(array $newUserData): array|bool
 	{
 		$dbCon = $this->database->openConnection();
-
 
 		$sql = "UPDATE workers SET phone_number = :phone_number, company_id = :company_id WHERE worker_id = :worker_id";
 		$stmt = $dbCon->prepare($sql);
@@ -396,7 +383,7 @@ ON
 		return $stmt->execute();
 	}
 
-	public function deleteUserPicture(int $worker_id, string $userPicture)
+	public function deleteUserPicture(int $worker_id, string $userPicture): bool
 	{
 		$dbCon = $this->database->openConnection();
 		$sql = "UPDATE workers SET picture_id = NULL WHERE worker_id = :worker_id";

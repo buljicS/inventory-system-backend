@@ -22,7 +22,7 @@ class LogsRepository
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function insertNewLog(array $accessLog):void
+	public function insertNewLog(array $accessLog): void
 	{
 		$conn = $this->_database->openConnection();
 		$sql = "INSERT INTO access_logs (user_agent, worker_id, referer, ip_address, device_type, is_logged_in, note)
@@ -36,7 +36,6 @@ class LogsRepository
 		$stmt->bindValue(':is_logged_in', $accessLog['is_logged_in']);
 		$stmt->bindValue(':note', $accessLog['note']);
 		$stmt->execute();
-		$conn = null;
 	}
 
 

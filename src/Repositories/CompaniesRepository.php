@@ -18,10 +18,8 @@ class CompaniesRepository
 		$dbCon = $this->database->openConnection();
 		$sql = "SELECT company_id, company_name, isActive FROM companies WHERE isActive = 1";
 		$stmt = $dbCon->prepare($sql);
-		if($stmt->execute())
-			return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		return null;
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function getAllCompaniesForAdmin(): ?array
@@ -29,13 +27,12 @@ class CompaniesRepository
 		$dbCon = $this->database->openConnection();
 		$sql = "SELECT * FROM companies";
 		$stmt = $dbCon->prepare($sql);
-		if($stmt->execute())
-			return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		return null;
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function insertNewCompany(array $newCompanyData): bool {
+	public function insertNewCompany(array $newCompanyData): bool
+	{
 		$dbCon = $this->database->openConnection();
 		$sql = "INSERT INTO companies (company_name, company_mail, company_address, company_state) VALUES (:company_name, :company_mail, :company_address, :company_state)";
 		$stmt = $dbCon->prepare($sql);
@@ -43,11 +40,7 @@ class CompaniesRepository
 		$stmt->bindParam(':company_mail', $newCompanyData['company_mail']);
 		$stmt->bindParam(':company_address', $newCompanyData['company_address']);
 		$stmt->bindParam(':company_state', $newCompanyData['company_state']);
-		if($stmt->execute())
-			return true;
-
-		return false;
-
+		return $stmt->execute();
 	}
 
 	public function updateCompany(array $newCompanyData): bool
@@ -60,10 +53,7 @@ class CompaniesRepository
 		$stmt->bindParam(':company_address', $newCompanyData['company_address']);
 		$stmt->bindParam(':company_state', $newCompanyData['company_state']);
 		$stmt->bindParam(':id', $newCompanyData['company_id']);
-		if($stmt->execute())
-			return true;
-
-		return false;
+		return $stmt->execute();
 	}
 
 	public function deleteCompany(int $company_id): bool
@@ -72,10 +62,8 @@ class CompaniesRepository
 		$sql = "UPDATE companies SET isActive = 0 WHERE company_id = :company_id";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindParam(':company_id', $company_id);
-		if($stmt->execute())
-			return true;
-
-		return false;
+		$stmt->execute();
+		return $stmt->rowCount() > 0;
 	}
 
 	public function restoreCompany(int $company_id): bool
@@ -83,11 +71,8 @@ class CompaniesRepository
 		$dbCon = $this->database->openConnection();
 		$sql = "UPDATE companies SET isActive = 1 WHERE company_id = :company_id";
 		$stmt = $dbCon->prepare($sql);
-		$stmt->bindParam(':company_id', $company_id);
-		if($stmt->execute())
-			return true;
-
-		return false;
+		$stmt->bindParam(':company_id', $company_id, PDO::PARAM_INT);
+		return $stmt->execute();
 	}
 
 	public function getCompanyByWorker(int $worker_id): array|bool
@@ -97,7 +82,7 @@ class CompaniesRepository
                 LEFT JOIN companies C ON C.company_id = W.company_id
                 WHERE W.worker_id = :worker_id AND c.isActive = 1";
 		$stmt = $dbCon->prepare($sql);
-		$stmt->bindParam(':worker_id', $worker_id);
+		$stmt->bindParam(':worker_id', $worker_id, PDO::PARAM_INT);
 		$stmt->execute();
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
