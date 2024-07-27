@@ -54,11 +54,15 @@ class QRCodesServices
 		for($i = 0; $i < $options['amount']; $i++) {
 			//generate qrCode data
 			$fileName = $qrcodes_data[$i]['item_name'] . '_qrc' . '.svg';
-			$content = "{'room_id': {$qrcodes_data[$i]['room_id']}, " .
-				"'item_id': {$qrcodes_data[$i]['item_id']}, " .
-				"'name': '{$qrcodes_data[$i]['item_name']}'}";
+			$content = json_encode([
+				'room_id' => $qrcodes_data[$i]['room_id'],
+				'item_id' => $qrcodes_data[$i]['item_id'],
+				'item_name' => $qrcodes_data[$i]['item_name']
+			]);
 
 			//generate qr codes
+			if(file_exists($_ENV['LOCAL_STORAGE_URL'] . 'tmp/'))
+				mkdi
 			$writer->writeFile($content, $_ENV['LOCAL_STORAGE_URL'] . 'tmp/' . $fileName);
 			$decodedFile = file_get_contents($_ENV['LOCAL_STORAGE_URL'] . 'tmp/' . $fileName);
 
