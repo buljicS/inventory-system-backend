@@ -6,19 +6,27 @@ use Repositories\ItemsRepository as ItemsRepository;
 use Utilities\ValidatorUtility as Validator;
 use Services\QRCodesServices as QRCodesServices;
 use Repositories\RoomsRepository as RoomsRepository;
+use Repositories\QRCodesRepository as QRCodesRepository;
+
 class ItemsServices
 {
 	private readonly ItemsRepository $itemRepository;
 	private readonly Validator $validator;
 	private readonly QRCodesServices $qrcodesServices;
 	private readonly RoomsRepository $roomsRepository;
+	private readonly QRCodesRepository $qrCodesRepository;
 
-	public function __construct(ItemsRepository $itemRepository, Validator $validator, QRCodesServices $qrcodesServices, RoomsRepository $roomsRepository)
+	public function __construct(ItemsRepository $itemRepository,
+								Validator $validator,
+								QRCodesServices $qrcodesServices,
+								RoomsRepository $roomsRepository,
+								QRCodesRepository $qrCodesRepository)
 	{
 		$this->itemRepository = $itemRepository;
 		$this->validator = $validator;
 		$this->qrcodesServices = $qrcodesServices;
 		$this->roomsRepository = $roomsRepository;
+		$this->qrCodesRepository = $qrCodesRepository;
 	}
 
 	public function getItemsByRoom(int $room_id): ?array
@@ -50,15 +58,17 @@ class ItemsServices
 					$qrcode['qrcode_data'] = $qrcode_data;
 					$qrcode['qrcode_options'] = [
 						'saveToDir' => $this->roomsRepository->getRoomName((int)$item['room_id']) . "-" . date('d-m-Y_H:i:s') . "/",
-						'amount' => $options['item_quantity']
+						'amount' => 1
 					];
 					$qrCodeGenerated = $this->qrcodesServices->generateQRCode($qrcode);
-					if($qrCodeGenerated['status'] == 202)
+					if($qrCodeGenerated['status'] == 202) {
+						$this->qrCodesRepository->insertNewQRCodes($qrCodeGenerated['newQRCodes']);
 						return [
 							'status' => 200,
 							'message' => 'Success',
 							'description' => 'Items and qr codes generated successfully.'
 						];
+					}
 					else
 						return $qrCodeGenerated;
 				}
@@ -89,11 +99,16 @@ class ItemsServices
 					];
 					$qrCodesGenerated = $this->qrcodesServices->generateQRCode($qrcodes);
 					if($qrCodesGenerated['status'] == 202)
+					{
+						//save qr codes to db
+						$this->qrCodesRepository->insertNewQRCodes($qrCodesGenerated['newQRCodes']);
 						return [
 							'status' => 200,
 							'message' => 'Success',
 							'description' => 'Items and qr codes generated successfully.'
 						];
+					}
+
 					else
 						return $qrCodesGenerated;
 				}

@@ -33,6 +33,7 @@ class QRCodesServices
 				'description' => 'Amount of qr codes need to match desired amount for generation'
 			];
 
+		//qr code generator init
 		$renderer = new QRCodeRenderer(
 			new RendererStyle(300, 3),
 			new SvgImageBackEnd()
@@ -40,12 +41,15 @@ class QRCodesServices
 
 		$writer = new QRCodeWriter($renderer);
 
+		//upload options for firebase
 		$uploadOptions = [
 			"file-type" => 2,
 			"dir" => 'qrCodes/' . $options['saveToDir'],
 			"mime-type" => "application/svg+xml",
     		"predefinedAcl" => "PUBLICREAD"
 		];
+
+		$newQRCodes = [];
 
 		for($i = 0; $i < $options['amount']; $i++) {
 			//generate qrCode data
@@ -61,12 +65,21 @@ class QRCodesServices
 			//upload qr codes to firebase
 			$uploadOptions["name"] = $fileName;
 			$this->firebaseServices->uploadFile($decodedFile, $uploadOptions);
+
+			//save new qrcode data for database
+			$newQRCodes[] = [
+				'file_name' => $fileName,
+				'title' => $qrcodes_data[$i]['item_name'],
+				'item_id' => $qrcodes_data[$i]['item_id'],
+				'room_id' => $qrcodes_data[$i]['room_id'],
+			];
 		}
 
 		return [
 			'status' => 202,
 			'message' => 'Created',
-			'description' => 'QRCodes created'
+			'description' => 'QRCodes created',
+			'newQRCodes' => $newQRCodes
 		];
 	}
 

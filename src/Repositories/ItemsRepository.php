@@ -34,11 +34,13 @@ class ItemsRepository
 		$stmt = $dbConn->prepare($sql);
 		$stmt->execute($flattenedItemProps);
 
+		$first_id = $dbConn->lastInsertId();
+		$last_id = $first_id + ($numberOfItems - 1);
+
 		//after inserting all items fetch their props in case of qr code generation
 		$stmt->closeCursor();
-		$sql = "SELECT item_id, item_name, room_id FROM items ORDER BY item_id DESC LIMIT :numOfItems";
+		$sql = "SELECT item_id, item_name, room_id FROM items WHERE item_id BETWEEN $first_id AND $last_id";
 		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(':numOfItems', $numberOfItems);
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -48,11 +50,29 @@ class ItemsRepository
 	public function getItemsByRoom(int $room_id): ?array
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT * FROM items WHERE room_id = :room_id";
+		$sql = "SELECT * FROM items WHERE room_id = :room_id ORDER BY item_id ASC";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
 		$stmt->execute();
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		$stmt->closeCursor();
+		$qrCodesQuery = "SELECT Q.file_name, P.picture_path FROM qr_codes Q 
+    					 LEFT JOIN pictures P ON Q.file_name = P.picture_name 
+                   		 WHERE Q.room_id = :room_id
+                   		 ORDER BY Q.item_id ASC";
+
+		$stmt = $dbConn->prepare($qrCodesQuery);
+		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
+		$stmt->execute();
+		$qrCodes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		for($i = 0; $i < count($qrCodes); $i++)
+		{
+			$items[$i]['qrCode'] = $qrCodes[$i];
+		}
+
+		return $items;
 	}
 
 	public function updateItem(array $updatedItem): bool
