@@ -1435,11 +1435,6 @@ class WebAPIController
 	 *     			   @OA\Property (
 	 *     			       property="generate_options",
 	 *     				   type="object",
-	 *     				   @OA\Property(
-	 *                       	property="batch_generate",
-	 *                       	type="boolean",
-	 *                       	example=false
-	 *                   	),
 	 *           			@OA\Property(
 	 *                       	property="item_quantity",
 	 *                       	type="integer",
