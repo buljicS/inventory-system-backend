@@ -1640,15 +1640,19 @@ class WebAPIController
 	 * @OA\Post(
 	 *     path="/api/QRCodes/generateQRCodes",
 	 *     operationId="generateQRCodes",
-	 *     summary="DO NOT CALL, LOGIC HAS CHANGED",
 	 *     tags={"QRCodes"},
 	 *     @OA\RequestBody(
-	 *         description="Create QR codes, upload them to firebase storage and save info in database <br/> Note that `amount` of desired qr codes and amount of `qrcode_data` needs to be equal",
+	 *         description="Create QR codes, upload them to firebase storage and save info in database <br/> Note that `amount` of desired qr codes and amount of `qrcode_data` needs to be equal<br/><br/>`Note` if `forSingleItem` is set to true, that means that user wants to generate qr code for one item that has no qr code",
 	 *     	   required=true,
 	 *     @OA\MediaType(
 	 *             mediaType="application/json",
 	 *             @OA\Schema(
 	 *                 type="object",
+	 *     		       @OA\Property(
+	 *     		           property="forSingleItem",
+	 *     			       type="bool",
+	 *     				   example=false,
+	 *     		       ),
 	 *     			   @OA\Property(
 	 *     			       property="qrcode_options",
 	 *     				   type="object",
@@ -1711,7 +1715,7 @@ class WebAPIController
 	public function generateQRCode(Request $request, Response $response): Response
 	{
 		$reqBody = (array)$request->getParsedBody();
-		$resp = $this->qrCodesServices->generateQRCode($reqBody);
+		$resp = $this->qrCodesServices->generateQRCode($reqBody, $reqBody['forSingleItem']);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');

@@ -1465,15 +1465,18 @@
                 "tags": [
                     "QRCodes"
                 ],
-                "summary": "DO NOT CALL, LOGIC HAS CHANGED",
                 "operationId": "generateQRCodes",
                 "requestBody": {
-                    "description": "Create QR codes, upload them to firebase storage and save info in database <br/> Note that `amount` of desired qr codes and amount of `qrcode_data` needs to be equal",
+                    "description": "Create QR codes, upload them to firebase storage and save info in database <br/> Note that `amount` of desired qr codes and amount of `qrcode_data` needs to be equal<br/><br/>`Note` if `forSingleItem` is set to true, that means that user wants to generate qr code for one item that has no qr code",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
+                                    "forSingleItem": {
+                                        "type": "boolean",
+                                        "example": false
+                                    },
                                     "qrcode_options": {
                                         "properties": {
                                             "saveToDir": {
