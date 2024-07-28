@@ -59,7 +59,7 @@ class ItemsServices
 						'saveToDir' => $this->roomsRepository->getRoomName((int)$item['room_id']) . "/",
 						'amount' => 1
 					];
-					$qrCodeGenerated = $this->qrcodesServices->generateQRCode($qrcode);
+					$qrCodeGenerated = $this->qrcodesServices->generateQRCode($qrcode,false);
 					if($qrCodeGenerated['status'] == 202) {
 						$this->itemRepository->setQRCodesOnItems($qrCodeGenerated['qrCodes']);
 						return [
@@ -95,7 +95,7 @@ class ItemsServices
 						'saveToDir' => $this->roomsRepository->getRoomName((int)$item['room_id']) . "/",
 						'amount' => $options['item_quantity']
 					];
-					$qrCodesGenerated = $this->qrcodesServices->generateQRCode($qrcodes);
+					$qrCodesGenerated = $this->qrcodesServices->generateQRCode($qrcodes, false);
 					if($qrCodesGenerated['status'] == 202)
 					{
 						$this->itemRepository->setQRCodesOnItems($qrCodesGenerated['qrCodes']);
