@@ -3,9 +3,10 @@
 namespace Services;
 
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use BaconQrCode\Writer as QRCodeWriter;
 use BaconQrCode\Renderer\ImageRenderer as QRCodeRenderer;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd as SvgImageBackEnd;
+use BaconQrCode\Writer as QRCodeWriter;
+use BaconQrCode\Renderer\GDLibRenderer as GDLibRenderer;
 
 use Services\FirebaseServices as FirebaseServices;
 use Utilities\ValidatorUtility as ValidatorUtility;
@@ -34,10 +35,12 @@ class QRCodesServices
 			];
 
 		//qr code generator init
-		$renderer = new QRCodeRenderer(
-			new RendererStyle(300, 3),
-			new SvgImageBackEnd()
-		);
+//		$renderer = new QRCodeRenderer(
+//			new RendererStyle(300, 3),
+//			new SvgImageBackEnd()
+//		);
+
+		$renderer = new GDLibRenderer(300, 3, 'png', 10);
 
 		$writer = new QRCodeWriter($renderer);
 
@@ -45,7 +48,7 @@ class QRCodesServices
 		$uploadOptions = [
 			"file-type" => 2,
 			"dir" => 'qrCodes/' . $options['saveToDir'],
-			"mime-type" => "application/svg+xml",
+			"mime-type" => "image/png",
     		"predefinedAcl" => "PUBLICREAD"
 		];
 
@@ -56,7 +59,7 @@ class QRCodesServices
 
 		for($i = 0; $i < $options['amount']; $i++) {
 			//generate qrCode data
-			$fileName = $qrcodes_data[$i]['item_name'] . '-QRCode' . '.svg';
+			$fileName = $qrcodes_data[$i]['item_name'] . '-QRCode' . '.png';
 			$content = json_encode([
 				'room_id' => $qrcodes_data[$i]['room_id'],
 				'item_id' => $qrcodes_data[$i]['item_id'],
