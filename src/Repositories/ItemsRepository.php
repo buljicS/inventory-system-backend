@@ -83,41 +83,74 @@ class ItemsRepository
 		return $stmt->rowCount() > 0;
 	}
 
-	public function checkIfItemIsActive(int $item_id): bool
+	public function checkIfItemIsActive(int $item_id): string
 	{
 		$dbConn = $this->dbController->openConnection();
 		$takeRoomIdQuery = $dbConn->prepare("SELECT room_id FROM items WHERE item_id = :item_id");
 		$takeRoomIdQuery->bindParam(':item_id', $item_id, PDO::PARAM_INT);
 		$takeRoomIdQuery->execute();
-		$roomId = $takeRoomIdQuery->fetch()['room_id'];
+		$roomId = $takeRoomIdQuery->fetchColumn();
+		if($roomId === false) //if there is no room_id that means that item does not exist
+			return "Item does not exists";
 
-		$isOnActiveInventoryQuery = $dbConn->prepare("SELECT task_id FROM tasks WHERE room_id = $roomId AND isActive = 1");
-		$isOnActiveInventoryQuery->execute();
-		$isOnActiveInventory = $isOnActiveInventoryQuery->fetch();
-		if(!empty($isOnActiveInventory))
-			return true;
+		else
+			$isOnActiveInventoryQuery = $dbConn->prepare("SELECT task_id FROM tasks WHERE room_id = $roomId AND isActive = 1");
+			$isOnActiveInventoryQuery->execute();
+			$isActive = $isOnActiveInventoryQuery->fetchColumn();
+			if($isActive !== false) return "Item is in active inventory task";
 
-		return false;
+			return "ok";
 	}
 
-//	public function deleteItem(int $item_id): bool
-//	{
-//		$dbConn = $this->dbController->openConnection();
-//
-//		//delete QR code for item that is being deleted
-//		$deleteCorrespondingQRCode = "DELETE FROM qr_codes WHERE item_id = :item_id";
-//		$stmt = $dbConn->prepare($deleteCorrespondingQRCode);
-//		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
-//		$stmt->execute();
-//		$stmt = null;
-//
-//		//delete item
-//		$deleteItem = "DELETE FROM items WHERE item_id = :item_id";
-//		$stmt = $dbConn->prepare($deleteItem);
-//		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
-//		return $stmt->execute();
-//
-//	}
+	public function doesItemExists(int $item_id): bool
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT item_id FROM items WHERE item_id = :item_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
+		$stmt->execute();
+		return $stmt->rowCount() > 0;
+	}
+
+	public function deleteItem(int $item_id): string
+	{
+		$dbConn = $this->dbController->openConnection();
+
+		//select picture_id
+		$sql = "SELECT picture_id FROM items WHERE item_id = :item_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
+		$stmt->execute();
+		$picture_id = $stmt->fetchColumn();
+
+		//delete item
+		$stmt->closeCursor();
+		$sql = "DELETE FROM items WHERE item_id = :item_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
+		$stmt->execute();
+
+		//check if item has picture
+		if($picture_id !== false) {
+			//select picture path
+			$pictureQ = "SELECT picture_path FROM pictures WHERE picture_id = :picture_id";
+			$stmt = $dbConn->prepare($pictureQ);
+			$stmt->bindParam(':picture_id', $picture_id, PDO::PARAM_INT);
+			$stmt->execute();
+			$picturePath = $stmt->fetchColumn();
+
+			//delete picture
+			$stmt->closeCursor();
+			$deletePictureQ = "DELETE FROM pictures WHERE picture_id = :picture_id";
+			$stmt = $dbConn->prepare($deletePictureQ);
+			$stmt->bindParam(':picture_id', $picture_id, PDO::PARAM_INT);
+			$stmt->execute();
+
+			return $picturePath;
+		}
+
+		return "ok";
+	}
 
 	public function setQRCodesOnItems(array $qrcodes): bool
 	{

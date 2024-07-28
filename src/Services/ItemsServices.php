@@ -7,6 +7,7 @@ use Utilities\ValidatorUtility as Validator;
 use Services\QRCodesServices as QRCodesServices;
 use Repositories\RoomsRepository as RoomsRepository;
 use Repositories\QRCodesRepository as QRCodesRepository;
+use Services\FirebaseServices as FirebaseServices;
 
 class ItemsServices
 {
@@ -15,18 +16,21 @@ class ItemsServices
 	private readonly QRCodesServices $qrcodesServices;
 	private readonly RoomsRepository $roomsRepository;
 	private readonly QRCodesRepository $qrCodesRepository;
+	private readonly FirebaseServices $firebaseServices;
 
 	public function __construct(ItemsRepository $itemRepository,
 								Validator $validator,
 								QRCodesServices $qrcodesServices,
 								RoomsRepository $roomsRepository,
-								QRCodesRepository $qrCodesRepository)
+								QRCodesRepository $qrCodesRepository,
+								FirebaseServices $firebaseServices)
 	{
 		$this->itemRepository = $itemRepository;
 		$this->validator = $validator;
 		$this->qrcodesServices = $qrcodesServices;
 		$this->roomsRepository = $roomsRepository;
 		$this->qrCodesRepository = $qrCodesRepository;
+		$this->firebaseServices = $firebaseServices;
 	}
 
 	public function getItemsByRoom(int $room_id): ?array
@@ -145,30 +149,37 @@ class ItemsServices
 
 	public function deleteItem(int $item_id): array
 	{
-		$isItemDeleted = null;
 		$isItemInActiveInventoryProcess = $this->itemRepository->checkIfItemIsActive($item_id);
-		if($isItemInActiveInventoryProcess)
+		if($isItemInActiveInventoryProcess !== "ok")
 			return [
 				'status' => 400,
-				'message' => 'Forbidden',
-				'description' => 'This item is in active inventory process or it does not exist'
+				'message' => 'Bad request',
+				'description' => $isItemInActiveInventoryProcess
 			];
 		else
 			$isItemDeleted = $this->itemRepository->deleteItem($item_id);
 
 
-		if($isItemDeleted)
+		if($isItemDeleted == "ok")
 			return [
 				'status' => 200,
 				'message' => 'Success',
 				'description' => 'Item deleted successfully'
 			];
-
-		return [
-			'status' => 500,
-			'message' => 'Internal Server Error',
-			'description' => 'Error while deleting item, please try again later'
-		];
-
+		else { //item had picture, delete it from firebase
+			$urlParts = explode('/', $isItemDeleted);
+			$dir = $urlParts[4] . '-' . $urlParts[5];
+			$deleteStatus = $this->firebaseServices->deleteFileFromStorage($dir, $urlParts[6]);
+			if($deleteStatus['status'] == 200) {
+				return [
+					'status' => 200,
+					'message' => 'Success',
+					'description' => 'Item and its qrcode are deleted successfully'
+				];
+			}
+			else {
+				return $deleteStatus;
+			}
+		}
 	}
 }
