@@ -6,9 +6,9 @@ class HelperUtility
 {
 	public function __construct() {}
 
-	public function normailzePath(string $rawPath): string {
+	public function normalizePath(string $rawPath): string {
 		if(str_contains($rawPath, "-"))
-			return str_replace("-", "/", $rawPath);
+			return str_replace("-", "/", $rawPath) . "/";
 
 		return $rawPath . "/";
 	}

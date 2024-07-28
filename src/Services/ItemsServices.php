@@ -57,7 +57,7 @@ class ItemsServices
 				if($options['with_qrcodes']) {
 					$qrcode['qrcode_data'] = $qrcode_data;
 					$qrcode['qrcode_options'] = [
-						'saveToDir' => $this->roomsRepository->getRoomName((int)$item['room_id']) . "-" . date('d-m-Y_H:i:s') . "/",
+						'saveToDir' => $this->roomsRepository->getRoomName((int)$item['room_id']) . "/",
 						'amount' => 1
 					];
 					$qrCodeGenerated = $this->qrcodesServices->generateQRCode($qrcode);
@@ -94,7 +94,7 @@ class ItemsServices
 				if($options['with_qrcodes']) {
 					$qrcodes['qrcode_data'] = $qrcode_data;
 					$qrcodes['qrcode_options'] = [
-						'saveToDir' => $this->roomsRepository->getRoomName((int)$item['room_id']) . "-" . date('d-m-Y_H:i:s') . "/",
+						'saveToDir' => $this->roomsRepository->getRoomName((int)$item['room_id']) . "/",
 						'amount' => $options['item_quantity']
 					];
 					$qrCodesGenerated = $this->qrcodesServices->generateQRCode($qrcodes);

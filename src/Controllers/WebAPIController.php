@@ -266,6 +266,51 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/FirebaseStorage/downloadFile/{remoteDir}/{fileName}/{destinationDir}",
+	 *     operationId="downloadFile",
+	 *     description="Download file from firebase to local directory",
+	 *     tags={"FirebaseStorage"},
+	 *     @OA\Parameter(
+	 *         name="remoteDir",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="string"
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *         name="fileName",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *            type="string"
+	 *         )
+	 *      ),
+	 *      @OA\Parameter(
+	 *          name="destinationDir",
+	 *          in="path",
+	 *          required=true,
+	 *          @OA\Schema(
+	 *             type="string"
+	 *          )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function downloadFile(Request $request, Response $response, array $args): Response
+	{
+		$remoteDir = (string)$args['remoteDir'];
+		$fileName = (string)$args['fileName'];
+		$destinationDir = (string)$args['destinationDir'];
+		$resp = $this->firebaseServices->downloadFile($remoteDir, $fileName, $destinationDir);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region AccessLogs

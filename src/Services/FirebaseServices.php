@@ -42,7 +42,7 @@ class FirebaseServices
 
 		//save uploaded file to database
 		$fileOptions['file_path'] = $_ENV['BUCKET_URL'] . $fileOptions['dir'] . $fileOptions['name'];
-		$this->firebaseRepository->saveFile($fileOptions);
+		$file_id = $this->firebaseRepository->saveFile($fileOptions);
 
 		return [
 			'status' => 200,
@@ -50,14 +50,15 @@ class FirebaseServices
 			'description' => 'File uploaded successfully',
 			'file' => [
 				'url' => $fileOptions['file_path'],
-				'filename' => $fileOptions['name']
+				'filename' => $fileOptions['name'],
+				'file_id' => $file_id
 			]
 		];
 	}
 
 	public function getAllFilesByDir(string $requestedDir): array
 	{
-		$reqDirPath = $this->helper->normailzePath($requestedDir);
+		$reqDirPath = $this->helper->normalizePath($requestedDir);
 		$storage = $this->getFirebaseInstance();
 		$obj = $storage->objects([
 			'prefix' => $reqDirPath,
@@ -83,7 +84,7 @@ class FirebaseServices
 
 	public function getFileByName(string $requestedDir, string $fileName): array
 	{
-		$reqDirPath = $this->helper->normailzePath($requestedDir);
+		$reqDirPath = $this->helper->normalizePath($requestedDir);
 		$storage = $this->getFirebaseInstance();
 		$obj = $storage->objects([
 			'prefix' => $reqDirPath . $fileName,
@@ -104,7 +105,7 @@ class FirebaseServices
 
 	public function deleteFileFromStorage(string $dir, string $fileName): array
 	{
-		$reqDirPath = $this->helper->normailzePath($dir);
+		$reqDirPath = $this->helper->normalizePath($dir);
 		$storage = $this->getFirebaseInstance();
 		$objToDelete = $storage->object($reqDirPath . $fileName);
 		try {
@@ -129,6 +130,22 @@ class FirebaseServices
 			'status' => 200,
 			'message' => 'Success',
 			'description' => 'File deleted'
+		];
+	}
+
+	public function downloadFile(string $remoteDir, string $fileName, string $destinationDir): array
+	{
+		$reqDirPath = $this->helper->normalizePath($remoteDir);
+		$localDir = $this->helper->normalizePath($destinationDir);
+
+		$storage = $this->getFirebaseInstance();
+		$objToDownload = $storage->object($reqDirPath . $fileName);
+		$objToDownload->downloadToFile($localDir . $fileName);
+
+		return [
+			'status' => 200,
+			'message' => 'Success',
+			'description' => 'File downloaded'
 		];
 	}
 }

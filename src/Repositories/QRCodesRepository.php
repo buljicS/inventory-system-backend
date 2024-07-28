@@ -22,7 +22,7 @@ class QRCodesRepository
 		//prepare qrcodes for bulk insert
 		$flattenedQRCodesProps = array_merge(...array_map('array_values', $qrcodes));
 
-		$columns = ['file-name', 'title', 'item_id', 'room_id'];
+		$columns = ['file-name', 'title', 'item_id', 'room_id', 'picture_id'];
 		$numOfCols = count($columns);
 
 		//calculate number of needed row and create placeholders for as much
@@ -31,7 +31,7 @@ class QRCodesRepository
 		$rows = implode(', ', array_fill(0, $numOfRows, $row));
 
 		//insert all data into qr codes table
-		$sql = "INSERT INTO qr_codes (file_name, title, item_id, room_id) VALUES $rows";
+		$sql = "INSERT INTO qr_codes (file_name, title, item_id, room_id, picture_id) VALUES $rows";
 		$stmt = $dbConn->prepare($sql);
 		return $stmt->execute($flattenedQRCodesProps);
 

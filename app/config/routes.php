@@ -47,6 +47,7 @@ return function (Slim $app) {
 	$app->get('/api/FirebaseStorage/getAllFilesByDir/{dir}' , [API::class, 'getAllFilesByDir']);
 	$app->post('/api/FirebaseStorage/uploadFile', [API::class, 'uploadFile']);
 	$app->delete('/api/FirebaseStorage/deleteFile/{dir}/{fileName}', [API::class, 'deleteFile']);
+	$app->get('/api/FirebaseStorage/downloadFile/{remoteDir}/{fileName}/{destinationDir}', [API::class, 'downloadFile']);
 	#endregion
 
 	#region Companies

@@ -56,7 +56,7 @@ class QRCodesServices
 
 		for($i = 0; $i < $options['amount']; $i++) {
 			//generate qrCode data
-			$fileName = $qrcodes_data[$i]['item_name'] . '_qrc' . '.svg';
+			$fileName = $qrcodes_data[$i]['item_name'] . '-QRCode' . '.svg';
 			$content = json_encode([
 				'room_id' => $qrcodes_data[$i]['room_id'],
 				'item_id' => $qrcodes_data[$i]['item_id'],
@@ -69,7 +69,7 @@ class QRCodesServices
 
 			//upload qr codes to firebase
 			$uploadOptions["name"] = $fileName;
-			$this->firebaseServices->uploadFile($decodedFile, $uploadOptions);
+			$uploadedFile = $this->firebaseServices->uploadFile($decodedFile, $uploadOptions);
 
 			//save new qrcode data for database
 			$newQRCodes[] = [
@@ -77,6 +77,7 @@ class QRCodesServices
 				'title' => $qrcodes_data[$i]['item_name'],
 				'item_id' => $qrcodes_data[$i]['item_id'],
 				'room_id' => $qrcodes_data[$i]['room_id'],
+				'picture_id' => $uploadedFile['file']['file_id']
 			];
 		}
 
