@@ -27,6 +27,7 @@ class QRCodesServices
 
 	public function generateQRCode(array $qrCodes, bool $forSingleItem): array|string
 	{
+		$isForSingleItem = $forSingleItem == null ? false : true;
 		$options = $qrCodes['qrcode_options'];
 		$qrcodes_data = $qrCodes['qrcode_data'];
 
@@ -88,7 +89,7 @@ class QRCodesServices
 		}
 
 		//if request is being made for only single item, attach new qr code to that item straight away
-		if($forSingleItem) {
+		if($isForSingleItem) {
 			$this->itemsRepository->setQRCodesOnItems($newQRCodes);
 			return [
 				'status' => 202,
