@@ -34,6 +34,5 @@ class QRCodesRepository
 		$sql = "INSERT INTO qr_codes (file_name, title, item_id, room_id, picture_id) VALUES $rows";
 		$stmt = $dbConn->prepare($sql);
 		return $stmt->execute($flattenedQRCodesProps);
-
 	}
 }

@@ -50,8 +50,7 @@ class ItemsServices
 					$item['item_name'],
 					$item['serial_no'],
 					$item['country_of_origin'],
-					$item['room_id'],
-					$item['with_qrcode'] = $options['with_qrcodes']
+					$item['room_id']
 				];
 				$qrcode_data = $this->itemRepository->insertNewItems($newItem, 1);
 				if($options['with_qrcodes']) {
@@ -62,7 +61,7 @@ class ItemsServices
 					];
 					$qrCodeGenerated = $this->qrcodesServices->generateQRCode($qrcode);
 					if($qrCodeGenerated['status'] == 202) {
-						$this->qrCodesRepository->insertNewQRCodes($qrCodeGenerated['newQRCodes']);
+						$this->itemRepository->setQRCodesOnItems($qrCodeGenerated['qrCodes']);
 						return [
 							'status' => 200,
 							'message' => 'Success',
@@ -85,8 +84,7 @@ class ItemsServices
 						$item['item_name'] = $options['name_pattern'] . $i,
 						$item['serial_no'] => $item['serial_no'] . $i,
 						$item['country_of_origin'],
-						$item['room_id'],
-						$item['with_qrcode'] = $options['with_qrcodes'],
+						$item['room_id']
 					];
 				}
 				//watch for naming conventions because here comes integration with another service
@@ -100,8 +98,7 @@ class ItemsServices
 					$qrCodesGenerated = $this->qrcodesServices->generateQRCode($qrcodes);
 					if($qrCodesGenerated['status'] == 202)
 					{
-						//save qr codes to db
-						$this->qrCodesRepository->insertNewQRCodes($qrCodesGenerated['newQRCodes']);
+						$this->itemRepository->setQRCodesOnItems($qrCodesGenerated['qrCodes']);
 						return [
 							'status' => 200,
 							'message' => 'Success',

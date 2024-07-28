@@ -1640,6 +1640,7 @@ class WebAPIController
 	 * @OA\Post(
 	 *     path="/api/QRCodes/generateQRCodes",
 	 *     operationId="generateQRCodes",
+	 *     summary="DO NOT CALL, LOGIC HAS CHANGED",
 	 *     tags={"QRCodes"},
 	 *     @OA\RequestBody(
 	 *         description="Create QR codes, upload them to firebase storage and save info in database <br/> Note that `amount` of desired qr codes and amount of `qrcode_data` needs to be equal",

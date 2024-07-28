@@ -17,20 +17,21 @@ class ItemsRepository
 
 	public function insertNewItems(array $items, int $numberOfItems): array
 	{
+
 		$dbConn = $this->dbController->openConnection();
 
 		//prepare items for multiple insertion
 		$flattenedItemProps = array_merge(...array_map('array_values', $items));
 
 		//create rows for multi insertion
-		$columns = ['item_name', 'serial_no', 'country_of_origin', 'room_id', 'with_qrcode']; //entity columns
+		$columns = ['item_name', 'serial_no', 'country_of_origin', 'room_id']; //entity columns
 		$numOfCols = count($columns);
 
 		$numOfRows = count($flattenedItemProps) / $numOfCols;
 
 		$row = '(' . implode(', ', array_fill(0, $numOfCols, '?')) . ')'; //representation of single row ('?','?','?','?','?')
 		$rows = implode(', ', array_fill(0, $numOfRows, $row));
-		$sql = "INSERT INTO items (item_name, serial_no, country_of_origin, room_id, with_qrcode) VALUES $rows";
+		$sql = "INSERT INTO items (item_name, serial_no, country_of_origin, room_id) VALUES $rows";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->execute($flattenedItemProps);
 
@@ -39,7 +40,10 @@ class ItemsRepository
 
 		//after inserting all items fetch their props in case of qr code generation
 		$stmt->closeCursor();
-		$sql = "SELECT item_id, item_name, room_id FROM items WHERE item_id BETWEEN $first_id AND $last_id";
+		if($numberOfItems == 1)
+			$sql = "SELECT item_id, room_id, item_name FROM items WHERE item_id = $last_id";
+		else
+			$sql = "SELECT item_id, room_id, item_name FROM items WHERE item_id BETWEEN $first_id AND $last_id";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -50,17 +54,20 @@ class ItemsRepository
 	public function getItemsByRoom(int $room_id): ?array
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT * FROM items WHERE room_id = :room_id";
+		$sql = "SELECT I.item_id,
+       				   I.item_name,
+       				   I.serial_no,
+       				   I.country_of_origin,
+    				   P.picture_path, 
+       				   P.picture_name
+				FROM items I
+         		LEFT JOIN pictures P 
+         		    ON P.picture_id = I.picture_id		
+         		WHERE room_id = :room_id";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
 		$stmt->execute();
-		$items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		$stmt->closeCursor();
-		$picturesSQL = "SELECT P.picture_path, P.picture_name FROM qr_codes QS LEFT JOIN pictures P on P.picture_id = QS.picture_id WHERE QS.item_id= :item_id";
-		$stmt = $dbConn->prepare($picturesSQL);
-		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
-		return $items;
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function updateItem(array $updatedItem): bool
@@ -93,22 +100,36 @@ class ItemsRepository
 		return false;
 	}
 
-	public function deleteItem(int $item_id): bool
+//	public function deleteItem(int $item_id): bool
+//	{
+//		$dbConn = $this->dbController->openConnection();
+//
+//		//delete QR code for item that is being deleted
+//		$deleteCorrespondingQRCode = "DELETE FROM qr_codes WHERE item_id = :item_id";
+//		$stmt = $dbConn->prepare($deleteCorrespondingQRCode);
+//		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
+//		$stmt->execute();
+//		$stmt = null;
+//
+//		//delete item
+//		$deleteItem = "DELETE FROM items WHERE item_id = :item_id";
+//		$stmt = $dbConn->prepare($deleteItem);
+//		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
+//		return $stmt->execute();
+//
+//	}
+
+	public function setQRCodesOnItems(array $qrcodes): bool
 	{
+
 		$dbConn = $this->dbController->openConnection();
-
-		//delete QR code for item that is being deleted
-		$deleteCorrespondingQRCode = "DELETE FROM qr_codes WHERE item_id = :item_id";
-		$stmt = $dbConn->prepare($deleteCorrespondingQRCode);
-		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
-		$stmt->execute();
-		$stmt = null;
-
-		//delete item
-		$deleteItem = "DELETE FROM items WHERE item_id = :item_id";
-		$stmt = $dbConn->prepare($deleteItem);
-		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
-		return $stmt->execute();
-
+		$sql = "UPDATE items SET picture_id = :picture_id WHERE item_id = :item_id";
+		$stmt = $dbConn->prepare($sql);
+		for($i = 0; $i < count($qrcodes); $i++) {
+			$stmt->bindParam(':picture_id', $qrcodes[$i]['picture_id'], PDO::PARAM_INT);
+			$stmt->bindParam(':item_id', $qrcodes[$i]['item_id'], PDO::PARAM_INT);
+			$stmt->execute();
+		}
+		return $stmt->rowCount() == count($qrcodes);
 	}
 }

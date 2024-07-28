@@ -85,7 +85,7 @@ class QRCodesServices
 			'status' => 202,
 			'message' => 'Created',
 			'description' => 'QRCodes created',
-			'newQRCodes' => $newQRCodes
+			'qrCodes' => $newQRCodes
 		];
 	}
 
