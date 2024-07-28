@@ -10,19 +10,22 @@ use BaconQrCode\Renderer\GDLibRenderer as GDLibRenderer;
 
 use Services\FirebaseServices as FirebaseServices;
 use Utilities\ValidatorUtility as ValidatorUtility;
+use Repositories\ItemsRepository as ItemsRepository;
 
 class QRCodesServices
 {
 	private readonly FirebaseServices $firebaseServices;
 	private readonly ValidatorUtility $validatorUtility;
+	private readonly ItemsRepository $itemsRepository;
 
-	public function __construct(FirebaseServices $firebaseServices, ValidatorUtility $validatorUtility)
+	public function __construct(FirebaseServices $firebaseServices, ValidatorUtility $validatorUtility, ItemsRepository $itemsRepository)
 	{
 		$this->firebaseServices = $firebaseServices;
 		$this->validatorUtility = $validatorUtility;
+		$this->itemsRepository = $itemsRepository;
 	}
 
-	public function generateQRCode(array $qrCodes): array|string
+	public function generateQRCode(array $qrCodes, bool $forSingleItem): array|string
 	{
 		$options = $qrCodes['qrcode_options'];
 		$qrcodes_data = $qrCodes['qrcode_data'];
@@ -81,6 +84,16 @@ class QRCodesServices
 				'item_id' => $qrcodes_data[$i]['item_id'],
 				'room_id' => $qrcodes_data[$i]['room_id'],
 				'picture_id' => $uploadedFile['file']['file_id']
+			];
+		}
+
+		//if request is being made for only single item, attach new qr code to that item straight away
+		if($forSingleItem) {
+			$this->itemsRepository->setQRCodesOnItems($newQRCodes);
+			return [
+				'status' => 202,
+				'message' => 'Created',
+				'description' => 'QRCode for ' . $newQRCodes[0]['item_name'] . ' item successfully created'
 			];
 		}
 
