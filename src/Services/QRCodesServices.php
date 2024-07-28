@@ -93,7 +93,7 @@ class QRCodesServices
 			return [
 				'status' => 202,
 				'message' => 'Created',
-				'description' => 'QRCode for ' . $newQRCodes[0]['item_name'] . ' item successfully created'
+				'description' => 'QRCode for ' . $newQRCodes[0]['title'] . ' item successfully created'
 			];
 		}
 
