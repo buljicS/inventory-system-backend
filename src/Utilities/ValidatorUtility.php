@@ -334,6 +334,33 @@ class ValidatorUtility
 	}
 	#endregion
 
+	#region TeamValidation
+	public function validateNewTeam(array $newTeamData): bool|array
+	{
+		$this->validator = new Validator($newTeamData);
+		$this->validator->rules([
+			'required' => [
+				['team_name'],
+				['company_id'],
+			],
+			'lengthMin' => [
+				[['team_name'], 3]
+			],
+			'min' => [
+				[['company_id'], 1],
+			]
+		]);
+
+		if($this->validator->validate()) return true;
+		else {
+			return [
+				'status' => 400,
+				'message' => 'Bad request',
+				'description' => $this->validator->errors()
+			];
+		}
+	}
+	#endregion
 
 	#region AdminValidation
 	public function validateAdminCredentials(array $credentials): bool|array

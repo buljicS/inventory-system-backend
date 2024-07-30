@@ -2,12 +2,21 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Inventory management system API",
-        "description": "Inventory web-based system for tracking items and stuff in company",
+        "description": "Complete API documentation for web based invetory system <br/> Documentation is based on `OAS 3.0` and API is running on `PHP 8.2`",
+        "contact": {
+            "name": "Developer",
+            "email": "stefanbvts@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/license/mit"
+        },
         "version": "1.1.0"
     },
     "servers": [
         {
-            "url": "http://www.insystem-api.localhost/"
+            "url": "http://www.insystem-api.localhost/",
+            "description": "Apache"
         }
     ],
     "paths": {
@@ -1543,6 +1552,147 @@
                 ]
             }
         },
+        "/api/Teams/getActiveWorkersInCompany/{company_id}": {
+            "get": {
+                "tags": [
+                    "Teams"
+                ],
+                "description": "Get all active workers in current company",
+                "operationId": "getActiveWorkersInCompany",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Teams/getAllTeamsInCompany/{company_id}": {
+            "get": {
+                "tags": [
+                    "Teams"
+                ],
+                "description": "Get all teams",
+                "operationId": "getAllTeams",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Teams/getTeamMembers/{team_id}": {
+            "get": {
+                "tags": [
+                    "Teams"
+                ],
+                "description": "Get team members for single team",
+                "operationId": "getTeamMembers",
+                "parameters": [
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Teams/createNewTeam": {
+            "post": {
+                "tags": [
+                    "Teams"
+                ],
+                "operationId": "createNewTeam",
+                "requestBody": {
+                    "description": "Create new team for company",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "team_name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "company_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "workers_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "example": [
+                                            0,
+                                            1,
+                                            2
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [
@@ -1695,6 +1845,10 @@
         {
             "name": "QRCodes",
             "description": "QRCodes"
+        },
+        {
+            "name": "Teams",
+            "description": "Teams"
         },
         {
             "name": "Admins",

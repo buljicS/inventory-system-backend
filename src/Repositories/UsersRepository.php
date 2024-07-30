@@ -18,21 +18,20 @@ class UsersRepository
 	{
 		$dbCon = $this->database->openConnection();
 
-		$sql = "SELECT 
-    C.company_name, 
-    C.company_id, 
-    W.worker_id, 
-    W.worker_fname, 
-    W.worker_lname, 
-    W.worker_email, 
-    W.role, 
-    W.isActive 
-FROM 
-    workers W 
-LEFT JOIN 
-    companies C 
-ON 
-    C.company_id = W.company_id;";
+		$sql = "SELECT C.company_name, 
+    				   C.company_id, 
+                       W.worker_id, 
+                       W.worker_fname, 
+                       W.worker_lname, 
+                       W.worker_email, 
+                       W.role, 
+                       W.isActive 
+				FROM 
+				    workers W 
+				LEFT JOIN 
+				    companies C 
+				ON
+   					C.company_id = W.company_id;";
 
 		$stmt = $dbCon->prepare($sql);
 		$stmt->execute();

@@ -14,7 +14,11 @@
 		"/api/Admins/",
 		"/api/Companies/",
 		"/api/Rooms/",
-		"/api/Firebase/"
+		"/api/FirebaseStorage/",
+		"/api/Logs/getAllLogs",
+		"/api/Items/",
+		"/api/QRCodes/",
+		"/api/Teams"
 	];
 
 	$ignorePath = [

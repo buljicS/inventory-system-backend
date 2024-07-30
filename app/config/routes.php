@@ -78,6 +78,12 @@ return function (Slim $app) {
 	$app->post('/api/QRCodes/generateQRCodes', [API::class, 'generateQRCode']);
 	#endregion
 
+	#region Teams
+	$app->get('/api/Teams/getActiveWorkersInCompany/{company_id}', [API::class, 'getActiveWorkersInCompany']);
+	$app->get('/api/Teams/getAllTeamsInCompany/{company_id}', [API::class, 'getAllTeamsInCompany']);
+	$app->get('/api/Teams/getTeamMembers/{team_id}', [API::class, 'getTeamMembers']);
+	$app->post('/api/Teams/createNewTeam', [API::class, 'createNewTeam']);
+	#endregion
 
 	#region TestEndpoints
 	$app->post('/api/Test/listTest', [API::class, 'listTest']);

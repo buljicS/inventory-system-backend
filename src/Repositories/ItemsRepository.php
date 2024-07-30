@@ -15,7 +15,7 @@ class ItemsRepository
 		$this->dbController = $dbController;
 	}
 
-	public function insertNewItems(array $items, int $numberOfItems): array
+	public function insertNewItems(array $items, int $numberOfItems, int $room_id): array
 	{
 
 		$dbConn = $this->dbController->openConnection();
@@ -41,10 +41,11 @@ class ItemsRepository
 		//after inserting all items fetch their props in case of qr code generation
 		$stmt->closeCursor();
 		if($numberOfItems == 1)
-			$sql = "SELECT item_id, room_id, item_name FROM items WHERE item_id = $last_id";
+			$sql = "SELECT item_id, room_id, item_name FROM items WHERE item_id = $last_id AND room_id = :room_id";
 		else
-			$sql = "SELECT item_id, room_id, item_name FROM items WHERE item_id BETWEEN $first_id AND $last_id";
+			$sql = "SELECT item_id, room_id, item_name FROM items WHERE item_id BETWEEN $first_id AND $last_id AND room_id = :room_id";
 		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(":room_id", $room_id, PDO::PARAM_INT);
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -102,16 +103,6 @@ class ItemsRepository
 			return "ok";
 	}
 
-	public function doesItemExists(int $item_id): bool
-	{
-		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT item_id FROM items WHERE item_id = :item_id";
-		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
-		$stmt->execute();
-		return $stmt->rowCount() > 0;
-	}
-
 	public function deleteItem(int $item_id): string
 	{
 		$dbConn = $this->dbController->openConnection();
@@ -148,13 +139,11 @@ class ItemsRepository
 
 			return $picturePath;
 		}
-
 		return "ok";
 	}
 
 	public function setQRCodesOnItems(array $qrcodes): bool
 	{
-
 		$dbConn = $this->dbController->openConnection();
 		$sql = "UPDATE items SET picture_id = :picture_id WHERE item_id = :item_id";
 		$stmt = $dbConn->prepare($sql);

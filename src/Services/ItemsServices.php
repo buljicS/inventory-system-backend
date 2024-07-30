@@ -56,7 +56,7 @@ class ItemsServices
 					$item['country_of_origin'],
 					$item['room_id']
 				];
-				$qrcode_data = $this->itemRepository->insertNewItems($newItem, 1);
+				$qrcode_data = $this->itemRepository->insertNewItems($newItem, 1, (int)$item['room_id']);
 				if($options['with_qrcodes']) {
 					$qrcode['qrcode_data'] = $qrcode_data;
 					$qrcode['qrcode_options'] = [
@@ -92,7 +92,7 @@ class ItemsServices
 					];
 				}
 				//watch for naming conventions because here comes integration with another service
-				$qrcode_data = $this->itemRepository->insertNewItems($items, $options['item_quantity']);
+				$qrcode_data = $this->itemRepository->insertNewItems($items, $options['item_quantity'], (int)$item['room_id']);
 				if($options['with_qrcodes']) {
 					$qrcodes['qrcode_data'] = $qrcode_data;
 					$qrcodes['qrcode_options'] = [

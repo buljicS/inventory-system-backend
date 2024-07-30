@@ -9,19 +9,16 @@ use BaconQrCode\Writer as QRCodeWriter;
 use BaconQrCode\Renderer\GDLibRenderer as GDLibRenderer;
 
 use Services\FirebaseServices as FirebaseServices;
-use Utilities\ValidatorUtility as ValidatorUtility;
 use Repositories\ItemsRepository as ItemsRepository;
 
 class QRCodesServices
 {
 	private readonly FirebaseServices $firebaseServices;
-	private readonly ValidatorUtility $validatorUtility;
 	private readonly ItemsRepository $itemsRepository;
 
-	public function __construct(FirebaseServices $firebaseServices, ValidatorUtility $validatorUtility, ItemsRepository $itemsRepository)
+	public function __construct(FirebaseServices $firebaseServices, ItemsRepository $itemsRepository)
 	{
 		$this->firebaseServices = $firebaseServices;
-		$this->validatorUtility = $validatorUtility;
 		$this->itemsRepository = $itemsRepository;
 	}
 
@@ -29,13 +26,6 @@ class QRCodesServices
 	{
 		$options = $qrCodes['qrcode_options'];
 		$qrcodes_data = $qrCodes['qrcode_data'];
-
-		if($options["amount"] > count($qrcodes_data))
-			return [
-				'status' => 400,
-				'message' => 'Bad request',
-				'description' => 'Amount of qr codes need to match desired amount for generation'
-			];
 
 		//qr code generator init
 //		$renderer = new QRCodeRenderer(
@@ -104,5 +94,4 @@ class QRCodesServices
 			'qrCodes' => $newQRCodes
 		];
 	}
-
 }

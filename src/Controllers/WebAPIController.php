@@ -16,6 +16,7 @@ use Services\CompaniesServices as CompaniesServices;
 use Services\RoomsServices as RoomsServices;
 use Services\ItemsServices as ItemsServices;
 use Services\QRCodesServices as QRCodesServices;
+use Services\TeamsServices as TeamsServices;
 
 define("MAIN_URL", $_ENV['MAIN_URL_BE']);
 
@@ -23,10 +24,19 @@ define("MAIN_URL", $_ENV['MAIN_URL_BE']);
  * @OA\Info(
  *     title="Inventory management system API",
  *     version="1.1.0",
- *     description="Inventory web-based system for tracking items and stuff in company"
+ *     description="Complete API documentation for web based invetory system <br/> Documentation is based on `OAS 3.0` and API is running on `PHP 8.2`",
+ *     @OA\Contact(
+ *      	name="Developer",
+ *      	email="stefanbvts@gmail.com"
+ *     ),
+ *     @OA\License(
+ *     	   name="MIT",
+ *         url="https://opensource.org/license/mit"
+ *     ),
  * )
  * @OA\Server(
  *     url=MAIN_URL,
+ *     description="Apache"
  * )
  *
  * @OA\SecurityScheme(
@@ -36,6 +46,7 @@ define("MAIN_URL", $_ENV['MAIN_URL_BE']);
  *     bearerFormat="JWT",
  *     description="Enter the Bearer Authorization string as follows: `Bearer Generated-JWT-Token`"
  * )
+ *
  */
 class WebAPIController
 {
@@ -47,6 +58,7 @@ class WebAPIController
 	private RoomsServices $roomServices;
 	private ItemsServices $itemServices;
 	private QRCodesServices $qrCodesServices;
+	private TeamsServices $teamsServices;
 
 	public function __construct(UsersServices     $userServices,
 								AdminsServices    $adminServices,
@@ -55,8 +67,9 @@ class WebAPIController
 								CompaniesServices $companyServices,
 								RoomsServices     $roomServices,
 								ItemsServices     $itemServices,
-								QRCodesServices   $qrCodesServices)
-	{
+								QRCodesServices   $qrCodesServices,
+								TeamsServices     $teamsServices) {
+
 		$this->userServices = $userServices;
 		$this->adminServices = $adminServices;
 		$this->logServices = $logServices;
@@ -65,6 +78,7 @@ class WebAPIController
 		$this->roomServices = $roomServices;
 		$this->itemServices = $itemServices;
 		$this->qrCodesServices = $qrCodesServices;
+		$this->teamsServices = $teamsServices;
 	}
 
 	#region Main
@@ -437,7 +451,7 @@ class WebAPIController
 	 */
 	public function getAllUsers(Request $request, Response $response): Response
 	{
-		$resp = $this->userServices->GetAllUsers();
+		$resp = $this->userServices->getAllUsers();
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
@@ -1716,6 +1730,145 @@ class WebAPIController
 	{
 		$reqBody = (array)$request->getParsedBody();
 		$resp = $this->qrCodesServices->generateQRCode($reqBody, $reqBody['forSingleItem']);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+	#endregion
+
+	#region Teams
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Teams/getActiveWorkersInCompany/{company_id}",
+	 *     operationId="getActiveWorkersInCompany",
+	 *     description="Get all active workers in current company",
+	 *     tags={"Teams"},
+	 *     @OA\Parameter(
+	 *         name="company_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getActiveWorkersInCompany(Request $request, Response $response, array $args): Response
+	{
+		$company_id = (int)$args['company_id'];
+		$resp = $this->teamsServices->getActiveWorkers($company_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Teams/getAllTeamsInCompany/{company_id}",
+	 *     operationId="getAllTeams",
+	 *     description="Get all teams",
+	 *     tags={"Teams"},
+	 *     @OA\Parameter(
+	 *         name="company_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getAllTeamsInCompany(Request $request, Response $response, array $args): Response
+	{
+		$company_id = (int)$args['company_id'];
+		$resp = $this->teamsServices->getAllTeams($company_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Teams/getTeamMembers/{team_id}",
+	 *     operationId="getTeamMembers",
+	 *     description="Get team members for single team",
+	 *     @OA\Parameter(
+	 *         name="team_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     tags={"Teams"},
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getTeamMembers(Request $request, Response $response, array $args): Response
+	{
+		$team_id = (int)$args['team_id'];
+		$resp = $this->teamsServices->getTeamMembers($team_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Post(
+	 *     path="/api/Teams/createNewTeam",
+	 *     operationId="createNewTeam",
+	 *     tags={"Teams"},
+	 *     @OA\RequestBody(
+	 *         description="Create new team for company",
+	 *         required=true,
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *                 @OA\Property(
+	 *                     property="team_name",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="company_id",
+	 *                     type="integer",
+	 *                     example=0
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="workers_ids",
+	 *                     type="array",
+	 *                     example={0, 1, 2},
+	 *                     @OA\Items(
+	 *                         type="integer",
+	 *                         example=0
+	 *                     )
+	 *                 )
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=500,
+	 *         description="Error"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+
+	public function createNewTeam(Request $request, Response $response): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$resp = $this->teamsServices->createNewTeam($requestBody);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
