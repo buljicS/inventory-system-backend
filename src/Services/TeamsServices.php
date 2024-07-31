@@ -61,4 +61,9 @@ class TeamsServices
 
 		return $this->teamsRepository->addNewTeamMembers($newTeamMembers, $teamMembers['team_id']);
 	}
+
+//	public function removeTeamMemberFromTeam(int $team_id, int $team_member_id): array
+//	{
+//		return $this->teamsRepository->removeMemberFromTeam($team_id, $team_member_id);
+//	}
 }

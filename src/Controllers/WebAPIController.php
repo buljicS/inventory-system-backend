@@ -1922,6 +1922,16 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
+//	public function removeTeamMemberFromTeam(Request $request, Response $response, array $args): Response
+//	{
+//		$team_id = (int)$args['team_id'];
+//		$team_member_id = (int)$args['team_member_id'];
+//		$resp = $this->teamsServices->removeTeamMemberFromTeam($team_id, $team_member_id);
+//		$response->getBody()->write(json_encode($resp));
+//		return $response
+//			->withHeader('Content-type', 'application/json');
+//	}
+
 	#endregion
 
 	#region Admins

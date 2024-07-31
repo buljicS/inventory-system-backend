@@ -26,9 +26,9 @@ class TeamsRepository
 	public function getTeamMembers(int $team_id): array
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT TM.teammember_id, TM.date_added, TM.isActive, 
+		$sql = "SELECT TM.team_member_id, TM.date_added, TM.isActive, 
        				   T.team_name,
-       				   W.worker_fname, W.worker_lname, W.worker_email, W.phone_number
+       				   W.worker_id, W.worker_fname, W.worker_lname, W.worker_email, W.phone_number
 				FROM team_members TM
          		LEFT JOIN teams T 
          		    ON T.team_id = TM.team_id
@@ -38,7 +38,22 @@ class TeamsRepository
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':team_id', $team_id);
 		$stmt->execute();
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$teamMembers =$stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		$stmt->closeCursor();
+		$picPath = "SELECT P.picture_path FROM workers W
+					LEFT JOIN pictures P 
+					    ON W.picture_id = P.picture_id
+					WHERE W.worker_id = :worker_id";
+		$stmt = $dbConn->prepare($picPath);
+		for($i = 0; $i < count($teamMembers); $i++)
+		{
+			$stmt->bindParam(':worker_id', $teamMembers[$i]['worker_id']);
+			$stmt->execute();
+			$picture_path = $stmt->fetchColumn();
+			$teamMembers[$i]['picture_path'] = !empty($picture_path) ? $picture_path : null;
+		}
+		return $teamMembers;
 	}
 
 	public function getActiveWorkers(int $company_id): array
@@ -119,6 +134,11 @@ class TeamsRepository
 		];
 	}
 
+//	public function removeMemberFromTeam(int $team_id, int $team_member_id)
+//	{
+//		$dbConn = $this->
+//	}
+
 	#region HelperMethods
 	public function checkIfSameTeamAlreadyExists(string $team_name): bool|int
 	{
@@ -151,4 +171,5 @@ class TeamsRepository
 		return $stmt->fetchColumn();
 	}
 	#endregion
+
 }
