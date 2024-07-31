@@ -62,8 +62,20 @@ class TeamsServices
 		return $this->teamsRepository->addNewTeamMembers($newTeamMembers, $teamMembers['team_id']);
 	}
 
-//	public function removeTeamMemberFromTeam(int $team_id, int $team_member_id): array
-//	{
-//		return $this->teamsRepository->removeMemberFromTeam($team_id, $team_member_id);
-//	}
+	public function removeTeamMemberFromTeam(int $team_id, int $team_member_id): array
+	{
+		$isTMRemoved = $this->teamsRepository->removeTeamMemberFromTeam($team_id, $team_member_id);
+		if($isTMRemoved)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'Team member has been deleted'
+			];
+
+		return [
+			'status' => 404,
+			'message' => 'Not found',
+			'description' => 'Team member not found or already deleted'
+		];
+	}
 }

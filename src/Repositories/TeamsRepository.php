@@ -134,10 +134,16 @@ class TeamsRepository
 		];
 	}
 
-//	public function removeMemberFromTeam(int $team_id, int $team_member_id)
-//	{
-//		$dbConn = $this->
-//	}
+	public function removeTeamMemberFromTeam(int $team_id, int $team_member_id): bool
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "DELETE FROM team_members WHERE team_id = :team_id AND team_member_id = :team_member_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':team_id', $team_id, PDO::PARAM_INT);
+		$stmt->bindParam(':team_member_id', $team_member_id, PDO::PARAM_INT);
+		$stmt->execute();
+		return $stmt->rowCount() > 0;
+	}
 
 	#region HelperMethods
 	public function checkIfSameTeamAlreadyExists(string $team_name): bool|int

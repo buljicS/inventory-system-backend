@@ -1743,6 +1743,48 @@
                 ]
             }
         },
+        "/api/Teams/removeTeamMemberFromTeam/{team_id}/{team_member_id}": {
+            "delete": {
+                "tags": [
+                    "Teams"
+                ],
+                "description": "Remove team meber from team",
+                "operationId": "removeTeamMemberFromTeam",
+                "parameters": [
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "team_member_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Team member not found or already deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [
