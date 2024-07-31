@@ -26,9 +26,9 @@ class TeamsRepository
 	public function getTeamMembers(int $team_id): array
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT TM.team_member_id, TM.date_added, TM.isActive, 
+		$sql = "SELECT TM.team_member_id, TM.date_added, 
        				   T.team_name,
-       				   W.worker_id, W.worker_fname, W.worker_lname, W.worker_email, W.phone_number
+       				   W.worker_id, W.worker_fname, W.worker_lname, W.worker_email, W.phone_number, W.isActive
 				FROM team_members TM
          		LEFT JOIN teams T 
          		    ON T.team_id = TM.team_id
