@@ -83,6 +83,7 @@ return function (Slim $app) {
 	$app->get('/api/Teams/getAllTeamsInCompany/{company_id}', [API::class, 'getAllTeamsInCompany']);
 	$app->get('/api/Teams/getTeamMembers/{team_id}', [API::class, 'getTeamMembers']);
 	$app->post('/api/Teams/createNewTeam', [API::class, 'createNewTeam']);
+	$app->post('/api/Teams/addTeamMembers', [API::class, 'addTeamMembers']);
 	#endregion
 
 	#region TestEndpoints

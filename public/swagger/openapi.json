@@ -1693,6 +1693,56 @@
                 ]
             }
         },
+        "/api/Teams/addTeamMembers": {
+            "post": {
+                "tags": [
+                    "Teams"
+                ],
+                "operationId": "addTeamMembers",
+                "requestBody": {
+                    "description": "Add new workers to exsisting team",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "team_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "workers_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "example": [
+                                            0,
+                                            1,
+                                            2
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [

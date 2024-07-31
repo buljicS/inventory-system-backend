@@ -1872,6 +1872,56 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Post(
+	 *     path="/api/Teams/addTeamMembers",
+	 *     operationId="addTeamMembers",
+	 *     tags={"Teams"},
+	 *     @OA\RequestBody(
+	 *         description="Add new workers to exsisting team",
+	 *         required=true,
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *                 @OA\Property(
+	 *                     property="team_id",
+	 *                     type="integer",
+	 *                     example=0
+	 *                 ),
+	 *                 @OA\Property(
+	 *                     property="workers_ids",
+	 *                     type="array",
+	 *                     example={0, 1, 2},
+	 *                     @OA\Items(
+	 *                         type="integer",
+	 *                         example=0
+	 *                     )
+	 *                 )
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=500,
+	 *         description="Error"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function addTeamMembers(Request $request, Response $response): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$resp = $this->teamsServices->addTeamMembers($requestBody);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
 	#endregion
 
 	#region Admins

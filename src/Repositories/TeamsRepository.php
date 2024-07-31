@@ -55,37 +55,6 @@ class TeamsRepository
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function checkIfSameTeamAlreadyExists(string $team_name): bool|int
-	{
-		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT team_id FROM teams WHERE team_name = :team_name";
-		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(':team_name', $team_name);
-		$stmt->execute();
-		return $stmt->fetchColumn();
-	}
-
-	public function checkIfWorkerIsAlreadyInTeam(int $worker_id, int $team_id): bool|int
-	{
-		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT worker_id FROM team_members WHERE team_id = :team_id AND worker_id = :worker_id";
-		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(':team_id', $team_id);
-		$stmt->bindParam(':worker_id', $worker_id);
-		$stmt->execute();
-		return $stmt->fetchColumn();
-	}
-
-	public function getTeamIdByName(string $team_name): int
-	{
-		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT team_id FROM teams WHERE team_name = :team_name";
-		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(':team_name', $team_name);
-		$stmt->execute();
-		return $stmt->fetchColumn();
-	}
-
 	public function createNewTeam(array $newTeam): array
 	{
 		$notes = [];
@@ -130,4 +99,56 @@ class TeamsRepository
 			'description' => 'Team with ' . $newTeam['team_name'] . ' name already exists'
 		];
 	}
+
+	public function addNewTeamMembers(array $teamMembers, int $team_id): array
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "INSERT INTO team_members (team_id, worker_id) VALUES (:team_id, :worker_id)";
+		$stmt = $dbConn->prepare($sql);
+		for($i = 0; $i < count($teamMembers); $i++)
+		{
+			$stmt->bindParam(':team_id', $team_id, PDO::PARAM_INT);
+			$stmt->bindParam(':worker_id', $teamMembers[$i], PDO::PARAM_INT);
+			$stmt->execute();
+		}
+
+		return [
+			'status' => 202,
+			'message' => 'Created',
+			'description' => 'New team members added successfully'
+		];
+	}
+
+	#region HelperMethods
+	public function checkIfSameTeamAlreadyExists(string $team_name): bool|int
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT team_id FROM teams WHERE team_name = :team_name";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':team_name', $team_name);
+		$stmt->execute();
+		return $stmt->fetchColumn();
+	}
+
+	public function checkIfWorkerIsAlreadyInTeam(int $worker_id, int $team_id): bool|int
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT worker_id FROM team_members WHERE team_id = :team_id AND worker_id = :worker_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':team_id', $team_id);
+		$stmt->bindParam(':worker_id', $worker_id);
+		$stmt->execute();
+		return $stmt->fetchColumn();
+	}
+
+	public function getTeamIdByName(string $team_name): int
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT team_id FROM teams WHERE team_name = :team_name";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':team_name', $team_name);
+		$stmt->execute();
+		return $stmt->fetchColumn();
+	}
+	#endregion
 }

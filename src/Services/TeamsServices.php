@@ -37,4 +37,28 @@ class TeamsServices
 
 		return $this->teamsRepository->createNewTeam($newTeam);
 	}
+
+	public function addTeamMembers(array $teamMembers): array
+	{
+		$newTeamMembers = $teamMembers['workers_ids'];
+		$newTeamMembersCount = count($teamMembers['workers_ids']);
+		if ($newTeamMembersCount > 5)
+			return [
+				'status' => 400,
+				'message' => 'Forbidden',
+				'description' => 'One team can have up to 5 members'
+			];
+
+		$currentTeam = $this->teamsRepository->getTeamMembers($teamMembers['team_id']);
+		$currentTeamMembersCount = count($currentTeam);
+
+		if (($newTeamMembersCount + $currentTeamMembersCount) > 5)
+			return [
+				'status' => 400,
+				'message' => 'Forbidden',
+				'description' => 'Currently team has ' . $currentTeamMembersCount . ' team members, you can add up to 5 members maximum'
+			];
+
+		return $this->teamsRepository->addNewTeamMembers($newTeamMembers, $teamMembers['team_id']);
+	}
 }
