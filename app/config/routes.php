@@ -85,6 +85,7 @@ return function (Slim $app) {
 	$app->post('/api/Teams/createNewTeam', [API::class, 'createNewTeam']);
 	$app->post('/api/Teams/addTeamMembers', [API::class, 'addTeamMembers']);
 	$app->delete('/api/Teams/removeTeamMemberFromTeam/{team_id}/{team_member_id}', [API::class, 'removeTeamMemberFromTeam']);
+	$app->delete('/api/Teams/deleteTeam/{team_id}', [API::class, 'deleteTeam']);
 	#endregion
 
 	#region TestEndpoints

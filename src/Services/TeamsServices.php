@@ -78,4 +78,21 @@ class TeamsServices
 			'description' => 'Team member not found or already deleted'
 		];
 	}
+
+	public function deleteTeam(int $team_id): array
+	{
+		$isTeamDeleted = $this->teamsRepository->deleteTeam($team_id);
+		if($isTeamDeleted)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'Team has been deleted'
+			];
+
+		return [
+			'status' => 404,
+			'message' => 'Not found',
+			'description' => 'Team not found or already deleted'
+		];
+	}
 }

@@ -1967,6 +1967,41 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
+	/**
+	 * @OA\Delete(
+	 *     path="/api/Teams/deleteTeam/{team_id}",
+	 *     operationId="deleteTeam",
+	 *     description="Delete entire team",
+	 *     tags={"Teams"},
+	 *     @OA\Parameter(
+	 *         in="path",
+	 *         name="team_id",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer",
+	 *             format="int64"
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *       response=200,
+	 *       description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *       response=404,
+	 *       description="Team not found or already deleted"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function deleteTeam(Request $request, Response $response, array $args): Response
+	{
+		$team_id = (int)$args['team_id'];
+		$resp = $this->teamsServices->deleteTeam($team_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
 	#endregion
 
 	#region Admins

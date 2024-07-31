@@ -145,6 +145,27 @@ class TeamsRepository
 		return $stmt->rowCount() > 0;
 	}
 
+	public function deleteTeam(int $team_id): bool
+	{
+		$team_members = $this->getTeamMembers($team_id);
+		if(count($team_members) > 0) {
+			$dbConn = $this->dbController->openConnection();
+			$sql = "DELETE FROM team_members WHERE team_id = :team_id";
+			$stmt = $dbConn->prepare($sql);
+			for($i = 0; $i < count($team_members); $i++) {
+				$stmt->bindParam(':team_id', $team_id, PDO::PARAM_INT);
+				$stmt->execute();
+			}
+			$stmt->closeCursor();
+			$delTeamQuery = "DELETE FROM teams WHERE team_id = :team_id";
+			$stmt = $dbConn->prepare($delTeamQuery);
+			$stmt->bindParam(':team_id', $team_id, PDO::PARAM_INT);
+			$stmt->execute();
+			return true;
+		}
+		return false;
+	}
+
 	#region HelperMethods
 	public function checkIfSameTeamAlreadyExists(string $team_name): bool|int
 	{
