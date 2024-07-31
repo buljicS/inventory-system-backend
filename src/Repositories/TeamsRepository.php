@@ -26,7 +26,15 @@ class TeamsRepository
 	public function getTeamMembers(int $team_id): array
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT * FROM team_members WHERE team_id = :team_id";
+		$sql = "SELECT TM.teammember_id, TM.date_added, TM.isActive, 
+       				   T.team_name,
+       				   W.worker_fname, W.worker_lname, W.worker_email, W.phone_number
+				FROM team_members TM
+         		LEFT JOIN teams T 
+         		    ON T.team_id = TM.team_id
+                LEFT JOIN workers W 
+                    ON W.worker_id = TM.worker_id
+         		WHERE TM.team_id = :team_id";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':team_id', $team_id);
 		$stmt->execute();
@@ -40,7 +48,7 @@ class TeamsRepository
 				FROM workers W 
 				LEFT JOIN pictures P 
 				    ON W.picture_id = P.picture_id
-				WHERE company_id = :company_id AND isActive = 1";
+				WHERE company_id = :company_id AND isActive = 1 AND W.role = 'worker'";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':company_id', $company_id);
 		$stmt->execute();

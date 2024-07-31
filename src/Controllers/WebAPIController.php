@@ -1864,7 +1864,6 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-
 	public function createNewTeam(Request $request, Response $response): Response
 	{
 		$requestBody = (array)$request->getParsedBody();
