@@ -1897,36 +1897,7 @@
                 ]
             }
         },
-        "/api/Tasks/getAllTasksInCompany/{company_id}": {
-            "get": {
-                "tags": [
-                    "Tasks"
-                ],
-                "description": "Get all tasks in company",
-                "operationId": "getAllTasksInCompany",
-                "parameters": [
-                    {
-                        "name": "company_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An example resource"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/Tasks/getAllTasksInRoom/{room_id}": {
+        "/api/Tasks/getAllTasksByRoom/{room_id}": {
             "get": {
                 "tags": [
                     "Tasks"

@@ -362,6 +362,38 @@ class ValidatorUtility
 	}
 	#endregion
 
+	#region TasksValidation
+	public function validateNewTask(array $newTaskData): bool|array
+	{
+		$currentDate = date("Y-m-d", time());
+		$this->validator = new Validator($newTaskData);
+		$this->validator->rules([
+			'required' => [
+				['team_id'],
+				['room_id'],
+				['start_date']
+			],
+			'min' => [
+				[['team_id'], 1],
+				[['room_id'], 1]
+			],
+			'dateAfter' => [
+				['start_date', $currentDate]
+			]
+		]);
+
+		if($this->validator->validate()) return true;
+
+		else {
+			return [
+				'status' => 400,
+				'message' => 'Bad request',
+				'description' => $this->validator->errors()
+			];
+		}
+	}
+	#endregion
+
 	#region AdminValidation
 	public function validateAdminCredentials(array $credentials): bool|array
 	{

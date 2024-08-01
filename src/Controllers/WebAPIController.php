@@ -2097,34 +2097,7 @@ class WebAPIController
 
 	/**
 	 * @OA\Get(
-	 *     path="/api/Tasks/getAllTasksInCompany/{company_id}",
-	 *     operationId="getAllTasksInCompany",
-	 *     description="Get all tasks in company",
-	 *     tags={"Tasks"},
-	 *     @OA\Parameter(
-	 *         name="company_id",
-	 *         in="path",
-	 *         required=true,
-	 *         @OA\Schema(
-	 *             type="integer"
-	 *         )
-	 *     ),
-	 *     @OA\Response(response="200", description="An example resource"),
-	 *     security={{"bearerAuth": {}}}
-	 * )
-	 */
-	public function getAllTasksInCompany(Request $request, Response $response, array $args): Response
-	{
-		$company_id = (int)$args['company_id'];
-		$resp = $this->tasksServices->getAllTasksInCompany($company_id);
-		$response->getBody()->write(json_encode($resp));
-		return $response
-			->withHeader('Content-type', 'application/json');
-	}
-
-	/**
-	 * @OA\Get(
-	 *     path="/api/Tasks/getAllTasksInRoom/{room_id}",
+	 *     path="/api/Tasks/getAllTasksByRoom/{room_id}",
 	 *     operationId="getAllTasksInRoom",
 	 *     description="Get all tasks in room",
 	 *     tags={"Tasks"},
@@ -2140,10 +2113,10 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function getAllTasksInRoom(Request $request, Response $response, array $args): Response
+	public function getAllTasksByRoom(Request $request, Response $response, array $args): Response
 	{
 		$room_id = (int)$args['room_id'];
-		$resp = $this->tasksServices->getAllTasksInRoom($room_id);
+		$resp = $this->tasksServices->getAllTasksByRoom($room_id);
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
