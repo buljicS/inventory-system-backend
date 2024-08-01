@@ -94,4 +94,8 @@ class QRCodesServices
 			'qrCodes' => $newQRCodes
 		];
 	}
+
+	public function checkScannedQRCode(array $reqBody)
+	{
+	}
 }

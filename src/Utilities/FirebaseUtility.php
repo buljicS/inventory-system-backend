@@ -19,11 +19,6 @@ class FirebaseUtility
 		$this->storage = $this->firebaseFactory->createStorage();
 	}
 
-	public function getStorage(): Storage
-	{
-		return $this->storage;
-	}
-
 	public function getStorageBucket(): Bucket
 	{
 		return $this->storage->getBucket();

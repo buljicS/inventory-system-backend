@@ -17,6 +17,7 @@ use Services\RoomsServices as RoomsServices;
 use Services\ItemsServices as ItemsServices;
 use Services\QRCodesServices as QRCodesServices;
 use Services\TeamsServices as TeamsServices;
+use Services\TasksServices as TasksServices;
 
 define("MAIN_URL", $_ENV['MAIN_URL_BE']);
 
@@ -59,7 +60,9 @@ class WebAPIController
 	private ItemsServices $itemServices;
 	private QRCodesServices $qrCodesServices;
 	private TeamsServices $teamsServices;
+	private TasksServices $tasksServices;
 
+	#region constructor
 	public function __construct(UsersServices     $userServices,
 								AdminsServices    $adminServices,
 								LogsServices      $logServices,
@@ -68,7 +71,8 @@ class WebAPIController
 								RoomsServices     $roomServices,
 								ItemsServices     $itemServices,
 								QRCodesServices   $qrCodesServices,
-								TeamsServices     $teamsServices) {
+								TeamsServices     $teamsServices,
+								TasksServices     $tasksServices) {
 
 		$this->userServices = $userServices;
 		$this->adminServices = $adminServices;
@@ -79,7 +83,10 @@ class WebAPIController
 		$this->itemServices = $itemServices;
 		$this->qrCodesServices = $qrCodesServices;
 		$this->teamsServices = $teamsServices;
+		$this->tasksServices = $tasksServices;
 	}
+	#endregion
+
 
 	#region Main
 	public function index(Request $request, Response $response): Response
@@ -1734,6 +1741,33 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/QRCodes/checkScannedQRCode/{room_id}",
+	 *     operationId="checkScannedQRCode",
+	 *     description="Check scanned qr code",
+	 *     tags={"QRCodes"},
+	 *     @OA\Parameter(
+	 *        name="room_id",
+	 *        in="path",
+	 *        required=true,
+	 *        @OA\Schema(
+	 *           type="integer"
+	 *        )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function checkScannedQRCode(Request $request, Response $response): Response
+	{
+		$reqBody = (array)$request->getParsedBody();
+		$resp = $this->qrCodesServices->checkScannedQRCode($reqBody);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Teams
@@ -2004,6 +2038,200 @@ class WebAPIController
 
 	#endregion
 
+	#region Tasks
+
+	/**
+	 * @OA\Post(
+	 *     path="/api/Tasks/addTask",
+	 *     operationId="addTask",
+	 *     tags={"Tasks"},
+	 *     @OA\RequestBody(
+	 *         description="Create new task",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     			   @OA\Property (
+	 *     			       property="team_id",
+	 *     				   type="integer",
+	 *     				   example=0
+	 *     			   ),
+	 *          	   @OA\Property (
+	 *                     property="room_id",
+	 *                     type="integer",
+	 *                     example=0
+	 *                 ),
+	 *                 @OA\Property (
+	 *                     property="start_date",
+	 *                     type="string",
+	 *     				   format="date-time",
+	 *                     example="2017-07-21T17:32:28Z"
+	 *                 ),
+	 *                 @OA\Property (
+	 *                     property="note",
+	 *                     type="string",
+	 *                     example="string"
+	 *                  ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=500,
+	 *         description="Error"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function addTask(Request $request, Response $response): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$resp = $this->tasksServices->addTask($requestBody);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Tasks/getAllTasksInCompany/{company_id}",
+	 *     operationId="getAllTasksInCompany",
+	 *     description="Get all tasks in company",
+	 *     tags={"Tasks"},
+	 *     @OA\Parameter(
+	 *         name="company_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getAllTasksInCompany(Request $request, Response $response, array $args): Response
+	{
+		$company_id = (int)$args['company_id'];
+		$resp = $this->tasksServices->getAllTasksInCompany($company_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Tasks/getAllTasksInRoom/{room_id}",
+	 *     operationId="getAllTasksInRoom",
+	 *     description="Get all tasks in room",
+	 *     tags={"Tasks"},
+	 *     @OA\Parameter(
+	 *         name="room_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getAllTasksInRoom(Request $request, Response $response, array $args): Response
+	{
+		$room_id = (int)$args['room_id'];
+		$resp = $this->tasksServices->getAllTasksInRoom($room_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Tasks/taskCurrentStatus/{task_id}",
+	 *     operationId="taskCurrentStatus",
+	 *     description="Get all tasks in room",
+	 *     tags={"Tasks"},
+	 *     @OA\Parameter(
+	 *         name="task_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function taskCurrentStatus(Request $request, Response $response, array $args): Response
+	{
+		$task_id = (int)$args['task_id'];
+		$resp = $this->tasksServices->taskCurrentStatus($task_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Post(
+	 *     path="/api/Tasks/endTask",
+	 *     operationId="endTask",
+	 *     tags={"Tasks"},
+	 *     @OA\RequestBody(
+	 *         description="End current task",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     			   @OA\Property (
+	 *     			       property="task_id",
+	 *     				   type="integer",
+	 *     				   example=0
+	 *     			   ),
+	 *          	   @OA\Property (
+	 *                     property="task_summary",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *                 @OA\Property (
+	 *                     property="date_ended",
+	 *                     type="string",
+	 *     				   format="date-time",
+	 *                     example="2017-07-21T17:32:28Z"
+	 *                 ),
+	 *                 @OA\Property (
+	 *                     property="status",
+	 *                     type="string",
+	 *                     example="string"
+	 *                  ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=500,
+	 *         description="Error"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function endTask(Request $request, Response $response): Response
+	{
+		$reqBody = (array)$request->getParsedBody();
+		$resp = $this->tasksServices->endTask($reqBody);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+	#endregion
+
 	#region Admins
 
 	/**
@@ -2051,74 +2279,6 @@ class WebAPIController
 		$response->getBody()->write(json_encode($resp));
 		return $response
 			->withHeader('Content-type', 'application/json');
-	}
-	#endregion
-
-	#region TestEndpoints
-
-	/**
-	 * @OA\Post(
-	 *     path="/api/Tests/listTest",
-	 *     summary="Create a Test",
-	 *     tags={"Tests"},
-	 *     @OA\RequestBody(
-	 *        required = true,
-	 *        description = "Data packet for Test",
-	 *        @OA\JsonContent(
-	 *             type="object",
-	 *             @OA\Property(
-	 *                property="testItems",
-	 *                type="array",
-	 *                example={{
-	 *                  "firstName": "Bob",
-	 *                  "lastName": "Fanger",
-	 *                  "company": "Triple",
-	 *                  "id": "808",
-	 *                }, {
-	 *                  "firstName": "",
-	 *                  "lastName": "",
-	 *                  "company": "",
-	 *                  "id": ""
-	 *                }},
-	 *                @OA\Items(
-	 *                      @OA\Property(
-	 *                         property="firstName",
-	 *                         type="string",
-	 *                         example=""
-	 *                      ),
-	 *                      @OA\Property(
-	 *                         property="lastName",
-	 *                         type="string",
-	 *                         example=""
-	 *                      ),
-	 *                      @OA\Property(
-	 *                         property="companyId",
-	 *                         type="string",
-	 *                         example=""
-	 *                      ),
-	 *                      @OA\Property(
-	 *                         property="accountNumber",
-	 *                         type="number",
-	 *                         example="000123"
-	 *                      ),
-	 *                      @OA\Property(
-	 *                         property="netPay",
-	 *                         type="number",
-	 *                         example="12345"
-	 *                      ),
-	 *                ),
-	 *             ),
-	 *        ),
-	 *     ),
-	 *     @OA\Response(
-	 *        response="200",
-	 *        description="Successful response",
-	 *     ),
-	 * )
-	 */
-	public function listTest(Request $request, Response $response): Response
-	{
-		return $response;
 	}
 	#endregion
 

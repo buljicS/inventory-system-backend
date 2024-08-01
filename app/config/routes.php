@@ -76,6 +76,7 @@ return function (Slim $app) {
 
 	#region QRCodes
 	$app->post('/api/QRCodes/generateQRCodes', [API::class, 'generateQRCode']);
+	$app->get('/api/QRCodes/checkScannedQRCode', [API::class, 'checkScannedQRCode']);
 	#endregion
 
 	#region Teams
@@ -86,6 +87,14 @@ return function (Slim $app) {
 	$app->post('/api/Teams/addTeamMembers', [API::class, 'addTeamMembers']);
 	$app->delete('/api/Teams/removeTeamMemberFromTeam/{team_id}/{team_member_id}', [API::class, 'removeTeamMemberFromTeam']);
 	$app->delete('/api/Teams/deleteTeam/{team_id}', [API::class, 'deleteTeam']);
+	#endregion
+
+	#region Tasks
+	$app->post('/api/Tasks/addTask', [API::class, 'addTask']);
+	$app->get('/api/Tasks/getAllTasksInCompany/{company_id}', [API::class, 'getAllTasksInCompany']);
+	$app->get('/api/Tasks/getAllTasksInRoom/{room_id}', [API::class, 'getAllTasksInRoom']);
+	$app->get('/api/Tasks/taskCurrentStatus/{task_id}', [API::class, 'taskCurrentStatus']);
+	$app->post('/api/Tasks/endTask', [API::class, 'endTask']);
 	#endregion
 
 	#region TestEndpoints
