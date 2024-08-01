@@ -25,6 +25,16 @@ class TaksRepository
 		return $stmt->execute();
 	}
 
+	public function getTaskById(int $task_id): array
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT * FROM tasks WHERE task_id = :task_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':task_id', $task_id);
+		$stmt->execute();
+		return $stmt->fetch();
+	}
+
 	public function getAllTasksByRoom(int $room_id): array
 	{
 		$dbConn = $this->dbController->openConnection();
@@ -41,6 +51,42 @@ class TaksRepository
          		ORDER BY T.start_date DESC";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':room_id', $room_id);
+		$stmt->execute();
+		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+	}
+
+	public function getRoomByTask(int $task_id): int
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT room_id FROM tasks WHERE task_id = :task_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':task_id', $task_id);
+		$stmt->execute();
+		return $stmt->fetchColumn();
+	}
+
+	public function getScannedItemsForTask(int $task_id): array
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT scanned_item_id FROM scanned_items WHERE task_id = :task_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':task_id', $task_id);
+		$stmt->execute();
+		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+	}
+
+	public function getScannedItems(int $task_id): array
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT I.item_name, I.serial_no, I.country_of_origin,
+					   SI.date_scanned, SI.note AS additional_note,
+					   P.picture_path AS additional_picture
+				FROM scanned_items SI
+         		LEFT JOIN items I on I.item_id = SI.item_id
+				LEFT JOIN pictures P on P.picture_id = SI.picture_id
+         		WHERE task_id = :task_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':task_id', $task_id);
 		$stmt->execute();
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}

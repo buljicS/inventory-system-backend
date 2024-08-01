@@ -3,17 +3,21 @@
 namespace Services;
 
 use Repositories\TaksRepository as TasksRepository;
+use Repositories\ItemsRepository as ItemsRepository;
 use Utilities\ValidatorUtility as Validator;
+
 
 class TasksServices
 {
 	private readonly TasksRepository $tasksRepository;
 	private readonly Validator $validator;
+	private readonly ItemsRepository $itemsRepository;
 
-	public function __construct(TasksRepository $tasksRepository, Validator $validator)
+	public function __construct(TasksRepository $tasksRepository, Validator $validator, ItemsRepository $itemsRepository)
 	{
 		$this->tasksRepository = $tasksRepository;
 		$this->validator = $validator;
+		$this->itemsRepository = $itemsRepository;
 	}
 
 	public function addTask(array $newTask): array
@@ -41,8 +45,34 @@ class TasksServices
 		return $this->tasksRepository->getAllTasksByRoom($room_id);
 	}
 
-	public function taskCurrentStatus(int $task_id)
+	public function taskCurrentStatus(int $task_id): array
 	{
+		$respArr = [];
+
+		//get total items count for given task
+		$room_id = $this->tasksRepository->getRoomByTask($task_id);
+		$itemsInRoom = $this->itemsRepository->getItemsByRoom($room_id);
+		$itemsCount = count($itemsInRoom);
+		$respArr['total_items'] = $itemsCount;
+
+		//get currently scanned items for given task
+		$scannedItems = $this->tasksRepository->getScannedItemsForTask($task_id);
+		$scannedItemsCount = count($scannedItems);
+		$respArr['currently_scanned'] = $scannedItemsCount;
+
+		//completion [%]
+		$respArr['completed'] = round(($scannedItemsCount / $itemsCount) * 100 , 0) . "%";
+
+		//start_date
+		$respArr['start_date'] = $this->tasksRepository->getTaskById($task_id)['start_date'];
+
+		//scanned items
+		$scItems = $this->tasksRepository->getScannedItems($task_id);
+		for($i = 0; $i < count($scItems); $i++) {
+			$respArr['scanned_items'][$i] = $scItems[$i];
+		}
+
+		return $respArr;
 
 	}
 
