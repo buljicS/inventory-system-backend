@@ -126,7 +126,7 @@ class TaksRepository
 		$sql = "UPDATE tasks SET summary = :summary, status = :status, end_date = :end_date WHERE task_id = :task_id";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':task_id', $taskResponse['task_id']);
-		$stmt->bindParam(':task_summary', $taskResponse['task_summary']);
+		$stmt->bindParam(':summary', $taskResponse['task_summary']);
 		$stmt->bindParam(':status', $taskResponse['status']);
 		$end_date = strtotime('now');
 		$stmt->bindParam(':end_date', $end_date);
