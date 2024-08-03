@@ -166,7 +166,7 @@ class ItemsRepository
 		return $stmt->fetchColumn();
 	}
 
-	public function isQRCodeAlreadyScanned(int $task_id): bool
+	public function isQRCodeAlreadyScanned(int $task_id, int $item_id): bool
 	{
 		$dbConn = $this->dbController->openConnection();
 		$sql = "SELECT end_date FROM tasks WHERE task_id = :task_id";
@@ -176,9 +176,10 @@ class ItemsRepository
 		$end_date = $stmt->fetchColumn();
 		if($end_date == null) {
 			$stmt->closeCursor();
-			$scannedItem = "SELECT scanned_item_id FROM scanned_items WHERE task_id = :task_id";
+			$scannedItem = "SELECT scanned_item_id FROM scanned_items WHERE task_id = :task_id AND item_id = :item_id";
 			$stmt = $dbConn->prepare($scannedItem);
 			$stmt->bindParam(':task_id', $task_id, PDO::PARAM_INT);
+			$stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
 			$stmt->execute();
 			$scannedItemId = $stmt->fetchColumn();
 			if(!empty($scannedItemId)) return true;

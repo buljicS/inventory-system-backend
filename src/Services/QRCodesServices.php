@@ -113,7 +113,7 @@ class QRCodesServices
 			];
 
 		$isQRAlreadyScanned = $this->itemsRepository->isQRCodeAlreadyScanned($qrCodeData['task_id']);
-		if(!$isQRAlreadyScanned)
+		if($isQRAlreadyScanned)
 			return [
 				'status' => 403,
 				'message' => 'Forbidden',
