@@ -16,11 +16,12 @@ class TaksRepository
 	public function insertNewTask(array $newTask): bool
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "INSERT INTO tasks (team_id, room_id, start_date, note, isActive) VALUE (:team_id, :room_id, :start_date, :note, 1)";
+		$sql = "INSERT INTO tasks (team_id, room_id, start_date, worker_id ,note, isActive) VALUE (:team_id, :room_id, :start_date, :worker_id ,:note, 1)";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':team_id', $newTask['team_id']);
 		$stmt->bindParam(':room_id', $newTask['room_id']);
 		$stmt->bindParam(':start_date', $newTask['start_date']);
+		$stmt->bindParam(':note', $newTask['worker_id']);
 		$stmt->bindParam(':note', $newTask['note']);
 		return $stmt->execute();
 	}
@@ -129,7 +130,7 @@ class TaksRepository
 		$stmt->bindParam(':status', $taskResponse['status']);
 		$stmt->execute();
 		$stmt->closeCursor();
-		$sql = "UPDATE tasks SET isActive = :status WHERE task_id = :task_id";
+		$sql = "UPDATE tasks SET isActive = 0 WHERE task_id = :task_id";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':task_id', $taskResponse['task_id']);
 		return $stmt->execute();

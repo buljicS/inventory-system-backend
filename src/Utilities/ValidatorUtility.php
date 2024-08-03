@@ -342,12 +342,14 @@ class ValidatorUtility
 			'required' => [
 				['team_name'],
 				['company_id'],
+				['worker_id'],
 			],
 			'lengthMin' => [
 				[['team_name'], 3]
 			],
 			'min' => [
 				[['company_id'], 1],
+				[['worker_id'], 1]
 			]
 		]);
 
@@ -371,11 +373,13 @@ class ValidatorUtility
 			'required' => [
 				['team_id'],
 				['room_id'],
-				['start_date']
+				['start_date'],
+				['worker_id']
 			],
 			'min' => [
 				[['team_id'], 1],
-				[['room_id'], 1]
+				[['room_id'], 1],
+				[['worker_id'], 1]
 			],
 			'dateAfter' => [
 				['start_date', $currentDate]

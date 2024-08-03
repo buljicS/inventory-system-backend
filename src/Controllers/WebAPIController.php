@@ -1875,6 +1875,11 @@ class WebAPIController
 	 *                     type="integer",
 	 *                     example=0
 	 *                 ),
+	 *                 @OA\Property (
+	 *                     property="worker_id",
+	 *                     type="integer",
+	 *                     example=0
+	 *                 ),
 	 *                 @OA\Property(
 	 *                     property="workers_ids",
 	 *                     type="array",
@@ -2066,6 +2071,11 @@ class WebAPIController
 	 *                     type="string",
 	 *     				   format="date-time",
 	 *                     example="2017-07-21T17:32:28Z"
+	 *                 ),
+	 *          	   @OA\Property (
+	 *                     property="worker_id",
+	 *                     type="integer",
+	 *                     example=0
 	 *                 ),
 	 *                 @OA\Property (
 	 *                     property="note",

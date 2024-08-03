@@ -74,10 +74,11 @@ class TeamsRepository
 	{
 		$notes = [];
 		$dbConn = $this->dbController->openConnection();
-		$sql = "INSERT INTO teams (team_name, company_id) VALUES (:team_name, :company_id)";
+		$sql = "INSERT INTO teams (team_name, worker_id, company_id) VALUES (:team_name, :worker_id, :company_id)";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':team_name', $newTeam['team_name']);
 		$stmt->bindParam(':company_id', $newTeam['company_id']);
+		$stmt->bindParam(':worker_id', $newTeam['worker_id']);
 		if($this->checkIfSameTeamAlreadyExists($newTeam['team_name']) === false) {
 			$stmt->execute();
 			$stmt->closeCursor();
