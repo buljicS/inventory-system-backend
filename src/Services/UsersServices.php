@@ -499,4 +499,38 @@ class UsersServices
 			'description' => 'Picture not found or it has already been deleted'
 		];
 	}
+
+	public function enrollUserToTask(int $worker_id, int $task_id): array
+	{
+		$isUserEnrolled = $this->userRepo->enrollUserToTask($worker_id, $task_id);
+		if($isUserEnrolled)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'You have been successfully enrolled to this task'
+			];
+
+		return [
+			'status' => 200,
+			'message' => 'Success',
+			'description' => 'You are already enrolled to this or other task'
+		];
+	}
+
+	public function removeUserFromTask(int $worker_id): array
+	{
+		$isRemoved = $this->userRepo->removeUserFromTask($worker_id);
+		if($isRemoved)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'You have been successfully removed from this task'
+			];
+
+		return [
+			'status' => 200,
+			'message' => 'Success',
+			'description' => 'You are already removed from this'
+		];
+	}
 }

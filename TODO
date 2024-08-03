@@ -1,0 +1,13 @@
+//ENDPOINTS
+[x] Enroll user to task
+[x] Remove user from task
+[] Check scanned qr code
+[] Insert scanned item
+[] Archive tasks that are done
+[] Get user archive
+
+//MINOR
+[] Set room as active when task starts
+[] Forbid user from deleting team on active task
+[] Forbid user from creating items with same names
+[] Forbid user from creating teams with same names

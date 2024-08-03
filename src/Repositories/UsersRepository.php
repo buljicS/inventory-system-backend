@@ -396,4 +396,33 @@ class UsersRepository
 		$stmt->bindParam(':picture_name', $userPicture);
 		return $stmt->execute();
 	}
+
+	public function enrollUserToTask(int $worker_id, int $task_id): bool
+	{
+		$dbCon = $this->database->openConnection();
+		$sql = "SELECT task_id FROM workers WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindParam(':worker_id', $worker_id);
+		$stmt->execute();
+		$taskId = $stmt->fetchColumn();
+		if($taskId != null)
+			return false;
+
+		$stmt->closeCursor();
+		$update = "UPDATE workers SET task_id = :task_id WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($update);
+		$stmt->bindParam(':task_id', $task_id);
+		$stmt->bindParam(':worker_id', $worker_id);
+		return $stmt->execute();
+	}
+
+	public function removeUserFromTask(int $worker_id): bool
+	{
+		$dbConn = $this->database->openConnection();
+		$sql = "UPDATE workers SET task_id = NULL WHERE worker_id = :worker_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':worker_id', $worker_id);
+		$stmt->execute();
+		return $stmt->rowCount() > 0;
+	}
 }

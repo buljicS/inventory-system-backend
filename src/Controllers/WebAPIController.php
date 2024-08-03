@@ -1055,6 +1055,68 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
+	/**
+	 * @OA\Get(
+	 *     path="/api/Users/enrollUserToTask/{worker_id}/{task_id}",
+	 *     operationId="enrollUserToTask",
+	 *     description="Enroll user to the task",
+	 *     tags={"Users"},
+	 *     @OA\Parameter(
+	 *         name="worker_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *         name="task_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *            type="integer"
+	 *         )
+	 *      ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function enrollUserToTask(Request $request, Response $response, array $args): Response
+	{
+		$worker_id = (int)$args['worker_id'];
+		$task_id = (int)$args['task_id'];
+		$reps = $this->userServices->enrollUserToTask($worker_id, $task_id);
+		$response->getBody()->write(json_encode($reps));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Users/removeUserFromTask/{worker_id}",
+	 *     operationId="removeUserFromTask",
+	 *     description="Remove user to the task",
+	 *     tags={"Users"},
+	 *     @OA\Parameter(
+	 *         name="worker_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function removeUserFromTask(Request $request, Response $response, array $args): Response
+	{
+		$worker_id = (int)$args['worker_id'];
+		$resp = $this->userServices->removeUserFromTask($worker_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Companies

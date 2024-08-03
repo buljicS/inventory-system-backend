@@ -31,6 +31,8 @@ return function (Slim $app) {
 	$app->put("/api/Users/updateUserByAdmin", [API::class, 'updateUserByAdmin']);
 	$app->post('/api/Users/uploadUserPicture/{worker_id}', [API::class, 'uploadUserPicture']);
 	$app->delete('/api/Users/deleteUserPicture/{worker_id}/{userPicture}', [API::class, 'deleteUserPicture']);
+	$app->get('/api/Users/enrollUserToTask/{worker_id}/{task_id}', [API::class, 'enrollUserToTask']);
+	$app->get('/api/Users/removeUserFromTask/{worker_id}', [API::class, 'removeUserFromTask']);
 	#endregion
 
 	#region Admins
