@@ -1715,6 +1715,72 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Post(
+	 *     path="/api/Items/scanItem",
+	 *     operationId="scanItem",
+	 *     tags={"Items"},
+	 *     @OA\RequestBody(
+	 *         description="Insert scanned item",
+	 *         @OA\MediaType(
+	 *             mediaType="multipart/form-data",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     			   @OA\Property (
+	 *     			       property="item_id",
+	 *     				   type="integer",
+	 *     				   example=0
+	 *     			   ),
+	 *          	   @OA\Property (
+	 *                     property="worker_id",
+	 *                     type="integer",
+	 *                     example=0
+	 *                 ),
+	 *                 @OA\Property (
+	 *                     property="task_id",
+	 *                     type="integer",
+	 *                     example=0
+	 *                 ),
+	 *          	   @OA\Property (
+	 *                     property="note",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *                 @OA\Property (
+	 *                     property="state",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *     			   @OA\Property (
+	 *     			       property="item_image",
+	 *     				   type="string",
+	 *     				   format="base64",
+	 *     				   example="string"
+	 *     			  ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=500,
+	 *         description="Error"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function scanItem(Request $request, Response $response): Response
+	{
+		$requestBody = (array)$request->getParsedBody();
+		$requestFiles = $request->getUploadedFiles();
+		$resp = $this->itemServices->scanItem($requestBody, $requestFiles);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region QRCodes

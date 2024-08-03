@@ -3,6 +3,7 @@
 namespace Services;
 
 use Repositories\ItemsRepository as ItemsRepository;
+use Utilities\TokenUtility as TokenUtility;
 use Utilities\ValidatorUtility as Validator;
 use Services\QRCodesServices as QRCodesServices;
 use Repositories\RoomsRepository as RoomsRepository;
@@ -17,13 +18,15 @@ class ItemsServices
 	private readonly RoomsRepository $roomsRepository;
 	private readonly QRCodesRepository $qrCodesRepository;
 	private readonly FirebaseServices $firebaseServices;
+	private readonly TokenUtility $tokenUtility;
 
 	public function __construct(ItemsRepository $itemRepository,
 								Validator $validator,
 								QRCodesServices $qrcodesServices,
 								RoomsRepository $roomsRepository,
 								QRCodesRepository $qrCodesRepository,
-								FirebaseServices $firebaseServices)
+								FirebaseServices $firebaseServices,
+								TokenUtility $tokenUtility)
 	{
 		$this->itemRepository = $itemRepository;
 		$this->validator = $validator;
@@ -31,6 +34,7 @@ class ItemsServices
 		$this->roomsRepository = $roomsRepository;
 		$this->qrCodesRepository = $qrCodesRepository;
 		$this->firebaseServices = $firebaseServices;
+		$this->tokenUtility = $tokenUtility;
 	}
 
 	public function getItemsByRoom(int $room_id): ?array
@@ -181,5 +185,54 @@ class ItemsServices
 				return $deleteStatus;
 			}
 		}
+	}
+
+	public function scanItem(array $scannedItem, array $itemPictures): array
+	{
+		if(!empty($itemPictures)) {
+			if (!file_exists('tmp'))
+				mkdir('tmp', 755);
+
+			$localStoragePath = $_ENV['LOCAL_STORAGE_URL'] . 'tmp';
+
+			$uploadedImage = $itemPictures['item_image'];
+			if ($uploadedImage->getError() === UPLOAD_ERR_OK) {
+				$fileExt = pathinfo($uploadedImage->getClientFileName(), PATHINFO_EXTENSION);
+				$mimeType = 'image/' . $fileExt;
+				$imageName = $this->tokenUtility->GenerateBasicToken(8) . "." . $fileExt;
+				$fullPath = $localStoragePath . DIRECTORY_SEPARATOR . $imageName;
+				$uploadedImage->moveTo($fullPath);
+				$imageToUpload = file_get_contents($fullPath);
+
+				$options = [
+					'file-type' => 3,
+					'dir' => 'reports/',
+					'name' => $imageName,
+					'mime-type' => $mimeType,
+					'predefinedAcl' => 'PUBLICREAD'
+				];
+				$report_picture = $this->firebaseServices->uploadFile($imageToUpload, $options);
+				$scannedItem['picture_id'] = $report_picture['file']['file_id'];
+			}
+		}
+		else
+			$scannedItem['picture_id'] = null;
+
+		$isScannedItemValid = $this->validator->validateScannedItem($scannedItem);
+		if($isScannedItemValid !== true) return $isScannedItemValid;
+
+		$isAdded = $this->itemRepository->insertScannedItem($scannedItem);
+		if($isAdded)
+			return [
+				'status' => 200,
+				'message' => 'Success',
+				'description' => 'Item scanned successfully'
+			];
+
+		return [
+			'status' => 500,
+			'message' => 'Internal Server Error',
+			'description' => 'Error while saving scanned item, please try again'
+		];
 	}
 }

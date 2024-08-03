@@ -1535,6 +1535,64 @@
                 ]
             }
         },
+        "/api/Items/scanItem": {
+            "post": {
+                "tags": [
+                    "Items"
+                ],
+                "operationId": "scanItem",
+                "requestBody": {
+                    "description": "Insert scanned item",
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "item_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "worker_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "task_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "state": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "item_image": {
+                                        "type": "string",
+                                        "format": "base64",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/QRCodes/generateQRCodes": {
             "post": {
                 "tags": [

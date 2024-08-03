@@ -2,7 +2,7 @@
 [x] Enroll user to task
 [x] Remove user from task
 [x] Check scanned qr code
-[] Insert scanned item
+[x] Insert scanned item
 [] Archive tasks that are done
 [] Get user archive
 

@@ -74,6 +74,7 @@ return function (Slim $app) {
 	$app->post('/api/Items/createNewItems', [API::class, 'createNewItems']);
 	$app->put('/api/Items/updateItem', [API::class, 'updateItem']);
 	$app->delete('/api/Items/deleteItem/{item_id}', [API::class, 'deleteItem']);
+	$app->post('/api/Items/scanItem', [API::class, 'scanItem']);
 	#endregion
 
 	#region QRCodes

@@ -332,6 +332,33 @@ class ValidatorUtility
 			'description' => $this->validator->errors()
 		];
 	}
+
+	public function validateScannedItem(array $scannedItem): bool|array
+	{
+		$this->validator = new Validator($scannedItem);
+		$this->validator->rules([
+			'required' => [
+				['item_id'],
+				['worker_id'],
+				['task_id'],
+				['state']
+			],
+			'min' => [
+				[['item_id'], 1],
+				[['worker_id'], 1],
+				[['task_id'], 1]
+			]
+		]);
+
+		if($this->validator->validate()) return true;
+
+		return [
+			'status' => 400,
+			'message' => 'Bad request',
+			'description' => $this->validator->errors()
+		];
+	}
+
 	#endregion
 
 	#region TeamValidation
@@ -448,6 +475,5 @@ class ValidatorUtility
 		];
 	}
 	#endregion
-
 
 }
