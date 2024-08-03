@@ -113,12 +113,23 @@ class QRCodesServices
 			];
 
 		$isQRAlreadyScanned = $this->itemsRepository->isQRCodeAlreadyScanned($qrCodeData['task_id'], $qrCodeData['item_id']);
-		if($isQRAlreadyScanned)
-			return [
-				'status' => 403,
-				'message' => 'Forbidden',
-				'description' => 'This item has been already scanned'
-			];
+		switch ($isQRAlreadyScanned) {
+			case true:
+				return [
+					'status' => 403,
+					'message' => 'Forbidden',
+					'description' => 'This item has been already scanned'
+				];
+			case 0:
+				return [
+					'status' => 403,
+					'message' => 'Forbidden',
+					'description' => 'Task is completed, you are not allowed to scan items outside of active tasks'
+				];
+
+			default:
+				break;
+		}
 
 		return [
 			'status' => 200,
