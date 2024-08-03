@@ -910,6 +910,72 @@
                 ]
             }
         },
+        "/api/Users/enrollUserToTask/{worker_id}/{task_id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Enroll user to the task",
+                "operationId": "enrollUserToTask",
+                "parameters": [
+                    {
+                        "name": "worker_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Users/removeUserFromTask/{worker_id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Remove user to the task",
+                "operationId": "removeUserFromTask",
+                "parameters": [
+                    {
+                        "name": "worker_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Companies/addCompany": {
             "post": {
                 "tags": [
@@ -1552,26 +1618,47 @@
                 ]
             }
         },
-        "/api/QRCodes/checkScannedQRCode/{room_id}": {
-            "get": {
+        "/api/QRCodes/checkScannedQRCode": {
+            "post": {
                 "tags": [
                     "QRCodes"
                 ],
-                "description": "Check scanned qr code",
                 "operationId": "checkScannedQRCode",
-                "parameters": [
-                    {
-                        "name": "room_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
+                "requestBody": {
+                    "description": "Check scanned qr code brefore saving scanned item",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "worker_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "room_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "task_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "item_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
-                        "description": "An example resource"
+                        "description": "Success"
+                    },
+                    "403": {
+                        "description": "Forbbiden"
                     }
                 },
                 "security": [

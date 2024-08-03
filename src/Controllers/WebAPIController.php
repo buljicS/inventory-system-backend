@@ -1805,20 +1805,48 @@ class WebAPIController
 	}
 
 	/**
-	 * @OA\Get(
-	 *     path="/api/QRCodes/checkScannedQRCode/{room_id}",
+	 * @OA\Post(
+	 *     path="/api/QRCodes/checkScannedQRCode",
 	 *     operationId="checkScannedQRCode",
-	 *     description="Check scanned qr code",
 	 *     tags={"QRCodes"},
-	 *     @OA\Parameter(
-	 *        name="room_id",
-	 *        in="path",
-	 *        required=true,
-	 *        @OA\Schema(
-	 *           type="integer"
-	 *        )
+	 *     @OA\RequestBody(
+	 *         description="Check scanned qr code brefore saving scanned item",
+	 *     	   required=true,
+	 *     	   @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     		       @OA\Property(
+	 *     		           property="worker_id",
+	 *     			       type="integer",
+	 *     				   example=0,
+	 *     		       ),
+	 *     			   @OA\Property(
+	 *     			       property="room_id",
+	 * 					   type="integer",
+	 *     				   example=0
+	 *     			   ),
+	 *     			   @OA\Property(
+	 *     			       property="task_id",
+	 *                     type="integer",
+	 *     				   example=0
+	 *     			   ),
+	 *          	   @OA\Property(
+	 *                     property="item_id",
+	 *                     type="integer",
+	 *                     example=0
+	 *                 ),
+	 *             )
+	 *         )
 	 *     ),
-	 *     @OA\Response(response="200", description="An example resource"),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=403,
+	 *         description="Forbbiden"
+	 *     ),
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */

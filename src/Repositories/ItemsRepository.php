@@ -154,4 +154,35 @@ class ItemsRepository
 		}
 		return $stmt->rowCount() == count($qrcodes);
 	}
+
+	public function canUserScan(int $worker_id, int $task_id): ?int
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT task_id FROM workers WHERE worker_id = :worker_id AND task_id = :task_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':worker_id', $worker_id, PDO::PARAM_INT);
+		$stmt->bindParam(':task_id', $task_id, PDO::PARAM_INT);
+		$stmt->execute();
+		return $stmt->fetchColumn();
+	}
+
+	public function isQRCodeAlreadyScanned(int $task_id): bool
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT end_date FROM tasks WHERE task_id = :task_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':task_id', $task_id, PDO::PARAM_INT);
+		$stmt->execute();
+		$end_date = $stmt->fetchColumn();
+		if($end_date == null) {
+			$stmt->closeCursor();
+			$scannedItem = "SELECT scanned_item_id FROM scanned_items WHERE task_id = :task_id";
+			$stmt = $dbConn->prepare($scannedItem);
+			$stmt->bindParam(':task_id', $task_id, PDO::PARAM_INT);
+			$stmt->execute();
+			$scannedItemId = $stmt->fetchColumn();
+			if(!empty($scannedItemId)) return true;
+		}
+		return false;
+	}
 }

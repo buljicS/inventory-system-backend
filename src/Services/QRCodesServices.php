@@ -95,7 +95,35 @@ class QRCodesServices
 		];
 	}
 
-	public function checkScannedQRCode(array $reqBody)
+	public function checkScannedQRCode(array $qrCodeData): array
 	{
+		if($qrCodeData['task_id'] == null)
+			return [
+				'status' => 403,
+				'message' => 'Forbidden',
+				'description' => 'You must be enrolled in active task in order to scan items'
+			];
+
+		$canUserScan = $this->itemsRepository->canUserScan($qrCodeData['worker_id'], $qrCodeData['task_id']);
+		if($canUserScan == null)
+			return [
+				'status' => 403,
+				'message' => 'Forbidden',
+				'description' => 'You are not allowed to scan this QR code, check your task information again'
+			];
+
+		$isQRAlreadyScanned = $this->itemsRepository->isQRCodeAlreadyScanned($qrCodeData['task_id']);
+		if($isQRAlreadyScanned)
+			return [
+				'status' => 403,
+				'message' => 'Forbidden',
+				'description' => 'This item has been already scanned'
+			];
+
+		return [
+			'status' => 200,
+			'message' => 'OK',
+			'description' => 'Please fill out form for this item'
+		];
 	}
 }

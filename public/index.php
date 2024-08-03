@@ -21,7 +21,7 @@ array_walk($serviceProviders, fn($sProvider) => $sProvider::boot());
 AppFactory::setContainer($container);
 #endregion
 
-#region middlewares
+#region middleware_stack
 $app = AppFactory::create();
 
 //config middlewares
