@@ -165,6 +165,7 @@ class TaksRepository
 					   RIGHT JOIN workers W
 						 ON W.worker_id = T.worker_id
 					   FROM tasks T WHERE T.team_id IN (" . implode(",", $teams) . ")";
+
 		$stmt = $dbConn->prepare($tasksQuery);
 		$stmt->execute();
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
