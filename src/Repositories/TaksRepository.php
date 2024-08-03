@@ -139,7 +139,7 @@ class TaksRepository
 	public function getAllTasksForWorker(int $worker_id): array
 	{
 		$dbConn = $this->dbController->openConnection();
-		$teamsQuery = "SELECT team_id FROM teams WHERE worker_id = :worker_id";
+		$teamsQuery = "SELECT team_id FROM team_members WHERE worker_id = :worker_id";
 		$stmt = $dbConn->prepare($teamsQuery);
 		$stmt->bindParam(':worker_id', $worker_id);
 		$stmt->execute();
@@ -154,17 +154,21 @@ class TaksRepository
 			];
 
 		$stmt->closeCursor();
-		$tasksQuery = "SELECT T.task_id, T.start_date,
-       						  R.room_name, R.room_number,
-       						  TMs.team_name,
-       						  CONCAT(W.worker_fname, ' ', W.worker_lname) AS created_by
-					   LEFT JOIN rooms R 
-						 ON R.room_id = T.room_id
-					   LEFT JOIN teams TMs
-						 ON TMs.team_id = T.team_id
-					   RIGHT JOIN workers W
-						 ON W.worker_id = T.worker_id
-					   FROM tasks T WHERE T.team_id IN (" . implode(",", $teams) . ")";
+		$tasksQuery = "SELECT 
+    					    T.task_id, 
+    					    T.start_date,
+    					    R.room_name, 
+    					    R.room_number,
+    					    TMs.team_name,
+    					    CONCAT(W.worker_fname, ' ', W.worker_lname) AS created_by
+    					FROM tasks T
+    					LEFT JOIN rooms R 
+    					    ON R.room_id = T.room_id
+    					LEFT JOIN teams TMs
+    					    ON TMs.team_id = T.team_id
+    					RIGHT JOIN workers W
+    					    ON W.worker_id = T.worker_id
+    					WHERE T.team_id IN (" . implode(",", $teams) . ")";
 
 		$stmt = $dbConn->prepare($tasksQuery);
 		$stmt->execute();
