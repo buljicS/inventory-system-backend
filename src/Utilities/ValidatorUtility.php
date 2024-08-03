@@ -392,6 +392,35 @@ class ValidatorUtility
 			];
 		}
 	}
+
+	public function validateTaskResponse(array $taskResponse): array|bool
+	{
+		$this->validator = new Validator($taskResponse);
+
+		$this->validator->rules([
+			'required' => [
+				['task_id'],
+				['task_summary'],
+				['status']
+			],
+			'min' => [
+				[['task_id'], 1]
+			],
+			'lengthMin' => [
+				[['task_summary'], 3]
+			]
+		]);
+
+		if($this->validator->validate()) return true;
+
+		else {
+			return [
+				'status' => 400,
+				'message' => 'Bad request',
+				'description' => $this->validator->errors()
+			];
+		}
+	}
 	#endregion
 
 	#region AdminValidation

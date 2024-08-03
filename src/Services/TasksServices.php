@@ -40,7 +40,7 @@ class TasksServices
 		];
 	}
 
-	public function getAllTasksByCompany(int $company_id)
+	public function getAllTasksByCompany(int $company_id): array
 	{
 		return $this->tasksRepository->getAllTasksByCompany($company_id);
 	}
@@ -76,8 +76,23 @@ class TasksServices
 
 	}
 
-	public function endTask(array $reqBody)
+	public function endTask(array $taskResponse): array
 	{
+		$isTaskResponseValid = $this->validator->validateTaskResponse($taskResponse);
+		if ($isTaskResponseValid !== true) return $isTaskResponseValid;
 
+		$isAdded = $this->tasksRepository->insertTaskResponse($taskResponse);
+		if($isAdded)
+			return [
+				'status' => 202,
+				'message' => 'Created',
+				'description' => 'Task added successfully'
+			];
+
+		return [
+			'status' => 500,
+			'message' => 'Internal Server Error',
+			'description' => 'Error while adding task, please try again'
+		];
 	}
 }

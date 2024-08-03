@@ -2171,16 +2171,10 @@ class WebAPIController
 	 *                     example="string"
 	 *                 ),
 	 *                 @OA\Property (
-	 *                     property="date_ended",
-	 *                     type="string",
-	 *     				   format="date-time",
-	 *                     example="2017-07-21T17:32:28Z"
-	 *                 ),
-	 *                 @OA\Property (
 	 *                     property="status",
-	 *                     type="string",
-	 *                     example="string"
-	 *                  ),
+	 *                     type="boolean",
+	 *                     example=true
+	 *                 ),
 	 *             )
 	 *         )
 	 *     ),
