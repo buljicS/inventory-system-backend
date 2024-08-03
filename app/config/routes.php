@@ -94,6 +94,7 @@ return function (Slim $app) {
 	$app->get('/api/Tasks/getAllTasksByCompany/{company_id}', [API::class, 'getAllTasksByCompany']);
 	$app->get('/api/Tasks/taskCurrentStatus/{task_id}', [API::class, 'taskCurrentStatus']);
 	$app->post('/api/Tasks/endTask', [API::class, 'endTask']);
+	$app->post('/api/Tasks/getAllTasksForWorker/{worker_id}', [API::class, 'getAllTasksForWorker']);
 	#endregion
 
 	#region TestEndpoints

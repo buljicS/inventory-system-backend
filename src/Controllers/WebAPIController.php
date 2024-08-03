@@ -2207,6 +2207,33 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Tasks/getAllTasksForWorker/{worker_id}",
+	 *     operationId="getAllTasksForWorker",
+	 *     description="Get all tasks in company",
+	 *     tags={"Tasks"},
+	 *     @OA\Parameter(
+	 *         name="worker_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getAllTasksForWorker(Request $request, Response $response, array $args): Response
+	{
+		$worker_id = (int)$args['worker_id'];
+		$resp = $this->tasksServices->getAllTasksForWorker($worker_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Admins

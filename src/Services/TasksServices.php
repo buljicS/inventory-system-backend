@@ -86,7 +86,7 @@ class TasksServices
 			return [
 				'status' => 202,
 				'message' => 'Created',
-				'description' => 'Task added successfully'
+				'description' => 'Task closed successfully'
 			];
 
 		return [
@@ -94,5 +94,10 @@ class TasksServices
 			'message' => 'Internal Server Error',
 			'description' => 'Error while adding task, please try again'
 		];
+	}
+
+	public function getAllTasksForWorker(int $worker_id): array
+	{
+		return $this->tasksRepository->getAllTasksForWorker($worker_id);
 	}
 }

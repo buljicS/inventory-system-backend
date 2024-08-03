@@ -1689,6 +1689,10 @@
                                         "type": "integer",
                                         "example": 0
                                     },
+                                    "worker_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
                                     "workers_ids": {
                                         "type": "array",
                                         "items": {
@@ -1872,6 +1876,10 @@
                                         "format": "date-time",
                                         "example": "2017-07-21T17:32:28Z"
                                     },
+                                    "worker_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
                                     "note": {
                                         "type": "string",
                                         "example": "string"
@@ -1991,6 +1999,35 @@
                     },
                     "500": {
                         "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Tasks/getAllTasksForWorker/{worker_id}": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "description": "Get all tasks in company",
+                "operationId": "getAllTasksForWorker",
+                "parameters": [
+                    {
+                        "name": "worker_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
                     }
                 },
                 "security": [
