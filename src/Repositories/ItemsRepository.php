@@ -183,6 +183,7 @@ class ItemsRepository
 			$stmt->execute();
 			$scannedItemId = $stmt->fetchColumn();
 			if(!empty($scannedItemId)) return true;
+			else return false;
 		}
 		return 0;
 	}
