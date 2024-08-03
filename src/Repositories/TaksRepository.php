@@ -128,7 +128,7 @@ class TaksRepository
 		$stmt->bindParam(':task_id', $taskResponse['task_id']);
 		$stmt->bindParam(':summary', $taskResponse['task_summary']);
 		$stmt->bindParam(':status', $taskResponse['status']);
-		$end_date = strtotime('now');
+		$end_date = new \DateTime('now');
 		$stmt->bindParam(':end_date', $end_date);
 		return $stmt->execute();
 	}
