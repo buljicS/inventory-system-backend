@@ -78,7 +78,7 @@ return function (Slim $app) {
 
 	#region QRCodes
 	$app->post('/api/QRCodes/generateQRCodes', [API::class, 'generateQRCode']);
-	$app->get('/api/QRCodes/checkScannedQRCode', [API::class, 'checkScannedQRCode']);
+	$app->post('/api/QRCodes/checkScannedQRCode', [API::class, 'checkScannedQRCode']);
 	#endregion
 
 	#region Teams
