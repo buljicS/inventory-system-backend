@@ -98,6 +98,24 @@ class TaksRepository
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':company_id', $company_id);
 		$stmt->execute();
+		$rooms = $stmt->fetchAll(\PDO::FETCH_FUNC, function ($room) {
+			return $room;
+		});
+		$stmt->closeCursor();
+		if(empty($rooms))
+			return [];
+
+		$tasks = "SELECT T.task_id, T.start_date, T.note,
+       					 TMs.team_name,
+       					 R.room_name
+       			  FROM tasks T 
+       			  LEFT JOIN teams TMs 
+       			  	ON TMs.team_id = T.team_id
+       			  LEFT JOIN rooms R
+       			  	ON R.room_id = T.room_id
+         		  WHERE T.room_id IN (" . implode(",", $rooms) . ")";
+		$stmt = $dbConn->prepare($tasks);
+		$stmt->execute();
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}
 

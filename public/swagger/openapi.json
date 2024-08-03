@@ -1897,16 +1897,16 @@
                 ]
             }
         },
-        "/api/Tasks/getAllTasksByRoom/{room_id}": {
+        "/api/Tasks/getAllTasksByCompany/{company_id}": {
             "get": {
                 "tags": [
                     "Tasks"
                 ],
-                "description": "Get all tasks in room",
-                "operationId": "getAllTasksInRoom",
+                "description": "Get all tasks in company",
+                "operationId": "getAllTasksByCompany",
                 "parameters": [
                     {
-                        "name": "room_id",
+                        "name": "company_id",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -1975,14 +1975,9 @@
                                         "type": "string",
                                         "example": "string"
                                     },
-                                    "date_ended": {
-                                        "type": "string",
-                                        "format": "date-time",
-                                        "example": "2017-07-21T17:32:28Z"
-                                    },
                                     "status": {
-                                        "type": "string",
-                                        "example": "string"
+                                        "type": "boolean",
+                                        "example": true
                                     }
                                 },
                                 "type": "object"
