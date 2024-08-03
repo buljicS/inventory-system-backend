@@ -189,6 +189,9 @@ class ItemsServices
 
 	public function scanItem(array $scannedItem, array $itemPictures): array
 	{
+		$isScannedItemValid = $this->validator->validateScannedItem($scannedItem);
+		if($isScannedItemValid !== true) return $isScannedItemValid;
+
 		if(!empty($itemPictures)) {
 			if (!file_exists('tmp'))
 				mkdir('tmp', 755);
@@ -217,9 +220,6 @@ class ItemsServices
 		}
 		else
 			$scannedItem['picture_id'] = null;
-
-		$isScannedItemValid = $this->validator->validateScannedItem($scannedItem);
-		if($isScannedItemValid !== true) return $isScannedItemValid;
 
 		$isAdded = $this->itemRepository->insertScannedItem($scannedItem);
 		if($isAdded)
