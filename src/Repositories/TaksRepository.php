@@ -21,7 +21,7 @@ class TaksRepository
 		$stmt->bindParam(':team_id', $newTask['team_id']);
 		$stmt->bindParam(':room_id', $newTask['room_id']);
 		$stmt->bindParam(':start_date', $newTask['start_date']);
-		$stmt->bindParam(':note', $newTask['worker_id']);
+		$stmt->bindParam(':worker_id', $newTask['worker_id']);
 		$stmt->bindParam(':note', $newTask['note']);
 		return $stmt->execute();
 	}
