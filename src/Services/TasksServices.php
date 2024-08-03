@@ -40,9 +40,9 @@ class TasksServices
 		];
 	}
 
-	public function getAllTasksByRoom(int $room_id)
+	public function getAllTasksByCompany(int $company_id)
 	{
-		return $this->tasksRepository->getAllTasksByRoom($room_id);
+		return $this->tasksRepository->getAllTasksByCompany($company_id);
 	}
 
 	public function taskCurrentStatus(int $task_id): array

@@ -90,4 +90,14 @@ class TaksRepository
 		$stmt->execute();
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}
+
+	public function getAllTasksByCompany(int $company_id): array
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT room_id FROM rooms WHERE company_id = :company_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':company_id', $company_id);
+		$stmt->execute();
+		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+	}
 }

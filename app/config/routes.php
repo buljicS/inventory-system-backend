@@ -91,7 +91,7 @@ return function (Slim $app) {
 
 	#region Tasks
 	$app->post('/api/Tasks/addTask', [API::class, 'addTask']);
-	$app->get('/api/Tasks/getAllTasksByRoom/{room_id}', [API::class, 'getAllTasksByRoom']);
+	$app->get('/api/Tasks/getAllTasksByCompany/{company_id}', [API::class, 'getAllTasksByCompany']);
 	$app->get('/api/Tasks/taskCurrentStatus/{task_id}', [API::class, 'taskCurrentStatus']);
 	$app->post('/api/Tasks/endTask', [API::class, 'endTask']);
 	#endregion
