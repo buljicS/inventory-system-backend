@@ -11,14 +11,14 @@
  #region Authorization config
 	$authPath = [
 		"/api/Users/",
-		"/api/Admins/",
 		"/api/Companies/",
 		"/api/Rooms/",
 		"/api/FirebaseStorage/",
 		"/api/Logs/getAllLogs",
 		"/api/Items/",
 		"/api/QRCodes/",
-		"/api/Teams"
+		"/api/Teams",
+		"/api/Tasks"
 	];
 
 	$ignorePath = [
@@ -27,8 +27,7 @@
 		"/api/Users/sendPasswordResetEmail",
 		"/api/Users/activateUserAccount/",
 		"/api/Users/resetPassword",
-		"/api/Users/changeTempPassword",
-		"/api/Admins/loginAdmin",
+		"/api/Users/changeTempPassword"
 	];
  #endregion
 

@@ -2182,6 +2182,55 @@
                 ]
             }
         },
+        "/api/Tasks/archiveTask": {
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "operationId": "archiveTask",
+                "requestBody": {
+                    "description": "Archive tasks that are over",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "worker_id": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "team_name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "room_name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [

@@ -171,4 +171,51 @@ class TaksRepository
 		$stmt->execute();
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}
+
+	public function generateArchiveRecord(int $task_id): array
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT I.item_name, 
+                       CONCAT(W.worker_fname,' ',W.worker_lname) AS worker_full_name,
+                       W.worker_email, 
+                       W.phone_number,
+                       SI.note,
+                       SI.date_scanned,
+                       P.picture_path AS additional_picture
+			    FROM scanned_items SI
+			    LEFT JOIN items I 
+			    	   ON SI.item_id = I.item_id
+			    LEFT JOIN pictures P
+			    	   ON P.picture_id = SI.picture_id
+			    LEFT JOIN workers W 
+			    	   ON W.worker_id = SI.worker_id
+			    WHERE task_id = :task_id";
+
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':task_id', $task_id);
+		$stmt->execute();
+		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+	}
+
+	public function saveToArchive(array $archiveReports): bool
+	{
+		$dbConn = $this->dbController->openConnection();
+
+		$flattenedArrayProps = array_merge(...array_map('array_values', $archiveReports));
+		$columns = ['room_name', 'item_name', 'team_name', 'date_scanned', 'note', 'additional_picture', 'worker_full_name', 'worker_email', 'worker_phone', 'archived_by', 'task_id'];
+		$numOfCols = count($columns);
+		$numOfRows = count($flattenedArrayProps) / $numOfCols;
+		$row = '(' . implode(', ', array_fill(0, $numOfCols, '?')) . ')';
+		$rows = implode(', ', array_fill(0, $numOfRows, $row));
+		$sql = "INSERT INTO archive (room_name, item_name, team_name, date_scanned, note, additional_picture, worker_full_name, worker_email, worker_phone, archived_by, task_id) VALUES $rows";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->execute($flattenedArrayProps);
+
+		$stmt->closeCursor();
+		$sql = "UPDATE tasks SET isActive = 0 WHERE task_id = :task_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':task_id', $task_id);
+		$stmt->execute();
+		return $stmt->rowCount() > 0;
+	}
 }

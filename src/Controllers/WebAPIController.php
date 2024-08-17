@@ -2390,6 +2390,60 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Post(
+	 *     path="/api/Tasks/archiveTask",
+	 *     operationId="archiveTask",
+	 *     tags={"Tasks"},
+	 *     @OA\RequestBody(
+	 *         description="Archive tasks that are over",
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 type="object",
+	 *     			   @OA\Property (
+	 *     			       property="task_id",
+	 *     				   type="integer",
+	 *     				   example=0
+	 *     			   ),
+	 *          	   @OA\Property (
+	 *                     property="worker_id",
+	 *                     type="integer",
+	 *                     example=0
+	 *                 ),
+	 *                 @OA\Property (
+	 *                     property="team_name",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *     			   @OA\Property (
+	 *                     property="room_name",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="Success"
+	 *     ),
+	 *     @OA\Response(
+	 *         response=500,
+	 *         description="Error"
+	 *     ),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function archiveTask(Request $request, Response $response): Response
+	{
+		$reqBody = (array)$request->getParsedBody();
+		$resp = $this->tasksServices->archiveTask($reqBody);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Admins

@@ -100,4 +100,42 @@ class TasksServices
 	{
 		return $this->tasksRepository->getAllTasksForWorker($worker_id);
 	}
+
+	public function archiveTask(array $endedTask): array
+	{
+		$archiveReport = $this->tasksRepository->generateArchiveRecord($endedTask['task_id']);
+		if(!empty($archiveReport)) {
+
+			for($i = 0; $i < count($archiveReport); $i++) {
+				$archiveReport[$i] = [
+					'room_name' => $endedTask['room_name'],
+					'item_name' => $archiveReport[$i]['item_name'],
+					'team_name' => $endedTask['team_name'],
+					'date_scanned' => $archiveReport[$i]['date_scanned'],
+					'note' => $archiveReport[$i]['note'],
+					'additional_picture' => $archiveReport[$i]['additional_picture'],
+					'worker_full_name' => $archiveReport[$i]['worker_full_name'],
+					'worker_email' => $archiveReport[$i]['worker_email'],
+					'phone_number' => $archiveReport[$i]['phone_number'],
+					'archived_by' => $endedTask['worker_id'],
+					'task_id' => $endedTask['task_id']
+				];
+			}
+
+			$isInserted = $this->tasksRepository->saveToArchive($archiveReport);
+
+			if($isInserted === true)
+				return [
+					'status' => 202,
+					'message' => 'Created',
+					'description' => 'Task archived successfully'
+				];
+		}
+
+		return [
+			'status' => 404,
+			'message' => 'Not found',
+			'description' => 'Task not found or already archived'
+		];
+	}
 }
