@@ -99,5 +99,6 @@ return function (Slim $app) {
 	$app->post('/api/Tasks/endTask', [API::class, 'endTask']);
 	$app->get('/api/Tasks/getAllTasksForWorker/{worker_id}', [API::class, 'getAllTasksForWorker']);
 	$app->post('/api/Tasks/archiveTask', [API::class, 'archiveTask']);
+	$app->get('/api/Tasks/getArchivedTasksByUser/{worker_id}/{role}', [API::class, 'getArchivedTasksByUser']);
 	#endregion
 };

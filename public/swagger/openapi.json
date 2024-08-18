@@ -2231,6 +2231,43 @@
                 ]
             }
         },
+        "/api/Tasks/getArchivedTasksByUser/{worker_id}/{role}": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "description": "Get archived task for single user",
+                "operationId": "getArchivedTasksByUser",
+                "parameters": [
+                    {
+                        "name": "worker_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "role",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [

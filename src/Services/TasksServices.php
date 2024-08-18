@@ -114,6 +114,7 @@ class TasksServices
 					'date_scanned' => $archiveReport[$i]['date_scanned'],
 					'note' => $archiveReport[$i]['note'],
 					'additional_picture' => $archiveReport[$i]['additional_picture'],
+					'worker_id' => $archiveReport[$i]['worker_id'],
 					'worker_full_name' => $archiveReport[$i]['worker_full_name'],
 					'worker_email' => $archiveReport[$i]['worker_email'],
 					'phone_number' => $archiveReport[$i]['phone_number'],
@@ -137,5 +138,10 @@ class TasksServices
 			'message' => 'Not found',
 			'description' => 'Task not found or already archived'
 		];
+	}
+
+	public function getArchivedTasksByUser(int $worker_id, string $role): array
+	{
+		return $this->tasksRepository->getArchivedTasksByUser($worker_id, $role);
 	}
 }

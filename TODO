@@ -4,7 +4,7 @@
 [x] Check scanned qr code
 [x] Insert scanned item
 [x] Archive tasks that are done
-[] Get user archive
+[x] Get user archive
 
 //MINOR
 [] Remove tasks from users when employer marks them as done

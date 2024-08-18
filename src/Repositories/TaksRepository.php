@@ -3,6 +3,7 @@
 namespace Repositories;
 
 use Controllers\DatabaseController as DBController;
+use PDO;
 
 class TaksRepository
 {
@@ -36,26 +37,6 @@ class TaksRepository
 		return $stmt->fetch();
 	}
 
-	public function getAllTasksByRoom(int $room_id): array
-	{
-		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT T.task_id, T.note, T.start_date, 
-       				   TMs.team_name,
-       				   R.room_name,
-       				   R.room_number
-				FROM tasks T
-         		LEFT JOIN teams TMs 
-         		    ON TMs.team_id = T.team_id
-                LEFT JOIN rooms R 
-                    ON R.room_id = T.room_id        
-         		WHERE T.room_id = :room_id
-         		ORDER BY T.start_date DESC";
-		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(':room_id', $room_id);
-		$stmt->execute();
-		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-	}
-
 	public function getRoomByTask(int $task_id): int
 	{
 		$dbConn = $this->dbController->openConnection();
@@ -73,7 +54,7 @@ class TaksRepository
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':task_id', $task_id);
 		$stmt->execute();
-		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function getScannedItems(int $task_id): array
@@ -89,7 +70,7 @@ class TaksRepository
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':task_id', $task_id);
 		$stmt->execute();
-		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function getAllTasksByCompany(int $company_id): array
@@ -99,7 +80,7 @@ class TaksRepository
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':company_id', $company_id);
 		$stmt->execute();
-		$rooms = $stmt->fetchAll(\PDO::FETCH_FUNC, function ($room) {
+		$rooms = $stmt->fetchAll(PDO::FETCH_FUNC, function ($room) {
 			return $room;
 		});
 		$stmt->closeCursor();
@@ -117,7 +98,7 @@ class TaksRepository
          		  WHERE T.room_id IN (" . implode(",", $rooms) . ")";
 		$stmt = $dbConn->prepare($tasks);
 		$stmt->execute();
-		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function insertTaskResponse(array $taskResponse): bool
@@ -140,7 +121,7 @@ class TaksRepository
 		$stmt = $dbConn->prepare($teamsQuery);
 		$stmt->bindParam(':worker_id', $worker_id);
 		$stmt->execute();
-		$teams = $stmt->fetchAll(\PDO::FETCH_FUNC, function ($team) {
+		$teams = $stmt->fetchAll(PDO::FETCH_FUNC, function ($team) {
 			return $team;
 		});
 		if(empty($teams))
@@ -169,7 +150,7 @@ class TaksRepository
 
 		$stmt = $dbConn->prepare($tasksQuery);
 		$stmt->execute();
-		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function generateArchiveRecord(int $task_id): array
@@ -177,6 +158,7 @@ class TaksRepository
 		$dbConn = $this->dbController->openConnection();
 		$sql = "SELECT I.item_name, 
                        CONCAT(W.worker_fname,' ',W.worker_lname) AS worker_full_name,
+                       W.worker_id,
                        W.worker_email, 
                        W.phone_number,
                        SI.note,
@@ -194,7 +176,7 @@ class TaksRepository
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':task_id', $task_id);
 		$stmt->execute();
-		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function saveToArchive(array $archiveReports): bool
@@ -202,12 +184,12 @@ class TaksRepository
 		$dbConn = $this->dbController->openConnection();
 
 		$flattenedArrayProps = array_merge(...array_map('array_values', $archiveReports));
-		$columns = ['room_name', 'item_name', 'team_name', 'date_scanned', 'note', 'additional_picture', 'worker_full_name', 'worker_email', 'worker_phone', 'archived_by', 'task_id'];
+		$columns = ['room_name', 'item_name', 'team_name', 'date_scanned', 'note', 'additional_picture', 'worker_id', 'worker_full_name', 'worker_email', 'worker_phone', 'archived_by', 'task_id'];
 		$numOfCols = count($columns);
 		$numOfRows = count($flattenedArrayProps) / $numOfCols;
 		$row = '(' . implode(', ', array_fill(0, $numOfCols, '?')) . ')';
 		$rows = implode(', ', array_fill(0, $numOfRows, $row));
-		$sql = "INSERT INTO archive (room_name, item_name, team_name, date_scanned, note, additional_picture, worker_full_name, worker_email, worker_phone, archived_by, task_id) VALUES $rows";
+		$sql = "INSERT INTO archive (room_name, item_name, team_name, date_scanned, note, additional_picture, worker_id, worker_full_name, worker_email, worker_phone, archived_by, task_id) VALUES $rows";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->execute($flattenedArrayProps);
 
@@ -217,5 +199,46 @@ class TaksRepository
 		$stmt->bindParam(':task_id', $task_id);
 		$stmt->execute();
 		return $stmt->rowCount() > 0;
+	}
+
+	public function getArchivedTasksByUser(int $worker_id, string $role): array
+	{
+		$dbConn = $this->dbController->openConnection();
+		switch ($role) {
+
+			case 'worker':
+				$sql = "SELECT A.room_name, A.item_name, A.team_name, A.date_scanned, A.note, A.additional_picture, A.worker_id, A.worker_full_name, A.worker_email, A.worker_phone,
+       			        CONCAT(W.worker_fname,' ',W.worker_lname) AS archived_by, W.worker_email AS employer_email, W.phone_number AS employer_number
+				FROM archive A 
+         		LEFT JOIN workers W ON W.worker_id = A.archived_by
+				WHERE A.worker_id = :worker_id AND W.role = :role";
+				$stmt = $dbConn->prepare($sql);
+				$stmt->bindParam(':worker_id', $worker_id);
+				$stmt->bindParam(':role', $role);
+				break;
+
+			case 'employer':
+				$sql = "SELECT *
+				FROM archive
+				WHERE archived_by = :worker_id";
+				$stmt = $dbConn->prepare($sql);
+				$stmt->bindParam(':worker_id', $worker_id);
+				break;
+
+			case 'admin':
+				$sql = "SELECT * FROM archive";
+				$stmt = $dbConn->prepare($sql);
+				break;
+
+			default:
+				return [
+					'status' => 401,
+					'message' => 'Forbidden',
+					'description' => 'You do not have permission to access this data'
+				];
+		}
+
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 }

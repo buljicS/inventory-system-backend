@@ -2444,6 +2444,43 @@ class WebAPIController
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Tasks/getArchivedTasksByUser/{worker_id}/{role}",
+	 *     operationId="getArchivedTasksByUser",
+	 *     description="Get archived task for single user",
+	 *     tags={"Tasks"},
+	 *     @OA\Parameter(
+	 *         name="worker_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *        name="role",
+	 *        in="path",
+	 *        required=true,
+	 *        @OA\Schema(
+	 *            type="string"
+	 *       )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function getArchivedTasksByUser(Request $request, Response $response, array $args): Response
+	{
+		$worker_id = (int)$args['worker_id'];
+		$role = (string)$args['role'];
+		$resp = $this->tasksServices->getArchivedTasksByUser($worker_id, $role);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+
+	}
 	#endregion
 
 	#region Admins
