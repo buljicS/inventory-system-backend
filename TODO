@@ -25,17 +25,17 @@
 [] Kada task postane aktivan, treba uraditi update za sobu isActive na 1 kako se ne bi mogla obrisati soba tokom taska
 [] Zabraniti brisanje tima kada je neki od taskova aktivan gde su oni zaduzeni
 [x] Delete item kada nije generisan qr kod ne radi
-[] Delete team ne radi ako nema membera u njemu (radi samo kada ima membera)
+[x] Delete team ne radi ako nema membera u njemu (radi samo kada ima membera)
 [] Isti QR kod se vezuje ako je isti item name u razlicitim sobama
 [] Delete task ukoliko jos uvek nije krenuo ?
 [] Zabraniti pravljenje taska za istu sobu ukoliko vec postoji task
 [] Show logs in admin
 [] Items tabela - vraca Item not found kada se radi update ajtema ali se posalju isti podaci
 [] Mejlovi
-[] Archive task button (da se pojavi tek kad je poslat response od employera?)
-[] Pravljenje taska za sobu u kojoj nema ni jedan item ?
+[x] Archive task button (da se pojavi tek kad je poslat response od employera?)
+[x] Pravljenje taska za sobu u kojoj nema ni jedan item ?
 [] Mobile app - loader i neki placeholder kada worker nema aktivnih taskova
 [] Kada je employer ili user logovan i admin tokom sesije banuje kompaniju, mogu i dalje da rade crud operacije?
-   grafikoni (statistika za index page?)
+[] grafikoni (statistika za index page?)
 [] Cron job za onaj mail
 

@@ -80,8 +80,7 @@ class ItemsRepository
 		$stmt->bindParam(':serial_no', $updatedItem['serial_no'], PDO::PARAM_STR);
 		$stmt->bindParam(':country_of_origin', $updatedItem['country_of_origin'], PDO::PARAM_STR);
 		$stmt->bindParam(':item_id', $updatedItem['item_id'], PDO::PARAM_INT);
-		$stmt->execute();
-		return $stmt->rowCount() > 0;
+		return $stmt->execute();
 	}
 
 	public function checkIfItemIsActive(int $item_id): string
