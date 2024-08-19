@@ -4,7 +4,9 @@ namespace Services;
 
 use Repositories\TaksRepository as TasksRepository;
 use Repositories\ItemsRepository as ItemsRepository;
+use Repositories\TeamsRepository as TeamsRepository;
 use Utilities\ValidatorUtility as Validator;
+use Utilities\MailUtility as MailUtility;
 
 
 class TasksServices
@@ -12,12 +14,19 @@ class TasksServices
 	private readonly TasksRepository $tasksRepository;
 	private readonly Validator $validator;
 	private readonly ItemsRepository $itemsRepository;
+	private readonly TeamsRepository $teamsRepository;
 
-	public function __construct(TasksRepository $tasksRepository, Validator $validator, ItemsRepository $itemsRepository)
+	public function __construct(TasksRepository $tasksRepository,
+								Validator $validator,
+								ItemsRepository $itemsRepository,
+								TeamsRepository $teamsRepository,
+								MailUtility $mailUtility)
 	{
 		$this->tasksRepository = $tasksRepository;
 		$this->validator = $validator;
 		$this->itemsRepository = $itemsRepository;
+		$this->teamsRepository = $teamsRepository;
+		$this->mailUtility = $mailUtility;
 	}
 
 	public function addTask(array $newTask): array
@@ -26,12 +35,19 @@ class TasksServices
 		if ($isNewTaskValid !== true) return $isNewTaskValid;
 
 		$isAdded = $this->tasksRepository->insertNewTask($newTask);
-		if($isAdded === true)
+		if($isAdded === true) {
+			$teamMembers = $this->teamsRepository->getTeamMembers($newTask['team_id']);
+			for($i = 0; $i < count($teamMembers); $i++) {
+				$body = file_get_contents('../templates/email/UserTodoTask.html');
+				$body = str_replace('{{userName}}', $teamMembers[$i]['worker_fname'], $body);
+				$this->mailUtility->SendEmail($body, 'You have been assigned a new task', $teamMembers[$i]['worker_email'], null);
+			}
 			return [
 				'status' => 202,
 				'message' => 'Created',
 				'description' => 'Task added successfully'
 			];
+		}
 
 		if(is_array($isAdded))
 			return $isAdded;

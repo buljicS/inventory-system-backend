@@ -428,12 +428,18 @@ class UsersServices
 	{
 		$isUserBanned = $this->userRepo->banUser($worker_id);
 
-		if($isUserBanned)
+
+		if($isUserBanned) {
+			$userData = $this->userRepo->getUserById($worker_id);
+			$body = file_get_contents('../templates/email/UserBan.html');
+			$this->email->SendEmail($body, 'You have been banned', $userData['worker_email'], null);
 			return [
 				'status' => 200,
 				'message' => 'Success',
 				'description' => 'User has been banned successfully'
 			];
+		}
+
 
 		return [
 			'status' => 500,
