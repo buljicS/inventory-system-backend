@@ -76,6 +76,15 @@ class TeamsRepository
 	public function createNewTeam(array $newTeam): array
 	{
 		$notes = [];
+		$allTeams = $this->getAllTeams($newTeam['company_id']);
+		for($i = 0; $i < count($allTeams); $i++) {
+			if(in_array($newTeam['team_name'], $allTeams[$i]))
+				return [
+					'status' => 401,
+					'message' => 'Forbidden',
+					'description' => 'Team with this name already exists'
+				];
+		}
 		$dbConn = $this->dbController->openConnection();
 		$sql = "INSERT INTO teams (team_name, worker_id, company_id) VALUES (:team_name, :worker_id, :company_id)";
 		$stmt = $dbConn->prepare($sql);
