@@ -278,4 +278,14 @@ class TaksRepository
 	{
 		return ['ok'];
 	}
+
+	public function checkTask(int $task_id): bool
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT task_id FROM tasks WHERE task_id = :task_id AND isActive = 0";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':task_id', $task_id);
+		$stmt->execute();
+		return $stmt->rowCount() > 0;
+	}
 }

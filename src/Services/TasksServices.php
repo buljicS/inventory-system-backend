@@ -106,34 +106,37 @@ class TasksServices
 
 	public function archiveTask(array $endedTask): array
 	{
-		$archiveReport = $this->tasksRepository->generateArchiveRecord($endedTask['task_id']);
-		if(!empty($archiveReport)) {
+		$isAlreadyArchived = $this->tasksRepository->checkTask($endedTask['task_id']);
+		if($isAlreadyArchived === false) {
+			$archiveReport = $this->tasksRepository->generateArchiveRecord($endedTask['task_id']);
+			if (!empty($archiveReport)) {
 
-			for($i = 0; $i < count($archiveReport); $i++) {
-				$archiveReport[$i] = [
-					'room_name' => $endedTask['room_name'],
-					'item_name' => $archiveReport[$i]['item_name'],
-					'team_name' => $endedTask['team_name'],
-					'date_scanned' => $archiveReport[$i]['date_scanned'],
-					'note' => $archiveReport[$i]['note'],
-					'additional_picture' => $archiveReport[$i]['additional_picture'],
-					'worker_id' => $archiveReport[$i]['worker_id'],
-					'worker_full_name' => $archiveReport[$i]['worker_full_name'],
-					'worker_email' => $archiveReport[$i]['worker_email'],
-					'phone_number' => $archiveReport[$i]['phone_number'],
-					'archived_by' => $endedTask['worker_id'],
-					'task_id' => $endedTask['task_id']
-				];
+				for ($i = 0; $i < count($archiveReport); $i++) {
+					$archiveReport[$i] = [
+						'room_name' => $endedTask['room_name'],
+						'item_name' => $archiveReport[$i]['item_name'],
+						'team_name' => $endedTask['team_name'],
+						'date_scanned' => $archiveReport[$i]['date_scanned'],
+						'note' => $archiveReport[$i]['note'],
+						'additional_picture' => $archiveReport[$i]['additional_picture'],
+						'worker_id' => $archiveReport[$i]['worker_id'],
+						'worker_full_name' => $archiveReport[$i]['worker_full_name'],
+						'worker_email' => $archiveReport[$i]['worker_email'],
+						'phone_number' => $archiveReport[$i]['phone_number'],
+						'archived_by' => $endedTask['worker_id'],
+						'task_id' => $endedTask['task_id']
+					];
+				}
+
+				$isInserted = $this->tasksRepository->saveToArchive($archiveReport, $endedTask['task_id']);
+
+				if ($isInserted === true)
+					return [
+						'status' => 202,
+						'message' => 'Created',
+						'description' => 'Task archived successfully'
+					];
 			}
-
-			$isInserted = $this->tasksRepository->saveToArchive($archiveReport, $endedTask['task_id']);
-
-			if($isInserted === true)
-				return [
-					'status' => 202,
-					'message' => 'Created',
-					'description' => 'Task archived successfully'
-				];
 		}
 
 		return [
