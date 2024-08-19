@@ -137,18 +137,13 @@ class TaksRepository
 	public function insertTaskResponse(array $taskResponse): bool
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "UPDATE tasks SET summary = :summary, status = :status, end_date = :end_date WHERE task_id = :task_id";
+		$sql = "UPDATE tasks SET summary = :summary, status = :status, end_date = :end_date, isActive = 0 WHERE task_id = :task_id";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':task_id', $taskResponse['task_id']);
 		$stmt->bindParam(':summary', $taskResponse['task_summary']);
 		$stmt->bindParam(':status', $taskResponse['status']);
 		$end_date = date('Y-m-d H:i:s', time());
 		$stmt->bindParam(':end_date', $end_date);
-
-		$stmt->closeCursor();
-		$updateTask = "UPDATE tasks SET isActive = 0 WHERE task_id = :task_id";
-		$stmt = $dbConn->prepare($updateTask);
-		$stmt->bindParam(':task_id', $taskResponse['task_id']);
 		return $stmt->execute();
 	}
 
