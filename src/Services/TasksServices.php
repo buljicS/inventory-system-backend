@@ -26,12 +26,15 @@ class TasksServices
 		if ($isNewTaskValid !== true) return $isNewTaskValid;
 
 		$isAdded = $this->tasksRepository->insertNewTask($newTask);
-		if($isAdded)
+		if($isAdded === true)
 			return [
 				'status' => 202,
 				'message' => 'Created',
 				'description' => 'Task added successfully'
 			];
+
+		if(is_array($isAdded))
+			return $isAdded;
 
 		return [
 			'status' => 500,
