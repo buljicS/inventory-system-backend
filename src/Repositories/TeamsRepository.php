@@ -149,8 +149,8 @@ class TeamsRepository
 	public function deleteTeam(int $team_id): bool
 	{
 		$team_members = $this->getTeamMembers($team_id);
+		$dbConn = $this->dbController->openConnection();
 		if(count($team_members) > 0) {
-			$dbConn = $this->dbController->openConnection();
 			$sql = "DELETE FROM team_members WHERE team_id = :team_id";
 			$stmt = $dbConn->prepare($sql);
 			for($i = 0; $i < count($team_members); $i++) {
@@ -158,13 +158,11 @@ class TeamsRepository
 				$stmt->execute();
 			}
 			$stmt->closeCursor();
-			$delTeamQuery = "DELETE FROM teams WHERE team_id = :team_id";
-			$stmt = $dbConn->prepare($delTeamQuery);
-			$stmt->bindParam(':team_id', $team_id, PDO::PARAM_INT);
-			$stmt->execute();
-			return true;
 		}
-		return false;
+		$delTeamQuery = "DELETE FROM teams WHERE team_id = :team_id";
+		$stmt = $dbConn->prepare($delTeamQuery);
+		$stmt->bindParam(':team_id', $team_id, PDO::PARAM_INT);
+		return $stmt->execute();
 	}
 
 	#region HelperMethods
