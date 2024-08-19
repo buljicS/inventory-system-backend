@@ -3,14 +3,17 @@
 namespace Repositories;
 
 use Controllers\DatabaseController as DBController;
+use Repositories\TaksRepository as TasksRepository;
 use PDO;
 
 class TeamsRepository
 {
 	private readonly DBController $dbController;
-	public function __construct(DBController $dbController)
+	private readonly TasksRepository $tasksRepository;
+	public function __construct(DBController $dbController, TasksRepository $tasksRepository)
 	{
 		$this->dbController = $dbController;
+		$this->tasksRepository = $tasksRepository;
 	}
 
 	public function getAllTeams(int $company_id): array
@@ -146,23 +149,27 @@ class TeamsRepository
 		return $stmt->rowCount() > 0;
 	}
 
-	public function deleteTeam(int $team_id): bool
+	public function deleteTeam(int $team_id): bool|int
 	{
 		$team_members = $this->getTeamMembers($team_id);
-		$dbConn = $this->dbController->openConnection();
-		if(count($team_members) > 0) {
-			$sql = "DELETE FROM team_members WHERE team_id = :team_id";
-			$stmt = $dbConn->prepare($sql);
-			for($i = 0; $i < count($team_members); $i++) {
-				$stmt->bindParam(':team_id', $team_id, PDO::PARAM_INT);
-				$stmt->execute();
+		$active_tasks = $this->tasksRepository->getTasksByTeam($team_id);
+		if(empty($active_tasks)) {
+			$dbConn = $this->dbController->openConnection();
+			if (count($team_members) > 0) {
+				$sql = "DELETE FROM team_members WHERE team_id = :team_id";
+				$stmt = $dbConn->prepare($sql);
+				for ($i = 0; $i < count($team_members); $i++) {
+					$stmt->bindParam(':team_id', $team_id, PDO::PARAM_INT);
+					$stmt->execute();
+				}
+				$stmt->closeCursor();
 			}
-			$stmt->closeCursor();
+			$delTeamQuery = "DELETE FROM teams WHERE team_id = :team_id";
+			$stmt = $dbConn->prepare($delTeamQuery);
+			$stmt->bindParam(':team_id', $team_id, PDO::PARAM_INT);
+			return $stmt->execute();
 		}
-		$delTeamQuery = "DELETE FROM teams WHERE team_id = :team_id";
-		$stmt = $dbConn->prepare($delTeamQuery);
-		$stmt->bindParam(':team_id', $team_id, PDO::PARAM_INT);
-		return $stmt->execute();
+		return 1;
 	}
 
 	#region HelperMethods

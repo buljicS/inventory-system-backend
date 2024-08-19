@@ -82,12 +82,20 @@ class TeamsServices
 	public function deleteTeam(int $team_id): array
 	{
 		$isTeamDeleted = $this->teamsRepository->deleteTeam($team_id);
-		if($isTeamDeleted)
+		if($isTeamDeleted === true)
 			return [
 				'status' => 200,
 				'message' => 'Success',
 				'description' => 'Team has been deleted'
 			];
+
+		if($isTeamDeleted == 1) {
+			return [
+				'status' => 401,
+				'message' => 'Forbidden',
+				'description' => 'This team have active tasks'
+			];
+		}
 
 		return [
 			'status' => 404,

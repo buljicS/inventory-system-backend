@@ -1,7 +1,7 @@
 //MINOR
 [] Remove tasks from users when employer marks them as done
-[] Set room as active when task starts
-[] Forbid user from deleting team on active task
+[x] Set room as active when task starts
+[x] Forbid user from deleting team on active task
 [] Forbid user from creating items with same names
 [] Forbid user from creating teams with same names
 [] Send emails to users when they get in team
@@ -11,13 +11,14 @@
 
 
 //TODO
-[] Zabraniti brisanje tima kada je neki od taskova aktivan gde su oni zaduzeni
+[] Cron job za onaj mail
+[x] Zabraniti brisanje tima kada je neki od taskova aktivan gde su oni zaduzeni
 [] Isti QR kod se vezuje ako je isti item name u razlicitim sobama
 [] Delete task ukoliko jos uvek nije krenuo ?
 [] Show logs in admin
 [] Mejlovi
+
 [] Mobile app - loader i neki placeholder kada worker nema aktivnih taskova
-[] Kada je employer ili user logovan i admin tokom sesije banuje kompaniju, mogu i dalje da rade crud operacije?
 [] grafikoni (statistika za index page?)
-[] Cron job za onaj mail
+
 

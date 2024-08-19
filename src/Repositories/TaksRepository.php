@@ -137,7 +137,7 @@ class TaksRepository
 	public function insertTaskResponse(array $taskResponse): bool
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "UPDATE tasks SET summary = :summary, status = :status, end_date = :end_date, isActive = 0 WHERE task_id = :task_id";
+		$sql = "UPDATE tasks SET summary = :summary, status = :status, end_date = :end_date WHERE task_id = :task_id";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':task_id', $taskResponse['task_id']);
 		$stmt->bindParam(':summary', $taskResponse['task_summary']);
@@ -272,5 +272,10 @@ class TaksRepository
 
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function getTasksByTeam(int $team_id): array
+	{
+		return ['ok'];
 	}
 }
