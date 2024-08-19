@@ -164,7 +164,7 @@ class ItemsServices
 			$isItemDeleted = $this->itemRepository->deleteItem($item_id);
 
 
-		if($isItemDeleted == "ok")
+		if($isItemDeleted === "ok")
 			return [
 				'status' => 200,
 				'message' => 'Success',

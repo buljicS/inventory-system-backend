@@ -122,7 +122,7 @@ class ItemsRepository
 		$stmt->execute();
 
 		//check if item has picture
-		if($picture_id !== false) {
+		if(!empty($picture_id)) {
 			//select picture path
 			$pictureQ = "SELECT picture_path FROM pictures WHERE picture_id = :picture_id";
 			$stmt = $dbConn->prepare($pictureQ);
