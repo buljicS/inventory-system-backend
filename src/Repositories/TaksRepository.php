@@ -3,6 +3,7 @@
 namespace Repositories;
 
 use Controllers\DatabaseController as DBController;
+use Google\Type\Date;
 use PDO;
 
 class TaksRepository
@@ -14,10 +15,27 @@ class TaksRepository
 		$this->dbController = $dbController;
 	}
 
-	public function insertNewTask(array $newTask): bool
+	public function insertNewTask(array $newTask): array|bool
 	{
+		$currentTasks = $this->getTasksByRoom($newTask['room_id']);
+		if(!empty($currentTasks)) {
+			for($i = 0; $i < count($currentTasks); $i++) {
+				$currentTaskTime = new \DateTime($currentTasks[$i]['start_date']);
+				$newTaskTime = new \DateTime($newTask['start_date']);
+
+				$currentTaskTime->modify('+8 hours');
+				if($newTaskTime > $currentTaskTime) continue;
+				else {
+					return [
+						'status' => 400,
+						'message' => 'Bad request',
+						'description' => 'New task should be at least 8 hours ahead'
+					];
+				}
+			}
+		}
 		$dbConn = $this->dbController->openConnection();
-		$sql = "INSERT INTO tasks (team_id, room_id, start_date, worker_id ,note, isActive) VALUE (:team_id, :room_id, :start_date, :worker_id ,:note, 1)";
+		$sql = "INSERT INTO tasks (team_id, room_id, start_date, worker_id ,note, status, isActive) VALUE (:team_id, :room_id, :start_date, :worker_id ,:note, 0, 1)";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':team_id', $newTask['team_id']);
 		$stmt->bindParam(':room_id', $newTask['room_id']);
@@ -35,6 +53,16 @@ class TaksRepository
 		$stmt->bindParam(':task_id', $task_id);
 		$stmt->execute();
 		return $stmt->fetch();
+	}
+
+	public function getTasksByRoom(int $room_id): ?array
+	{
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT * FROM tasks WHERE room_id = :room_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':room_id', $room_id);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function getRoomByTask(int $task_id): int
