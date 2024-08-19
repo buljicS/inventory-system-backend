@@ -1,7 +1,5 @@
 //MINOR
 [] Remove tasks from users when employer marks them as done
-[x] Set room as active when task starts
-[x] Forbid user from deleting team on active task
 [] Forbid user from creating items with same names
 [] Forbid user from creating teams with same names
 [] Send emails to users when they get in team
@@ -12,9 +10,7 @@
 
 //TODO
 [] Cron job za onaj mail
-[x] Zabraniti brisanje tima kada je neki od taskova aktivan gde su oni zaduzeni
 [] Isti QR kod se vezuje ako je isti item name u razlicitim sobama
-[] Delete task ukoliko jos uvek nije krenuo ?
 [] Show logs in admin
 [] Mejlovi
 
