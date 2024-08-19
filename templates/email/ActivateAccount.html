@@ -15,7 +15,6 @@
             background-color: #f4f4f4;
         }
         .container {
-            max-width: 420px;
             margin: 0 auto;
             background-color: #ffffff;
         }
@@ -72,6 +71,10 @@
             width: fit-content;
             margin: 0 auto;
         }
+
+        .main {
+            margin: 150px 0;
+        }
     </style>
 </head>
 <body>
@@ -79,13 +82,16 @@
     <div class="header">
         <h1>WELCOME</h1>
     </div>
-    <div class="hand-shake">
-        <img src="https://i.ibb.co/N3FmWxL/hand-shake-icon.png" alt="Hand shake icon">
-    </div>
-    <div class="content">
-        <p>Hi, <b>{{userName}}</b></p>
-        <p>We're excited to have you get started. First, you need to confirm your account. Just press the button below.</p>
-        <a href="{{activateAccountLink}}" class="button" id="activateAccount">Activate Your Account</a>
+
+    <div class="main">
+        <div class="hand-shake">
+            <img src="https://i.ibb.co/N3FmWxL/hand-shake-icon.png" alt="Hand shake icon">
+        </div>
+        <div class="content">
+            <p>Hi, <b>{{userName}}</b></p>
+            <p>We're excited to have you get started. First, you need to confirm your account. Just press the button below.</p>
+            <a href="{{activateAccountLink}}" class="button" id="activateAccount">Activate Your Account</a>
+        </div>
     </div>
 
     <div class="footer">

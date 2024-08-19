@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activate Account</title>
     <style>
+        .container {
+            margin: 0 auto;
+            background-color: #ffffff;
+            height: 100%;
+
+        }
         body, html {
             height: 100%;
             margin: 0;
@@ -14,17 +20,12 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
         }
-        .container {
-            max-width: 420px;
-            margin: 0 auto;
-            background-color: #ffffff;
-        }
 
         .footer {
-            max-width: 100%;
             background-color: #202930;
             color: #ffffff;
-            padding: 10px;
+            width: 100%;
+            padding: 10px 0;
             text-align: center;
             margin-top: 16px;
         }
@@ -72,6 +73,10 @@
             width: fit-content;
             margin: 0 auto;
         }
+
+        .main {
+            margin: 150px 0;
+        }
     </style>
 </head>
 <body>
@@ -79,13 +84,15 @@
     <div class="header">
         <h1>PASSWORD RESET</h1>
     </div>
-    <div class="password-reset">
-        <img src="https://i.ibb.co/5MZkmhy/reset-password.png" alt="Hand shake icon">
-    </div>
-    <div class="content">
-        <p>Hi {{userName}},</p>
-        <p>Resetting your password is quick and easy. Just follow the link below to regain access to your account.</p>
-        <a href="{{resetPasswordLink}}" class="button">Reset your password</a>
+    <div class="main">
+        <div class="password-reset">
+            <img src="https://i.ibb.co/5MZkmhy/reset-password.png" alt="Hand shake icon">
+        </div>
+        <div class="content">
+            <p>Hi {{userName}},</p>
+            <p>Resetting your password is quick and easy. Just follow the link below to regain access to your account.</p>
+            <a href="{{resetPasswordLink}}" class="button">Reset your password</a>
+        </div>
     </div>
 
     <div class="footer">

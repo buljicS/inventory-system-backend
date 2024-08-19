@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User task</title>
+    <style>
+        .container {
+            margin: 0 auto;
+            background-color: #ffffff;
+            height: 100%;
+
+        }
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .footer {
+            background-color: #202930;
+            color: #ffffff;
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            margin-top: 16px;
+        }
+        h1 {
+            color: #333333;
+        }
+        p {
+            color: #666666;
+            line-height: 150%;
+            padding: 0 20px;
+            text-align: center;
+        }
+        .button {
+            background-color: #202930;
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: block;
+            margin: 32px auto;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            width: fit-content;
+        }
+        .button:hover {
+            background-color: #1a2129;
+        }
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+            }
+        }
+
+        .header {
+            padding-top: 20px;
+            letter-spacing: 5px;
+            text-align: center;
+        }
+
+        .task-icon img {
+            max-width: 80px;
+        }
+
+        .task-icon {
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .main {
+            margin: 150px 0;
+        }
+
+        .no-margin {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>YOU HAVE BEEN ENROLLED IN A NEW TASK</h1>
+    </div>
+    <div class="main">
+        <div class="task-icon">
+            <img src="https://i.postimg.cc/CzJcmBBb/clipboard.png" alt="Task icon">
+        </div>
+        <div class="content">
+            <p>Hi {{userName}},</p>
+            <p class="no-margin">You are successfully enrolled to the new task. Happy scanning!</p>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        Inventory System - 2024
+    </div>
+</div>
+</body>
+</html>
