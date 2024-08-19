@@ -1,7 +1,7 @@
 //MINOR
 [] Remove tasks from users when employer marks them as done
 [] Forbid user from creating items with same names
-[] Forbid user from creating teams with same names
+[x] Forbid user from creating teams with same names
 [] Send emails to users when they get in team
 [] Send emails to users when their team have been assigned task
 [] Send email to user when he gets banned
