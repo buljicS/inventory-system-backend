@@ -1,11 +1,3 @@
-//ENDPOINTS
-[x] Enroll user to task
-[x] Remove user from task
-[x] Check scanned qr code
-[x] Insert scanned item
-[x] Archive tasks that are done
-[x] Get user archive
-
 //MINOR
 [] Remove tasks from users when employer marks them as done
 [] Set room as active when task starts

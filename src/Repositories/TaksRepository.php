@@ -144,6 +144,11 @@ class TaksRepository
 		$stmt->bindParam(':status', $taskResponse['status']);
 		$end_date = date('Y-m-d H:i:s', time());
 		$stmt->bindParam(':end_date', $end_date);
+
+		$stmt->closeCursor();
+		$updateTask = "UPDATE tasks SET isActive = 0 WHERE task_id = :task_id";
+		$stmt = $dbConn->prepare($updateTask);
+		$stmt->bindParam(':task_id', $taskResponse['task_id']);
 		return $stmt->execute();
 	}
 
