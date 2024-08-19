@@ -123,7 +123,7 @@ class TasksServices
 				];
 			}
 
-			$isInserted = $this->tasksRepository->saveToArchive($archiveReport);
+			$isInserted = $this->tasksRepository->saveToArchive($archiveReport, $endedTask['task_id']);
 
 			if($isInserted === true)
 				return [

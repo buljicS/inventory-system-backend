@@ -179,7 +179,7 @@ class TaksRepository
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function saveToArchive(array $archiveReports): bool
+	public function saveToArchive(array $archiveReports, int $task_id): bool
 	{
 		$dbConn = $this->dbController->openConnection();
 
@@ -194,7 +194,7 @@ class TaksRepository
 		$stmt->execute($flattenedArrayProps);
 
 		$stmt->closeCursor();
-		$sql = "UPDATE tasks SET isActive = 0 WHERE task_id = :task_id";
+		$sql = "UPDATE tasks SET isActive = 0 WHERE task_id = :task_id AND isActive != 0";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':task_id', $task_id);
 		$stmt->execute();
@@ -211,10 +211,9 @@ class TaksRepository
        			        CONCAT(W.worker_fname,' ',W.worker_lname) AS archived_by, W.worker_email AS employer_email, W.phone_number AS employer_number
 				FROM archive A 
          		LEFT JOIN workers W ON W.worker_id = A.archived_by
-				WHERE A.worker_id = :worker_id AND W.role = :role";
+				WHERE A.worker_id = :worker_id";
 				$stmt = $dbConn->prepare($sql);
 				$stmt->bindParam(':worker_id', $worker_id);
-				$stmt->bindParam(':role', $role);
 				break;
 
 			case 'employer':
