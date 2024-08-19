@@ -22,13 +22,13 @@
 [x] U novu bazu dodati task_id u workers tabeli (za start i end task)
 [x] U novu bazu dodati state u scanned_items tabeli (za skeniranje)
 [x] U novu bazu dodati worker_id u teams tabeli
-[] Kada task postane aktivan, treba uraditi update za sobu isActive na 1 kako se ne bi mogla obrisati soba tokom taska
+[x] Kada task postane aktivan, treba uraditi update za sobu isActive na 1 kako se ne bi mogla obrisati soba tokom taska
 [] Zabraniti brisanje tima kada je neki od taskova aktivan gde su oni zaduzeni
 [x] Delete item kada nije generisan qr kod ne radi
 [x] Delete team ne radi ako nema membera u njemu (radi samo kada ima membera)
 [] Isti QR kod se vezuje ako je isti item name u razlicitim sobama
 [] Delete task ukoliko jos uvek nije krenuo ?
-[] Zabraniti pravljenje taska za istu sobu ukoliko vec postoji task
+[x] Zabraniti pravljenje taska za istu sobu ukoliko vec postoji task
 [] Show logs in admin
 [x] Items tabela - vraca Item not found kada se radi update ajtema ali se posalju isti podaci
 [] Mejlovi

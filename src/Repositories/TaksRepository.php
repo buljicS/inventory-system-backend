@@ -3,16 +3,18 @@
 namespace Repositories;
 
 use Controllers\DatabaseController as DBController;
-use Google\Type\Date;
+use Repositories\RoomsRepository as RoomsRepository;
 use PDO;
 
 class TaksRepository
 {
 	private readonly DBController $dbController;
+	private readonly RoomsRepository $roomsRepository;
 
-	public function __construct(DBController $dbController)
+	public function __construct(DBController $dbController, RoomsRepository $roomsRepository)
 	{
 		$this->dbController = $dbController;
+		$this->roomsRepository = $roomsRepository;
 	}
 
 	public function insertNewTask(array $newTask): array|bool
@@ -42,7 +44,10 @@ class TaksRepository
 		$stmt->bindParam(':start_date', $newTask['start_date']);
 		$stmt->bindParam(':worker_id', $newTask['worker_id']);
 		$stmt->bindParam(':note', $newTask['note']);
-		return $stmt->execute();
+		$stmt->execute();
+
+		//when adding task to specific room, set that room to be active
+		return $this->roomsRepository->updateRoomStatus($newTask['room_id']);
 	}
 
 	public function getTaskById(int $task_id): array

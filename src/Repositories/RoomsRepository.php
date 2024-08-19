@@ -67,6 +67,15 @@ class RoomsRepository
 		return $stmt->execute();
 	}
 
+	public function updateRoomStatus(int $room_id): bool
+	{
+		$dbConn = $this->dbConn->openConnection();
+		$sql = "UPDATE rooms SET isActive = 1 WHERE room_id = :room_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
+		return $stmt->execute();
+	}
+
 	public function getRoomName(int $room_id): string
 	{
 		$dbConn = $this->dbConn->openConnection();
