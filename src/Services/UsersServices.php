@@ -11,6 +11,7 @@ use Utilities\TokenUtility;
 use Utilities\ValidatorUtility;
 use Services\LogsServices as LogsServices;
 use Services\FirebaseServices as FirebaseServices;
+use Repositories\TaksRepository as TasksRepository;
 
 class UsersServices
 {
@@ -21,6 +22,7 @@ class UsersServices
 	private readonly ValidatorUtility $validatorUtility;
 	private readonly CompaniesRepository $companyRepo;
 	private readonly FirebaseServices $firebaseServices;
+	private readonly TasksRepository $tasksRepository;
 
 	public function __construct(MailUtility $email,
 								TokenUtility $tokenUtility,
@@ -28,7 +30,8 @@ class UsersServices
 								LogsServices $logServices,
 								ValidatorUtility $validatorUtility,
 								CompaniesRepository $companiesRepository,
-								FirebaseServices $firebaseServices)
+								FirebaseServices $firebaseServices,
+								TasksRepository $tasksRepository)
 	{
 		$this->email = $email;
 		$this->userRepo = $usersRepository;
@@ -37,6 +40,7 @@ class UsersServices
 		$this->validatorUtility = $validatorUtility;
 		$this->companyRepo = $companiesRepository;
 		$this->firebaseServices = $firebaseServices;
+		$this->tasksRepository = $tasksRepository;
 	}
 
 	public function registerUser(array $newUserData): array
@@ -509,12 +513,18 @@ class UsersServices
 	public function enrollUserToTask(int $worker_id, int $task_id): array
 	{
 		$isUserEnrolled = $this->userRepo->enrollUserToTask($worker_id, $task_id);
-		if($isUserEnrolled)
+		if($isUserEnrolled) {
+			$userData = $this->userRepo->getUserById($worker_id);
+			$task = $this->tasksRepository->getTaskById($task_id);
+			$body = file_get_contents('../templates/email/UserTasks.html');
+			$body = str_replace('{{userName}}', $userData['worker_fname'], $body);
+			$this->email->SendEmail($body, 'You have new task', $userData['worker_email'], null);
 			return [
 				'status' => 200,
 				'message' => 'Success',
 				'description' => 'You have been successfully enrolled to this task'
 			];
+		}
 
 		return [
 			'status' => 200,

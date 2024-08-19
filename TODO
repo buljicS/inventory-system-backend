@@ -2,8 +2,6 @@
 [] Remove tasks from users when employer marks them as done
 [] Forbid user from creating items with same names
 [] Send emails to users when they get in team
-[x] Send emails to users when their team have been assigned task
-[] Send email to user when he gets banned
 [] Send email to user when he enrolls to the task
 
 
