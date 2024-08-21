@@ -119,7 +119,7 @@ class TaksRepository
 		if(empty($rooms))
 			return [];
 
-		$tasks = "SELECT T.task_id, T.start_date, T.note, T.isActive, T.status
+		$tasks = "SELECT T.task_id, T.start_date, T.note, T.isActive, T.status,
        					 TMs.team_name,
        					 R.room_name
        			  FROM tasks T 
