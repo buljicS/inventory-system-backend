@@ -38,6 +38,7 @@ class MailUtility
 			$this->mailer->AltBody = strip_tags($body);
 
 			$this->mailer->send();
+			$this->mailer->clearAddresses();
 			return 'OK';
 		} catch (Exception $e){
 			return $e->getMessage();

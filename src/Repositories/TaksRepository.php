@@ -22,16 +22,15 @@ class TaksRepository
 		$currentTasks = $this->getTasksByRoom($newTask['room_id']);
 		if(!empty($currentTasks)) {
 			for($i = 0; $i < count($currentTasks); $i++) {
-				$currentTaskTime = new \DateTime($currentTasks[$i]['start_date']);
-				$newTaskTime = new \DateTime($newTask['start_date']);
+				$currentTaskTime = strtotime($currentTasks[$i]['start_date'], null);
+				$newTaskTime = strtotime($newTask['start_date'], null);
 
-				$currentTaskTime->modify('+8 hours');
-				if($newTaskTime > $currentTaskTime) continue;
+				if($currentTaskTime == $newTaskTime) continue;
 				else {
 					return [
 						'status' => 400,
 						'message' => 'Bad request',
-						'description' => 'New task should be at least 8 hours ahead'
+						'description' => 'Task with same start date already exists, please try again'
 					];
 				}
 			}
@@ -120,7 +119,7 @@ class TaksRepository
 		if(empty($rooms))
 			return [];
 
-		$tasks = "SELECT T.task_id, T.start_date, T.note, T.isActive,
+		$tasks = "SELECT T.task_id, T.start_date, T.note, T.isActive, T.status
        					 TMs.team_name,
        					 R.room_name
        			  FROM tasks T 

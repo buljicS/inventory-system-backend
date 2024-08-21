@@ -37,9 +37,12 @@ class TasksServices
 		$isAdded = $this->tasksRepository->insertNewTask($newTask);
 		if($isAdded === true) {
 			$teamMembers = $this->teamsRepository->getTeamMembers($newTask['team_id']);
+			var_dump($teamMembers);
+			die();
 			for($i = 0; $i < count($teamMembers); $i++) {
 				$body = file_get_contents('../templates/email/UserTodoTask.html');
 				$body = str_replace('{{userName}}', $teamMembers[$i]['worker_fname'], $body);
+
 				$this->mailUtility->SendEmail($body, 'You have been assigned a new task', $teamMembers[$i]['worker_email'], null);
 			}
 			return [
