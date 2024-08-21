@@ -40,6 +40,7 @@ class TasksServices
 			for($i = 0; $i < count($teamMembers); $i++) {
 				$body = file_get_contents('../templates/email/UserTodoTask.html');
 				$body = str_replace('{{userName}}', $teamMembers[$i]['worker_fname'], $body);
+				$body = str_replace('{{dashboardLink}}', $_ENV['MAIN_URL_FE'] . '/dashboard/tasks', $body);
 
 				$this->mailUtility->SendEmail($body, 'You have been assigned a new task', $teamMembers[$i]['worker_email'], null);
 			}

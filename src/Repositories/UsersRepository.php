@@ -117,7 +117,7 @@ class UsersRepository
 	public function getUserById(int $workerId)
 	{
 		$dbCon = $this->database->openConnection();
-		$sql = "SELECT worker_id, worker_email, worker_password FROM workers WHERE worker_id = :worker_id";
+		$sql = "SELECT worker_id, worker_fname, worker_email, worker_password FROM workers WHERE worker_id = :worker_id";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':worker_id', $workerId);
 		$stmt->execute();
