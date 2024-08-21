@@ -516,7 +516,7 @@ class UsersServices
 		if($isUserEnrolled) {
 			$userData = $this->userRepo->getUserById($worker_id);
 			$task = $this->tasksRepository->getTaskById($task_id);
-			$body = file_get_contents('../templates/email/UserTasks.html');
+			$body = file_get_contents('../templates/email/UserTask.html');
 			$body = str_replace('{{userName}}', $userData['worker_fname'], $body);
 			$this->email->SendEmail($body, 'You have new task', $userData['worker_email'], null);
 			return [
