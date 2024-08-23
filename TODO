@@ -1,15 +1,11 @@
 //MINOR
 [] Remove tasks from users when employer marks them as done
-[] Send email
---------------
+[] Send email on prev event
 [] Send emails to users when they get in team
 [] Send email to user when he enrolls to the task
-
-
-//TODO
 [] Cron job za onaj mail
 
-[] Show logs in admin
+--------------
 [] Mobile app - loader i neki placeholder kada worker nema aktivnih taskova
 [] grafikoni (statistika za index page?)
 
