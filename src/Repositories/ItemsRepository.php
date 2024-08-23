@@ -192,7 +192,7 @@ class ItemsRepository
 	public function insertScannedItem(array $scannedItem): bool
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "INSERT INTO scanned_items (item_id, worker_id, task_id, note, state, picture_id) VALUE (:item_id, :worker_id, :task_id, :note, :state, :picture_id)";
+		$sql = "INSERT INTO scanned_items (item_id, worker_id, task_id, note, state, picture_id, date_scanned) VALUE (:item_id, :worker_id, :task_id, :note, :state, :picture_id, :date_scanned)";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':item_id', $scannedItem['item_id'], PDO::PARAM_INT);
 		$stmt->bindParam(':worker_id', $scannedItem['worker_id'], PDO::PARAM_INT);
@@ -200,6 +200,8 @@ class ItemsRepository
 		$stmt->bindParam(':note', $scannedItem['note'], PDO::PARAM_STR);
 		$stmt->bindParam(':state', $scannedItem['state'], PDO::PARAM_STR);
 		$stmt->bindParam(':picture_id', $scannedItem['picture_id'], PDO::PARAM_INT);
+		$dateScanned = date('Y-m-d H:i:s', time());
+		$stmt->bindParam(':date_scanned', $dateScanned);
 		return $stmt->execute();
 	}
 }
