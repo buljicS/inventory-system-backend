@@ -55,7 +55,7 @@ class ItemsServices
 		switch(true) {
 			case $options['item_quantity'] == 1:
 				$newItem[] = [
-					$item['item_name'],
+					$item['item_name'] . "_" .  $this->tokenUtility->GenerateBasicToken(8),
 					$item['serial_no'],
 					$item['country_of_origin'],
 					$item['room_id']
@@ -89,7 +89,7 @@ class ItemsServices
 				$items = [];
 				for($i = 0; $i < $options['item_quantity']; $i++) {
 					$items[] = [
-						$item['item_name'] = $options['name_pattern'] . $i,
+						$item['item_name'] = $options['name_pattern'] . "_" . $this->tokenUtility->GenerateBasicToken(8),
 						$item['serial_no'] => $item['serial_no'] . $i,
 						$item['country_of_origin'],
 						$item['room_id']

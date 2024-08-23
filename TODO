@@ -1,16 +1,15 @@
 //MINOR
 [] Remove tasks from users when employer marks them as done
 [] Send email
-[] Forbid user from creating items with same names
+--------------
 [] Send emails to users when they get in team
 [] Send email to user when he enrolls to the task
 
 
 //TODO
 [] Cron job za onaj mail
-[] Isti QR kod se vezuje ako je isti item name u razlicitim sobama
-[] Show logs in admin
 
+[] Show logs in admin
 [] Mobile app - loader i neki placeholder kada worker nema aktivnih taskova
 [] grafikoni (statistika za index page?)
 

@@ -179,7 +179,7 @@ class TaksRepository
     					    ON TMs.team_id = T.team_id
     					RIGHT JOIN workers W
     					    ON W.worker_id = T.worker_id
-    					WHERE T.team_id IN (" . implode(",", $teams) . ")";
+    					WHERE T.team_id IN (" . implode(",", $teams) . ") AND T.isActive = 1";
 
 		$stmt = $dbConn->prepare($tasksQuery);
 		$stmt->execute();
