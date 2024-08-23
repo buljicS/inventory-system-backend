@@ -86,4 +86,14 @@ class RoomsServices
 			'description' => 'Room not found, please try again'
 		];
 	}
+
+	public function checkIfRoomHasActiveTasks(int $room_id): array
+	{
+		$activeTasksCount = $this->roomRepo->checkRoom($room_id);
+		return [
+			'status' => 200,
+			'message' => 'Success',
+			'doesHaveActiveTasks' => !($activeTasksCount === 0)
+		];
+	}
 }

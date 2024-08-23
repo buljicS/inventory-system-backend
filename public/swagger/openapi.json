@@ -1352,6 +1352,35 @@
                 ]
             }
         },
+        "/api/Rooms/checkRoomForActiveTasks/{room_id}": {
+            "get": {
+                "tags": [
+                    "Rooms"
+                ],
+                "description": "Check if room has active tasks",
+                "operationId": "checkRoomForActiveTasks",
+                "parameters": [
+                    {
+                        "name": "room_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Items/getItemsByRoom/{room_id}": {
             "get": {
                 "tags": [

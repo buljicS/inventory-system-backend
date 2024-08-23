@@ -1518,6 +1518,32 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 	}
 
+	/**
+	 * @OA\Get(
+	 *     path="/api/Rooms/checkRoomForActiveTasks/{room_id}",
+	 *     operationId="checkRoomForActiveTasks",
+	 *     description="Check if room has active tasks",
+	 *     tags={"Rooms"},
+	 *     @OA\Parameter(
+	 *         name="room_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function checkRoomForActiveTasks(Request $request, Response $response, array $args): Response
+	{
+		$room_id = (int)$args['room_id'];
+		$resp = $this->roomServices->checkIfRoomHasActiveTasks($room_id);
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Items

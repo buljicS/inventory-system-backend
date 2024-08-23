@@ -204,7 +204,7 @@ class TaksRepository
 			    	   ON P.picture_id = SI.picture_id
 			    LEFT JOIN workers W 
 			    	   ON W.worker_id = SI.worker_id
-			    WHERE task_id = :task_id";
+			    WHERE SI.task_id = :task_id";
 
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':task_id', $task_id);
