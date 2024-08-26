@@ -93,7 +93,7 @@ class TeamsRepository
 		$stmt->bindParam(':worker_id', $newTeam['worker_id']);
 		$stmt->execute();
 		$stmt->closeCursor();
-		$team_id = $this->getTeamIdByName($newTeam['team_name']);
+		$team_id = $this->getTeamIdByName($newTeam['team_name'], $newTeam['company_id']);
 		for($i = 0; $i < count($newTeam['workers_ids']); $i++)
 		{
 			if($this->checkIfWorkerIsAlreadyInTeam($newTeam['workers_ids'][$i], $team_id)) {
@@ -188,7 +188,7 @@ class TeamsRepository
 	public function checkIfWorkerIsAlreadyInTeam(int $worker_id, int $team_id): bool|int
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT worker_id FROM team_members WHERE team_id = :team_id AND worker_id = :worker_id";
+		$sql = "SELECT worker_id FROM team_members WHERE team_id = :team_id AND worker_id = :worker_id AND";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':team_id', $team_id);
 		$stmt->bindParam(':worker_id', $worker_id);
@@ -196,10 +196,10 @@ class TeamsRepository
 		return $stmt->fetchColumn();
 	}
 
-	public function getTeamIdByName(string $team_name): int
+	public function getTeamIdByName(string $team_name, int $company_id): int
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT team_id FROM teams WHERE team_name = :team_name";
+		$sql = "SELECT team_id FROM teams WHERE team_name = :team_name AND company_id = :company_id";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':team_name', $team_name);
 		$stmt->execute();
