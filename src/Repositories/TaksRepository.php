@@ -54,8 +54,7 @@ class TaksRepository
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':team_id', $newTask['team_id']);
 		$stmt->bindParam(':room_id', $newTask['room_id']);
-		$start_date_formated = date_create_from_format('Y-m-d H:i:s', $newTask['start_date'], new \DateTimeZone('Europe/Belgrade'));
-		$stmt->bindParam(':start_date', $start_date_formated);
+		$stmt->bindParam(':start_date', $newTask['start_date']);
 		$stmt->bindParam(':worker_id', $newTask['worker_id']);
 		$stmt->bindParam(':note', $newTask['note']);
 		$stmt->execute();
