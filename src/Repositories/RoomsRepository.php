@@ -67,6 +67,15 @@ class RoomsRepository
 			$stmt->execute();
 		}
 
+		$stmt->closeCursor();
+		$delScannedItems = "DELETE FROM scanned_items WHERE task_id = :task_id";
+		$stmt = $dbConn->prepare($delScannedItems);
+		foreach ($tasks as $task) {
+			$stmt->bindParam(':task_id', $task['task_id'], PDO::PARAM_INT);
+			$stmt->execute();
+		}
+
+		$stmt->closeCursor();
 		$deleteTasks = "DELETE FROM tasks where room_id = :room_id";
 		$stmt = $dbConn->prepare($deleteTasks);
 		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
