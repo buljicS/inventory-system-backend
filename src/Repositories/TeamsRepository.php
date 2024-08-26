@@ -91,41 +91,33 @@ class TeamsRepository
 		$stmt->bindParam(':team_name', $newTeam['team_name']);
 		$stmt->bindParam(':company_id', $newTeam['company_id']);
 		$stmt->bindParam(':worker_id', $newTeam['worker_id']);
-		if($this->checkIfSameTeamAlreadyExists($newTeam['team_name']) === false) {
-			$stmt->execute();
-			$stmt->closeCursor();
-			$team_id = $this->getTeamIdByName($newTeam['team_name']);
-			for($i = 0; $i < count($newTeam['workers_ids']); $i++)
-			{
-				if($this->checkIfWorkerIsAlreadyInTeam($newTeam['workers_ids'][$i], $team_id)) {
-					$notes[] = "Team member with id" . $newTeam['workers_ids'][$i] . " is already in this team.";
-				}
-				else {
-					$query = "INSERT INTO team_members (team_id, worker_id) VALUES (:team_id, :worker_id)";
-					$stmt = $dbConn->prepare($query);
-					$stmt->bindParam(':team_id', $team_id);
-					$stmt->bindParam(':worker_id', $newTeam['workers_ids'][$i]);
-					$stmt->execute();
-				}
+		$stmt->execute();
+		$stmt->closeCursor();
+		$team_id = $this->getTeamIdByName($newTeam['team_name']);
+		for($i = 0; $i < count($newTeam['workers_ids']); $i++)
+		{
+			if($this->checkIfWorkerIsAlreadyInTeam($newTeam['workers_ids'][$i], $team_id)) {
+				$notes[] = "Team member with id" . $newTeam['workers_ids'][$i] . " is already in this team.";
 			}
-
-			$retVal = [
-				'status' => 202,
-				'message' => 'Created',
-				'description' => 'New team created successfully'
-			];
-
-			if(count($notes) > 0)
-				$retVal['notes'] = $notes;
-
-			return $retVal;
+			else {
+				$query = "INSERT INTO team_members (team_id, worker_id) VALUES (:team_id, :worker_id)";
+				$stmt = $dbConn->prepare($query);
+				$stmt->bindParam(':team_id', $team_id);
+				$stmt->bindParam(':worker_id', $newTeam['workers_ids'][$i]);
+				$stmt->execute();
+			}
 		}
 
-		return [
-			'status' => 403,
-			'message' => 'Forbidden',
-			'description' => 'Team with ' . $newTeam['team_name'] . ' name already exists'
+		$retVal = [
+			'status' => 202,
+			'message' => 'Created',
+			'description' => 'New team created successfully'
 		];
+
+		if(count($notes) > 0)
+			$retVal['notes'] = $notes;
+
+		return $retVal;
 	}
 
 	public function addNewTeamMembers(array $teamMembers, int $team_id): array
@@ -183,15 +175,15 @@ class TeamsRepository
 	}
 
 	#region HelperMethods
-	public function checkIfSameTeamAlreadyExists(string $team_name): bool|int
-	{
-		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT team_id FROM teams WHERE team_name = :team_name";
-		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(':team_name', $team_name);
-		$stmt->execute();
-		return $stmt->fetchColumn();
-	}
+//	public function checkIfSameTeamAlreadyExists(string $team_name): bool|int
+//	{
+//		$dbConn = $this->dbController->openConnection();
+//		$sql = "SELECT team_id FROM teams WHERE team_name = :team_name";
+//		$stmt = $dbConn->prepare($sql);
+//		$stmt->bindParam(':team_name', $team_name);
+//		$stmt->execute();
+//		return $stmt->fetchColumn();
+//	}
 
 	public function checkIfWorkerIsAlreadyInTeam(int $worker_id, int $team_id): bool|int
 	{
