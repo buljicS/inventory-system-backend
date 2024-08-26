@@ -112,6 +112,8 @@ class QRCodesServices
 				'description' => 'You are not allowed to scan this QR code, check your task information again'
 			];
 
+		$isRoomActive = $this->
+
 		$isQRAlreadyScanned = $this->itemsRepository->isQRCodeAlreadyScanned($qrCodeData['task_id'], $qrCodeData['item_id']);
 		switch ($isQRAlreadyScanned) {
 			case "Already scanned":

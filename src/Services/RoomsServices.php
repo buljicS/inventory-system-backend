@@ -63,7 +63,7 @@ class RoomsServices
 		return [
 			'status' => 404,
 			'message' => 'Not found',
-			'description' => 'Room not found'
+			'description' => 'Room not found or it has active tasks'
 		];
 	}
 

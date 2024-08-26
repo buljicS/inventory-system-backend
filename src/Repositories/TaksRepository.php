@@ -36,6 +36,20 @@ class TaksRepository
 			}
 		}
 		$dbConn = $this->dbController->openConnection();
+
+		//check if room has items
+		$room = "SELECT item_id FROM items WHERE room_id = :room_id";
+		$stmt = $dbConn->prepare($room);
+		$stmt->bindParam(':room_id', $newTask['room_id']);
+		$stmt->execute();
+		if(!$stmt->rowCount() > 0)
+			return [
+				'status' => 400,
+				'message' => 'Bad request',
+				'description' => 'Task can not be created on empty room'
+			];
+
+		$stmt->closeCursor();
 		$sql = "INSERT INTO tasks (team_id, room_id, start_date, worker_id ,note, status, isActive) VALUE (:team_id, :room_id, :start_date, :worker_id ,:note, 0, 1)";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':team_id', $newTask['team_id']);
@@ -217,12 +231,12 @@ class TaksRepository
 		$dbConn = $this->dbController->openConnection();
 
 		$flattenedArrayProps = array_merge(...array_map('array_values', $archiveReports));
-		$columns = ['room_name', 'item_name', 'team_name', 'date_scanned', 'note', 'additional_picture', 'worker_id', 'worker_full_name', 'worker_email', 'worker_phone', 'archived_by', 'task_id'];
+		$columns = ['room_name', 'item_name', 'team_name', 'date_scanned', 'note', 'additional_picture', 'worker_id', 'worker_full_name', 'worker_email', 'worker_phone', 'archived_by'];
 		$numOfCols = count($columns);
 		$numOfRows = count($flattenedArrayProps) / $numOfCols;
 		$row = '(' . implode(', ', array_fill(0, $numOfCols, '?')) . ')';
 		$rows = implode(', ', array_fill(0, $numOfRows, $row));
-		$sql = "INSERT INTO archive (room_name, item_name, team_name, date_scanned, note, additional_picture, worker_id, worker_full_name, worker_email, worker_phone, archived_by, task_id) VALUES $rows";
+		$sql = "INSERT INTO archive (room_name, item_name, team_name, date_scanned, note, additional_picture, worker_id, worker_full_name, worker_email, worker_phone, archived_by) VALUES $rows";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->execute($flattenedArrayProps);
 

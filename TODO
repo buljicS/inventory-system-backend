@@ -3,12 +3,8 @@
 [] Send email on prev event
 [] Send emails to users when they get in team
 [] Send email to user when he enrolls to the task
-[] Cron job
-[] delete room zabraniti ako ima task
-[] ako se slucajno napravi task u sobi kojoj nema ajtema, ne moze se archive? (sto je i ok samo onda druga response poruka?)
-[] kada se izbrise kompanija employeri i workeri i dalje mogu da rade crud operacije?
 [] cron job
 [] mail za odgovor od employera i ostali mejlovi
-[] u aplikaciji kada korisnik promeni kompaniju iz jedne u drugu, i dalje vidi taskove iz prosle kompanije i moze da aktivira task?
 
 
+[] delete room zabraniti ako ima task

@@ -47,8 +47,28 @@ class RoomsRepository
 	public function deleteRoom(int $room_id): bool
 	{
 		$dbConn = $this->dbConn->openConnection();
-		$sql = "DELETE FROM rooms WHERE room_id = :room_id AND isActive = 0";
+		$sql = "UPDATE rooms SET isActive = 1 WHERE room_id = :room_id";
 		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
+		$stmt->execute();
+
+		$stmt->closeCursor();
+		$delTasks = "SELECT task_id FROM tasks WHERE room_id = :room_id";
+		$stmt = $dbConn->prepare($delTasks);
+		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
+		$stmt->execute();
+		$tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		$stmt->closeCursor();
+		$workerTask = "UPDATE workers SET task_id = NULL WHERE task_id = :task_id";
+		$stmt = $dbConn->prepare($workerTask);
+		foreach ($tasks as $task) {
+			$stmt->bindParam(':task_id', $task['task_id'], PDO::PARAM_INT);
+			$stmt->execute();
+		}
+
+		$deleteTasks = "DELETE FROM tasks where room_id = :room_id";
+		$stmt = $dbConn->prepare($deleteTasks);
 		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
 		$stmt->execute();
 		return $stmt->rowCount() > 0;
