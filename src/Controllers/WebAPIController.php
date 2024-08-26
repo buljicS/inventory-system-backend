@@ -2507,6 +2507,24 @@ class WebAPIController
 			->withHeader('Content-type', 'application/json');
 
 	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/api/Tasks/notifyUsersAboutUpcomingTask",
+	 *     operationId="notifyUsersAboutUpcomingTask",
+	 *     description="Notify users about upcoming tasks",
+	 *     tags={"Tasks"},
+	 *     @OA\Response(response="200", description="An example resource"),
+	 *     security={{"bearerAuth": {}}}
+	 * )
+	 */
+	public function notifyUsersAboutUpcomingTask(Request $request, Response $response): Response
+	{
+		$resp = $this->tasksServices->notifyUsersAboutUpcomingTasks();
+		$response->getBody()->write(json_encode($resp));
+		return $response
+			->withHeader('Content-type', 'application/json');
+	}
 	#endregion
 
 	#region Admins

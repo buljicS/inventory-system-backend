@@ -306,4 +306,37 @@ class TaksRepository
 		$stmt->execute();
 		return $stmt->rowCount() > 0;
 	}
+
+	public function checkForIncomingTasks(): array
+	{
+		$now = date('Y-m-d H:i:s', time());
+		$nowPlus30 = date('Y-m-d H:i:s', strtotime("+30 minutes"));
+
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT T.team_id, T.start_date, R.room_name, TM.team_name, W.worker_email
+				FROM tasks T 
+				LEFT JOIN rooms R ON T.room_id = R.room_id
+				LEFT JOIN teams TM ON TM.team_id = T.team_id
+				LEFT JOIN workers W ON T.worker_id = W.worker_id
+                WHERE start_date BETWEEN :now AND :nowPlus30";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':now', $now);
+		$stmt->bindParam(':nowPlus30', $nowPlus30);
+		$stmt->execute();
+		$teams = $stmt->fetchAll();
+
+		$stmt->closeCursor();
+		$teamMembers = "SELECT W.worker_email, W.worker_fname 
+						FROM team_members TMs
+						LEFT JOIN workers W on W.worker_id = TMs.worker_id
+						WHERE TMs.team_id = :team_id";
+		$stmt = $dbConn->prepare($teamMembers);
+		for ($i = 0; $i < count($teams); $i++) {
+			$stmt->bindParam(':team_id', $teams[$i]['team_id']);
+			$stmt->execute();
+			$teams[$i]['team_info'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		}
+		return $teams;
+	}
 }

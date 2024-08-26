@@ -162,7 +162,6 @@ class TeamsRepository
 	{
 		$team_members = $this->getTeamMembers($team_id);
 		$active_tasks = $this->tasksRepository->getTasksByTeam($team_id);
-		var_dump($active_tasks);
 		if(empty($active_tasks)) {
 			$dbConn = $this->dbController->openConnection();
 			if (count($team_members) > 0) {

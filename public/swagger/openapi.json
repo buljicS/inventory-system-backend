@@ -2297,6 +2297,25 @@
                 ]
             }
         },
+        "/api/Tasks/notifyUsersAboutUpcomingTask": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "description": "Notify users about upcoming tasks",
+                "operationId": "notifyUsersAboutUpcomingTask",
+                "responses": {
+                    "200": {
+                        "description": "An example resource"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [

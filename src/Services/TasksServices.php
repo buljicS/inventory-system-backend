@@ -168,4 +168,31 @@ class TasksServices
 	{
 		return $this->tasksRepository->getArchivedTasksByUser($worker_id, $role);
 	}
+
+	public function notifyUsersAboutUpcomingTasks(): ?array
+	{
+		$incomingTasks = $this->tasksRepository->checkForIncomingTasks();
+		if(!empty($incomingTasks))
+		{
+			for($i = 0; $i < count($incomingTasks); $i++)
+			{
+				$reminderTemplate = file_get_contents("../templates/email/UserTaskReminder.html");
+				$reminderTemplate = str_replace("{{dashURL}}", $_ENV['MAIN_URL_FE'] . "/dashboard/tasks", $reminderTemplate);
+				$reminderTemplate = str_replace("{{startDate}}", $incomingTasks[$i]['start_date'], $reminderTemplate);
+				$reminderTemplate = str_replace("{{room}}", $incomingTasks[$i]['room_name'], $reminderTemplate);
+				$reminderTemplate = str_replace("{{team}}", $incomingTasks[$i]['team_name'], $reminderTemplate);
+				$reminderTemplate = str_replace("{{test@gmail.com}}", $incomingTasks[$i]['worker_email'], $reminderTemplate);
+				for($j = 0; $j < count($incomingTasks[$i]['team_info']); $j++) {
+					$reminderTemplate = str_replace("{{userName}}", $incomingTasks[$i]['team_info'][$j]['worker_fname'], $reminderTemplate);
+					$this->mailUtility->SendEmail($reminderTemplate, "Check upcoming task", $incomingTasks[$i]['team_info'][$j]['worker_email'], null);
+					$reminderTemplate = str_replace($incomingTasks[$i]['team_info'][$j]['worker_fname'], "{{userName}}", $reminderTemplate);
+				}
+			}
+			return [
+				'status' => 200,
+				'message' => 'Success'
+			];
+		}
+		return null;
+	}
 }
