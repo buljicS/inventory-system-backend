@@ -258,16 +258,43 @@ class UsersRepository
 	{
 		$dbCon = $this->database->openConnection();
 
+		$getOldCompany = "SELECT company_id FROM workers WHERE worker_id = :worker_id";
+		$stmt = $dbCon->prepare($getOldCompany);
+		$stmt->bindValue(':worker_id', $newUserData['worker_id']);
+		$stmt->execute();
+		$company_old = $stmt->fetchColumn();
+
 		$sql = "UPDATE workers SET phone_number = :phone_number, company_id = :company_id WHERE worker_id = :worker_id";
 		$stmt = $dbCon->prepare($sql);
 		$stmt->bindValue(':phone_number', $newUserData['phone_number']);
 		$stmt->bindValue(':company_id', $newUserData['company_id']);
 		$stmt->bindValue(':worker_id', $newUserData['worker_id']);
 
-		if($stmt->execute())
-			return $this->getUpdatedUserInfo($newUserData['worker_id']);
-		else
-			return false;
+		//if user changed company, remove him from previous tasks and teams
+		if($company_old != $newUserData['company_id']) {
+			$removeFromTask = "UPDATE workers SET task_id = NULL WHERE worker_id = :worker_id";
+			$stmt = $dbCon->prepare($removeFromTask);
+			$stmt->bindValue(':worker_id', $newUserData['worker_id']);
+			$stmt->execute();
+
+			$stmt->closeCursor();
+			$getOldTeams = "SELECT team_id FROM teams WHERE company_id = :company_id";
+			$stmt = $dbCon->prepare($getOldTeams);
+			$stmt->bindValue(':company_id', $company_old);
+			$stmt->execute();
+			$teams_old = $stmt->fetch(PDO::FETCH_ASSOC);
+			var_dump($teams_old);
+
+			$stmt->closeCursor();
+			$removeFromTeam = "DELETE FROM team_members WHERE worker_id = :worker_id AND team_id = :team_id";
+			$stmt = $dbCon->prepare($removeFromTeam);
+			for ($i = 0; $i<count($teams_old); $i++) {
+				$stmt->bindValue(':worker_id', $newUserData['worker_id']);
+				$stmt->bindValue(':team_id', $teams_old[$i]);
+				$stmt->execute();
+			}
+		}
+		return $this->getUpdatedUserInfo($newUserData['worker_id']);
 	}
 
 	public function banUser(int $worker_id): bool
