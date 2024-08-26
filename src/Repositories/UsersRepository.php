@@ -283,14 +283,13 @@ class UsersRepository
 			$stmt->bindValue(':company_id', $company_old);
 			$stmt->execute();
 			$teams_old = $stmt->fetch(PDO::FETCH_ASSOC);
-			var_dump($teams_old);
 
 			$stmt->closeCursor();
 			$removeFromTeam = "DELETE FROM team_members WHERE worker_id = :worker_id AND team_id = :team_id";
 			$stmt = $dbCon->prepare($removeFromTeam);
-			for ($i = 0; $i<count($teams_old); $i++) {
+			foreach($teams_old as $team) {
 				$stmt->bindValue(':worker_id', $newUserData['worker_id']);
-				$stmt->bindValue(':team_id', $teams_old[$i]);
+				$stmt->bindValue(':team_id', $team);
 				$stmt->execute();
 			}
 		}
