@@ -141,8 +141,7 @@ class TasksServices
 						'worker_full_name' => $archiveReport[$i]['worker_full_name'],
 						'worker_email' => $archiveReport[$i]['worker_email'],
 						'phone_number' => $archiveReport[$i]['phone_number'],
-						'archived_by' => $endedTask['worker_id'],
-						'task_id' => $endedTask['task_id']
+						'archived_by' => $endedTask['worker_id']
 					];
 				}
 

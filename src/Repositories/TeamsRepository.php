@@ -175,16 +175,6 @@ class TeamsRepository
 	}
 
 	#region HelperMethods
-//	public function checkIfSameTeamAlreadyExists(string $team_name): bool|int
-//	{
-//		$dbConn = $this->dbController->openConnection();
-//		$sql = "SELECT team_id FROM teams WHERE team_name = :team_name";
-//		$stmt = $dbConn->prepare($sql);
-//		$stmt->bindParam(':team_name', $team_name);
-//		$stmt->execute();
-//		return $stmt->fetchColumn();
-//	}
-
 	public function checkIfWorkerIsAlreadyInTeam(int $worker_id, int $team_id): bool|int
 	{
 		$dbConn = $this->dbController->openConnection();
