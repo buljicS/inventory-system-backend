@@ -269,9 +269,11 @@ class UsersRepository
 		$stmt->bindValue(':phone_number', $newUserData['phone_number']);
 		$stmt->bindValue(':company_id', $newUserData['company_id']);
 		$stmt->bindValue(':worker_id', $newUserData['worker_id']);
+		$stmt->execute();
 
 		//if user changed company, remove him from previous tasks and teams
 		if($company_old != $newUserData['company_id']) {
+			$stmt->closeCursor();
 			$removeFromTask = "UPDATE workers SET task_id = NULL WHERE worker_id = :worker_id";
 			$stmt = $dbCon->prepare($removeFromTask);
 			$stmt->bindValue(':worker_id', $newUserData['worker_id']);
