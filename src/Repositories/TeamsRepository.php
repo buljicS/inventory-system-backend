@@ -188,7 +188,7 @@ class TeamsRepository
 	public function checkIfWorkerIsAlreadyInTeam(int $worker_id, int $team_id): bool|int
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT worker_id FROM team_members WHERE team_id = :team_id AND worker_id = :worker_id AND";
+		$sql = "SELECT worker_id FROM team_members WHERE team_id = :team_id AND worker_id = :worker_id";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':team_id', $team_id);
 		$stmt->bindParam(':worker_id', $worker_id);
