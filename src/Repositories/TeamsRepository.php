@@ -202,6 +202,7 @@ class TeamsRepository
 		$sql = "SELECT team_id FROM teams WHERE team_name = :team_name AND company_id = :company_id";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':team_name', $team_name);
+		$stmt->bindParam(':company_id', $company_id);
 		$stmt->execute();
 		return $stmt->fetchColumn();
 	}
