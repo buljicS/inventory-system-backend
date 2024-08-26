@@ -9,7 +9,7 @@ cd ../
 
 mkdir -p "$DEST_DIR"
 cp -rpv app public src templates .env .htaccess composer.json composer.lock firebase.json "$DEST_DIR/"
-cd "$DEST_DIR/"
+cd "$DEST_DIR/" || exit
 
 composer install --no-dev --prefer-dist --no-interaction --no-progress  --optimize-autoloader
 composer dump-autoload --optimize
@@ -22,5 +22,5 @@ sed -i "s/^${ENV_LOCAL_STORAGE_URL}=.*/${ENV_LOCAL_STORAGE_URL}='$(printf '%s\n'
 
 end=$(date +%s)
 
-echo Build done in $((end-start)) seconds
+echo "Build done in $((end-start)) seconds"
 echo 'Project is ready for deployment'

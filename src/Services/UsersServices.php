@@ -68,7 +68,8 @@ class UsersServices
 			$user_name = $newUserData['firstName'];
 			$user_email = $newUserData['email'];
 			$token = $newUserData['exp_token'];
-			$link = "{$_ENV['MAIN_URL_BE']}api/Users/activateUserAccount/$token";
+			$linkBase = str_contains($_ENV['MAIN_URL_BE'], "/") ? $_ENV['MAIN_URL_BE'] : $_ENV['MAIN_URL'] . "/";
+			$link = $linkBase . "api/Users/activateUserAccount/$token";
 
 			$sendActMail = $this->sendConfirmationEmail($user_name, $link, "Activate your account", $user_email);
 			if ($sendActMail === 'OK') {
