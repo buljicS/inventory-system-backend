@@ -276,7 +276,12 @@ class TaksRepository
 
 	public function getTasksByTeam(int $team_id): array
 	{
-		return ['ok'];
+		$dbConn = $this->dbController->openConnection();
+		$sql = "SELECT task_id FROM tasks WHERE team_id = :team_id";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':team_id', $team_id);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function checkTask(int $task_id): bool
