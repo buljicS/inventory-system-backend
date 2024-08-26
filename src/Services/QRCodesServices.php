@@ -10,16 +10,20 @@ use BaconQrCode\Renderer\GDLibRenderer as GDLibRenderer;
 
 use Services\FirebaseServices as FirebaseServices;
 use Repositories\ItemsRepository as ItemsRepository;
+use Repositories\RoomsRepository as RoomsRepository;
 
 class QRCodesServices
 {
 	private readonly FirebaseServices $firebaseServices;
 	private readonly ItemsRepository $itemsRepository;
+	private readonly RoomsRepository $roomsRepository;
 
-	public function __construct(FirebaseServices $firebaseServices, ItemsRepository $itemsRepository)
+
+	public function __construct(FirebaseServices $firebaseServices, ItemsRepository $itemsRepository, RoomsRepository $roomsRepository)
 	{
 		$this->firebaseServices = $firebaseServices;
 		$this->itemsRepository = $itemsRepository;
+		$this->roomsRepository = $roomsRepository;
 	}
 
 	public function generateQRCode(array $qrCodes, bool $forSingleItem): array|string
@@ -112,7 +116,13 @@ class QRCodesServices
 				'description' => 'You are not allowed to scan this QR code, check your task information again'
 			];
 
-		$isRoomActive = $this->
+		$isRoomActive = $this->roomsRepository->isRoomActive($qrCodeData['room_id']);
+		if($isRoomActive === false)
+			return [
+				'status' => 401,
+				'message' => 'Forbidden',
+				'description' => 'This room is not active, you can not scan this item'
+			];
 
 		$isQRAlreadyScanned = $this->itemsRepository->isQRCodeAlreadyScanned($qrCodeData['task_id'], $qrCodeData['item_id']);
 		switch ($isQRAlreadyScanned) {

@@ -124,4 +124,14 @@ class RoomsRepository
 		$stmt->execute();
 		return $stmt->fetchColumn();
 	}
+
+	public function isRoomActive(int $room_id): bool
+	{
+		$dbConn = $this->dbConn->openConnection();
+		$sql = "SELECT room_id FROM rooms WHERE room_id = :room_id AND isActive = 1";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
+		$stmt->execute();
+		return $stmt->fetchColumn();
+	}
 }
