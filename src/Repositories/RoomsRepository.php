@@ -71,7 +71,7 @@ class RoomsRepository
 		$stmt = $dbConn->prepare($deleteTasks);
 		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
 		$stmt->execute();
-		return $stmt->rowCount() > 0;
+		return $stmt->execute();
 	}
 
 	public function updateRoom(array $updatedRoom): bool
