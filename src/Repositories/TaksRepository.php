@@ -290,7 +290,7 @@ class TaksRepository
 	public function getTasksByTeam(int $team_id): array
 	{
 		$dbConn = $this->dbController->openConnection();
-		$sql = "SELECT task_id FROM tasks WHERE team_id = :team_id";
+		$sql = "SELECT task_id FROM tasks WHERE team_id = :team_id AND isActive = 1";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(':team_id', $team_id);
 		$stmt->execute();
