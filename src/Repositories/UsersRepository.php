@@ -103,7 +103,7 @@ class UsersRepository
 		$stmt->bindValue(':worker_password', $userData['worker_password']);
 		$stmt->bindValue(':role', "employer");
 		$stmt->bindValue(':company_id', $userData['company_id']);
-		$stmt->bindValue(':is_active', false);
+		$stmt->bindValue(':is_active', 0);
 		$stmt->execute();
 
 		$stmt->closeCursor();
