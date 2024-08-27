@@ -10,26 +10,13 @@
 ### 2. Basic SlimPHP setup
 - [Project structure](pages/project-structure.md)
 - [SlimPHP basic setup](pages/slimphp.md)
-- [Decoupling]()
-- [Serving Swagger-PHP from Slim](pages/slimswaggerphp.md)
-- [CORS setup](pages/cors.md)
-- [Authorization setup](pages/auth.md)
+- [Decoupling](pages/decouple.md)
 
-#### 2.1. Error handling
-- [Introduction](pages/introduction.md)
-- [Set default error handler for PHP](pages/defaultErrorHandler.md)
-- [Set default error handler for Slim error middleware](pages/slimerrormiddleware.php)
 
-### 3. Swagger-PHP setup
-- [GET, POST, PUT, PATCH, DELETE Annotations](pages/writing-annotations)
-- [Add multiple servers](pages/swagger-servers.md)
-- [Authorize api calls](pages/autorize-swagger.md)
+### 3. PHPUnit
+- [In preparation](#)
 
-### 4. Firebase-PHP setup
-- [Firebase setup](pages/firebase.md)
-- [Firebase-PHP setup](pages/firebase-php.md)
-
-### 5. Read more 
+### 4. Read more 
 - Documentations
   - [PHP Exceptions](https://www.php.net/manual/en/reserved.exceptions.php)
   - [Slim Skeleton](https://odan.github.io/slim4-skeleton/)
