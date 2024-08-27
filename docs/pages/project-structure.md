@@ -5,15 +5,20 @@
 ```
 root/
 ├── app/
-│   ├── routes.php
-│   └── settings.php
+│   ├── config/
+│   └── middlewares/
+├── bin/
 ├── docs/
 ├── public/
 │   ├── .htaccess
 │   ├── favicon.ico
+│   ├── swagger/
 │   └── index.php
 ├── src/
 │   ├── Controllers/
+│   ├── Interfaces/
+│   ├── Models/
+│   ├── Providers/
 │   ├── Services/
 │   └── Repositories/
 │   └── Utilities/
@@ -30,6 +35,7 @@ root/
 
 # Breakdown
 - `app/` serves as dependency storage, all routes, settings, middlewares and such are stored in php files in this folder
+- `bin/` stores cli scripts (bash / php)
 - `docs/` stores documentation for project
 - `public/` all files in this folder are publicly visible on server
 - `src/` all code (logic, functions, methods, classes and rest) lives inside of this folder
