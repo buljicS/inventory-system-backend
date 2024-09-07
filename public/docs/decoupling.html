@@ -1,0 +1,91 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2024-08-27T19:15:59.2016317"><title>Decoupling | Inventory System Docs</title><script type="application/json" id="virtual-toc-data">[{"id":"1-overview","level":0,"title":"1. Overview","anchor":"#1-overview"},{"id":"2-separating-app-in-logical-pieces","level":0,"title":"2. Separating app in logical pieces","anchor":"#2-separating-app-in-logical-pieces"},{"id":"3-separating-routes-from-index","level":0,"title":"3. Separating routes from index","anchor":"#3-separating-routes-from-index"},{"id":"4-overview-of-a-new-index-file","level":0,"title":"4. Overview of a new index file","anchor":"#4-overview-of-a-new-index-file"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b408/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Decoupling | Inventory System Docs"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Inventory System Docs Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/decoupling.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Decoupling | Inventory System Docs"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/decoupling.html#webpage",
+    "url": "writerside-documentation/decoupling.html",
+    "name": "Decoupling | Inventory System Docs",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Inventory System Docs Help"
+}</script><!-- End Schema.org --></head><body data-id="Decoupling" data-main-title="Decoupling" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="Basic-Slim-setup.md|Basic Slim setup"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Inventory System Docs  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="Decoupling" id="Decoupling.md">Decoupling</h1><section class="chapter"><h2 id="1-overview" data-toc="1-overview">1. Overview</h2><ul class="list _bullet" id="-2i9k5k_7"><li class="list__item" id="-2i9k5k_10"><p>Let's take a look again at our original app</p></li></ul><div class="code-block" data-lang="php">
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Factory\AppFactory;
+use Selective\BasePath\BasePathMiddleware;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$app = AppFactory::create();
+
+$app-&gt;addBodyParsingMiddleware();
+	
+$app-&gt;add(new BasePathMiddleware($app));
+	
+$app-&gt;addRoutingMiddleware();
+
+$app-&gt;addErrorMiddleware(true, false, false);
+
+$app-&gt;get('/', function (Request $request, Response $response, array $args) {
+    $response-&gt;getBody()-&gt;write('Hello World');
+    return $response;
+});
+
+$app-&gt;run();
+</div><ul class="list _bullet" id="-2i9k5k_9"><li class="list__item" id="-2i9k5k_11"><p>In conclusion, things could get pretty messy really fast</p></li><li class="list__item" id="-2i9k5k_12"><p>In that case, it's much better to separate things and keep them clean</p></li></ul></section><section class="chapter"><h2 id="2-separating-app-in-logical-pieces" data-toc="2-separating-app-in-logical-pieces">2. Separating app in logical pieces</h2><ul class="list _bullet" id="-2i9k5k_13"><li class="list__item" id="-2i9k5k_19"><p>First, in root of your project, create <code class="code" id="-2i9k5k_24">app/</code> dir</p></li><li class="list__item" id="-2i9k5k_20"><p>Inside app, create <code class="code" id="-2i9k5k_25">middleware/</code> dir</p></li><li class="list__item" id="-2i9k5k_21"><p><code class="code" id="-2i9k5k_26">middleware/</code> is where we are going to store all of our middlewares</p></li><li class="list__item" id="-2i9k5k_22"><p>For the sake of presentation, let's take out base middlewares out of the project</p></li><li class="list__item" id="-2i9k5k_23"><p>Create <code class="code" id="-2i9k5k_27">base.php</code> inside of middleware folder</p></li></ul><div class="code-block" data-lang="php">
+&lt;?php
+
+declare(strict_types=1);
+
+use Selective\BasePath\BasePathMiddleware;
+use Slim\App as Slim;
+
+return function (Slim $app) {
+	$app-&gt;addBodyParsingMiddleware();
+	$app-&gt;add(new BasePathMiddleware($app));
+	$app-&gt;addRoutingMiddleware();
+	$app-&gt;addErrorMiddleware(true, false, false);
+};
+</div><ul class="list _bullet" id="-2i9k5k_15"><li class="list__item" id="-2i9k5k_28"><p>Now in <code class="code" id="-2i9k5k_29">index.php</code> we can do this</p></li></ul><div class="code-block" data-lang="php">
+//config middlewares
+$base = require '../app/middleware/base.php';
+$base($app);
+</div><aside class="prompt" data-type="tip" data-title="" id="-2i9k5k_17"><p id="-2i9k5k_30">Note: For more reference about how middleware stack and middlewares in general work<br> visit <a href="https://www.slimframework.com/docs/v4/concepts/life-cycle.html" id="-2i9k5k_32" data-external="true" rel="noopener noreferrer">slim docs on life cycle</a> and <a href="https://www.slimframework.com/docs/v4/concepts/middleware.html" id="-2i9k5k_33" data-external="true" rel="noopener noreferrer">middleware</a></p></aside><ul class="list _bullet" id="-2i9k5k_18"><li class="list__item" id="-2i9k5k_34"><p>We can do the same for all our middlewares in a project</p></li></ul></section><section class="chapter"><h2 id="3-separating-routes-from-index" data-toc="3-separating-routes-from-index">3. Separating routes from index</h2><ul class="list _bullet" id="-2i9k5k_35"><li class="list__item" id="-2i9k5k_39"><p>Now, routes could get us in a bit more trouble, so it's also a good idea to have them in a separate folder</p></li><li class="list__item" id="-2i9k5k_40"><p>First, inside <code class="code" id="-2i9k5k_42">app/</code> dir, create <code class="code" id="-2i9k5k_43">config/</code> dir</p></li><li class="list__item" id="-2i9k5k_41"><p>Inside config create <code class="code" id="-2i9k5k_44">routes.php</code></p></li></ul><div class="code-block" data-lang="php">
+use Slim\App as Slim;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+
+return function (Slim $app) {
+    $app-&gt;get('/', function (Request $request, Response $response, array $args) {
+    $response-&gt;getBody()-&gt;write('Hello World');
+    return $response;
+});
+};
+</div><ul class="list _bullet" id="-2i9k5k_37"><li class="list__item" id="-2i9k5k_45"><p>Now, same as for middleware, in index.php we can include this</p></li></ul><div class="code-block" data-lang="php">
+//routes
+$routes = require '../app/config/routes.php';
+$routes($app);
+</div></section><section class="chapter"><h2 id="4-overview-of-a-new-index-file" data-toc="4-overview-of-a-new-index-file">4. Overview of a new index file</h2><ul class="list _bullet" id="-2i9k5k_46"><li class="list__item" id="-2i9k5k_49"><p>After all tweaks, our <code class="code" id="-2i9k5k_50">index.php</code> now looks like this</p></li></ul><div class="code-block" data-lang="php">
+use Slim\Factory\AppFactory;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$app = AppFactory::create();
+
+#region bootstrap
+//config middlewares
+$base = require '../app/middleware/base.php';
+$base($app);
+
+//routes
+$routes = require '../app/config/routes.php';
+$routes($app);
+#endregion
+
+$app-&gt;run();
+</div><ul class="list _bullet" id="-2i9k5k_48"><li class="list__item" id="-2i9k5k_51"><p>We can even extend this further by taking out the whole middleware logic into <code class="code" id="-2i9k5k_52">bootstrap.php</code> and then including the file in <code class="code" id="-2i9k5k_53">index.php</code>, but this is more than enough</p></li></ul></section><div class="last-modified">Last modified: 27 avgust 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="project-structure.html" class="navigation-links__prev">Project structure</a><a href="serving-swagger-php-from-slim.html" class="navigation-links__next">Serving Swagger-PHP from Slim</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b408/app.js"></script></body></html>

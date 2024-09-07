@@ -1,0 +1,115 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2024-08-27T19:15:59.212634"><title>Serving Swagger-PHP from Slim | Inventory System Docs</title><script type="application/json" id="virtual-toc-data">[{"id":"downloading-dependencies","level":0,"title":"Downloading dependencies","anchor":"#downloading-dependencies"},{"id":"prepare-swagger-ui","level":0,"title":"Prepare swagger ui","anchor":"#prepare-swagger-ui"},{"id":"organizing-code","level":0,"title":"Organizing code","anchor":"#organizing-code"},{"id":"openapi-generation","level":0,"title":"OpenAPI Generation","anchor":"#openapi-generation"},{"id":"annotations","level":0,"title":"Annotations","anchor":"#annotations"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b408/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Serving Swagger-PHP from Slim | Inventory System Docs"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Inventory System Docs Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/serving-swagger-php-from-slim.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Serving Swagger-PHP from Slim | Inventory System Docs"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/serving-swagger-php-from-slim.html#webpage",
+    "url": "writerside-documentation/serving-swagger-php-from-slim.html",
+    "name": "Serving Swagger-PHP from Slim | Inventory System Docs",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Inventory System Docs Help"
+}</script><!-- End Schema.org --></head><body data-id="Serving-Swagger-PHP-from-Slim" data-main-title="Serving Swagger-PHP from Slim" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="Basic-Slim-setup.md|Basic Slim setup"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Inventory System Docs  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="Serving-Swagger-PHP-from-Slim" id="Serving-Swagger-PHP-from-Slim.md">Serving Swagger-PHP from Slim</h1><aside class="prompt" data-type="tip" data-title="" id="-s2aiib_3"><p id="-s2aiib_9">For structuring controllers and services, I will be referring to <code class="code" id="-s2aiib_10">Project structure</code></p></aside><section class="chapter"><h2 id="downloading-dependencies" data-toc="downloading-dependencies">Downloading dependencies</h2><ul class="list _bullet" id="-s2aiib_11"><li class="list__item" id="-s2aiib_12"><p>Install swagger-php via composer to your project <code class="code" id="-s2aiib_15">composer require zircote/swagger-php</code></p></li><li class="list__item" id="-s2aiib_13"><p>Install doctrine annotations <code class="code" id="-s2aiib_16">composer require doctrine/annotations</code></p></li><li class="list__item" id="-s2aiib_14"><p>Download Swagger-UI <a href="https://swagger.io/tools/swagger-ui/download/" id="-s2aiib_17" data-external="true" rel="noopener noreferrer">here</a></p></li></ul></section><section class="chapter"><h2 id="prepare-swagger-ui" data-toc="prepare-swagger-ui">Prepare swagger ui</h2><ul class="list _bullet" id="-s2aiib_18"><li class="list__item" id="-s2aiib_21"><p>After you have downloaded swagger ui, copy everything from <code class="code" id="-s2aiib_23">dist</code> to <code class="code" id="-s2aiib_24">public/swagger/</code> dir in your project</p></li><li class="list__item" id="-s2aiib_22"><p>Navigate to <code class="code" id="-s2aiib_25">public/swagger/swagger-initializer.js</code> and change default url to your desired <code class="code" id="-s2aiib_26">.json</code> file</p></li></ul><aside class="prompt" data-type="tip" data-title="" id="-s2aiib_19"><p id="-s2aiib_27">Note: For this example, I will call my json doc <code class="code" id="-s2aiib_28">openapi.json</code> and I will put it in <code class="code" id="-s2aiib_29">swagger/</code> dir</p></aside><div class="code-block" data-lang="javascript">
+window.onload = function() {
+  //&lt;editor-fold desc=&quot;Changeable Configuration Block&quot;&gt;
+
+  // the following lines will be replaced by docker/configurator, when it runs in a docker-container
+  window.ui = SwaggerUIBundle({
+    url: &quot;./openapi.json&quot;,
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: &quot;StandaloneLayout&quot;
+  });
+
+  //&lt;/editor-fold&gt;
+};
+</div></section><section class="chapter"><h2 id="organizing-code" data-toc="organizing-code">Organizing code</h2><ul class="list _bullet" id="-s2aiib_30"><li class="list__item" id="-s2aiib_37"><p>First, we need to organize our code, so we can later know where our annotations and base controllers are</p></li><li class="list__item" id="-s2aiib_38"><p>Let's create a class that will be responsible for dispatching requests in our app under <code class="code" id="-s2aiib_39">src/Controllers</code></p></li></ul><div class="code-block" data-lang="php">
+&lt;?php
+
+declare(strict_types=1);
+
+namespace Controllers;
+
+class WebAPIController 
+{
+    public function __construct() {}
+}
+</div><ul class="list _bullet" id="-s2aiib_32"><li class="list__item" id="-s2aiib_40"><p>Now let's register this namespace under <code class="code" id="-s2aiib_41">psr-4</code> autoloader in <code class="code" id="-s2aiib_42">composer.json</code></p></li></ul><div class="code-block" data-lang="json">
+{
+  &quot;autoload&quot;: {
+    &quot;psr-4&quot;: {
+      &quot;Controllers\\&quot;: &quot;./src/Controllers&quot;
+    }
+  }
+}
+</div><aside class="prompt" data-type="tip" data-title="" id="-s2aiib_34"><p id="-s2aiib_43">Note: refer to <a href="swagger-php.html" id="-s2aiib_44" data-tooltip="Note: ['/path/to/project'] is path where your Controller.php class is stored or where all of your controllers are stored, usually something like src/App/Controllers or src/Controllers">SwaggerPHP step by step</a></p></aside><ul class="list _bullet" id="-s2aiib_35"><li class="list__item" id="-s2aiib_45"><p>Now dump autoloader to register new class</p></li></ul><div class="tabs" id="-s2aiib_36" data-anchors="[-s2aiib_46]"><div class="tabs__content" data-gtm="tab" id="-s2aiib_46" data-title="dump autoloader"><div class="code-block" data-lang="bash" data-title="Bash">composer dump autoloader</div></div></div></section><section class="chapter"><h2 id="openapi-generation" data-toc="openapi-generation">OpenAPI Generation</h2><ul class="list _bullet" id="-s2aiib_48"><li class="list__item" id="-s2aiib_52"><p>We can add the first route to our web api controller that will be responsible for generating open api docs</p></li></ul><div class="code-block" data-lang="php">
+
+use OpenApi\Generator as Generator;
+
+class WebAPIController 
+{
+    public function __construct() {}
+    
+    public function generateDocs(Request $request, Response $response): Response {
+        $openapi = Generator::scan(['../src'])-&gt;toJson();
+        $file = fopen(&quot;../public/swagger/openapi.json&quot;, &quot;wa+&quot;);
+        fwrite($file, $openapi);
+        fclose($file);
+        $response-&gt;getBody()-&gt;write(file_get_contents(&quot;../public/swagger/openapi.json&quot;));
+        return $response
+			-&gt;withHeader('Content-type', 'application/json');
+    }
+}
+</div><ul class="list _bullet" id="-s2aiib_50"><li class="list__item" id="-s2aiib_53"><p>Now we have to register this route in <code class="code" id="-s2aiib_54">app/config/routes.php</code></p></li></ul><div class="code-block" data-lang="php">
+use Slim\App as Slim;
+use Controllers\WebAPIController as API;
+
+return function (Slim $app) {
+    //...
+    
+    $app-&gt;get(&quot;/getDoc&quot;, [API::class, 'generateDocs']);
+    
+    //...
+}
+</div></section><section class="chapter"><h2 id="annotations" data-toc="annotations">Annotations</h2><ul class="list _bullet" id="-s2aiib_55"><li class="list__item" id="-s2aiib_60"><p>Now, we can set up annotations</p></li></ul><div class="code-block" data-lang="php">
+/**
+ * @OA\Info(
+ *     title=&quot;Inventory management system API&quot;,
+ *     version=&quot;1.1.0&quot;,
+ *     description=&quot;Complete API documentation for web based invetory system &lt;br/&gt; Documentation is based on `OAS 3.0` and API is running on `PHP 8.2`&quot;,
+ *     @OA\Contact(
+ *      	name=&quot;Developer&quot;,
+ *      	email=&quot;example@gmail.com&quot;
+ *     ),
+ *     @OA\License(
+ *     	   name=&quot;MIT&quot;,
+ *         url=&quot;https://opensource.org/license/mit&quot;
+ *     ),
+ * )
+ * @OA\Server(
+ *     url=http://my-backend.com,
+ *     description=&quot;Apache&quot;
+ * )
+ *
+ * @OA\SecurityScheme(
+ *     securityScheme=&quot;bearerAuth&quot;,
+ *     type=&quot;http&quot;,
+ *     scheme=&quot;bearer&quot;,
+ *     bearerFormat=&quot;JWT&quot;,
+ *     description=&quot;Enter the Bearer Authorization string as follows: `Bearer Generated-JWT-Token`&quot;
+ * )
+ *
+ */
+class WebAPIController { /* my code here */ }
+</div><aside class="prompt" data-type="tip" data-title="" id="-s2aiib_57"><p id="-s2aiib_61">Note: All the annotations will be in WebAPIController along with dispatch methods <br> Do not separate annotations from their methods</p></aside><aside class="prompt" data-type="tip" data-title="" id="-s2aiib_58"><p id="-s2aiib_63">For more reference about setting up swagger with php, read <a href="swagger-php.html" id="-s2aiib_64" data-tooltip="Note: ['/path/to/project'] is path where your Controller.php class is stored or where all of your controllers are stored, usually something like src/App/Controllers or src/Controllers">SwaggerPHP step by step</a> For more reference about annotations visit <a href="https://zircote.github.io/swagger-php/reference/annotations.html" id="-s2aiib_65" data-external="true" rel="noopener noreferrer">SwaggerPHP annotations</a></p></aside><ul class="list _bullet" id="-s2aiib_59"><li class="list__item" id="-s2aiib_66"><p>That's it, when you visit <code class="code" id="-s2aiib_68">http://my-backend.com/getDoc</code> you should get openapi.json as a response</p></li><li class="list__item" id="-s2aiib_67"><p>Now it's up to you how you will handle that with front and show it on <code class="code" id="-s2aiib_69">swagger-ui</code></p></li></ul></section><div class="last-modified">Last modified: 27 avgust 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="decoupling.html" class="navigation-links__prev">Decoupling</a><a href="bash-script.html" class="navigation-links__next">Deployment preparation</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b408/app.js"></script></body></html>
