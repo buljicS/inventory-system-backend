@@ -5,6 +5,7 @@ namespace Services;
 use Repositories\TaksRepository as TasksRepository;
 use Repositories\ItemsRepository as ItemsRepository;
 use Repositories\TeamsRepository as TeamsRepository;
+use Repositories\CompaniesRepository as CompaniesRepository;
 use Utilities\ValidatorUtility as Validator;
 use Utilities\MailUtility as MailUtility;
 use Dompdf\Dompdf as DomPDF;
@@ -18,13 +19,15 @@ class TasksServices
 	private readonly TeamsRepository $teamsRepository;
 	private readonly MailUtility $mailUtility;
 	private readonly DomPDF $dompdf;
+	private readonly CompaniesRepository $companiesRepository;
 
 	public function __construct(TasksRepository $tasksRepository,
 								Validator $validator,
 								ItemsRepository $itemsRepository,
 								TeamsRepository $teamsRepository,
 								MailUtility $mailUtility,
-								DomPDF $dompdf)
+								DomPDF $dompdf,
+								CompaniesRepository $companiesRepository)
 	{
 		$this->tasksRepository = $tasksRepository;
 		$this->validator = $validator;
@@ -32,6 +35,7 @@ class TasksServices
 		$this->teamsRepository = $teamsRepository;
 		$this->mailUtility = $mailUtility;
 		$this->dompdf = $dompdf;
+		$this->companiesRepository = $companiesRepository;
 	}
 
 	public function addTask(array $newTask): array
@@ -199,11 +203,48 @@ class TasksServices
 		return null;
 	}
 
-	public function generateTaskReport(array $reqBody)
+	public function generateTaskReport(array $reqBody): void
 	{
+		$company = $this->companiesRepository->getCompanyById((int)$reqBody['company_id']);
 		//read template and replace content
 		$rawTemplate = file_get_contents('../templates/reports/TaskReport.html');
-		$rawTemplate = str_replace("{{ additional_picture }}", $_ENV['MAIN_URL_BE'] . "staticContent/logo.webp", $rawTemplate);
-		$rawTemplate = str_replace("{{}}")
+		$rawTemplate = str_replace("{{company_name}}", $company['company_name'], $rawTemplate);
+		$rawTemplate = str_replace("{{company_address}}", $company['company_address'], $rawTemplate);
+		$rawTemplate = str_replace("{{contact_info}}", $company['company_mail'], $rawTemplate);
+
+		$rawTemplate = str_replace("{{ total_items }}", $reqBody['total_items'], $rawTemplate);
+		$rawTemplate = str_replace("{{ currently_scanned }}", $reqBody['currently_scanned'], $rawTemplate);
+		$rawTemplate = str_replace("{{ completed }}", $reqBody['completed'], $rawTemplate);
+		$rawTemplate = str_replace("{{ start_date }}", $reqBody['start_date'], $rawTemplate);
+		$rawTemplate = str_replace("{{ report_date }}", date("d.m.Y H:i:s", time()), $rawTemplate);
+
+		$tableRows = "";
+		for($i = 0; $i < count($reqBody['scanned_items']); $i++)
+		{
+			$image = $reqBody['scanned_items'][$i]['additional_picture'] == null ? "https://placehold.co/100" : $reqBody['scanned_items'][$i]['additional_picture'];
+			$itemName = $reqBody['scanned_items'][$i]['item_name'];
+			$serialNo = $reqBody['scanned_items'][$i]['serial_no'];
+			$cof = $reqBody['scanned_items'][$i]['country_of_origin'];
+			$ds = $reqBody['scanned_items'][$i]['date_scanned'];
+			$an = $reqBody['scanned_items'][$i]['additional_note'];
+			$singleRow = "<tr>
+							<td class='img-cell'><img src='$image' alt='placeholder' width='120' height='auto'/></td>
+							<td>$itemName</td>
+							<td>$serialNo</td>
+							<td>$cof</td>
+							<td>$ds</td>
+							<td>$an</td>
+						  </tr>";
+			$tableRows .= $singleRow;
+		}
+
+		$rawTemplate = str_replace("{{scannedItems}}", $tableRows, $rawTemplate);
+		print_r($rawTemplate);
+		die();
+		$this->dompdf->loadHtml($rawTemplate);
+		$this->dompdf->setPaper('A4', 'portrait');
+		$this->dompdf->render();
+		$this->dompdf->output();
+		$this->dompdf->stream("TaskReport_" . date("d.m.Y@H:i:s", time()) . ".pdf");
 	}
 }

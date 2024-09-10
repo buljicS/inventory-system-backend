@@ -86,4 +86,16 @@ class CompaniesRepository
 		$stmt->execute();
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
+
+	public function getCompanyById(int $company_id): array|bool
+	{
+		$dbCon = $this->database->openConnection();
+		$sql = "SELECT company_name, company_address, company_mail 
+				FROM companies 
+				WHERE company_id = :company_id";
+		$stmt = $dbCon->prepare($sql);
+		$stmt->bindParam(':company_id', $company_id, PDO::PARAM_INT);
+		$stmt->execute();
+		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
 }

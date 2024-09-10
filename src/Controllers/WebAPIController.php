@@ -2539,6 +2539,11 @@ class WebAPIController
 	 *             @OA\Schema(
 	 *                 type="object",
 	 *                 @OA\Property(
+	 *                     property="company_id",
+	 *                     type="integer",
+	 *                     example=1
+	 *                 ),
+	 *                 @OA\Property(
 	 *                     property="total_items",
 	 *                     type="integer",
 	 *                     example=10
@@ -2615,8 +2620,7 @@ class WebAPIController
 	public function generateTaskReport(Request $request, Response $response): Response
 	{
 		$reqBody = (array)$request->getParsedBody();
-		$resp = $this->tasksServices->generateTaskReport($reqBody);
-		$response->getBody()->write(json_encode($resp));
+		$this->tasksServices->generateTaskReport($reqBody);
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
