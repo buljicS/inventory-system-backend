@@ -25,7 +25,7 @@ class FirebaseServices
 		$this->helper = $helper;
 	}
 
-	public function getFirebaseInstance(): mixed {
+	public function getFirebaseStorageInstance(): mixed {
 		$firebaseInstance = $this->container->get(FirebaseUtility::class);
 		return $firebaseInstance->getStorageBucket();
 	}
@@ -33,7 +33,7 @@ class FirebaseServices
 	public function uploadFile(string $fileToUpload, array $fileOptions): array
 	{
 		//upload file
-		$storage = $this->getFirebaseInstance();
+		$storage = $this->getFirebaseStorageInstance();
 		$storage->upload($fileToUpload, [
 			'name' => $fileOptions['dir'] . $fileOptions['name'],
 			'type' => $fileOptions['mime-type'],
@@ -59,7 +59,7 @@ class FirebaseServices
 	public function getAllFilesByDir(string $requestedDir): array
 	{
 		$reqDirPath = $this->helper->normalizePath($requestedDir);
-		$storage = $this->getFirebaseInstance();
+		$storage = $this->getFirebaseStorageInstance();
 		$obj = $storage->objects([
 			'prefix' => $reqDirPath,
 			'delimiter' => '/'
@@ -85,7 +85,7 @@ class FirebaseServices
 	public function getFileByName(string $requestedDir, string $fileName): array
 	{
 		$reqDirPath = $this->helper->normalizePath($requestedDir);
-		$storage = $this->getFirebaseInstance();
+		$storage = $this->getFirebaseStorageInstance();
 		$obj = $storage->objects([
 			'prefix' => $reqDirPath . $fileName,
 			'delimiter' => '/'
@@ -106,7 +106,7 @@ class FirebaseServices
 	public function deleteFileFromStorage(string $dir, string $fileName): array
 	{
 		$reqDirPath = $this->helper->normalizePath($dir);
-		$storage = $this->getFirebaseInstance();
+		$storage = $this->getFirebaseStorageInstance();
 		$objToDelete = $storage->object($reqDirPath . $fileName);
 		try {
 			$objToDelete->delete();
@@ -138,7 +138,7 @@ class FirebaseServices
 		$reqDirPath = $this->helper->normalizePath($remoteDir);
 		$localDir = $this->helper->normalizePath($destinationDir);
 
-		$storage = $this->getFirebaseInstance();
+		$storage = $this->getFirebaseStorageInstance();
 		$objToDownload = $storage->object($reqDirPath . $fileName);
 		$objToDownload->downloadToFile($localDir . $fileName);
 

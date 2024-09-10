@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 20px;
+            padding: 0;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .company-info {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .logo {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            max-width: 150px;
+            height: auto;
+        }
+        .report-date {
+            text-align: right;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            page-break-inside: auto;
+        }
+        table, th, td {
+            border: 1px solid #333;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #202930;
+            color: white;
+        }
+        .img-cell img {
+            max-width: 100px;
+            height: auto;
+        }
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+        .signature-section {
+            margin-top: 50px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            page-break-inside: avoid;
+        }
+        .signature-line {
+            width: 200px;
+            border-bottom: 1px solid #333;
+            margin-right: 20px;
+        }
+        .signature-label {
+            margin-right: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="logo">
+    <img src="https://yourcompany.com/logo.png" alt="Company Logo">
+</div>
+
+<div class="company-info">
+    <p>Your Company Name</p>
+    <p>Your Company Address</p>
+    <p>Your Company Contact Information</p>
+</div>
+
+<h1>Task Report</h1>
+<h2>Date: {{ start_date }}</h2>
+
+<p>Total Items: {{ total_items }}</p>
+<p>Currently Scanned: {{ currently_scanned }}</p>
+<p>Completed: {{ completed }}</p>
+
+<div class="report-date">
+    <p>Report generated on: {{ report_date }}</p>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Picture</th>
+        <th>Item Name</th>
+        <th>Serial No</th>
+        <th>Country of Origin</th>
+        <th>Date Scanned</th>
+        <th>Additional Note</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through scanned items -->
+    {{#each scanned_items}}
+    <tr>
+        <td class="img-cell"><img src="{{ additional_picture }}" alt="Additional Picture"></td>
+        <td>{{ item_name }}</td>
+        <td>{{ serial_no }}</td>
+        <td>{{ country_of_origin }}</td>
+        <td>{{ date_scanned }}</td>
+        <td>{{ additional_note }}</td>
+    </tr>
+    {{/each}}
+    </tbody>
+</table>
+
+<div class="signature-section">
+    <div class="signature-line"></div>
+    <div class="signature-label">Signature</div>
+</div>
+
+</body>
+</html>

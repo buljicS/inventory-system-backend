@@ -151,8 +151,6 @@ class UsersServices
 			],
 		};
 
-
-
 		$isLoggedIn = $loggedIn['status'] == 200 ? 1 : 0;
 		$workerId = $response ? $response['worker_id'] : null;
 		$note = $loggedIn['status'] != 200 ? $loggedIn['description'] : null;

@@ -102,5 +102,6 @@ return function (Slim $app) {
 	$app->post('/api/Tasks/archiveTask', [API::class, 'archiveTask']);
 	$app->get('/api/Tasks/getArchivedTasksByUser/{worker_id}/{role}', [API::class, 'getArchivedTasksByUser']);
 	$app->get('/api/Tasks/notifyUsersAboutUpcomingTask', [API::class, 'notifyUsersAboutUpcomingTask']);
+	$app->post('/api/Tasks/generateTaskReport', [API::class, 'generateTaskReport']);
 	#endregion
 };

@@ -6,6 +6,7 @@ namespace Utilities;
 
 use Google\Cloud\Storage\Bucket;
 use Kreait\Firebase\Factory as FirebaseFactory;
+use Kreait\Firebase\Messaging;
 use Kreait\Firebase\Storage;
 
 class FirebaseUtility

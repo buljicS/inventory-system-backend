@@ -7,6 +7,7 @@ use Repositories\ItemsRepository as ItemsRepository;
 use Repositories\TeamsRepository as TeamsRepository;
 use Utilities\ValidatorUtility as Validator;
 use Utilities\MailUtility as MailUtility;
+use Dompdf\Dompdf as DomPDF;
 
 
 class TasksServices
@@ -15,18 +16,22 @@ class TasksServices
 	private readonly Validator $validator;
 	private readonly ItemsRepository $itemsRepository;
 	private readonly TeamsRepository $teamsRepository;
+	private readonly MailUtility $mailUtility;
+	private readonly DomPDF $dompdf;
 
 	public function __construct(TasksRepository $tasksRepository,
 								Validator $validator,
 								ItemsRepository $itemsRepository,
 								TeamsRepository $teamsRepository,
-								MailUtility $mailUtility)
+								MailUtility $mailUtility,
+								DomPDF $dompdf)
 	{
 		$this->tasksRepository = $tasksRepository;
 		$this->validator = $validator;
 		$this->itemsRepository = $itemsRepository;
 		$this->teamsRepository = $teamsRepository;
 		$this->mailUtility = $mailUtility;
+		$this->dompdf = $dompdf;
 	}
 
 	public function addTask(array $newTask): array
@@ -82,7 +87,7 @@ class TasksServices
 		$respArr['currently_scanned'] = $scannedItemsCount;
 
 		//completion [%]
-		$respArr['completed'] = round(($scannedItemsCount / $itemsCount) * 100 , 0) . "%";
+		$respArr['completed'] = $scannedItemsCount == 0 ? "0%" : round(($scannedItemsCount / $itemsCount) * 100 , 0) . "%";
 
 		//start_date
 		$respArr['start_date'] = $this->tasksRepository->getTaskById($task_id)['start_date'];
@@ -94,7 +99,6 @@ class TasksServices
 		}
 
 		return $respArr;
-
 	}
 
 	public function endTask(array $taskResponse): array
@@ -193,5 +197,13 @@ class TasksServices
 			];
 		}
 		return null;
+	}
+
+	public function generateTaskReport(array $reqBody)
+	{
+		//read template and replace content
+		$rawTemplate = file_get_contents('../templates/reports/TaskReport.html');
+		$rawTemplate = str_replace("{{ additional_picture }}", $_ENV['MAIN_URL_BE'] . "staticContent/logo.webp", $rawTemplate);
+		$rawTemplate = str_replace("{{}}")
 	}
 }

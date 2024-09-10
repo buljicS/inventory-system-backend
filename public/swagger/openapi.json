@@ -2316,6 +2316,90 @@
                 ]
             }
         },
+        "/api/Tasks/generateTaskReport": {
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "operationId": "generateTaskReport",
+                "requestBody": {
+                    "description": "Generate a report for a task",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "total_items": {
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "currently_scanned": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "completed": {
+                                        "type": "string",
+                                        "example": "10%"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-09-08 17:32:28"
+                                    },
+                                    "scanned_items": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "item_name": {
+                                                    "type": "string",
+                                                    "example": "string"
+                                                },
+                                                "serial_no": {
+                                                    "type": "string",
+                                                    "example": "string"
+                                                },
+                                                "country_of_origin": {
+                                                    "type": "string",
+                                                    "example": "string"
+                                                },
+                                                "date_scanned": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-09-08 17:59:50"
+                                                },
+                                                "additional_note": {
+                                                    "type": "string",
+                                                    "example": "string"
+                                                },
+                                                "additional_picture": {
+                                                    "type": "string",
+                                                    "format": "uri",
+                                                    "example": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admins/loginAdmin": {
             "post": {
                 "tags": [
