@@ -239,8 +239,6 @@ class TasksServices
 		}
 
 		$rawTemplate = str_replace("{{scannedItems}}", $tableRows, $rawTemplate);
-		print_r($rawTemplate);
-		die();
 		$this->dompdf->loadHtml($rawTemplate);
 		$this->dompdf->setPaper('A4', 'portrait');
 		$this->dompdf->render();
