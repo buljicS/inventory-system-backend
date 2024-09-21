@@ -120,6 +120,7 @@ class TasksServices
 				$body = str_replace('{{task_id}}', $taskResponse['task_id'], $body);
 				$body = str_replace('{{employer_name}}', $taskResponse['employer'], $body);
 				$body = str_replace('{{userName}}', $team_members[$i]['worker_fname'], $body);
+				$body = str_replace('{{poruka}}', $taskResponse['task_summary'], $body);
 
 				$this->mailUtility->SendEmail($body, "Task #{$taskResponse['task_id']} ended", $team_members[$i]['worker_email'], null);
 			}
