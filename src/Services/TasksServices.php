@@ -203,9 +203,11 @@ class TasksServices
 		return null;
 	}
 
-	public function generateTaskReport(array $reqBody): void
+	public function generateTaskReport(int $task_id, int $company_id): void
 	{
-		$company = $this->companiesRepository->getCompanyById((int)$reqBody['company_id']);
+		$company = $this->companiesRepository->getCompanyById($company_id);
+		$reqBody = $this->taskCurrentStatus($task_id);
+
 		//read template and replace content
 		$rawTemplate = file_get_contents('../templates/reports/TaskReport.html');
 		$rawTemplate = str_replace("{{company_name}}", $company['company_name'], $rawTemplate);
@@ -239,6 +241,9 @@ class TasksServices
 		}
 
 		$rawTemplate = str_replace("{{scannedItems}}", $tableRows, $rawTemplate);
+		$options = $this->dompdf->getOptions();
+		$options->setIsRemoteEnabled(true);
+		$this->dompdf->setOptions($options);
 		$this->dompdf->loadHtml($rawTemplate);
 		$this->dompdf->setPaper('A4', 'portrait');
 		$this->dompdf->render();

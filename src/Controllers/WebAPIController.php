@@ -2528,83 +2528,25 @@ class WebAPIController
 
 
 	/**
-	 * @OA\Post(
-	 *     path="/api/Tasks/generateTaskReport",
+	 * @OA\Get(
+	 *     path="/api/Tasks/generateTaskReport/{task_id}/{company_id}",
 	 *     operationId="generateTaskReport",
 	 *     tags={"Tasks"},
-	 *     @OA\RequestBody(
-	 *         description="Generate a report for a task",
-	 *         @OA\MediaType(
-	 *             mediaType="application/json",
-	 *             @OA\Schema(
-	 *                 type="object",
-	 *                 @OA\Property(
-	 *                     property="company_id",
-	 *                     type="integer",
-	 *                     example=1
-	 *                 ),
-	 *                 @OA\Property(
-	 *                     property="total_items",
-	 *                     type="integer",
-	 *                     example=10
-	 *                 ),
-	 *                 @OA\Property(
-	 *                     property="currently_scanned",
-	 *                     type="integer",
-	 *                     example=1
-	 *                 ),
-	 *                 @OA\Property(
-	 *                     property="completed",
-	 *                     type="string",
-	 *                     example="10%"
-	 *                 ),
-	 *                 @OA\Property(
-	 *                     property="start_date",
-	 *                     type="string",
-	 *                     format="date-time",
-	 *                     example="2024-09-08 17:32:28"
-	 *                 ),
-	 *                 @OA\Property(
-	 *                     property="scanned_items",
-	 *                     type="array",
-	 *                     @OA\Items(
-	 *                         type="object",
-	 *                         @OA\Property(
-	 *                             property="item_name",
-	 *                             type="string",
-	 *                             example="string"
-	 *                         ),
-	 *                         @OA\Property(
-	 *                             property="serial_no",
-	 *                             type="string",
-	 *                             example="string"
-	 *                         ),
-	 *                         @OA\Property(
-	 *                             property="country_of_origin",
-	 *                             type="string",
-	 *                             example="string"
-	 *                         ),
-	 *                         @OA\Property(
-	 *                             property="date_scanned",
-	 *                             type="string",
-	 *                             format="date-time",
-	 *                             example="2024-09-08 17:59:50"
-	 *                         ),
-	 *                         @OA\Property(
-	 *                             property="additional_note",
-	 *                             type="string",
-	 *                             example="string"
-	 *                         ),
-	 *                         @OA\Property(
-	 *                             property="additional_picture",
-	 *                             type="string",
-	 *                             format="uri",
-	 *                             example="string"
-	 *                         )
-	 *                     )
-	 *                 )
-	 *             )
+	 *     @OA\Parameter(
+	 *         name="task_id",
+	 *         in="path",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             type="integer"
 	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *        name="company_id",
+	 *        in="path",
+	 *        required=true,
+	 *        @OA\Schema(
+	 *            type="integer"
+	 *       )
 	 *     ),
 	 *     @OA\Response(
 	 *         response=200,
@@ -2617,10 +2559,11 @@ class WebAPIController
 	 *     security={{"bearerAuth": {}}}
 	 * )
 	 */
-	public function generateTaskReport(Request $request, Response $response): Response
+	public function generateTaskReport(Request $request, Response $response, array $args): Response
 	{
-		$reqBody = (array)$request->getParsedBody();
-		$this->tasksServices->generateTaskReport($reqBody);
+		$task_id = (int)$args['task_id'];
+		$company_id = (int)$args['company_id'];
+		$this->tasksServices->generateTaskReport($task_id, $company_id);
 		return $response
 			->withHeader('Content-type', 'application/json');
 	}
