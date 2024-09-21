@@ -2367,6 +2367,11 @@ class WebAPIController
 	 *                     type="boolean",
 	 *                     example=true
 	 *                 ),
+	 *                 @OA\Property (
+	 *                     property="employer",
+	 *                     type="string",
+	 *                     example="string"
+	 *                 ),
 	 *             )
 	 *         )
 	 *     ),

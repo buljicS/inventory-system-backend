@@ -112,11 +112,24 @@ class TasksServices
 
 		$isAdded = $this->tasksRepository->insertTaskResponse($taskResponse);
 		if($isAdded)
+		{
+			$team_id = $this->tasksRepository->getTaskById($taskResponse['task_id'])['team_id'];
+			$team_members = $this->teamsRepository->getTeamMembers($team_id);
+			for($i = 0; $i < count($team_members); $i++) {
+				$body = file_get_contents('../templates/email/EmployerResponse.html');
+				$body = str_replace('{{task_id}}', $taskResponse['task_id'], $body);
+				$body = str_replace('{{employer_name}}', $taskResponse['employer'], $body);
+				$body = str_replace('{{userName}}', $team_members[$i]['worker_fname'], $body);
+
+				$this->mailUtility->SendEmail($body, "Task #{$taskResponse['task_id']} ended", $team_members[$i]['worker_email'], null);
+			}
 			return [
 				'status' => 202,
 				'message' => 'Created',
 				'description' => 'Task closed successfully'
 			];
+		}
+
 
 		return [
 			'status' => 500,
