@@ -244,6 +244,7 @@ class TasksServices
 		$rawTemplate = str_replace("{{scannedItems}}", $tableRows, $rawTemplate);
 		$options = $this->dompdf->getOptions();
 		$options->setIsRemoteEnabled(true);
+		$options->setIsHtml5ParserEnabled(true);
 		$this->dompdf->setOptions($options);
 		$this->dompdf->loadHtml($rawTemplate);
 		$this->dompdf->setPaper('A4', 'portrait');
