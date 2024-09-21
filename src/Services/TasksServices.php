@@ -213,7 +213,7 @@ class TasksServices
 		$rawTemplate = str_replace("{{company_name}}", $company['company_name'], $rawTemplate);
 		$rawTemplate = str_replace("{{company_address}}", $company['company_address'], $rawTemplate);
 		$rawTemplate = str_replace("{{contact_info}}", $company['company_mail'], $rawTemplate);
-		$rawTemplate = str_replace("{{company_logo_url}}", "../../public/assets/logo.png", $rawTemplate);
+		$rawTemplate = str_replace("{{company_logo_url}}", $_ENV['BUCKET_URL'].'staticContent/logo.png', $rawTemplate);
 
 		$rawTemplate = str_replace("{{ total_items }}", $reqBody['total_items'], $rawTemplate);
 		$rawTemplate = str_replace("{{ currently_scanned }}", $reqBody['currently_scanned'], $rawTemplate);
