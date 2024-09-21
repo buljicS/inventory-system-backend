@@ -29,7 +29,7 @@
 		"/api/Users/resetPassword",
 		"/api/Users/changeTempPassword",
 		"/api/Tasks/notifyUsersAboutUpcomingTask",
-		"/api/Tasks/generateTaskReport/{task_id}/{company_id}"
+		"/api/Tasks/generateTaskReport"
 	];
  #endregion
 

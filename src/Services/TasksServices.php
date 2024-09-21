@@ -248,6 +248,6 @@ class TasksServices
 		$this->dompdf->setPaper('A4', 'portrait');
 		$this->dompdf->render();
 		$this->dompdf->output();
-		$this->dompdf->stream("TaskReport_" . date("d.m.Y@H:i:s", time()) . ".pdf", ['Attachment' => true]);
+		$this->dompdf->stream("TaskReport_" . date("d.m.Y@H:i:s", time()) . ".pdf", ['Attachment' => false]);
 	}
 }
