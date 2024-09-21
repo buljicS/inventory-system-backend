@@ -213,7 +213,7 @@ class TasksServices
 		$rawTemplate = str_replace("{{company_name}}", $company['company_name'], $rawTemplate);
 		$rawTemplate = str_replace("{{company_address}}", $company['company_address'], $rawTemplate);
 		$rawTemplate = str_replace("{{contact_info}}", $company['company_mail'], $rawTemplate);
-		$rawTemplate = str_replace("{{company_logo_url}}", $_ENV['BUCKET_URL'].'staticContent/logo.png', $rawTemplate);
+		$rawTemplate = str_replace("{{company_logo_url}}", 'https://firebasestorage.googleapis.com/v0/b/inventorysystem-68162.appspot.com/o/staticContent%2Flogo.png?alt=media&token=50e47acc-b63b-4d6e-9435-177109bd1f00', $rawTemplate);
 
 		$rawTemplate = str_replace("{{ total_items }}", $reqBody['total_items'], $rawTemplate);
 		$rawTemplate = str_replace("{{ currently_scanned }}", $reqBody['currently_scanned'], $rawTemplate);
