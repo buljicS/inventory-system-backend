@@ -22,11 +22,8 @@
             margin: 0;
         }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+        .logo {
+            display: inline;
         }
 
         .logo img {
@@ -36,6 +33,7 @@
 
         .company-info {
             text-align: right;
+            float: right;
         }
 
         table {
@@ -93,7 +91,7 @@
 
 <header>
 <div class="logo">
-    <img src="{{company_logo_url}}" alt="Company Logo" width="120" height="auto">
+    <img src="{{company_logo_url}}" alt="Company Logo" width="140" height="auto">
 </div>
 
 <div class="company-info">
