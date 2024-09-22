@@ -1,0 +1,1 @@
+{"version":1,"defects":[],"times":{"Unit\\TokenUtilityTest::testGenerateToken":0.001,"Unit\\TokenUtilityTest::testTokenOnDifferentByteLenght":0.006,"Unit\\TokenUtilityTest::testTokenOnDifferentByteLength":0.005}}

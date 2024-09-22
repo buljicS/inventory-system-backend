@@ -430,8 +430,6 @@ class UsersServices
 	public function banUser(int $worker_id): array
 	{
 		$isUserBanned = $this->userRepo->banUser($worker_id);
-
-
 		if($isUserBanned) {
 			$userData = $this->userRepo->getUserById($worker_id);
 			$body = file_get_contents('../templates/email/UserBan.html');
@@ -442,8 +440,6 @@ class UsersServices
 				'description' => 'User has been banned successfully'
 			];
 		}
-
-
 		return [
 			'status' => 500,
 			'message' => 'Internal Server Error',
