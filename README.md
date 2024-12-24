@@ -10,7 +10,7 @@
 
 ### Overview
 - Run `composer install` to install all dependencies
-- Read docs [here](docs/README.md)
+- Read docs [here](https://programatori.stud.vts.su.ac.rs/public/docs/starter-topic.html)
 
 <hr/>
 
